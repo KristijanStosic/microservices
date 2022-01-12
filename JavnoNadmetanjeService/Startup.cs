@@ -1,3 +1,5 @@
+using JavnoNadmetanjeService.Data;
+using JavnoNadmetanjeService.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -28,10 +30,17 @@ namespace JavnoNadmetanjeService
         {
 
             services.AddControllers();
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<IStatusRepository, StatusRepository>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "JavnoNadmetanjeService", Version = "v1" });
             });
+
+            services.AddDbContext<JavnoNadmetanjeContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
