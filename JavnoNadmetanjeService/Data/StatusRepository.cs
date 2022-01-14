@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using JavnoNadmetanjeService.Entities;
+﻿using JavnoNadmetanjeService.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,14 +10,12 @@ namespace JavnoNadmetanjeService.Data
     public class StatusRepository : IStatusRepository
     {
         private readonly JavnoNadmetanjeContext _context;
-        private readonly IMapper _mapper;
 
-        public StatusRepository(JavnoNadmetanjeContext context, IMapper mapper)
+        public StatusRepository(JavnoNadmetanjeContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
-        public async Task<List<Status>> GetAllStatuses(string nazivStatusa = null)
+        public async Task<List<Status>> GetAllStatus(string nazivStatusa = null)
         {
             return await _context.Status
                 .Where(s => (nazivStatusa == null || s.NazivStatusa == nazivStatusa))

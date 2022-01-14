@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace JavnoNadmetanjeService.Controllers
@@ -28,16 +27,16 @@ namespace JavnoNadmetanjeService.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<StatusDto>>> GetAllStasuses(string nazivStatusa)
+        public async Task<ActionResult<List<StatusDto>>> GetAllStatus(string nazivStatusa)
         {
-            var statuses = await _statusRepository.GetAllStatuses(nazivStatusa);
+            var statusi = await _statusRepository.GetAllStatus(nazivStatusa);
 
-            if(statuses == null || statuses.Count == 0)
+            if(statusi == null || statusi.Count == 0)
             {
                 return NoContent();
             }
 
-            return Ok(_mapper.Map<IEnumerable<StatusDto>>(statuses));
+            return Ok(_mapper.Map<List<StatusDto>>(statusi));
         }
 
         [HttpGet("{statusId}")]
@@ -58,15 +57,15 @@ namespace JavnoNadmetanjeService.Controllers
         {
             try
             {
-                Status createdStatus = await _statusRepository.CreateStatus(_mapper.Map<Status>(status));
+                Status noviStatus = await _statusRepository.CreateStatus(_mapper.Map<Status>(status));
 
-                string location = _linkGenerator.GetPathByAction("GetStatus", "Status", new { statusId = createdStatus.StatusId });
+                string lokacija = _linkGenerator.GetPathByAction("GetStatus", "Status", new { statusId = noviStatus.StatusId });
 
-                return Created(location, _mapper.Map<StatusDto>(createdStatus));
+                return Created(lokacija, _mapper.Map<StatusDto>(noviStatus));
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Create status error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom kreiranja statusa");
             }
         }
 
@@ -75,28 +74,28 @@ namespace JavnoNadmetanjeService.Controllers
         {
             try
             {
-                var oldStatus = await _statusRepository.GetStatusById(status.StatusId);
+                var stariStatus = await _statusRepository.GetStatusById(status.StatusId);
 
-                if (oldStatus == null)
+                if (stariStatus == null)
                 {
                     return NotFound();
                 }
 
-                Status editedStatus = _mapper.Map<Status>(status);
+                Status noviStatus = _mapper.Map<Status>(status);
 
-                _mapper.Map(editedStatus, oldStatus);         
+                _mapper.Map(noviStatus, stariStatus);         
                 await _statusRepository.UpdateStatus();
 
-                return Ok(_mapper.Map<StatusDto>(editedStatus));
+                return Ok(_mapper.Map<StatusDto>(noviStatus));
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Update status error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom izmene statusa");
             }
         }
 
         [HttpDelete("{statusId}")]
-        public async Task<ActionResult> DeleteStatus(Guid statusId)
+        public async Task<IActionResult> DeleteStatus(Guid statusId)
         {
             try
             {
@@ -114,10 +113,16 @@ namespace JavnoNadmetanjeService.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Delete status error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom brisanja statusa");
             }
         }
 
+        [HttpOptions]
+        public IActionResult GetStatusOptions()
+        {
+            Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
+            return Ok();
+        }
 
     }
 }

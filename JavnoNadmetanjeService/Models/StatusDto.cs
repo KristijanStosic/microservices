@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace JavnoNadmetanjeService.Models
+﻿namespace JavnoNadmetanjeService.Models
 {
     public class StatusDto
     {
