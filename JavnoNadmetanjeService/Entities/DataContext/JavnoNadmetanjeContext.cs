@@ -1,9 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace JavnoNadmetanjeService.Entities
 {
@@ -17,6 +14,7 @@ namespace JavnoNadmetanjeService.Entities
         }
 
         public DbSet<Status> Status { get; set; }
+        public DbSet<Tip> Tip { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -46,7 +44,17 @@ namespace JavnoNadmetanjeService.Entities
                     NazivStatusa = "Drugi krug sa novim uslovima"
                 });
 
-
+            modelBuilder.Entity<Tip>()
+                .HasData(new
+                {
+                    TipId = Guid.NewGuid(),
+                    NazivTipa = "Javna licitacija"
+                },
+                new
+                {
+                    TipId = Guid.NewGuid(),
+                    NazivTipa = "Otvaranje zatvorenih ponuda"
+                });
         }
     }
 }
