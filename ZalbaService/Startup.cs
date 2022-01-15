@@ -37,6 +37,7 @@ namespace ZalbaService
 
             services.AddScoped<IStatusZalbeRepository, StatusZalbeRepository>();
             services.AddScoped<ITipZalbeRepository, TipZalbeRepository>();
+            services.AddScoped<IRadnjaZaZalbuRepository, RadnjaZaZalbuRepository>();
 
             services.AddSwaggerGen(c =>
             {

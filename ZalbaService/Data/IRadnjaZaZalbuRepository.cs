@@ -6,7 +6,7 @@ using ZalbaService.Entities;
 
 namespace ZalbaService.Data
 {
-    public interface IRadnjaZaZalbu
+    public interface IRadnjaZaZalbuRepository
     {
         Task<List<RadnjaZaZalbu>> GetAllRadnjeZaZalbu(string nazivRadnjeZaZalbu = null);
         Task<RadnjaZaZalbu> GetRadnjaZaZalbuById(Guid radnjaZaZalbuId);
