@@ -36,6 +36,7 @@ namespace ZalbaService
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IStatusZalbeRepository, StatusZalbeRepository>();
+            services.AddScoped<ITipZalbeRepository, TipZalbeRepository>();
 
             services.AddSwaggerGen(c =>
             {

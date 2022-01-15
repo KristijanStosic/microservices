@@ -18,6 +18,10 @@ namespace ZalbaService.Entities.DataContext
 
         public DbSet<StatusZalbe> StatusZalbe { get; set; }
 
+        public DbSet<TipZalbe> TipZalbe { get; set; }
+
+        public DbSet<RadnjaZaZalbu> RadnjaZaZalbu { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ZalbaDB"));
@@ -44,6 +48,40 @@ namespace ZalbaService.Entities.DataContext
                 {
                     StatusZalbeId = Guid.NewGuid(),
                     NazivStatusaZalbe = "Otvorena"
+                });
+
+            modelBuilder.Entity<TipZalbe>()
+                .HasData(new
+                {
+                    TipZalbeId = Guid.NewGuid(),
+                    NazivTipaZalbe = "Zalba na tok javnog nadmetanja"
+                },
+                new
+                {
+                    TipZalbeId = Guid.NewGuid(),
+                    NazivTipaZalbe = "Zalba na Odluku o davanju u zakup"
+                },
+                new
+                {
+                    TipZalbeId = Guid.NewGuid(),
+                    NazivTipaZalbe = "Zalba na Odluku o davanju na koriscenje"
+                });
+
+            modelBuilder.Entity<RadnjaZaZalbu>()
+                .HasData(new
+                {
+                    RadnjaZaZalbuId = Guid.NewGuid(),
+                    NazivRadnjeZaZalbu = "JN ide u drugi krug sa novim uslovima"
+                },
+                new
+                {
+                    RadnjaZaZalbuId = Guid.NewGuid(),
+                    NazivRadnjeZaZalbu = "JN ide u drugi krug sa starim uslovima"
+                },
+                new
+                {
+                    RadnjaZaZalbuId = Guid.NewGuid(),
+                    NazivRadnjeZaZalbu = "JN ne ide u drugi krug"
                 });
         }
     }
