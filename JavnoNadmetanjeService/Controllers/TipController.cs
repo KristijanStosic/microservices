@@ -58,6 +58,7 @@ namespace JavnoNadmetanjeService.Controllers
             try
             {
                 Tip noviTip = await _tipRepository.CreateTip(_mapper.Map<Tip>(tip));
+                await _tipRepository.SaveChangesAsync();
 
                 string lokacija = _linkGenerator.GetPathByAction("GetTip", "Tip", new { tipId = noviTip.TipId });
 
@@ -84,7 +85,7 @@ namespace JavnoNadmetanjeService.Controllers
                 Tip noviTip = _mapper.Map<Tip>(tip);
 
                 _mapper.Map(noviTip, stariTip);
-                await _tipRepository.UpdateTip();
+                await _tipRepository.SaveChangesAsync();
 
                 return Ok(_mapper.Map<TipDto>(noviTip));
             }
@@ -107,6 +108,7 @@ namespace JavnoNadmetanjeService.Controllers
                 }
 
                 await _tipRepository.DeleteTip(tipId);
+                await _tipRepository.SaveChangesAsync();
 
                 return NoContent();
 

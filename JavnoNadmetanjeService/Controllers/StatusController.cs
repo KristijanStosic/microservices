@@ -58,6 +58,7 @@ namespace JavnoNadmetanjeService.Controllers
             try
             {
                 Status noviStatus = await _statusRepository.CreateStatus(_mapper.Map<Status>(status));
+                await _statusRepository.SaveChangesAsync();
 
                 string lokacija = _linkGenerator.GetPathByAction("GetStatus", "Status", new { statusId = noviStatus.StatusId });
 
@@ -83,10 +84,10 @@ namespace JavnoNadmetanjeService.Controllers
 
                 Status noviStatus = _mapper.Map<Status>(status);
 
-                _mapper.Map(noviStatus, stariStatus);         
-                await _statusRepository.UpdateStatus();
+                _mapper.Map(noviStatus, stariStatus);
+                await _statusRepository.SaveChangesAsync();
 
-                return Ok(_mapper.Map<StatusDto>(noviStatus));
+                return Ok(_mapper.Map<StatusDto>(stariStatus));
             }
             catch (Exception)
             {
@@ -107,6 +108,7 @@ namespace JavnoNadmetanjeService.Controllers
                 }
 
                 await _statusRepository.DeleteStatus(statusId);
+                await _statusRepository.SaveChangesAsync();
 
                 return NoContent();
 

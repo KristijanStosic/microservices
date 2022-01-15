@@ -11,6 +11,6 @@ namespace JavnoNadmetanjeService.Data
         Task<Status> GetStatusById(Guid statusId);
         Task<Status> CreateStatus(Status status);
         Task DeleteStatus(Guid statusId);
-        Task UpdateStatus();
+        Task SaveChangesAsync();
     }
 }

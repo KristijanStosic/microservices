@@ -29,15 +29,9 @@ namespace JavnoNadmetanjeService.Data
 
         public async Task<Tip> CreateTip(Tip tip)
         {
-            _context.Tip.Add(tip);
-            await _context.SaveChangesAsync();
+            await _context.Tip.AddAsync(tip);
 
             return tip;
-        }
-
-        public async Task UpdateTip()
-        {
-            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteTip(Guid tipId)
@@ -45,6 +39,10 @@ namespace JavnoNadmetanjeService.Data
             var tip = await GetTipById(tipId);
 
             _context.Tip.Remove(tip);
+        }
+
+        public async Task SaveChangesAsync()
+        {
             await _context.SaveChangesAsync();
         }
     }

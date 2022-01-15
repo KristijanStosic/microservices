@@ -11,6 +11,6 @@ namespace JavnoNadmetanjeService.Data
         Task<Tip> GetTipById(Guid tipId);
         Task<Tip> CreateTip(Tip tip);
         Task DeleteTip(Guid tipId);
-        Task UpdateTip();
+        Task SaveChangesAsync();
     }
 }
