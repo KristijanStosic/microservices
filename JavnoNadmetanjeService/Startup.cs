@@ -1,4 +1,5 @@
 using JavnoNadmetanjeService.Data;
+using JavnoNadmetanjeService.Data.Interfaces;
 using JavnoNadmetanjeService.Entities;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -29,6 +30,7 @@ namespace JavnoNadmetanjeService
 
             services.AddScoped<IStatusRepository, StatusRepository>();
             services.AddScoped<ITipRepository, TipRepository>();
+            services.AddScoped<IEtapaRepository, EtapaRepository>();
 
             services.AddSwaggerGen(c =>
             {
