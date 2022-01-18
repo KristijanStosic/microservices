@@ -1,4 +1,4 @@
-﻿namespace JavnoNadmetanjeService.Models
+﻿namespace JavnoNadmetanjeService.Models.Tip
 {
     public class TipDto
     {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace JavnoNadmetanjeService.Data
+namespace JavnoNadmetanjeService.Data.Interfaces
 {
     public interface IStatusRepository
     {

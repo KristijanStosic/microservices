@@ -1,4 +1,5 @@
-﻿using JavnoNadmetanjeService.Entities;
+﻿using JavnoNadmetanjeService.Data.Interfaces;
+using JavnoNadmetanjeService.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

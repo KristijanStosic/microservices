@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace JavnoNadmetanjeService.Models
+namespace JavnoNadmetanjeService.Models.Status
 {
     public class StatusUpdateDto
     {

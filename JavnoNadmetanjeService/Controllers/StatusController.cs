@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using JavnoNadmetanjeService.Data;
+using JavnoNadmetanjeService.Data.Interfaces;
 using JavnoNadmetanjeService.Entities;
-using JavnoNadmetanjeService.Models;
+using JavnoNadmetanjeService.Models.Status;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;

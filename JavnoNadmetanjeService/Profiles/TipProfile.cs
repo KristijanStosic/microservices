@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using JavnoNadmetanjeService.Entities;
-using JavnoNadmetanjeService.Models;
+using JavnoNadmetanjeService.Models.Tip;
 
 namespace JavnoNadmetanjeService.Profiles
 {
