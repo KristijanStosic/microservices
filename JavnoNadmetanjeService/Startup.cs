@@ -31,6 +31,7 @@ namespace JavnoNadmetanjeService
             services.AddScoped<IStatusRepository, StatusRepository>();
             services.AddScoped<ITipRepository, TipRepository>();
             services.AddScoped<IEtapaRepository, EtapaRepository>();
+            services.AddScoped<IJavnoNadmetanjeRepository, JavnoNadmetanjeRepository>();
 
             services.AddSwaggerGen(c =>
             {
