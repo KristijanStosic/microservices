@@ -14,6 +14,7 @@ namespace JavnoNadmetanjeService.Models.Etapa
         public string VremePocetka { get; set; }
         public string VremeKraja { get; set; }
         public bool ZavrsenaUspesno { get; set; }
+        [Required(ErrorMessage = "Obavezno je uneti id javnog nadmetanja.")]
         public Guid JavnoNadmetanjeId { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

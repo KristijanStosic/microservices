@@ -24,6 +24,8 @@ namespace JavnoNadmetanjeService.Entities
         public Tip Tip { get; set; }
         public List<Etapa> Etape { get; set; }
 
-        //ToDo: Nije dodato nista iz drugih mikroservisa za sada
+        //ToDo: Doraditi komunikaciju sa drugim mikroservisima
+        public Guid? KupacId { get; set; }
+        public Guid? AdresaId { get; set; }
     }
 }

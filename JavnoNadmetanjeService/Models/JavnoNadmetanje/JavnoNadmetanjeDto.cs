@@ -2,6 +2,7 @@
 using JavnoNadmetanjeService.Models.Tip;
 using JavnoNadmetanjeService.Models.Status;
 using JavnoNadmetanjeService.Models.Etapa;
+using JavnoNadmetanjeService.Models.Other;
 
 namespace JavnoNadmetanjeService.Models.JavnoNadmetanje
 {
@@ -17,5 +18,9 @@ namespace JavnoNadmetanjeService.Models.JavnoNadmetanje
         public StatusDto Status { get; set; }
         public TipDto Tip { get; set; }
         public List<EtapaDto> Etape { get; set; }
+
+        public AdresaDto Adresa { get; set; }
+        public KupacDto Kupac { get; set; }
+
     }
 }

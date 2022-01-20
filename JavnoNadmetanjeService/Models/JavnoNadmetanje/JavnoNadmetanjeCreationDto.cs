@@ -14,8 +14,12 @@ namespace JavnoNadmetanjeService.Models.JavnoNadmetanje
         public int BrojUcesnika { get; set; }
         public int Krug { get; set; }
         public bool Izuzeto { get; set; }
+        [Required(ErrorMessage = "Obavezno je uneti id statusa javnog nadmetanja.")]
         public Guid StatusId { get; set; }
+        [Required(ErrorMessage = "Obavezno je uneti id tipa javnog nadmetanja.")]
         public Guid TipId { get; set; }
+        public Guid? KupacId { get; set; }
+        public Guid? AdresaId { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
