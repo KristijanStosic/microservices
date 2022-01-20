@@ -8,8 +8,9 @@ namespace JavnoNadmetanjeService.Profiles
     {
         public TipProfile()
         {
-            CreateMap<Tip, TipDto>().ReverseMap();
+            CreateMap<Tip, TipDto>();
             CreateMap<TipUpdateDto, Tip>();
+            CreateMap<TipCreationDto, Tip>();
             CreateMap<Tip, Tip>();
         }
     }

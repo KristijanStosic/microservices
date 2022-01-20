@@ -12,6 +12,7 @@ namespace JavnoNadmetanjeService.Data.Interfaces
         Task<Etapa> GetEtapaById(Guid etapaId);
         Task<EtapaConfirmation> CreateEtapa(Etapa etapa);
         Task DeleteEtapa(Guid etapaId);
+        Task<bool> IsValidEtapa(Etapa etapa);
         Task SaveChangesAsync();
     }
 }

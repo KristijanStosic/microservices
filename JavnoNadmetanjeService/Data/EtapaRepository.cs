@@ -5,6 +5,7 @@ using JavnoNadmetanjeService.Entities.Confirmations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace JavnoNadmetanjeService.Data
@@ -42,10 +43,20 @@ namespace JavnoNadmetanjeService.Data
 
             _context.Etapa.Remove(etapa);
         }
+        public async Task<bool> IsValidEtapa(Etapa etapa)
+        {
+            //Provera da li za javno nadmetanje za koje se pravi etapa, vec postoji neka etapa koja je uspesno zavrsena
+            //Ukoliko postoji, prekida se unos trenutne etape
+
+            var etape = await _context.Etapa.Where(e => e.JavnoNadmetanjeId == etapa.JavnoNadmetanjeId && e.ZavrsenaUspesno).ToListAsync();
+
+            return etape.Count == 0;
+        }
 
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
+
     }
 }

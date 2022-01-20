@@ -53,7 +53,7 @@ namespace JavnoNadmetanjeService.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<TipDto>> CreateTip([FromBody] TipDto tip)
+        public async Task<ActionResult<TipDto>> CreateTip([FromBody] TipCreationDto tip)
         {
             try
             {

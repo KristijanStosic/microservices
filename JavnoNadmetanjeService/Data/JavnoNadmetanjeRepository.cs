@@ -40,6 +40,15 @@ namespace JavnoNadmetanjeService.Data
 
         public async Task<JavnoNadmetanjeConfirmation> CreateJavnoNadmetanje(JavnoNadmetanje javnoNadmetanje)
         {
+            if (javnoNadmetanje.IzlicitiranaCena > (javnoNadmetanje.PocetnaCenaHektar * 2))
+            {
+                javnoNadmetanje.VisinaDopuneDepozita = (int)(javnoNadmetanje.IzlicitiranaCena * 0.5);
+            }
+            else
+            {
+                javnoNadmetanje.VisinaDopuneDepozita = (int)(javnoNadmetanje.IzlicitiranaCena * 0.1);
+            }
+
             var kreiranoNadmetanje = await _context.JavnoNadmetanje.AddAsync(javnoNadmetanje);
 
             return _mapper.Map<JavnoNadmetanjeConfirmation>(kreiranoNadmetanje.Entity);
@@ -56,5 +65,6 @@ namespace JavnoNadmetanjeService.Data
         {
             await _context.SaveChangesAsync();
         }
+
     }
 }

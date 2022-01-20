@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace JavnoNadmetanjeService.Entities
 {
+    [Index(nameof(NazivStatusa), IsUnique = true)]
     public class Status
     {
         [Key]

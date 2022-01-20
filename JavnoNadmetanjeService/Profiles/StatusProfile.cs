@@ -8,8 +8,9 @@ namespace JavnoNadmetanjeService.Profiles
     {
         public StatusProfile()
         {
-            CreateMap<Status, StatusDto>().ReverseMap(); //obostrano mapiranje
+            CreateMap<Status, StatusDto>();
             CreateMap<StatusUpdateDto, Status>();
+            CreateMap<StatusCreationDto, Status>();
             CreateMap<Status, Status>(); //za update
         }
     }

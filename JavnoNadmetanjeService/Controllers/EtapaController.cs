@@ -58,7 +58,15 @@ namespace JavnoNadmetanjeService.Controllers
         {
             try
             {
-                EtapaConfirmation novaEtapa = await _etapaRepository.CreateEtapa(_mapper.Map<Etapa>(etapa));
+                Etapa mapiranaEtapa = _mapper.Map<Etapa>(etapa);
+                var proveraValidnosti = await _etapaRepository.IsValidEtapa(mapiranaEtapa);
+
+                if (!proveraValidnosti)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Vec postoji etapa u okviru ovog javnog nadmetanja koja je uspesno zavrsena!");
+                }
+
+                EtapaConfirmation novaEtapa = await _etapaRepository.CreateEtapa(mapiranaEtapa);
                 await _etapaRepository.SaveChangesAsync();
 
                 string lokacija = _linkGenerator.GetPathByAction("GetEtapa", "Etapa", new { etapaId = novaEtapa.EtapaId });

@@ -10,7 +10,6 @@ namespace JavnoNadmetanjeService.Entities
         public Guid JavnoNadmetanjeId { get; set; } = Guid.NewGuid();
         [Required]
         public double PocetnaCenaHektar { get; set; }
-        [Required]
         public int VisinaDopuneDepozita { get; set; }
         [Required]
         public int PeriodZakupa { get; set; }

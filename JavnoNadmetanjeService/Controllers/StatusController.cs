@@ -53,7 +53,7 @@ namespace JavnoNadmetanjeService.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<StatusDto>> CreateStatus([FromBody] StatusDto status)
+        public async Task<ActionResult<StatusDto>> CreateStatus([FromBody] StatusCreationDto status)
         {
             try
             {

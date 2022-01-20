@@ -5,5 +5,6 @@
         public double PocetnaCenaHektar { get; set; }
         public int PeriodZakupa { get; set; }
         public int Krug { get; set; }
+        public int VisinaDopuneDepozita { get; set; }
     }
 }
