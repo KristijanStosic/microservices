@@ -13,5 +13,6 @@ namespace ZalbaService.Data
         Task<RadnjaZaZalbu> CreateRadnjaZaZalbu(RadnjaZaZalbu radnjaZaZalbu);
         Task DeleteRadnjaZaZalbu(Guid radnjaZaZalbuId);
         Task UpdateRadnjaZaZalbu(RadnjaZaZalbu radnjaZaZalbu);
+        Task<bool> IsValidRadnjaZaZalbu(string nazivRadnjeZaZalbu);
     }
 }

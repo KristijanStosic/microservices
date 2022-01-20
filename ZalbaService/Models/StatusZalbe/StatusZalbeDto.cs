@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ZalbaService.Models
+namespace ZalbaService.Models.StatusZalbe
 {
-    public class StatusZalbeCreateDto
+    public class StatusZalbeDto
     {
         public string NazivStatusaZalbe { get; set; }
     }

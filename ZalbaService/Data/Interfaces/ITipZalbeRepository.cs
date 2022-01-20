@@ -13,5 +13,6 @@ namespace ZalbaService.Data
         Task<TipZalbe> CreateTipZalbe(TipZalbe tipZalbe);
         Task DeleteTipZalbe(Guid tipZalbeId);
         Task UpdateTipZalbe(TipZalbe tipZalbe);
+        Task<bool> IsValidTipZalbe(string nazivTipaZalbe);
     }
 }

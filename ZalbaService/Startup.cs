@@ -13,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ZalbaService.Data;
+using ZalbaService.Data.Interfaces;
 using ZalbaService.Entities.DataContext;
 
 namespace ZalbaService
@@ -38,6 +39,7 @@ namespace ZalbaService
             services.AddScoped<IStatusZalbeRepository, StatusZalbeRepository>();
             services.AddScoped<ITipZalbeRepository, TipZalbeRepository>();
             services.AddScoped<IRadnjaZaZalbuRepository, RadnjaZaZalbuRepository>();
+            services.AddScoped<IZalbaRepository, ZalbaRepository>();
 
             services.AddSwaggerGen(c =>
             {

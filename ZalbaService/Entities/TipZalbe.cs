@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 
 namespace ZalbaService.Entities
 {
+    [Index(nameof(NazivTipaZalbe), IsUnique = true)]
     public class TipZalbe
     {
         [Key]
@@ -13,5 +15,6 @@ namespace ZalbaService.Entities
 
         [Required]
         public string NazivTipaZalbe { get; set; }
+
     }
 }

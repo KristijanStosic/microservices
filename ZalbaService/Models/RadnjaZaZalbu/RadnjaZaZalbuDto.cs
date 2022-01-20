@@ -5,8 +5,8 @@ using System.Threading.Tasks;
 
 namespace ZalbaService.Models
 {
-    public class TipZalbeCreateDto
+    public class RadnjaZaZalbuDto
     {
-        public string NazivTipaZalbe { get; set; }
+        public string NazivRadnjeZaZalbu { get; set; }
     }
 }

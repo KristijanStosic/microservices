@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ZalbaService.Entities;
 using ZalbaService.Models;
+using ZalbaService.Models.StatusZalbe;
 
 namespace ZalbaService.Profiles
 {
@@ -15,6 +16,7 @@ namespace ZalbaService.Profiles
             CreateMap<StatusZalbe, StatusZalbeCreateDto>().ReverseMap();
             CreateMap<StatusZalbeUpdateDto, StatusZalbe>();
             CreateMap<StatusZalbe, StatusZalbe>();
+            CreateMap<StatusZalbe, StatusZalbeDto>();
         }
     }
 }

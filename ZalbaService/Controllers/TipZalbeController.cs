@@ -30,7 +30,7 @@ namespace ZalbaService.Controllers
 
         [HttpGet]
         [HttpHead]
-        public async Task<ActionResult<List<TipZalbeCreateDto>>> GetAllTipoviZalbe(string nazivTipaZalbe)
+        public async Task<ActionResult<List<TipZalbeDto>>> GetAllTipoviZalbe(string nazivTipaZalbe)
         {
             var tipoviZalbe = await _tipZalbeRepository.GetAllTipoviZalbe(nazivTipaZalbe);
 
@@ -39,11 +39,11 @@ namespace ZalbaService.Controllers
                 return NoContent();
             }
 
-            return Ok(_mapper.Map<IEnumerable<TipZalbeCreateDto>>(tipoviZalbe));
+            return Ok(_mapper.Map<IEnumerable<TipZalbeDto>>(tipoviZalbe));
         }
 
         [HttpGet("{tipZalbeId}")]
-        public async Task<ActionResult<TipZalbeCreateDto>> GetTipZalbe(Guid tipZalbeId)
+        public async Task<ActionResult<TipZalbeDto>> GetTipZalbe(Guid tipZalbeId)
         {
             var tipZalbe = await _tipZalbeRepository.GetTipZalbeById(tipZalbeId);
 
@@ -52,7 +52,7 @@ namespace ZalbaService.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<TipZalbeCreateDto>(tipZalbe));
+            return Ok(_mapper.Map<TipZalbeDto>(tipZalbe));
         }
 
         [HttpPost]
@@ -61,11 +61,24 @@ namespace ZalbaService.Controllers
         {
             try
             {
-                TipZalbe createdTipZalbe = await _tipZalbeRepository.CreateTipZalbe(_mapper.Map<TipZalbe>(tipZalbe));
+                var proveraValidnosti = await _tipZalbeRepository.IsValidTipZalbe(tipZalbe.NazivTipaZalbe);
 
-                string location = _linkGenerator.GetPathByAction("GetTipZalbe", "TipZalbe", new { tipZalbeId = createdTipZalbe.TipZalbeId });
+                if(!proveraValidnosti)
+                {
+                    var response = new
+                    {
+                        Message = "Unos istih podataka. Pokusajte ponovo!"
+                    };
 
-                return Created(location, _mapper.Map<TipZalbeCreateDto>(createdTipZalbe));
+                    return BadRequest(response);
+                }
+
+                 TipZalbe createdTipZalbe = await _tipZalbeRepository.CreateTipZalbe(_mapper.Map<TipZalbe>(tipZalbe));
+
+                 string location = _linkGenerator.GetPathByAction("GetTipZalbe", "TipZalbe", new { tipZalbeId = createdTipZalbe.TipZalbeId });
+
+                 return Created(location, _mapper.Map<TipZalbeCreateDto>(createdTipZalbe));
+                 
             }
             catch (Exception)
             {
@@ -74,6 +87,7 @@ namespace ZalbaService.Controllers
         }
 
         [HttpPut("{tipZalbeId}")]
+        [Consumes("application/json")]
         public async Task<ActionResult<TipZalbeUpdateDto>> UpdateTipZalbe(Guid tipZalbeId, [FromBody] TipZalbeUpdateDto tipZalbe)
         {
             try
@@ -83,6 +97,18 @@ namespace ZalbaService.Controllers
                 if (tipZalbeEntity == null)
                 {
                     return NotFound();
+                }
+
+                var proveraValidnosti = await _tipZalbeRepository.IsValidTipZalbe(tipZalbe.NazivTipaZalbe);
+
+                if (!proveraValidnosti)
+                {
+                    var response = new
+                    {
+                        Message = "Unos istih podataka. Pokusajte ponovo!"
+                    };
+
+                    return BadRequest(response);
                 }
 
                 _mapper.Map(tipZalbe, tipZalbeEntity);
@@ -111,7 +137,12 @@ namespace ZalbaService.Controllers
 
                 await _tipZalbeRepository.DeleteTipZalbe(tipZalbeId);
 
-                return Ok();
+                var response = new
+                {
+                    Message = "Uspesno brisanje"
+                };
+
+                return Ok(response);
             }
             catch (Exception)
             {

@@ -52,5 +52,15 @@ namespace ZalbaService.Data
         {
             await _context.SaveChangesAsync();
         }
+
+        public async Task<bool> IsValidRadnjaZaZalbu(string nazivRadnjeZaZalbu)
+        {
+            // proverava se unos istog naziva tipa zalbe
+
+            // pokusaj unosa 123 i ako nemam u bazi on vrati Count 0 i true, u suprotnom Count = n i false
+            var listaRadnjiZaZalbu = await _context.RadnjaZaZalbu.Where(rz => rz.NazivRadnjeZaZalbu == nazivRadnjeZaZalbu).ToListAsync();
+
+            return listaRadnjiZaZalbu.Count == 0;
+        }
     }
 }

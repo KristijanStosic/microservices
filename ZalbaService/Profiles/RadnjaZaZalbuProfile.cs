@@ -11,6 +11,7 @@ namespace ZalbaService.Profiles
             CreateMap<RadnjaZaZalbu, RadnjaZaZalbuCreateDto>().ReverseMap();
             CreateMap<RadnjaZaZalbuUpdateDto, RadnjaZaZalbu>();
             CreateMap<RadnjaZaZalbu, RadnjaZaZalbu>();
+            CreateMap<RadnjaZaZalbu, RadnjaZaZalbuDto>();
         }
     }
 }

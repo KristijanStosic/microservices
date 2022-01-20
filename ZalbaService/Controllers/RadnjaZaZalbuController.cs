@@ -30,7 +30,7 @@ namespace ZalbaService.Controllers
 
         [HttpGet]
         [HttpHead]
-        public async Task<ActionResult<List<RadnjaZaZalbuCreateDto>>> GetAllRadnjeZaZalbu(string nazivRadnjeZaZalbu)
+        public async Task<ActionResult<List<RadnjaZaZalbuDto>>> GetAllRadnjeZaZalbu(string nazivRadnjeZaZalbu)
         {
             var radnjeZaZalbu = await _radnjaZaZalbuRepository.GetAllRadnjeZaZalbu(nazivRadnjeZaZalbu);
 
@@ -39,11 +39,11 @@ namespace ZalbaService.Controllers
                 return NoContent();
             }
 
-            return Ok(_mapper.Map<IEnumerable<RadnjaZaZalbuCreateDto>>(radnjeZaZalbu));
+            return Ok(_mapper.Map<IEnumerable<RadnjaZaZalbuDto>>(radnjeZaZalbu));
         }
 
         [HttpGet("{radnjaZaZalbuId}")]
-        public async Task<ActionResult<RadnjaZaZalbuCreateDto>> GetRadnjaZaZalbu(Guid radnjaZaZalbuId)
+        public async Task<ActionResult<RadnjaZaZalbuDto>> GetRadnjaZaZalbu(Guid radnjaZaZalbuId)
         {
             var radnjaZaZalbu = await _radnjaZaZalbuRepository.GetRadnjaZaZalbuById(radnjaZaZalbuId);
 
@@ -52,7 +52,7 @@ namespace ZalbaService.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<RadnjaZaZalbuCreateDto>(radnjaZaZalbu));
+            return Ok(_mapper.Map<RadnjaZaZalbuDto>(radnjaZaZalbu));
         }
 
         [HttpPost]
@@ -61,6 +61,18 @@ namespace ZalbaService.Controllers
         {
             try
             {
+                var proveraValidnosti = await _radnjaZaZalbuRepository.IsValidRadnjaZaZalbu(radnjaZaZalbu.NazivRadnjeZaZalbu);
+
+                if (!proveraValidnosti)
+                {
+                    var response = new
+                    {
+                        Message = "Unos istih podataka. Pokusajte ponovo!"
+                    };
+
+                    return BadRequest(response);
+                }
+
                 RadnjaZaZalbu createdRadnjaZaZalbu = await _radnjaZaZalbuRepository.CreateRadnjaZaZalbu(_mapper.Map<RadnjaZaZalbu>(radnjaZaZalbu));
 
                 string location = _linkGenerator.GetPathByAction("GetRadnjaZaZalbu", "RadnjaZaZalbu", new { radnjaZaZalbuId = createdRadnjaZaZalbu.RadnjaZaZalbuId });
@@ -78,6 +90,18 @@ namespace ZalbaService.Controllers
         {
             try
             {
+                var proveraValidnosti = await _radnjaZaZalbuRepository.IsValidRadnjaZaZalbu(radnjaZaZalbu.NazivRadnjeZaZalbu);
+
+                if (!proveraValidnosti)
+                {
+                    var response = new
+                    {
+                        Message = "Unos istih podataka. Pokusajte ponovo!"
+                    };
+
+                    return BadRequest(response);
+                }
+
                 var radnjaZaZalbuEntity = await _radnjaZaZalbuRepository.GetRadnjaZaZalbuById(radnjaZaZalbuId);
 
                 if (radnjaZaZalbuEntity == null)

@@ -15,6 +15,7 @@ namespace ZalbaService.Profiles
             CreateMap<TipZalbe, TipZalbeCreateDto>().ReverseMap();
             CreateMap<TipZalbeUpdateDto, TipZalbe>();
             CreateMap<TipZalbe, TipZalbe>();
+            CreateMap<TipZalbe, TipZalbeDto>();
         }
     }
 }

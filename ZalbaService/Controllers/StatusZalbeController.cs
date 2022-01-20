@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using ZalbaService.Data;
 using ZalbaService.Entities;
 using ZalbaService.Models;
+using ZalbaService.Models.StatusZalbe;
 
 namespace ZalbaService.Controllers
 {
@@ -29,7 +30,7 @@ namespace ZalbaService.Controllers
         
         [HttpGet]
         [HttpHead]
-        public async Task<ActionResult<List<StatusZalbeCreateDto>>> GetAllStatusesZalbe(string nazivStatusaZalbe)
+        public async Task<ActionResult<List<StatusZalbeDto>>> GetAllStatusesZalbe(string nazivStatusaZalbe)
         {
             var statusesZalbe = await _statusZalbeRepository.GetAllStatusesZalbe(nazivStatusaZalbe);
 
@@ -38,11 +39,11 @@ namespace ZalbaService.Controllers
                 return NoContent();
             }
 
-            return Ok(_mapper.Map<IEnumerable<StatusZalbeCreateDto>>(statusesZalbe));
+            return Ok(_mapper.Map<IEnumerable<StatusZalbeDto>>(statusesZalbe));
         }
 
         [HttpGet("{statusZalbeId}")]
-        public async Task<ActionResult<StatusZalbeCreateDto>> GetStatusZalbe(Guid statusZalbeId)
+        public async Task<ActionResult<StatusZalbeDto>> GetStatusZalbe(Guid statusZalbeId)
         {
             var statusZalbe = await _statusZalbeRepository.GetStatusZalbeById(statusZalbeId);
 
@@ -51,7 +52,7 @@ namespace ZalbaService.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<StatusZalbeCreateDto>(statusZalbe));
+            return Ok(_mapper.Map<StatusZalbeDto>(statusZalbe));
         }
 
         [HttpPost]
@@ -60,6 +61,18 @@ namespace ZalbaService.Controllers
         {
             try
             {
+                var proveraValidnosti = await _statusZalbeRepository.IsValidStatusZalbe(statusZalbe.NazivStatusaZalbe);
+
+                if (!proveraValidnosti)
+                {
+                    var response = new
+                    {
+                        Message = "Unos istih podataka. Pokusajte ponovo!"
+                    };
+
+                    return BadRequest(response);
+                }
+
                 StatusZalbe createdStatusZalbe = await _statusZalbeRepository.CreateStatusZalbe(_mapper.Map<StatusZalbe>(statusZalbe));
 
                 string location = _linkGenerator.GetPathByAction("GetStatusZalbe", "StatusZalbe", new { statusZalbeId = createdStatusZalbe.StatusZalbeId });
@@ -77,6 +90,18 @@ namespace ZalbaService.Controllers
         {
             try
             {
+                var proveraValidnosti = await _statusZalbeRepository.IsValidStatusZalbe(statusZalbe.NazivStatusaZalbe);
+
+                if (!proveraValidnosti)
+                {
+                    var response = new
+                    {
+                        Message = "Unos istih podataka. Pokusajte ponovo!"
+                    };
+
+                    return BadRequest(response);
+                }
+
                 var statusZalbeEntity = await _statusZalbeRepository.GetStatusZalbeById(statusZalbeId);
 
                 if(statusZalbeEntity == null)
