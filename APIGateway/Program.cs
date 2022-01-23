@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace APIGateway
 {
-    public class Program
+    public static class Program
     {
         public static void Main(string[] args)
         {
@@ -20,7 +15,9 @@ namespace APIGateway
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
-                    webBuilder.UseStartup<Startup>();
+                    webBuilder.UseStartup<Startup>()
+                        .ConfigureAppConfiguration(config =>
+                            config.AddJsonFile($"ocelot.json"));
                 });
     }
 }
