@@ -64,9 +64,9 @@ namespace AdresaService.Controllers
 
                 var novaDrzava = await _drzavaRepository.CreateDrzava(_mapper.Map<Drzava>(drzava));
                 await _drzavaRepository.SaveChangesAsync();
-                Console.WriteLine("ID: "+novaDrzava.DrzavaId);
+        
                 string lokacija = _linkGenerator.GetPathByAction("GetDrzavaById", "Drzava", new { drzavaid = novaDrzava.DrzavaId });
-                Console.WriteLine("Lokacija: "+lokacija);
+       
                 return Created(lokacija,_mapper.Map<DrzavaDto>(novaDrzava));
       
 
