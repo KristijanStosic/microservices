@@ -3,10 +3,12 @@ using JavnoNadmetanjeService.Data.Interfaces;
 using JavnoNadmetanjeService.Entities;
 using JavnoNadmetanjeService.Entities.Confirmations;
 using JavnoNadmetanjeService.Models.JavnoNadmetanje;
+using JavnoNadmetanjeService.Models.Other;
 using JavnoNadmetanjeService.ServiceCalls;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -20,14 +22,16 @@ namespace JavnoNadmetanjeService.Controllers
         private readonly IJavnoNadmetanjeRepository _javnoNadmetanjeRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
-        private readonly IAdresaService _adresaService;
+        private readonly IServiceCall<AdresaDto> _adresaService;
+        private readonly IConfiguration _configuration;
 
-        public JavnoNadmetanjeController(IJavnoNadmetanjeRepository javnoNadmetanjeRepository, LinkGenerator linkGenerator, IMapper mapper, IAdresaService adresaService)
+        public JavnoNadmetanjeController(IJavnoNadmetanjeRepository javnoNadmetanjeRepository, LinkGenerator linkGenerator, IMapper mapper, IServiceCall<AdresaDto> adresaService, IConfiguration configuration)
         {
             _javnoNadmetanjeRepository = javnoNadmetanjeRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
             _adresaService = adresaService;
+            _configuration = configuration;
         }
 
         [HttpGet]
@@ -42,12 +46,13 @@ namespace JavnoNadmetanjeService.Controllers
 
             //Adresa mikroservis komunikacija - trenutno je preko mock-a, implementiran je i pravi nacin samo sad nema tog mikroservisa jos uvek, samo treba promeniti u startup-u
             var javnaNadmetanjaDto = new List<JavnoNadmetanjeDto>();
+            string url = _configuration["Services:AdresaService"];
             foreach (var javnoNad in javnaNadmetanja)
             {
                 var javnoNadDto = _mapper.Map<JavnoNadmetanjeDto>(javnoNad);
                 if(javnoNad.AdresaId is not null)
                 {
-                    var adresaDto = _adresaService.GetAdresaDto((Guid)javnoNad.AdresaId).Result;
+                    var adresaDto = _adresaService.SendGetRequestAsync(url + javnoNad.AdresaId).Result;
                     javnoNadDto.Adresa = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
                 }
                 javnaNadmetanjaDto.Add(javnoNadDto);
@@ -66,10 +71,14 @@ namespace JavnoNadmetanjeService.Controllers
                 return NotFound();
             }
 
+            string url = _configuration["Services:AdresaService"];
             var javnoNadmetanjeDto = _mapper.Map<JavnoNadmetanjeDto>(javnoNadmetanje);
-            var adresaDto = _adresaService.GetAdresaDto((Guid)javnoNadmetanje.AdresaId).Result;
-            javnoNadmetanjeDto.Adresa = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
-
+            if (javnoNadmetanje.AdresaId is not null)
+            {
+                var adresaDto = _adresaService.SendGetRequestAsync(url + javnoNadmetanje.AdresaId).Result;
+                javnoNadmetanjeDto.Adresa = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
+            }
+            
             return Ok(javnoNadmetanjeDto);
         }
 

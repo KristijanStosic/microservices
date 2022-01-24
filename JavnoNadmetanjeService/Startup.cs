@@ -3,6 +3,7 @@ using JavnoNadmetanjeService.Data.Interfaces;
 using JavnoNadmetanjeService.Entities;
 using JavnoNadmetanjeService.Models.Other;
 using JavnoNadmetanjeService.ServiceCalls;
+using JavnoNadmetanjeService.ServiceCalls.Mocks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -35,8 +36,8 @@ namespace JavnoNadmetanjeService
             services.AddScoped<ITipRepository, TipRepository>();
             services.AddScoped<IEtapaRepository, EtapaRepository>();
             services.AddScoped<IJavnoNadmetanjeRepository, JavnoNadmetanjeRepository>();
-            //services.AddScoped<IAdresaService, AdresaService>();
-            services.AddScoped<IAdresaService, AdresaServiceMock>();
+            services.AddScoped<IServiceCall<AdresaDto>, ServiceCallAdresaMock<AdresaDto>>();
+            //services.AddScoped<IServiceCall<AdresaDto>, ServiceCall<AdresaDto>>();
 
             services.AddSwaggerGen(c =>
             {

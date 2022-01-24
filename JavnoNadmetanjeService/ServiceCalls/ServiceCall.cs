@@ -1,25 +1,14 @@
 ﻿using JavnoNadmetanjeService.Models.Exceptions;
-using JavnoNadmetanjeService.Models.Other;
-using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace JavnoNadmetanjeService.ServiceCalls
 {
-    public class AdresaService : IAdresaService
+    public class ServiceCall<T> : IServiceCall<T>
     {
-        private readonly IConfiguration _configuration;
-
-        public AdresaService(IConfiguration configuration)
+        public async Task<T> SendGetRequestAsync(string url)
         {
-            _configuration = configuration;
-        }
-
-        public async Task<AdresaDto> GetAdresaDto(Guid adresaId)
-        {
-            string url = _configuration["Services:AdresaService"] + adresaId;
             using var httpClient = new HttpClient();
 
             var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -35,7 +24,7 @@ namespace JavnoNadmetanjeService.ServiceCalls
                     return default;
                 }
 
-                return JsonConvert.DeserializeObject<AdresaDto>(content);
+                return JsonConvert.DeserializeObject<T>(content);
             }
 
             throw new ServiceCallException("Desio se problem pri komunikaciji sa drugim mikroservisom");
