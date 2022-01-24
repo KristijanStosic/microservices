@@ -15,12 +15,11 @@ namespace JavnoNadmetanjeService.Models.JavnoNadmetanje
         public int BrojUcesnika { get; set; }
         public int Krug { get; set; }
         public bool Izuzeto { get; set; }
-        public StatusDto Status { get; set; }
-        public TipDto Tip { get; set; }
+        public string Status { get; set; }
+        public string Tip { get; set; }
         public List<EtapaDto> Etape { get; set; }
 
-        public AdresaDto Adresa { get; set; }
-        public KupacDto Kupac { get; set; }
-
+        public string Adresa { get; set; }
+        public string Kupac { get; set; }
     }
 }

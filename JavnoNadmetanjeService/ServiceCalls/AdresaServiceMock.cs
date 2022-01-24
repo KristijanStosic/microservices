@@ -1,11 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using JavnoNadmetanjeService.Models.Other;
 
 namespace JavnoNadmetanjeService.ServiceCalls
 {
     public class AdresaServiceMock : IAdresaService
     {
-        public async Task<AdresaDto> GetAdresaDto(string url)
+        public async Task<AdresaDto> GetAdresaDto(Guid adresaId)
         {
             var adresa = new AdresaDto
             {
