@@ -15,14 +15,14 @@ namespace DocumentService.Data.TipDokumenta
             _db = db;
         }
 
-        public async Task<List<Entities.TipDokumenta>> GetAllTipDokumenta()
+        public Task<List<Entities.TipDokumenta>> GetAllTipDokumenta()
         {
-            return await _db.TipoviDokumenta.ToListAsync();
+            return _db.TipoviDokumenta.ToListAsync();
         }
 
-        public async Task<Entities.TipDokumenta> GetTipDokumentaById(Guid id)
+        public Task<Entities.TipDokumenta> GetTipDokumentaById(Guid id)
         {
-            return await _db.TipoviDokumenta.FirstOrDefaultAsync(tp => tp.Id == id);
+            return _db.TipoviDokumenta.FirstOrDefaultAsync(tp => tp.Id == id);
         }
 
         public void CreateTipDokumenta(Entities.TipDokumenta tipDokumenta)

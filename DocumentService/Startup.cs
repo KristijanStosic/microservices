@@ -1,4 +1,5 @@
 using System;
+using DocumentService.Data.Dokument;
 using DocumentService.Data.TipDokumenta;
 using DocumentService.Data.UnitOfWork;
 using DocumentService.DbContext;
@@ -19,10 +20,11 @@ namespace DocumentService
 
             services.AddScoped<ITipDokumentaRepository, TipDokumentaRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IDokumentRepository, DokumentRepository>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-            services.AddControllers();
+            services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "DocumentService", Version = "v1"});
