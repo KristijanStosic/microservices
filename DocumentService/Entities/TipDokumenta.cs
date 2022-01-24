@@ -7,7 +7,7 @@ namespace DocumentService.Entities
     public class TipDokumenta
     {
         public Guid Id { get; set; } = Guid.NewGuid();
-        
+
         public string NazivTipa { get; set; }
     }
 }

@@ -8,13 +8,13 @@ namespace DocumentService.DbContext
     {
         private readonly IConfiguration _configuration;
 
-        public DbSet<Dokument> Dokumenti { get; set; }
-        public DbSet<TipDokumenta> TipoviDokumenta { get; set; }
-
         public DokumentDbContext(DbContextOptions options, IConfiguration configuration) : base(options)
         {
             _configuration = configuration;
         }
+
+        public DbSet<Dokument> Dokumenti { get; set; }
+        public DbSet<TipDokumenta> TipoviDokumenta { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

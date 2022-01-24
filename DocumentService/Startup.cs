@@ -1,3 +1,6 @@
+using System;
+using DocumentService.Data.TipDokumenta;
+using DocumentService.Data.UnitOfWork;
 using DocumentService.DbContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -21,10 +24,14 @@ namespace DocumentService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DokumentDbContext>();
+
+            services.AddScoped<ITipDokumentaRepository, TipDokumentaRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DocumentService", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {Title = "DocumentService", Version = "v1"});
             });
         }
 
@@ -44,10 +51,7 @@ namespace DocumentService
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }
