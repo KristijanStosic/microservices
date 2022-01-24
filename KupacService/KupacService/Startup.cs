@@ -32,6 +32,8 @@ namespace KupacService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KupacService", Version = "v1" });
             });
+
+            services.AddDbContext<AdresaContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +56,9 @@ namespace KupacService
             {
                 endpoints.MapControllers();
             });
+
+
+
         }
     }
 }
