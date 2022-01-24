@@ -106,6 +106,7 @@ namespace AdresaService.Controllers
             try
             {
                 var oldDrzava = await _drzavaRepository.GetDrzavaById(updateDrzava.DrzavaId);
+
                 if(oldDrzava == null)
                 {
                     return NotFound();
@@ -113,7 +114,7 @@ namespace AdresaService.Controllers
 
                 Drzava drzava = _mapper.Map<Drzava>(updateDrzava);
 
-               _mapper.Map(drzava, oldDrzava);
+                 _mapper.Map(drzava, oldDrzava);
                 await _drzavaRepository.SaveChangesAsync();
 
                 return Ok(_mapper.Map<DrzavaDto>(drzava));

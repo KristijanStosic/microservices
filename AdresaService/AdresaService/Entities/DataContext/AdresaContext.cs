@@ -19,6 +19,7 @@ namespace AdresaService.Entities.DataContext
         }
 
         public DbSet<Drzava> Drzave { get; set; }
+        public DbSet<Adresa> Adrese { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -44,6 +45,27 @@ namespace AdresaService.Entities.DataContext
                    DrzavaId = Guid.Parse("9ce21ce2-7809-4e28-ba74-fd2f1bc6466a"),
                    NazivDrzave = "Bosna i hercegovina"
                });
+            builder.Entity<Adresa>()
+                .HasData(new
+                {
+                    AdresaId = Guid.Parse("1c989ee3-13b2-4d3b-abeb-c4e6343eace7"),
+                    Ulica = "Branka Ilica",
+                    Broj = "1",
+                    Mesto = "Novi Sad",
+                    PostanskiBroj = "21000",
+                    DrzavaId = Guid.Parse("f320743f-6c87-47ca-9f82-50191c1d31ac")
+                });
+            builder.Entity<Adresa>()
+                .HasData(new
+                {
+                    AdresaId = Guid.Parse("37371ef6-4f25-48b3-9bf2-fe72a81f88d2"),
+                    Ulica = "Solunska",
+                    Broj = "23",
+                    Mesto = "Bijeljna",
+                    PostanskiBroj = "76300",
+                    DrzavaId = Guid.Parse("9ce21ce2-7809-4e28-ba74-fd2f1bc6466a")
+                });
+
 
         }
 

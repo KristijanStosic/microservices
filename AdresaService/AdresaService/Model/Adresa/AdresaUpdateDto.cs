@@ -4,21 +4,18 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace AdresaService.Entities
+namespace AdresaService.Model.Adresa
 {
-    public class Adresa
+    public class AdresaUpdateDto
     {
-        [Key]
-        public Guid AdresaId { get; set; } = Guid.NewGuid();
+        [Required]
+        public Guid AdresaId { get; set; }
         public string Ulica { get; set; }
         public string Broj { get; set; }
         public string Mesto { get; set; }
         public string PostanskiBroj { get; set; }
-        
+        [Required]
         public Guid DrzavaId { get; set; }
-        public Drzava Drzava { get; set; }
-
-
-
+     
     }
 }

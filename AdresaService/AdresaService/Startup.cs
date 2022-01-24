@@ -34,6 +34,7 @@ namespace AdresaService
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IDrzavaRepository,DrzavaRepository>();
+            services.AddScoped<IAdresaRepository, AdresaRepository>();
 
             services.AddSwaggerGen(c =>
             {

@@ -9,14 +9,15 @@ using System.Threading.Tasks;
 
 namespace AdresaService.Profiles
 {
-    public class DrzavaProfiles : Profile
+    public class DrzavaProfile : Profile
     {
-        public DrzavaProfiles()
+        public DrzavaProfile()
         {
             CreateMap<Drzava, DrzavaDto>();
             CreateMap<DrzavaDto, Drzava>();
             CreateMap<DrzavaUpdateDto, Drzava>();
             CreateMap<Drzava, Drzava>();
+
         }
     }
 }
