@@ -66,7 +66,7 @@ namespace AdresaService.Controllers
                 await _drzavaRepository.SaveChangesAsync();
         
                 string lokacija = _linkGenerator.GetPathByAction("GetDrzavaById", "Drzava", new { drzavaid = novaDrzava.DrzavaId });
-       
+            
                 return Created(lokacija,_mapper.Map<DrzavaDto>(novaDrzava));
       
 
@@ -91,7 +91,7 @@ namespace AdresaService.Controllers
 
                 await _drzavaRepository.DeleteDrzava(drzavaId);
                 await _drzavaRepository.SaveChangesAsync();
-                return NoContent();
+                return Ok();
             }
             catch (Exception)
             {
