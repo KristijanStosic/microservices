@@ -130,7 +130,12 @@ namespace KupacService.Controllers
         }
 
 
-
+        [HttpOptions]
+        public IActionResult GetPrioritetOptions()
+        {
+            Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
+            return Ok();
+        }
 
 
     }
