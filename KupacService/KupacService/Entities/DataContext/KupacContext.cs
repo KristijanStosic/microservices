@@ -23,6 +23,7 @@ namespace KupacService.Entities.DataContext
         }
 
         public DbSet<Prioritet> Prioriteti { get; set; }
+        public DbSet<KontaktOsoba> KontaktOsobe { get; set; }
 
 
         /// <summary>
@@ -43,6 +44,27 @@ namespace KupacService.Entities.DataContext
                Opis = "Vlasnik zemljišta koje se graniči sazemljištem koje se daje u zakup"
            });
 
+            builder.Entity<KontaktOsoba>()
+                .HasData(new
+                {
+                    KontaktOsobaId = Guid.Parse("244fb7c4-aab8-4ec4-8960-e48e017bad37"),
+                    Ime = "Milan",
+                    Prezime = "Drazic",
+                    Telefon="0693432534",
+                    Funkcija = "Funkcija1"
+
+                });
+
+            builder.Entity<KontaktOsoba>()
+               .HasData(new
+               {
+                   KontaktOsobaId = Guid.Parse("da2197a4-891f-4a40-a1f2-313962701627"),
+                   Ime = "Mark",
+                   Prezime = "Todor",
+                   Telefon = "0693432534",
+                   Funkcija = "Funkcija2"
+
+               });
         }
     }
 }

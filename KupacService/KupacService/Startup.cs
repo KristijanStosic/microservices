@@ -38,6 +38,7 @@ namespace KupacService
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IPrioritetRepository,PrioritetRepository>();
+            services.AddScoped<IKontaktOsobaRepository, KontaktOsobaRepository>();
 
             services.AddSwaggerGen(c =>
             {
