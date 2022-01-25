@@ -83,7 +83,7 @@ namespace KupacService.Controllers
 
                 if(oldPrioritet == null)
                 {
-                    return NoContent();
+                    return NotFound();
                 }
 
                 Prioritet newPrioritet = _mapper.Map<Prioritet>(prioritetUpdate);
@@ -111,7 +111,7 @@ namespace KupacService.Controllers
 
                 if(prioritet == null)
                 {
-                    return NoContent();
+                    return NotFound();
                 }
 
                await _prioritetRepository.DeletePrioritet(prioritetId);
