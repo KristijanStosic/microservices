@@ -1,3 +1,6 @@
+using KupacService.Data;
+using KupacService.Data.Interfaces;
+using KupacService.Entities.DataContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -23,17 +26,25 @@ namespace KupacService
 
         public IConfiguration Configuration { get; }
 
+        
+
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
 
             services.AddControllers();
+
+            
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+            services.AddScoped<IPrioritetRepository,PrioritetRepository>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KupacService", Version = "v1" });
             });
 
-            services.AddDbContext<AdresaContext>();
+            services.AddDbContext<KupacContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -22,6 +22,27 @@ namespace KupacService.Entities.DataContext
            optionsBuilder.UseSqlServer(_configuration.GetConnectionString("KupacDb"));
         }
 
+        public DbSet<Prioritet> Prioriteti { get; set; }
 
+
+        /// <summary>
+        /// Popunjava bazu sa nekim inicijalnim podacima
+        /// </summary>
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            builder.Entity<Prioritet>()
+                .HasData(new
+                {
+                    PrioritetId = Guid.Parse("2578e81b-3f01-479a-b790-f52106f639f7"),
+                    Opis = "Vlasnik sistema za navodnjavanje"
+                });
+            builder.Entity<Prioritet>()
+           .HasData(new
+           {
+               PrioritetId = Guid.Parse("f2b8faa4-732c-4480-8b0a-34d65e483930"),
+               Opis = "Vlasnik zemljišta koje se graniči sazemljištem koje se daje u zakup"
+           });
+
+        }
     }
 }
