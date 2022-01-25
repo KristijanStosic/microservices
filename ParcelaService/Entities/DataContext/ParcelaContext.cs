@@ -28,17 +28,17 @@ namespace ParcelaService.Entities.DataContext
             modelBuilder.Entity<Klasa>()
                 .HasData(new
                 {
-                    ID_Klasa = Guid.Parse("f39c9623-c6b6-48cb-b4dd-0340c7431870"),
+                    KlasaId = Guid.Parse("f39c9623-c6b6-48cb-b4dd-0340c7431870"),
                     KlasaNaziv = "Prva"
                 },
                 new
                 {
-                    ID_Klasa = Guid.Parse("0ec59e12-b271-471f-9a13-5c9c8ed0eda7"),
+                    KlasaId = Guid.Parse("0ec59e12-b271-471f-9a13-5c9c8ed0eda7"),
                     KlasaNaziv = "Druga"
                 },
                 new
                 {
-                    ID_Klasa = Guid.Parse("e496b563-abb9-48a9-8972-800f41a4a3a1"),
+                    KlasaId = Guid.Parse("e496b563-abb9-48a9-8972-800f41a4a3a1"),
                     KlasaNaziv = "Treca"
                 }
                 );

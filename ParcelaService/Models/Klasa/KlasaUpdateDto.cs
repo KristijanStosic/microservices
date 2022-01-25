@@ -4,14 +4,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ParcelaService.Entities
+namespace ParcelaService.Models.Klasa
 {
-    public class Klasa
+    public class KlasaUpdateDto
     {
-        [Key]
-        public Guid KlasaId { get; set; } = Guid.NewGuid();
+        public Guid KlasaId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Obavezno je uneti naziv klase!")]
         public string KlasaNaziv { get; set; }
     }
 }
