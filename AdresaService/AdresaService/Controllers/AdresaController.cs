@@ -56,12 +56,12 @@ namespace AdresaService.Controllers
         {
             try
             {
-                Adresa novaAdresa = await _adresaRepository.CreateAdresa(_mapper.Map<Adresa>(adresa));
+                Adresa newAdresa = await _adresaRepository.CreateAdresa(_mapper.Map<Adresa>(adresa));
                 await _adresaRepository.SaveChangesAsync();
 
-                string lokacija = _linkGenerator.GetPathByAction("GetAdresaById", "Adresa", new { adresaId = novaAdresa.AdresaId });
+                string lokacija = _linkGenerator.GetPathByAction("GetAdresaById", "Adresa", new { adresaId = newAdresa.AdresaId });
 
-                return Created(lokacija, _mapper.Map<AdresaConformationDto>(novaAdresa));
+                return Created(lokacija, _mapper.Map<AdresaConformationDto>(newAdresa));
             }
             catch (Exception)
             {
@@ -119,7 +119,7 @@ namespace AdresaService.Controllers
 
 
         [HttpOptions]
-        public IActionResult GetExamRegistrationOptions()
+        public IActionResult GetAdresaOptions()
         {
             Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
             return Ok();
