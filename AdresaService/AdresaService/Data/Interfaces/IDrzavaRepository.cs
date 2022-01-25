@@ -9,10 +9,9 @@ namespace AdresaService.Data.Interfaces
     public interface IDrzavaRepository
     {
 
-        Task<List<Drzava>> GetAllDrzava();
+        Task<List<Drzava>> GetAllDrzava(string nazivDrzave = null);
         Task<Drzava> GetDrzavaById(Guid drzavaId);
         Task<Drzava> CreateDrzava(Drzava drzava);
-        Task<Drzava> GetDrzavaByName(string nazivDrzave);
         Task DeleteDrzava(Guid drzavaId);
         Task SaveChangesAsync();
     }

@@ -36,21 +36,15 @@ namespace AdresaService.Data
             
         }
 
-        public async Task<List<Drzava>> GetAllDrzava()
+        public async Task<List<Drzava>> GetAllDrzava(string nazivDrzave = null)
         {
-            return await _context.Drzave.ToListAsync<Drzava>();
+            return await _context.Drzave.Where(d => (nazivDrzave == null || d.NazivDrzave == nazivDrzave)).ToListAsync<Drzava>();
         }
 
         public async Task<Drzava> GetDrzavaById(Guid drzavaId)
         {
             return await _context.Drzave.FirstOrDefaultAsync<Drzava>(d => d.DrzavaId == drzavaId);
         }
-
-        public async Task<Drzava> GetDrzavaByName(string nazivDrzave)
-        {
-            return await _context.Drzave.FirstOrDefaultAsync<Drzava>(d => d.NazivDrzave == nazivDrzave);
-        }
-
         public async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();

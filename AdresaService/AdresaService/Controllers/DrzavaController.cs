@@ -29,9 +29,9 @@ namespace AdresaService.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<DrzavaDto>>> GetAllDrzava()
+        public async Task<ActionResult<List<DrzavaDto>>> GetAllDrzava(string nazivDrzave)
         {
-            var drzave = await _drzavaRepository.GetAllDrzava();
+            var drzave = await _drzavaRepository.GetAllDrzava(nazivDrzave);
 
             if (drzave == null || drzave.Count == 0)
             {
@@ -62,12 +62,12 @@ namespace AdresaService.Controllers
             {
                 //add test to see if country already exist
 
-                var novaDrzava = await _drzavaRepository.CreateDrzava(_mapper.Map<Drzava>(drzava));
+                var newDrzava = await _drzavaRepository.CreateDrzava(_mapper.Map<Drzava>(drzava));
                 await _drzavaRepository.SaveChangesAsync();
         
-                string lokacija = _linkGenerator.GetPathByAction("GetDrzavaById", "Drzava", new { drzavaid = novaDrzava.DrzavaId });
+                string lokacija = _linkGenerator.GetPathByAction("GetDrzavaById", "Drzava", new { drzavaid = newDrzava.DrzavaId });
             
-                return Created(lokacija,_mapper.Map<DrzavaDto>(novaDrzava));
+                return Created(lokacija,_mapper.Map<DrzavaDto>(newDrzava));
       
 
             }
@@ -128,7 +128,7 @@ namespace AdresaService.Controllers
 
 
         [HttpOptions]
-        public IActionResult GetExamRegistrationOptions()
+        public IActionResult GetDrzavaOptions()
         {
             Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
             return Ok();
