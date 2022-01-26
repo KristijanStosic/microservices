@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using ZalbaService.Entities;
+using ZalbaService.Models.Services;
 using ZalbaService.Models.StatusZalbe;
 
 namespace ZalbaService.Models.Zalba
@@ -22,8 +23,10 @@ namespace ZalbaService.Models.Zalba
 
         public string BrojResenja { get; set; }
 
-        public StatusZalbeDto StatusZalbe { get; set; }
-        public TipZalbeDto TipZalbe { get; set; }
-        public RadnjaZaZalbuDto RadnjaZaZalbu { get; set; }
+        public string StatusZalbe { get; set; }
+        public string TipZalbe { get; set; }
+        public string RadnjaZaZalbu { get; set; }
+
+        public string Kupac { get; set; }
     }
 }

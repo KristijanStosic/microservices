@@ -25,9 +25,14 @@ namespace ZalbaService.Models.Zalba
         [Required(ErrorMessage = "Broj resenja je obavezno polje.")]
         public string BrojResenja { get; set; }
 
+        [Required(ErrorMessage = "StatusZalbeId je obavezno polje.")]
         public Guid StatusZalbeId { get; set; }
+        [Required(ErrorMessage = "TipZalbeId je obavezno polje.")]
         public Guid TipZalbeId { get; set; }
+        [Required(ErrorMessage = "RadnjaZaZalbuId je obavezno polje.")]
         public Guid RadnjaZaZalbuId { get; set; }
+
+        public Guid? KupacId { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

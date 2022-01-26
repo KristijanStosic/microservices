@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ZalbaService.Entities.DataContext;
 
 namespace ZalbaService.Migrations
 {
     [DbContext(typeof(ZalbaContext))]
-    partial class ZalbaContextModelSnapshot : ModelSnapshot
+    [Migration("20220126223956_ZalbaDorada2")]
+    partial class ZalbaDorada2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -177,11 +179,11 @@ namespace ZalbaService.Migrations
                     b.HasData(
                         new
                         {
-                            ZalbaId = new Guid("1048330a-bf7b-4744-8ae0-ebb2e95a0d79"),
+                            ZalbaId = new Guid("0c9dac96-99b4-4c2e-b5bf-8f7a4f895a99"),
                             BrojNadmetanja = "100-NN",
                             BrojResenja = "X9NN41HH",
-                            DatumPodnosenja = new DateTime(2022, 1, 26, 23, 43, 24, 111, DateTimeKind.Local).AddTicks(5677),
-                            DatumResenja = new DateTime(2022, 3, 17, 23, 43, 24, 114, DateTimeKind.Local).AddTicks(2858),
+                            DatumPodnosenja = new DateTime(2022, 1, 26, 23, 39, 55, 736, DateTimeKind.Local).AddTicks(7346),
+                            DatumResenja = new DateTime(2022, 3, 17, 23, 39, 55, 739, DateTimeKind.Local).AddTicks(941),
                             Obrazlozenje = "Nema dovoljno licitanata da se odrzi javno nadmetanje",
                             RadnjaZaZalbuId = new Guid("009aa493-7786-4aad-9d1a-0f90d57ebbb4"),
                             RazlogZalbe = "Nedovoljno licitanata",
@@ -190,11 +192,11 @@ namespace ZalbaService.Migrations
                         },
                         new
                         {
-                            ZalbaId = new Guid("768d040f-13e3-4da8-b4be-7a03213a4fb0"),
+                            ZalbaId = new Guid("b989728c-c026-4801-bf75-5a0855a4ebbe"),
                             BrojNadmetanja = "200-OO",
                             BrojResenja = "IIKK-55",
-                            DatumPodnosenja = new DateTime(2022, 1, 26, 23, 43, 24, 114, DateTimeKind.Local).AddTicks(5119),
-                            DatumResenja = new DateTime(2022, 3, 17, 23, 43, 24, 114, DateTimeKind.Local).AddTicks(5134),
+                            DatumPodnosenja = new DateTime(2022, 1, 26, 23, 39, 55, 739, DateTimeKind.Local).AddTicks(2814),
+                            DatumResenja = new DateTime(2022, 3, 17, 23, 39, 55, 739, DateTimeKind.Local).AddTicks(2828),
                             Obrazlozenje = "Dokumentacija nije potpuna kako bi se odrzalo javno nadmetanje",
                             RadnjaZaZalbuId = new Guid("009aa493-7786-4aad-9d1a-0f90d57ebbb4"),
                             RazlogZalbe = "Nepotpuna dokumentacija",
@@ -203,11 +205,11 @@ namespace ZalbaService.Migrations
                         },
                         new
                         {
-                            ZalbaId = new Guid("57d86d26-3113-4188-881f-af86fe58015d"),
+                            ZalbaId = new Guid("ae4f5b3a-efb2-491e-8bb0-22b74ebf4c14"),
                             BrojNadmetanja = "999-AA",
                             BrojResenja = "QWOP44-MM",
-                            DatumPodnosenja = new DateTime(2022, 1, 26, 23, 43, 24, 114, DateTimeKind.Local).AddTicks(5154),
-                            DatumResenja = new DateTime(2022, 3, 17, 23, 43, 24, 114, DateTimeKind.Local).AddTicks(5158),
+                            DatumPodnosenja = new DateTime(2022, 1, 26, 23, 39, 55, 739, DateTimeKind.Local).AddTicks(2848),
+                            DatumResenja = new DateTime(2022, 3, 17, 23, 39, 55, 739, DateTimeKind.Local).AddTicks(2851),
                             Obrazlozenje = "Nema dovoljno novcanih sredstava za javno nadmetanje",
                             RadnjaZaZalbuId = new Guid("4ccb6d66-18b2-4791-8afe-b628a4f7c0af"),
                             RazlogZalbe = "Nedovoljno uplacenih novcanih sredstava",

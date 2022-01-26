@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,9 @@ using System.Threading.Tasks;
 using ZalbaService.Data.Interfaces;
 using ZalbaService.Entities;
 using ZalbaService.Entities.Confirmations;
+using ZalbaService.Models.Services;
 using ZalbaService.Models.Zalba;
+using ZalbaService.ServicesCalls;
 
 namespace ZalbaService.Controllers
 {
@@ -21,12 +24,16 @@ namespace ZalbaService.Controllers
         private readonly IZalbaRepository _zalbaRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
-
-        public ZalbaController(IZalbaRepository zalbaRepository, LinkGenerator linkGenerator, IMapper mapper)
+        private readonly IConfiguration _configuration;
+        private readonly IServiceCall<KupacDto> _kupacService;
+        
+        public ZalbaController(IZalbaRepository zalbaRepository, LinkGenerator linkGenerator, IMapper mapper, IServiceCall<KupacDto> kupacService, IConfiguration configuration)
         {
             _zalbaRepository = zalbaRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
+            _kupacService = kupacService;
+            _configuration = configuration; 
         }
 
         [HttpGet]
@@ -40,7 +47,19 @@ namespace ZalbaService.Controllers
                 return NoContent();
             }
 
-            return Ok(_mapper.Map<IEnumerable<ZalbaDto>>(zalbe));
+            var zalbeDto = new List<ZalbaDto>();
+            string url = _configuration["Services:KupacService"];
+            foreach (var zalba in zalbe)
+            {
+                var zalbaDto = _mapper.Map<ZalbaDto>(zalba);
+                if (zalba.KupacId is not null)
+                {
+                    var kupacDto = _kupacService.SendGetRequestAsync(url + zalba.KupacId).Result;
+                    zalbaDto.Kupac = kupacDto.Kupac + ", " + kupacDto.Email + ", " + kupacDto.BrojRacuna + ", " + kupacDto.BrojTelefona1;
+                }
+                zalbeDto.Add(zalbaDto);
+            }
+            return Ok(zalbeDto);
         }
 
         [HttpGet("{zalbaId}")]
@@ -53,7 +72,16 @@ namespace ZalbaService.Controllers
                 return NoContent();
             }
 
-            return Ok(_mapper.Map<ZalbaDto>(zalba));
+            string url = _configuration["Services:KupacService"];
+
+            var zalbaDto = _mapper.Map<ZalbaDto>(zalba);
+            if(zalba.KupacId is not null)
+            {
+                var kupacDto = _kupacService.SendGetRequestAsync(url + zalba.KupacId).Result;
+                zalbaDto.Kupac = kupacDto.Kupac + ", " + kupacDto.Email + ", " + kupacDto.BrojRacuna + ", " + kupacDto.BrojTelefona1;
+            }
+
+            return Ok(zalbaDto);
         }
 
         [HttpPost]

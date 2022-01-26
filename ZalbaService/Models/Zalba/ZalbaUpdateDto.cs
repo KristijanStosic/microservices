@@ -8,7 +8,6 @@ namespace ZalbaService.Models.Zalba
 {
     public class ZalbaUpdateDto : IValidatableObject
     {
-        [Required(ErrorMessage = "Datum podnosenja je obavezno polje.")]
         public DateTime DatumPodnosenja { get; set; }
 
         [Required(ErrorMessage = "Datum resenja je obavezno polje.")]
@@ -22,9 +21,17 @@ namespace ZalbaService.Models.Zalba
 
         public string BrojResenja { get; set; }
 
+        [Required(ErrorMessage = "StatusZalbeId je obavezno polje.")]
         public Guid StatusZalbeId { get; set; }
+
+        [Required(ErrorMessage = "TipZalbeId je obavezno polje.")]
         public Guid TipZalbeId { get; set; }
+
+        [Required(ErrorMessage = "RadnjaZaZalbuId je obavezno polje.")]
         public Guid RadnjaZaZalbuId { get; set; }
+
+        // doraditi za mikroservise
+        public Guid? KupacId { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

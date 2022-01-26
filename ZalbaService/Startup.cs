@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,6 +17,9 @@ using System.Threading.Tasks;
 using ZalbaService.Data;
 using ZalbaService.Data.Interfaces;
 using ZalbaService.Entities.DataContext;
+using ZalbaService.Models.Services;
+using ZalbaService.Models.Zalba;
+using ZalbaService.ServicesCalls;
 
 namespace ZalbaService
 {
@@ -40,6 +45,10 @@ namespace ZalbaService
             services.AddScoped<ITipZalbeRepository, TipZalbeRepository>();
             services.AddScoped<IRadnjaZaZalbuRepository, RadnjaZaZalbuRepository>();
             services.AddScoped<IZalbaRepository, ZalbaRepository>();
+
+
+            services.AddScoped<IServiceCall<KupacDto>, ServiceCallKupacMock<KupacDto>>();
+            //services.AddScoped<IServiceCall<KupacDto>, ServiceCall<KupacDto>>();
 
             services.AddSwaggerGen(c =>
             {

@@ -35,5 +35,7 @@ namespace ZalbaService.Entities
         public TipZalbe TipZalbe { get; set; }
         public Guid RadnjaZaZalbuId { get; set; }
         public RadnjaZaZalbu RadnjaZaZalbu { get; set; }
+
+        public Guid? KupacId { get; set; }
     }
 }
