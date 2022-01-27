@@ -1,0 +1,752 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>OvlascenoLiceService</name>
+    </assembly>
+    <members>
+        <member name="T:OvlascenoLiceService.Controllers.BrojTableController">
+            <summary>
+            Kontroler za broj table
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Controllers.OvlascenoLiceController">
+            <summary>
+            Kontroler za ovlasceno lice
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.#ctor(OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper)">
+            <summary>
+            Konstruktor kontrolera ovlascenog lica - DI
+            </summary>
+            <param name="ovlascenoLiceRepository">Repo ovlasceno lice</param>
+            <param name="linkGenerator">Link generator za create zahtev</param>
+            <param name="mapper">AutoMapper</param>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.GetAllOvlascenoLice">
+            <summary>
+            Vraca sva ovlascena lica
+            </summary>
+            <returns>Lista ovlascenih lica</returns>
+            <response code="200">Vraća listu ovlascenih lica</response>
+            <response code="404">Nije pronadjeno ni jedno ovlasceno lice</response>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.GetOvlascenoLice(System.Guid)">
+            <summary>
+            Vraca jedno ovlasceno lice na osnovu ID-a
+            </summary>
+            <param name="ovlascenoLiceId">ID ovlascenog lica</param>
+            <returns>Ovlasceno lice</returns>
+            <response code="200">Vraća trazeno ovlasceno lice</response>
+            <response code="404">Nije pronadjeno ovlasceno lice za uneti ID</response>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.GetAllOvlascenoLiceByImePrezime(System.String,System.String)">
+            <summary>
+            Vraca sva ovlascena lica za zadate kriterijume
+            </summary>
+            <returns>Lista ovlascenih lica</returns>
+            <response code="200">Vraća listu ovlascenih lica</response>
+            <response code="404">Nije pronadjeno ni jedno ovlasceno lice</response>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.CreateOvlascenoLice(OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto)">
+             <summary>
+             Kreira novo ovlasceno lice
+             </summary>
+             <param name="ovlascenoLice">Model ovlasceno lice</param>
+             <remarks>
+             Primer zahteva za kreiranje novog ovlascenog lica \
+             POST /api/ovlascenoLice \
+             {     \
+                 "Ime": "Milan", \
+                 "Prezime": "Milanovic", \
+                 "JMBG": "1008987800025", \
+                 "AdresaId": "1c989ee3-13b2-4d3b-abeb-c4e6343eace7" \
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju ovlascenog lica</returns>
+             <response code="200">Vraca kreirano ovlasceno lice</response>
+             <response code="500">Desila se greska prilikom unosa novog ovlascenog lica</response>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.UpdateOvlascenoLice(OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto)">
+            <summary>
+            Izmena ovlascenog lica
+            </summary>
+            <param name="ovlascenoLice">Model ovlascenog lica</param>
+            <returns>Potvrda o izmeni ovlascenog lica</returns>
+            <response code="200">Izmenjeno ovlasceno lice</response>
+            <response code="404">Nije pronadjeno ovlasceno lice za uneti ID</response>
+            <response code="500">Serverska greska tokom izmene ovlascenog lica</response>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.DeleteOvlascenoLice(System.Guid)">
+            <summary>
+            Brisanje ovlascenog lica na osnovu ID-a
+            </summary>
+            <param name="ovlascenoLiceId">ID ovlascenog lica</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Ovlasceno lice je uspesno obrisano</response>
+            <response code="404">Nije pronadjeno ovlasceno lice za uneti ID</response>
+            <response code="500">Serverska greska tokom brisanja ovlascenog lica</response>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.GetOvlascenoLiceOptions">
+            <summary>
+            Vraća opcije za rad sa ovlascenim licima
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.Data.BrojTableRepository">
+            <summary>
+            Repozitorijum za broj table
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.BrojTableRepository.#ctor(OvlascenoLiceService.Entities.DataContext.OvlascenoLiceContext,AutoMapper.IMapper)">
+            <summary>
+            Konstruktor repoa broj table
+            </summary>
+            <param name="context">Db context</param>
+            <param name="mapper">AutoMapper</param>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.BrojTableRepository.GetAllBrojTable">
+            <summary>
+            Dobijanje podataka o svim brojevima table
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.BrojTableRepository.GetBrojTableById(System.Guid)">
+            <summary>
+            Dobijanje broja table po id-u
+            </summary>
+            <param name="brojTableId">Id broja table</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.BrojTableRepository.GetBrojTableByOznakaTable(System.String)">
+            <summary>
+            Dobijanje brojeva table po obelezju oznaka table
+            </summary>
+            <param name="oznakaTable">Oznaka table</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.BrojTableRepository.CreateBrojTable(OvlascenoLiceService.Entities.BrojTable)">
+            <summary>
+            Kreiranje broja table
+            </summary>
+            <param name="brojTable">Objekat broj table</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.BrojTableRepository.DeleteBrojTable(System.Guid)">
+            <summary>
+            Brisanje broja table
+            </summary>
+            <param name="brojTableId">Id broja table</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.BrojTableRepository.SaveChangesAsync">
+            <summary>
+            Cuvanje izmena u bazi podataka
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.Data.Interfaces.IBrojTableRepository">
+            <summary>
+            Interfejs za kreiranje repo-a za broj table
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IBrojTableRepository.GetAllBrojTable">
+            <summary>
+            Dobijanje podataka o svim brojevima table
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IBrojTableRepository.GetBrojTableById(System.Guid)">
+            <summary>
+            Dobijanje broja table po id-u
+            </summary>
+            <param name="brojTableId">Id broja table</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IBrojTableRepository.GetBrojTableByOznakaTable(System.String)">
+            <summary>
+            Dobijanje brojeva table po obelezju oznaka table
+            </summary>
+            <param name="oznakaTable">Oznaka table</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IBrojTableRepository.CreateBrojTable(OvlascenoLiceService.Entities.BrojTable)">
+            <summary>
+            Kreiranje broja table
+            </summary>
+            <param name="brojTable">Objekat broj table</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IBrojTableRepository.DeleteBrojTable(System.Guid)">
+            <summary>
+            Brisanje broja table
+            </summary>
+            <param name="brojTableId">Id broja table</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IBrojTableRepository.SaveChangesAsync">
+            <summary>
+            Cuvanje izmena u bazi podataka
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository">
+            <summary>
+            Interfejs za kreiranje repo-a za ovlasceno lice
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository.GetAllOvlascenoLice">
+            <summary>
+            Dobijanje podataka o svim ovlascenim licima
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository.GetOvlascenoLiceById(System.Guid)">
+            <summary>
+            Dobijanje ovlascenog lica po id-u
+            </summary>
+            <param name="ovlascenoLiceId">Id ovlascenog lica</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository.GetOvlascenaLicaByImePrezime(System.String,System.String)">
+            <summary>
+            Dobijanje ovlascenih lica po imenu ili prezimenu
+            </summary>
+            <param name="ime">Ime ovlascenog lica</param>
+            <param name="prezime">Prezime ovlascenog lica</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository.CreateOvlascenoLice(OvlascenoLiceService.Entities.OvlascenoLice)">
+            <summary>
+            Kreiranje ovlascenog lica
+            </summary>
+            <param name="ovlascenoLice">Objekat ovlasceno lice</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository.DeleteOvlascenoLice(System.Guid)">
+            <summary>
+            Brisanje ovlascenog lica
+            </summary>
+            <param name="ovlascenoLiceId">Id ovlascenog lica</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository.SaveChangesAsync">
+            <summary>
+            Cuvanje izmena u bazi podataka
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.Data.OvlascenoLiceRepository">
+            <summary>
+            Repozitorijum za ovlasceno lice
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.OvlascenoLiceRepository.#ctor(OvlascenoLiceService.Entities.DataContext.OvlascenoLiceContext,AutoMapper.IMapper)">
+            <summary>
+            Konstruktor repoa ovlasceno lice
+            </summary>
+            <param name="context">Db context</param>
+            <param name="mapper">AutoMapper</param>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.OvlascenoLiceRepository.GetAllOvlascenoLice">
+            <summary>
+            Dobijanje podataka o svim ovlascenim licima
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.OvlascenoLiceRepository.GetOvlascenoLiceById(System.Guid)">
+            <summary>
+            Dobijanje ovlascenog lica po id-u
+            </summary>
+            <param name="ovlascenoLiceId">Id ovlascenog lica</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.OvlascenoLiceRepository.GetOvlascenaLicaByImePrezime(System.String,System.String)">
+            <summary>
+            Dobijanje ovlascenih lica po imenu ili prezimenu
+            </summary>
+            <param name="ime">Ime ovlascenog lica</param>
+            <param name="prezime">Prezime ovlascenog lica</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.OvlascenoLiceRepository.CreateOvlascenoLice(OvlascenoLiceService.Entities.OvlascenoLice)">
+            <summary>
+            Kreiranje ovlascenog lica
+            </summary>
+            <param name="ovlascenoLice">Objekat ovlasceno lice</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.OvlascenoLiceRepository.DeleteOvlascenoLice(System.Guid)">
+            <summary>
+            Brisanje ovlascenog lica
+            </summary>
+            <param name="ovlascenoLiceId">Id ovlascenog lica</param>
+            <returns></returns>
+        </member>
+        <member name="M:OvlascenoLiceService.Data.OvlascenoLiceRepository.SaveChangesAsync">
+            <summary>
+            Cuvanje izmena u bazi podataka
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.Entities.BrojTable">
+            <summary>
+            Predstavlja broj table 
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.BrojTable.BrojTableId">
+            <summary>
+            ID broja table
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.BrojTable.RbTable">
+            <summary>
+            Redni broj table
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.BrojTable.OznakaTable">
+            <summary>
+            Oznaka table
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.BrojTable.OvlascenoLiceId">
+            <summary>
+            Id ovlascenog lica - strani kljuc
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.BrojTable.OvlascenoLice">
+            <summary>
+            Objekat Ovlasceno lice
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Entities.Confirmations.BrojTableConfirmation">
+            <summary>
+            Predstavlja potvrdu kreiranja broja table 
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.Confirmations.BrojTableConfirmation.BrojTableId">
+            <summary>
+            ID broja table
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.Confirmations.BrojTableConfirmation.RbTable">
+            <summary>
+            Redni broj table
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Entities.Confirmations.OvlascenoLiceConfirmation">
+            <summary>
+            Predstavlja potvrdu kreiranja ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.Confirmations.OvlascenoLiceConfirmation.OvlascenoLiceId">
+            <summary>
+            ID ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.Confirmations.OvlascenoLiceConfirmation.Ime">
+            <summary>
+            Ime ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.Confirmations.OvlascenoLiceConfirmation.Prezime">
+            <summary>
+            Prezime ovlascenog lica
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Entities.DataContext.OvlascenoLiceContext">
+            <summary>
+            Ovlasceno lice DB Context
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Entities.DataContext.OvlascenoLiceContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Ovlasceno Lice Context konstruktor
+            </summary>
+            <param name="options"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.DataContext.OvlascenoLiceContext.OvlascenoLice">
+            <summary>
+            DBSet za ovlasceno lice
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.DataContext.OvlascenoLiceContext.BrojTable">
+            <summary>
+            DBSet za broj table
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Entities.DataContext.OvlascenoLiceContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
+            <summary>
+            Metoda u kojoj se definise konekcioni string za bazu
+            </summary>
+            <param name="optionsBuilder"></param>
+        </member>
+        <member name="M:OvlascenoLiceService.Entities.DataContext.OvlascenoLiceContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Popunjavamo bazu inicijalnim podacima
+            </summary>
+            <param name="builder"></param>
+        </member>
+        <member name="T:OvlascenoLiceService.Entities.OvlascenoLice">
+            <summary>
+            Predstavlja ovlasceno lice
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.OvlascenoLice.OvlascenoLiceId">
+            <summary>
+            ID ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.OvlascenoLice.Ime">
+            <summary>
+            Ime ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.OvlascenoLice.Prezime">
+            <summary>
+            Prezime ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.OvlascenoLice.JMBG">
+            <summary>
+            JMBG ovlascenog lica - 13 brojeva
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.OvlascenoLice.BrojPasosa">
+            <summary>
+            Broj pasosa ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.OvlascenoLice.BrojeviTabli">
+            <summary>
+            Lista brojeva tabli
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.OvlascenoLice.AdresaId">
+            <summary>
+            Id adrese - veza sa mikroservisom Adresa - adresa se ne unosi za strance
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Entities.OvlascenoLice.DrzavaId">
+            <summary>
+            Id drzave - veza sa mikroservisom Adresa - drzava se unosi za strance
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Models.BrojTable.BrojTableConfirmationDto">
+            <summary>
+            Confirmation Dto za broj table
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableConfirmationDto.RbTable">
+            <summary>
+            Redni broj table
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Models.BrojTable.BrojTableCreationDto">
+            <summary>
+            Creation Dto za broj table
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableCreationDto.OznakaTable">
+            <summary>
+            Oznaka table
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableCreationDto.OvlascenoLiceId">
+            <summary>
+            Id ovlascenog lica - strani kljuc
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Models.BrojTable.BrojTableDto">
+            <summary>
+            Dto za broj table
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableDto.RbTable">
+            <summary>
+            Redni broj table
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableDto.OznakaTable">
+            <summary>
+            Oznaka table
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Models.BrojTable.BrojTableUpdateDto">
+            <summary>
+            Update Dto za broj table
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableUpdateDto.BrojTableId">
+            <summary>
+            ID broja table
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableUpdateDto.OznakaTable">
+            <summary>
+            Oznaka table
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableUpdateDto.OvlascenoLiceId">
+            <summary>
+            Id ovlascenog lica - strani kljuc
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Models.OtherServices.AdresaDto">
+            <summary>
+            Dto Adresa - Entitet iz drugog agregata
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OtherServices.AdresaDto.Ulica">
+            <summary>
+            Naziv ulice
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OtherServices.AdresaDto.Broj">
+            <summary>
+            Kucni broj
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OtherServices.AdresaDto.Mesto">
+            <summary>
+            Mesto stanovanja ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OtherServices.AdresaDto.PostanskiBroj">
+            <summary>
+            Postanski broj mesta
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OtherServices.AdresaDto.Drzava">
+            <summary>
+            Naziv Drzave adrese
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Models.OtherServices.DrzavaDto">
+            <summary>
+            Dto Drzava - Entitet iz drugog agregata
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OtherServices.DrzavaDto.NazivDrzave">
+            <summary>
+            Naziv Drzave
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceConfirmationDto">
+            <summary>
+            Confirmation Dto za ovlasceno lice
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceConfirmationDto.Ime">
+            <summary>
+            Ime ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceConfirmationDto.Prezime">
+            <summary>
+            Prezime ovlascenog lica
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto">
+            <summary>
+            Creation Dto za ovlasceno lice
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.Ime">
+            <summary>
+            Ime ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.Prezime">
+            <summary>
+            Prezime ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.JMBG">
+            <summary>
+            JMBG ovlascenog lica - 13 brojeva
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.BrojPasosa">
+            <summary>
+            Broj pasosa ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.AdresaId">
+            <summary>
+            Id adrese - veza sa mikroservisom Adresa - adresa se ne unosi za strance
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.DrzavaId">
+            <summary>
+            Id drzave - veza sa mikroservisom Adresa - drzava se unosi za strance
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Validacija unetih vrednosti za kreiranje ovlascenog lica
+            </summary>
+            <param name="validationContext"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto">
+            <summary>
+            Dto za ovlasceno lice
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto.OvlascenoLice">
+            <summary>
+            Ime i prezime ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto.BrojDokumenta">
+            <summary>
+            Licni dokument ovlascenog lica - jmbg za drzavljane Srbije, ili broj pasosa za strance
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto.Stanovanje">
+            <summary>
+            Podaci o stanovanju - adresa za drzavljane Srbije, ili samo drzava za strance
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto.BrojeviTabli">
+            <summary>
+            Lista brojeva tabli
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto">
+            <summary>
+            Update dto za ovlasceno lice
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.OvlascenoLiceId">
+            <summary>
+            ID ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.Ime">
+            <summary>
+            Ime ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.Prezime">
+            <summary>
+            Prezime ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.JMBG">
+            <summary>
+            JMBG ovlascenog lica - 13 brojeva
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.BrojPasosa">
+            <summary>
+            Broj pasosa ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.AdresaId">
+            <summary>
+            Id adrese - veza sa mikroservisom Adresa - adresa se ne unosi za strance
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.DrzavaId">
+            <summary>
+            Id drzave - veza sa mikroservisom Adresa - drzava se unosi za strance
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Validacija unetih vrednosti za kreiranje ovlascenog lica
+            </summary>
+            <param name="validationContext"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.Profiles.BrojTableConfirmationProfile">
+            <summary>
+            Maper za klasu potvrde kreiranja broja table
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Profiles.BrojTableConfirmationProfile.#ctor">
+            <summary>
+            Konstruktor za mapiranje potvrde kreiranja broja table
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Profiles.BrojTableProfile">
+            <summary>
+            Maper za klasu broj table
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Profiles.BrojTableProfile.#ctor">
+            <summary>
+            Konstruktor za mapiranje broja table
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Profiles.OvlascenoLiceConfirmationProfile">
+            <summary>
+            Maper za klasu potvrde kreiranja ovlascenog lica
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Profiles.OvlascenoLiceConfirmationProfile.#ctor">
+            <summary>
+            Konstruktor za mapiranje potvrde ovlascenog lica
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Profiles.OvlascenoLiceProfile">
+            <summary>
+            Maper za klasu ovlasceno lice
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Profiles.OvlascenoLiceProfile.#ctor">
+            <summary>
+            Konstruktor za mapiranje ovlascenog lica
+            </summary>
+        </member>
+        <member name="T:OvlascenoLiceService.Program">
+            <summary>
+            Program class
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Program.Main(System.String[])">
+            <summary>
+            Main method
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:OvlascenoLiceService.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            CreateHostBuilder method
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.Startup">
+            <summary>
+            Startup class
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Startup klasa konstruktor
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:OvlascenoLiceService.Startup.Configuration">
+            <summary>
+            IConfiguration property
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:OvlascenoLiceService.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>
