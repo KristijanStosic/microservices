@@ -9,6 +9,82 @@
             Kontroler za broj table
             </summary>
         </member>
+        <member name="M:OvlascenoLiceService.Controllers.BrojTableController.#ctor(OvlascenoLiceService.Data.Interfaces.IBrojTableRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper)">
+            <summary>
+            Konstruktor kontrolera broj table - DI
+            </summary>
+            <param name="brojTableRepository">Repo broj table</param>
+            <param name="linkGenerator">Link generator za create zahtev</param>
+            <param name="mapper">AutoMapper</param>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.BrojTableController.GetAllBrojTable">
+            <summary>
+            Vraća sve brojeve tabli
+            </summary>
+            <returns>Lista brojeva tabli</returns>
+            <response code="200">Vraća listu brojeva tabli</response>
+            <response code="404">Nije pronađen ni jedan broj table</response>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.BrojTableController.GetBrojTable(System.Guid)">
+            <summary>
+            Vraća jedan broj table na osnovu ID-a
+            </summary>
+            <param name="brojTableId">ID broja table</param>
+            <returns>Broj table</returns>
+            <response code="200">Vraća tražen broj table</response>
+            <response code="404">Nije pronađen broj table za uneti ID</response>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.BrojTableController.GetAllBrojTableByBrojTable(System.String)">
+            <summary>
+            Vraća sve brojeve table za unetu oznaku table
+            </summary>
+            <returns>Lista brojeva tabli</returns>
+            <response code="200">Vraća listu brojeva tabli</response>
+            <response code="404">Nije pronađen ni jedan broj table</response>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.BrojTableController.CreateBrojTable(OvlascenoLiceService.Models.BrojTable.BrojTableCreationDto)">
+             <summary>
+             Kreira novi broj table
+             </summary>
+             <param name="brojTable">Model broj table</param>
+             <remarks>
+             Primer zahteva za kreiranje novog broja table \
+             POST /api/brojTable \
+             {   
+                 "OznakaTable": "OT23", \
+                 "OvlascenoLiceId": "5E1BFFFC-1AEE-4662-BC04-341C35B9EBDC" \
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju broja table</returns>
+             <response code="200">Vraća kreiran broj table</response>
+             <response code="500">Desila se greška prilikom unosa novog broja table</response>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.BrojTableController.UpdateBrojTable(OvlascenoLiceService.Models.BrojTable.BrojTableUpdateDto)">
+            <summary>
+            Izmena broja table
+            </summary>
+            <param name="brojTable">Model broj table</param>
+            <returns>Potvrda o izmeni broja table</returns>
+            <response code="200">Izmenjen broj table</response>
+            <response code="404">Nije pronađen broj table za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene broja table</response>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.BrojTableController.DeleteBrojTable(System.Guid)">
+            <summary>
+            Brisanje broja table na osnovu ID-a
+            </summary>
+            <param name="brojTableId">ID broja table</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Broj table je uspešno obrisan</response>
+            <response code="404">Nije pronađen broj table za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja broja table</response>
+        </member>
+        <member name="M:OvlascenoLiceService.Controllers.BrojTableController.GetBrojTableOptions">
+            <summary>
+            Vraća opcije za rad sa brojevima tabli
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:OvlascenoLiceService.Controllers.OvlascenoLiceController">
             <summary>
             Kontroler za ovlašćeno lice
@@ -328,9 +404,9 @@
             ID broja table
             </summary>
         </member>
-        <member name="P:OvlascenoLiceService.Entities.Confirmations.BrojTableConfirmation.RbTable">
+        <member name="P:OvlascenoLiceService.Entities.Confirmations.BrojTableConfirmation.OznakaTable">
             <summary>
-            Redni broj table
+            Oznaka table
             </summary>
         </member>
         <member name="T:OvlascenoLiceService.Entities.Confirmations.OvlascenoLiceConfirmation">
@@ -437,9 +513,9 @@
             Confirmation Dto za broj table
             </summary>
         </member>
-        <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableConfirmationDto.RbTable">
+        <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableConfirmationDto.OznakaTable">
             <summary>
-            Redni broj table
+            Oznaka table
             </summary>
         </member>
         <member name="T:OvlascenoLiceService.Models.BrojTable.BrojTableCreationDto">
@@ -454,7 +530,7 @@
         </member>
         <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableCreationDto.OvlascenoLiceId">
             <summary>
-            Id ovlascenog lica - strani kljuc
+            Id ovlašćenog lica - strani ključ
             </summary>
         </member>
         <member name="T:OvlascenoLiceService.Models.BrojTable.BrojTableDto">
@@ -489,7 +565,7 @@
         </member>
         <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableUpdateDto.OvlascenoLiceId">
             <summary>
-            Id ovlascenog lica - strani kljuc
+            Id ovlašćenog lica - strani ključ
             </summary>
         </member>
         <member name="T:OvlascenoLiceService.Models.OtherServices.AdresaDto">
