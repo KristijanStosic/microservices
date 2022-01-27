@@ -5,28 +5,28 @@ using System.ComponentModel.DataAnnotations;
 namespace OvlascenoLiceService.Models.OvlascenoLice
 {
     /// <summary>
-    /// Creation Dto za ovlasceno lice
+    /// Creation Dto za ovlašćeno lice
     /// </summary>
     public class OvlascenoLiceCreationDto : IValidatableObject
     {
         /// <summary>
-        /// Ime ovlascenog lica
+        /// Ime ovlašćenog lica
         /// </summary>
         [Required(ErrorMessage = "Obavezno je uneti ime ovlascenog lica.")]
         public string Ime { get; set; }
         /// <summary>
-        /// Prezime ovlascenog lica
+        /// Prezime ovlašćenog lica
         /// </summary>
         [Required(ErrorMessage = "Obavezno je uneti prezime ovlascenog lica.")]
         public string Prezime { get; set; }
         /// <summary>
-        /// JMBG ovlascenog lica - 13 brojeva
+        /// JMBG ovlašćenog lica - 13 brojeva
         /// </summary>
         [MaxLength(13, ErrorMessage = "JMBG mora da ima 13 brojeva.")]
         [MinLength(13, ErrorMessage = "JMBG mora da ima 13 brojeva.")]
         public string JMBG { get; set; }
         /// <summary>
-        /// Broj pasosa ovlascenog lica
+        /// Broj pasoša ovlašćenog lica
         /// </summary>
         public string BrojPasosa { get; set; }
 
@@ -35,12 +35,12 @@ namespace OvlascenoLiceService.Models.OvlascenoLice
         /// </summary>
         public Guid? AdresaId { get; set; }
         /// <summary>
-        /// Id drzave - veza sa mikroservisom Adresa - drzava se unosi za strance
+        /// Id drzave - veza sa mikroservisom Adresa - država se unosi za strance
         /// </summary>
         public Guid? DrzavaId { get; set; }
 
         /// <summary>
-        /// Validacija unetih vrednosti za kreiranje ovlascenog lica
+        /// Validacija unetih vrednosti za kreiranje ovlašćenog lica
         /// </summary>
         /// <param name="validationContext"></param>
         /// <returns></returns>
@@ -50,7 +50,7 @@ namespace OvlascenoLiceService.Models.OvlascenoLice
                 (JMBG is null && AdresaId is not null))
             {
                 yield return new ValidationResult(
-                    "Ukoliko je ovlasceno lice drzavljanin Srbije morate uneti JMBG i id njegove adrese",
+                    "Ukoliko je ovlašćeno lice državljanin Srbije morate uneti JMBG i id njegove adrese",
                     new[] { "OvlascenoLiceCreationDto" });
             }
 
@@ -58,7 +58,7 @@ namespace OvlascenoLiceService.Models.OvlascenoLice
                 (BrojPasosa is null && DrzavaId is not null))
             {
                 yield return new ValidationResult(
-                    "Ukoliko ovlasceno lice nije drzavljanin Srbije morate uneti broj pasosa i id njegove drzave",
+                    "Ukoliko ovlašćeno lice nije državljanin Srbije morate uneti broj pasosša i id njegove države",
                     new[] { "OvlascenoLiceCreationDto" });
             }
 
@@ -66,7 +66,7 @@ namespace OvlascenoLiceService.Models.OvlascenoLice
                 && JMBG is not null && AdresaId is not null)
             {
                 yield return new ValidationResult(
-                   "Ukoliko ovlasceno lice nije drzavljanin Srbije morate uneti broj pasosa i id njegove drzave, a ako jeste onda unosite samo JMBG i id njegove adrese",
+                   "Ukoliko ovlašćeno lice nije državljanin Srbije morate uneti broj pasosa i id njegove države, a ako jeste onda unosite samo JMBG i id njegove adrese",
                    new[] { "OvlascenoLiceCreationDto" });
             }
         }

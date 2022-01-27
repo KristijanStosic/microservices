@@ -11,84 +11,84 @@
         </member>
         <member name="T:OvlascenoLiceService.Controllers.OvlascenoLiceController">
             <summary>
-            Kontroler za ovlasceno lice
+            Kontroler za ovlašćeno lice
             </summary>
         </member>
         <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.#ctor(OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper)">
             <summary>
-            Konstruktor kontrolera ovlascenog lica - DI
+            Konstruktor kontrolera ovlašćenog lica - DI
             </summary>
-            <param name="ovlascenoLiceRepository">Repo ovlasceno lice</param>
+            <param name="ovlascenoLiceRepository">Repo ovlašćeno lice</param>
             <param name="linkGenerator">Link generator za create zahtev</param>
             <param name="mapper">AutoMapper</param>
         </member>
         <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.GetAllOvlascenoLice">
             <summary>
-            Vraca sva ovlascena lica
+            Vraća sva ovlašćena lica
             </summary>
-            <returns>Lista ovlascenih lica</returns>
-            <response code="200">Vraća listu ovlascenih lica</response>
-            <response code="404">Nije pronadjeno ni jedno ovlasceno lice</response>
+            <returns>Lista ovlašćenih lica</returns>
+            <response code="200">Vraća listu ovlašćenih lica</response>
+            <response code="404">Nije pronađeno ni jedno ovlašćeno lice</response>
         </member>
         <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.GetOvlascenoLice(System.Guid)">
             <summary>
-            Vraca jedno ovlasceno lice na osnovu ID-a
+            Vraća jedno ovlašćeno lice na osnovu ID-a
             </summary>
-            <param name="ovlascenoLiceId">ID ovlascenog lica</param>
-            <returns>Ovlasceno lice</returns>
-            <response code="200">Vraća trazeno ovlasceno lice</response>
-            <response code="404">Nije pronadjeno ovlasceno lice za uneti ID</response>
+            <param name="ovlascenoLiceId">ID ovlašćenog lica</param>
+            <returns>Ovlašćeno lice</returns>
+            <response code="200">Vraća traženo ovlašćeno lice</response>
+            <response code="404">Nije pronađeno ovlašćeno lice za uneti ID</response>
         </member>
         <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.GetAllOvlascenoLiceByImePrezime(System.String,System.String)">
             <summary>
-            Vraca sva ovlascena lica za zadate kriterijume
+            Vraća sva ovlašćena lica za zadate kriterijume
             </summary>
-            <returns>Lista ovlascenih lica</returns>
-            <response code="200">Vraća listu ovlascenih lica</response>
-            <response code="404">Nije pronadjeno ni jedno ovlasceno lice</response>
+            <returns>Lista ovlašćenih lica</returns>
+            <response code="200">Vraća listu ovlašćenih lica</response>
+            <response code="404">Nije pronađeno ni jedno ovlašćeno lice</response>
         </member>
         <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.CreateOvlascenoLice(OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto)">
              <summary>
-             Kreira novo ovlasceno lice
+             Kreira novo ovlašćeno lice
              </summary>
-             <param name="ovlascenoLice">Model ovlasceno lice</param>
+             <param name="ovlascenoLice">Model ovlašćeno lice</param>
              <remarks>
-             Primer zahteva za kreiranje novog ovlascenog lica \
+             Primer zahteva za kreiranje novog ovlašćenog lica \
              POST /api/ovlascenoLice \
-             {     \
+             {   
                  "Ime": "Milan", \
                  "Prezime": "Milanovic", \
                  "JMBG": "1008987800025", \
                  "AdresaId": "1c989ee3-13b2-4d3b-abeb-c4e6343eace7" \
             }
              </remarks>
-             <returns>Potvrda o kreiranju ovlascenog lica</returns>
-             <response code="200">Vraca kreirano ovlasceno lice</response>
-             <response code="500">Desila se greska prilikom unosa novog ovlascenog lica</response>
+             <returns>Potvrda o kreiranju ovlašćenog lica</returns>
+             <response code="200">Vraća kreirano ovlašćeno lice</response>
+             <response code="500">Desila se greška prilikom unosa novog ovlašćenog lica</response>
         </member>
         <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.UpdateOvlascenoLice(OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto)">
             <summary>
-            Izmena ovlascenog lica
+            Izmena ovlašćenog lica
             </summary>
-            <param name="ovlascenoLice">Model ovlascenog lica</param>
-            <returns>Potvrda o izmeni ovlascenog lica</returns>
-            <response code="200">Izmenjeno ovlasceno lice</response>
-            <response code="404">Nije pronadjeno ovlasceno lice za uneti ID</response>
-            <response code="500">Serverska greska tokom izmene ovlascenog lica</response>
+            <param name="ovlascenoLice">Model ovlašćenog lica</param>
+            <returns>Potvrda o izmeni ovlašćenog lica</returns>
+            <response code="200">Izmenjeno ovlašćeno lice</response>
+            <response code="404">Nije pronađeno ovlašćeno lice za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene ovlašćenog lica</response>
         </member>
         <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.DeleteOvlascenoLice(System.Guid)">
             <summary>
-            Brisanje ovlascenog lica na osnovu ID-a
+            Brisanje ovlašćenog lica na osnovu ID-a
             </summary>
-            <param name="ovlascenoLiceId">ID ovlascenog lica</param>
+            <param name="ovlascenoLiceId">ID ovlašćenog lica</param>
             <returns>Status 204 (NoContent)</returns>
-            <response code="204">Ovlasceno lice je uspesno obrisano</response>
-            <response code="404">Nije pronadjeno ovlasceno lice za uneti ID</response>
-            <response code="500">Serverska greska tokom brisanja ovlascenog lica</response>
+            <response code="204">Ovlašćeno lice je uspešno obrisano</response>
+            <response code="404">Nije pronađeno ovlašćeno lice za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja ovlašćenog lica</response>
         </member>
         <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.GetOvlascenoLiceOptions">
             <summary>
-            Vraća opcije za rad sa ovlascenim licima
+            Vraća opcije za rad sa ovlašćenim licima
             </summary>
             <returns></returns>
         </member>
@@ -534,42 +534,42 @@
         </member>
         <member name="T:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceConfirmationDto">
             <summary>
-            Confirmation Dto za ovlasceno lice
+            Confirmation Dto za ovlašćeno lice
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceConfirmationDto.Ime">
             <summary>
-            Ime ovlascenog lica
+            Ime ovlašćenog lica
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceConfirmationDto.Prezime">
             <summary>
-            Prezime ovlascenog lica
+            Prezime ovlašćenog lica
             </summary>
         </member>
         <member name="T:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto">
             <summary>
-            Creation Dto za ovlasceno lice
+            Creation Dto za ovlašćeno lice
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.Ime">
             <summary>
-            Ime ovlascenog lica
+            Ime ovlašćenog lica
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.Prezime">
             <summary>
-            Prezime ovlascenog lica
+            Prezime ovlašćenog lica
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.JMBG">
             <summary>
-            JMBG ovlascenog lica - 13 brojeva
+            JMBG ovlašćenog lica - 13 brojeva
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.BrojPasosa">
             <summary>
-            Broj pasosa ovlascenog lica
+            Broj pasoša ovlašćenog lica
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.AdresaId">
@@ -579,34 +579,34 @@
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.DrzavaId">
             <summary>
-            Id drzave - veza sa mikroservisom Adresa - drzava se unosi za strance
+            Id drzave - veza sa mikroservisom Adresa - država se unosi za strance
             </summary>
         </member>
         <member name="M:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
             <summary>
-            Validacija unetih vrednosti za kreiranje ovlascenog lica
+            Validacija unetih vrednosti za kreiranje ovlašćenog lica
             </summary>
             <param name="validationContext"></param>
             <returns></returns>
         </member>
         <member name="T:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto">
             <summary>
-            Dto za ovlasceno lice
+            Dto za ovlašćeno lice
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto.OvlascenoLice">
             <summary>
-            Ime i prezime ovlascenog lica
+            Ime i prezime ovlašćenog lica
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto.BrojDokumenta">
             <summary>
-            Licni dokument ovlascenog lica - jmbg za drzavljane Srbije, ili broj pasosa za strance
+            Lični dokument ovlašćenog lica - jmbg za državljane Srbije, ili broj pasoša za strance
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto.Stanovanje">
             <summary>
-            Podaci o stanovanju - adresa za drzavljane Srbije, ili samo drzava za strance
+            Podaci o stanovanju - adresa za državljane Srbije, ili samo država za strance
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto.BrojeviTabli">
@@ -616,32 +616,32 @@
         </member>
         <member name="T:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto">
             <summary>
-            Update dto za ovlasceno lice
+            Update dto za ovlašćeno lice
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.OvlascenoLiceId">
             <summary>
-            ID ovlascenog lica
+            ID ovlašćenog lica
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.Ime">
             <summary>
-            Ime ovlascenog lica
+            Ime ovlašćenog lica
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.Prezime">
             <summary>
-            Prezime ovlascenog lica
+            Prezime ovlašćenog lica
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.JMBG">
             <summary>
-            JMBG ovlascenog lica - 13 brojeva
+            JMBG ovlašćenog lica - 13 brojeva
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.BrojPasosa">
             <summary>
-            Broj pasosa ovlascenog lica
+            Broj pasoša ovlašćenog lica
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.AdresaId">
@@ -651,12 +651,12 @@
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.DrzavaId">
             <summary>
-            Id drzave - veza sa mikroservisom Adresa - drzava se unosi za strance
+            Id drzave - veza sa mikroservisom Adresa - država se unosi za strance
             </summary>
         </member>
         <member name="M:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceUpdateDto.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
             <summary>
-            Validacija unetih vrednosti za kreiranje ovlascenog lica
+            Validacija unetih vrednosti za kreiranje ovlašćenog lica
             </summary>
             <param name="validationContext"></param>
             <returns></returns>

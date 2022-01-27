@@ -1,16 +1,16 @@
 ﻿namespace OvlascenoLiceService.Models.OvlascenoLice
 {
     /// <summary>
-    /// Confirmation Dto za ovlasceno lice
+    /// Confirmation Dto za ovlašćeno lice
     /// </summary>
     public class OvlascenoLiceConfirmationDto
     {
         /// <summary>
-        /// Ime ovlascenog lica
+        /// Ime ovlašćenog lica
         /// </summary>
         public string Ime { get; set; }
         /// <summary>
-        /// Prezime ovlascenog lica
+        /// Prezime ovlašćenog lica
         /// </summary>
         public string Prezime { get; set; }
     }

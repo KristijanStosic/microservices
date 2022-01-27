@@ -64,7 +64,7 @@ namespace OvlascenoLiceService
                     if ((context.ModelState.ErrorCount > 0) && (actionExecutiongContext?.ActionArguments.Count == context.ActionDescriptor.Parameters.Count))
                     {
                         problemDetails.Status = StatusCodes.Status422UnprocessableEntity;
-                        problemDetails.Title = "Desila se greska prilikom validacije.";
+                        problemDetails.Title = "Desila se greška prilikom validacije.";
 
                         //Sve se vraca kao UnprocessibleEntity objekat
                         return new UnprocessableEntityObjectResult(problemDetails)
@@ -75,7 +75,7 @@ namespace OvlascenoLiceService
 
                     //Ako nesto ne moze da se parsira vraca se status kod 400 - Bad Request
                     problemDetails.Status = StatusCodes.Status400BadRequest;
-                    problemDetails.Title = "Desila se greska prilikom parsiranja.";
+                    problemDetails.Title = "Desila se greška prilikom parsiranja.";
                     return new BadRequestObjectResult(problemDetails)
                     {
                         ContentTypes = { "application/problem+json" }
@@ -95,7 +95,7 @@ namespace OvlascenoLiceService
                     { 
                         Title = "Ovlasceno lice API",
                         Version = "v1",
-                        Description = "API Ovlasceno lice omogucava unos i pregled podataka o ovlascenim licima i o brojevima tabli",
+                        Description = "API Ovlašćeno lice omogućava unos i pregled podataka o ovlašćenim licima i o brojevima tabli",
                         Contact = new Microsoft.OpenApi.Models.OpenApiContact
                         {
                             Name = "Dragan Majkić",

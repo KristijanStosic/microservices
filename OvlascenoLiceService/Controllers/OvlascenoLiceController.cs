@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace OvlascenoLiceService.Controllers
 {
     /// <summary>
-    /// Kontroler za ovlasceno lice
+    /// Kontroler za ovlašćeno lice
     /// </summary>
     [Route("api/ovlascenoLice")]
     [ApiController]
@@ -26,9 +26,9 @@ namespace OvlascenoLiceService.Controllers
         private readonly IMapper _mapper;
 
         /// <summary>
-        /// Konstruktor kontrolera ovlascenog lica - DI
+        /// Konstruktor kontrolera ovlašćenog lica - DI
         /// </summary>
-        /// <param name="ovlascenoLiceRepository">Repo ovlasceno lice</param>
+        /// <param name="ovlascenoLiceRepository">Repo ovlašćeno lice</param>
         /// <param name="linkGenerator">Link generator za create zahtev</param>
         /// <param name="mapper">AutoMapper</param>
         public OvlascenoLiceController(IOvlascenoLiceRepository ovlascenoLiceRepository, LinkGenerator linkGenerator, IMapper mapper)
@@ -39,11 +39,11 @@ namespace OvlascenoLiceService.Controllers
         }
 
         /// <summary>
-        /// Vraca sva ovlascena lica
+        /// Vraća sva ovlašćena lica
         /// </summary>
-        /// <returns>Lista ovlascenih lica</returns>
-        /// <response code="200">Vraća listu ovlascenih lica</response>
-        /// <response code="404">Nije pronadjeno ni jedno ovlasceno lice</response>
+        /// <returns>Lista ovlašćenih lica</returns>
+        /// <response code="200">Vraća listu ovlašćenih lica</response>
+        /// <response code="404">Nije pronađeno ni jedno ovlašćeno lice</response>
         [HttpGet]
         [HttpHead] 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -61,12 +61,12 @@ namespace OvlascenoLiceService.Controllers
         }
 
         /// <summary>
-        /// Vraca jedno ovlasceno lice na osnovu ID-a
+        /// Vraća jedno ovlašćeno lice na osnovu ID-a
         /// </summary>
-        /// <param name="ovlascenoLiceId">ID ovlascenog lica</param>
-        /// <returns>Ovlasceno lice</returns>
-        /// <response code="200">Vraća trazeno ovlasceno lice</response>
-        /// <response code="404">Nije pronadjeno ovlasceno lice za uneti ID</response>
+        /// <param name="ovlascenoLiceId">ID ovlašćenog lica</param>
+        /// <returns>Ovlašćeno lice</returns>
+        /// <response code="200">Vraća traženo ovlašćeno lice</response>
+        /// <response code="404">Nije pronađeno ovlašćeno lice za uneti ID</response>
         [HttpGet("{ovlascenoLiceId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -83,12 +83,12 @@ namespace OvlascenoLiceService.Controllers
         }
 
         /// <summary>
-        /// Vraca sva ovlascena lica za zadate kriterijume
+        /// Vraća sva ovlašćena lica za zadate kriterijume
         /// </summary>
-        /// <returns>Lista ovlascenih lica</returns>
-        /// <response code="200">Vraća listu ovlascenih lica</response>
-        /// <response code="404">Nije pronadjeno ni jedno ovlasceno lice</response>
-        [HttpGet("/imePrezime")]
+        /// <returns>Lista ovlašćenih lica</returns>
+        /// <response code="200">Vraća listu ovlašćenih lica</response>
+        /// <response code="404">Nije pronađeno ni jedno ovlašćeno lice</response>
+        [HttpGet("imePrezime")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<OvlascenoLiceDto>>> GetAllOvlascenoLiceByImePrezime(string ime, string prezime)
@@ -104,22 +104,22 @@ namespace OvlascenoLiceService.Controllers
         }
 
         /// <summary>
-        /// Kreira novo ovlasceno lice
+        /// Kreira novo ovlašćeno lice
         /// </summary>
-        /// <param name="ovlascenoLice">Model ovlasceno lice</param>
+        /// <param name="ovlascenoLice">Model ovlašćeno lice</param>
         /// <remarks>
-        /// Primer zahteva za kreiranje novog ovlascenog lica \
+        /// Primer zahteva za kreiranje novog ovlašćenog lica \
         /// POST /api/ovlascenoLice \
-        /// {     \
+        /// {   
         ///     "Ime": "Milan", \
         ///     "Prezime": "Milanovic", \
         ///     "JMBG": "1008987800025", \
         ///     "AdresaId": "1c989ee3-13b2-4d3b-abeb-c4e6343eace7" \
         ///}
         /// </remarks>
-        /// <returns>Potvrda o kreiranju ovlascenog lica</returns>
-        /// <response code="200">Vraca kreirano ovlasceno lice</response>
-        /// <response code="500">Desila se greska prilikom unosa novog ovlascenog lica</response>
+        /// <returns>Potvrda o kreiranju ovlašćenog lica</returns>
+        /// <response code="200">Vraća kreirano ovlašćeno lice</response>
+        /// <response code="500">Desila se greška prilikom unosa novog ovlašćenog lica</response>
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -138,18 +138,18 @@ namespace OvlascenoLiceService.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom unosa ovlascenog lica");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom unosa ovlašćenog lica");
             }
         }
 
         /// <summary>
-        /// Izmena ovlascenog lica
+        /// Izmena ovlašćenog lica
         /// </summary>
-        /// <param name="ovlascenoLice">Model ovlascenog lica</param>
-        /// <returns>Potvrda o izmeni ovlascenog lica</returns>
-        /// <response code="200">Izmenjeno ovlasceno lice</response>
-        /// <response code="404">Nije pronadjeno ovlasceno lice za uneti ID</response>
-        /// <response code="500">Serverska greska tokom izmene ovlascenog lica</response>
+        /// <param name="ovlascenoLice">Model ovlašćenog lica</param>
+        /// <returns>Potvrda o izmeni ovlašćenog lica</returns>
+        /// <response code="200">Izmenjeno ovlašćeno lice</response>
+        /// <response code="404">Nije pronađeno ovlašćeno lice za uneti ID</response>
+        /// <response code="500">Serverska greška tokom izmene ovlašćenog lica</response>
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -175,18 +175,18 @@ namespace OvlascenoLiceService.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom izmene ovlascenog lica");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom izmene ovlašćenog lica");
             }
         }
 
         /// <summary>
-        /// Brisanje ovlascenog lica na osnovu ID-a
+        /// Brisanje ovlašćenog lica na osnovu ID-a
         /// </summary>
-        /// <param name="ovlascenoLiceId">ID ovlascenog lica</param>
+        /// <param name="ovlascenoLiceId">ID ovlašćenog lica</param>
         /// <returns>Status 204 (NoContent)</returns>
-        /// <response code="204">Ovlasceno lice je uspesno obrisano</response>
-        /// <response code="404">Nije pronadjeno ovlasceno lice za uneti ID</response>
-        /// <response code="500">Serverska greska tokom brisanja ovlascenog lica</response>
+        /// <response code="204">Ovlašćeno lice je uspešno obrisano</response>
+        /// <response code="404">Nije pronađeno ovlašćeno lice za uneti ID</response>
+        /// <response code="500">Serverska greška tokom brisanja ovlašćenog lica</response>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -209,12 +209,12 @@ namespace OvlascenoLiceService.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom brisanja ovlascenog lica");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom brisanja ovlašćenog lica");
             }
         }
 
         /// <summary>
-        /// Vraća opcije za rad sa ovlascenim licima
+        /// Vraća opcije za rad sa ovlašćenim licima
         /// </summary>
         /// <returns></returns>
         [HttpOptions]

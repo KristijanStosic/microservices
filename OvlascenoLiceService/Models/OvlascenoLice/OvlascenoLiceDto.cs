@@ -4,20 +4,20 @@ using System.Collections.Generic;
 namespace OvlascenoLiceService.Models.OvlascenoLice
 {
     /// <summary>
-    /// Dto za ovlasceno lice
+    /// Dto za ovlašćeno lice
     /// </summary>
     public class OvlascenoLiceDto
     {
         /// <summary>
-        /// Ime i prezime ovlascenog lica
+        /// Ime i prezime ovlašćenog lica
         /// </summary>
         public string OvlascenoLice { get; set; }
         /// <summary>
-        /// Licni dokument ovlascenog lica - jmbg za drzavljane Srbije, ili broj pasosa za strance
+        /// Lični dokument ovlašćenog lica - jmbg za državljane Srbije, ili broj pasoša za strance
         /// </summary>
         public string BrojDokumenta { get; set; }
         /// <summary>
-        /// Podaci o stanovanju - adresa za drzavljane Srbije, ili samo drzava za strance
+        /// Podaci o stanovanju - adresa za državljane Srbije, ili samo država za strance
         /// </summary>
         public string Stanovanje { get; set; }
 
