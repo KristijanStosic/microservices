@@ -11,6 +11,9 @@ using Microsoft.OpenApi.Models;
 using OvlascenoLiceService.Data;
 using OvlascenoLiceService.Data.Interfaces;
 using OvlascenoLiceService.Entities.DataContext;
+using OvlascenoLiceService.Models.OtherServices;
+using OvlascenoLiceService.ServiceCalls;
+using OvlascenoLiceService.ServiceCalls.Mocks;
 using System;
 using System.IO;
 using System.Reflection;
@@ -87,6 +90,8 @@ namespace OvlascenoLiceService
 
             services.AddScoped<IOvlascenoLiceRepository, OvlascenoLiceRepository>();
             services.AddScoped<IBrojTableRepository, BrojTableRepository>();
+            services.AddScoped<IServiceCall<AdresaDto>, ServiceCallAdresaMock<AdresaDto>>();
+            services.AddScoped<IServiceCall<DrzavaDto>, ServiceCallDrzavaMock<DrzavaDto>>();
 
             services.AddSwaggerGen(setup =>
             {

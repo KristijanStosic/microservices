@@ -14,21 +14,16 @@ namespace OvlascenoLiceService.Data.Interfaces
         /// <summary>
         /// Dobijanje podataka o svim ovlascenim licima
         /// </summary>
+        /// <param name="ime">Ime ovlascenog lica</param>
+        /// <param name="prezime">Prezime ovlascenog lica</param>
         /// <returns></returns>
-        Task<List<OvlascenoLice>> GetAllOvlascenoLice();
+        Task<List<OvlascenoLice>> GetAllOvlascenoLice(string ime = null, string prezime = null);
         /// <summary>
         /// Dobijanje ovlascenog lica po id-u
         /// </summary>
         /// <param name="ovlascenoLiceId">Id ovlascenog lica</param>
         /// <returns></returns>
         Task<OvlascenoLice> GetOvlascenoLiceById(Guid ovlascenoLiceId);
-        /// <summary>
-        /// Dobijanje ovlascenih lica po imenu ili prezimenu
-        /// </summary>
-        /// <param name="ime">Ime ovlascenog lica</param>
-        /// <param name="prezime">Prezime ovlascenog lica</param>
-        /// <returns></returns>
-        Task<List<OvlascenoLice>> GetOvlascenaLicaByImePrezime(string ime = null, string prezime = null);
         /// <summary>
         /// Kreiranje ovlascenog lica
         /// </summary>

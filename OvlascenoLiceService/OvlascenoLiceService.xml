@@ -90,15 +90,18 @@
             Kontroler za ovlašćeno lice
             </summary>
         </member>
-        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.#ctor(OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper)">
+        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.#ctor(OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,OvlascenoLiceService.ServiceCalls.IServiceCall{OvlascenoLiceService.Models.OtherServices.AdresaDto},OvlascenoLiceService.ServiceCalls.IServiceCall{OvlascenoLiceService.Models.OtherServices.DrzavaDto},Microsoft.Extensions.Configuration.IConfiguration)">
             <summary>
             Konstruktor kontrolera ovlašćenog lica - DI
             </summary>
             <param name="ovlascenoLiceRepository">Repo ovlašćeno lice</param>
             <param name="linkGenerator">Link generator za create zahtev</param>
             <param name="mapper">AutoMapper</param>
+            <param name="adresaServiceCall">Servis adresa - dobijanje adrese</param>
+            <param name="drzavaServiceCall">Servis adresa - dobijanje drzave</param>
+            <param name="configuration">Konfiguracija za pristup putanji ka servisu adresa</param>
         </member>
-        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.GetAllOvlascenoLice">
+        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.GetAllOvlascenoLice(System.String,System.String)">
             <summary>
             Vraća sva ovlašćena lica
             </summary>
@@ -114,14 +117,6 @@
             <returns>Ovlašćeno lice</returns>
             <response code="200">Vraća traženo ovlašćeno lice</response>
             <response code="404">Nije pronađeno ovlašćeno lice za uneti ID</response>
-        </member>
-        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.GetAllOvlascenoLiceByImePrezime(System.String,System.String)">
-            <summary>
-            Vraća sva ovlašćena lica za zadate kriterijume
-            </summary>
-            <returns>Lista ovlašćenih lica</returns>
-            <response code="200">Vraća listu ovlašćenih lica</response>
-            <response code="404">Nije pronađeno ni jedno ovlašćeno lice</response>
         </member>
         <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.CreateOvlascenoLice(OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceCreationDto)">
              <summary>
@@ -270,10 +265,12 @@
             Interfejs za kreiranje repo-a za ovlasceno lice
             </summary>
         </member>
-        <member name="M:OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository.GetAllOvlascenoLice">
+        <member name="M:OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository.GetAllOvlascenoLice(System.String,System.String)">
             <summary>
             Dobijanje podataka o svim ovlascenim licima
             </summary>
+            <param name="ime">Ime ovlascenog lica</param>
+            <param name="prezime">Prezime ovlascenog lica</param>
             <returns></returns>
         </member>
         <member name="M:OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository.GetOvlascenoLiceById(System.Guid)">
@@ -281,14 +278,6 @@
             Dobijanje ovlascenog lica po id-u
             </summary>
             <param name="ovlascenoLiceId">Id ovlascenog lica</param>
-            <returns></returns>
-        </member>
-        <member name="M:OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository.GetOvlascenaLicaByImePrezime(System.String,System.String)">
-            <summary>
-            Dobijanje ovlascenih lica po imenu ili prezimenu
-            </summary>
-            <param name="ime">Ime ovlascenog lica</param>
-            <param name="prezime">Prezime ovlascenog lica</param>
             <returns></returns>
         </member>
         <member name="M:OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository.CreateOvlascenoLice(OvlascenoLiceService.Entities.OvlascenoLice)">
@@ -323,7 +312,7 @@
             <param name="context">Db context</param>
             <param name="mapper">AutoMapper</param>
         </member>
-        <member name="M:OvlascenoLiceService.Data.OvlascenoLiceRepository.GetAllOvlascenoLice">
+        <member name="M:OvlascenoLiceService.Data.OvlascenoLiceRepository.GetAllOvlascenoLice(System.String,System.String)">
             <summary>
             Dobijanje podataka o svim ovlascenim licima
             </summary>
@@ -334,14 +323,6 @@
             Dobijanje ovlascenog lica po id-u
             </summary>
             <param name="ovlascenoLiceId">Id ovlascenog lica</param>
-            <returns></returns>
-        </member>
-        <member name="M:OvlascenoLiceService.Data.OvlascenoLiceRepository.GetOvlascenaLicaByImePrezime(System.String,System.String)">
-            <summary>
-            Dobijanje ovlascenih lica po imenu ili prezimenu
-            </summary>
-            <param name="ime">Ime ovlascenog lica</param>
-            <param name="prezime">Prezime ovlascenog lica</param>
             <returns></returns>
         </member>
         <member name="M:OvlascenoLiceService.Data.OvlascenoLiceRepository.CreateOvlascenoLice(OvlascenoLiceService.Entities.OvlascenoLice)">
@@ -793,6 +774,58 @@
             CreateHostBuilder method
             </summary>
             <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.ServiceCalls.IServiceCall`1">
+            <summary>
+            Interfejs za komunikaciju sa drugim servisima
+            </summary>
+            <typeparam name="T">Generic</typeparam>
+        </member>
+        <member name="M:OvlascenoLiceService.ServiceCalls.IServiceCall`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.ServiceCalls.Mocks.ServiceCallAdresaMock`1">
+            <summary>
+            Mock klasa za dobijanje podatka o adresi
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:OvlascenoLiceService.ServiceCalls.Mocks.ServiceCallAdresaMock`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva - mock
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.ServiceCalls.Mocks.ServiceCallDrzavaMock`1">
+            <summary>
+            Mock klasa za dobijanje podataka o drzavi
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:OvlascenoLiceService.ServiceCalls.Mocks.ServiceCallDrzavaMock`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva za drzavu - mock
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.ServiceCalls.ServiceCall`1">
+            <summary>
+            Genericka klasa za komunikaciju sa drugim servisima
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:OvlascenoLiceService.ServiceCalls.ServiceCall`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva
+            </summary>
+            <param name="url">Url putanja ka drugom servisu</param>
             <returns></returns>
         </member>
         <member name="T:OvlascenoLiceService.Startup">

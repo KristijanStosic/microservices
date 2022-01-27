@@ -34,9 +34,10 @@ namespace OvlascenoLiceService.Data
         /// Dobijanje podataka o svim ovlascenim licima
         /// </summary>
         /// <returns></returns>
-        public async Task<List<OvlascenoLice>> GetAllOvlascenoLice()
+        public async Task<List<OvlascenoLice>> GetAllOvlascenoLice(string ime = null, string prezime = null)
         {
-            return await _context.OvlascenoLice.ToListAsync();
+            return await _context.OvlascenoLice.Include(b => b.BrojeviTabli).Where(o => (ime == null || o.Ime == ime) &&
+                                                        (prezime == null || o.Prezime == prezime)).ToListAsync();
         }
         /// <summary>
         /// Dobijanje ovlascenog lica po id-u
@@ -45,18 +46,7 @@ namespace OvlascenoLiceService.Data
         /// <returns></returns>
         public async Task<OvlascenoLice> GetOvlascenoLiceById(Guid ovlascenoLiceId)
         {
-            return await _context.OvlascenoLice.FirstOrDefaultAsync(o => o.OvlascenoLiceId == ovlascenoLiceId);
-        }
-        /// <summary>
-        /// Dobijanje ovlascenih lica po imenu ili prezimenu
-        /// </summary>
-        /// <param name="ime">Ime ovlascenog lica</param>
-        /// <param name="prezime">Prezime ovlascenog lica</param>
-        /// <returns></returns>
-        public async Task<List<OvlascenoLice>> GetOvlascenaLicaByImePrezime(string ime = null, string prezime = null)
-        {
-            return await _context.OvlascenoLice.Where(o => (ime == null || o.Ime == ime) &&
-                                                     (prezime == null || o.Prezime == prezime)).ToListAsync();
+            return await _context.OvlascenoLice.Include(b => b.BrojeviTabli).FirstOrDefaultAsync(o => o.OvlascenoLiceId == ovlascenoLiceId);
         }
         /// <summary>
         /// Kreiranje ovlascenog lica

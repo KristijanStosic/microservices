@@ -2,13 +2,15 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using OvlascenoLiceService.Data.Interfaces;
 using OvlascenoLiceService.Entities;
 using OvlascenoLiceService.Entities.Confirmations;
+using OvlascenoLiceService.Models.OtherServices;
 using OvlascenoLiceService.Models.OvlascenoLice;
+using OvlascenoLiceService.ServiceCalls;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OvlascenoLiceService.Controllers
@@ -24,6 +26,9 @@ namespace OvlascenoLiceService.Controllers
         private readonly IOvlascenoLiceRepository _ovlascenoLiceRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
+        private readonly IServiceCall<AdresaDto> _adresaServiceCall;
+        private readonly IServiceCall<DrzavaDto> _drzavaServiceCall;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         /// Konstruktor kontrolera ovlašćenog lica - DI
@@ -31,12 +36,19 @@ namespace OvlascenoLiceService.Controllers
         /// <param name="ovlascenoLiceRepository">Repo ovlašćeno lice</param>
         /// <param name="linkGenerator">Link generator za create zahtev</param>
         /// <param name="mapper">AutoMapper</param>
-        public OvlascenoLiceController(IOvlascenoLiceRepository ovlascenoLiceRepository, LinkGenerator linkGenerator, IMapper mapper)
+        /// <param name="adresaServiceCall">Servis adresa - dobijanje adrese</param>
+        /// <param name="drzavaServiceCall">Servis adresa - dobijanje drzave</param>
+        /// <param name="configuration">Konfiguracija za pristup putanji ka servisu adresa</param>
+        public OvlascenoLiceController(IOvlascenoLiceRepository ovlascenoLiceRepository, LinkGenerator linkGenerator, IMapper mapper, IServiceCall<AdresaDto> adresaServiceCall, IServiceCall<DrzavaDto> drzavaServiceCall, IConfiguration configuration)
         {
             _ovlascenoLiceRepository = ovlascenoLiceRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
+            _adresaServiceCall = adresaServiceCall;
+            _drzavaServiceCall = drzavaServiceCall;
+            _configuration = configuration;
         }
+
 
         /// <summary>
         /// Vraća sva ovlašćena lica
@@ -48,16 +60,35 @@ namespace OvlascenoLiceService.Controllers
         [HttpHead] 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<List<OvlascenoLiceDto>>> GetAllOvlascenoLice()
+        public async Task<ActionResult<List<OvlascenoLiceDto>>> GetAllOvlascenoLice(string ime, string prezime)
         {
-            var ovlascenaLica = await _ovlascenoLiceRepository.GetAllOvlascenoLice();
+            var ovlascenaLica = await _ovlascenoLiceRepository.GetAllOvlascenoLice(ime, prezime);
 
             if (ovlascenaLica == null || ovlascenaLica.Count == 0)
             {
                 return NoContent();
             }
 
-            return Ok(_mapper.Map<List<OvlascenoLiceDto>>(ovlascenaLica));
+            //Komunikacija sa servisom adresa i preuzimanje Adrese ili Drzave
+            var ovlascenaLicaDto = new List<OvlascenoLiceDto>();
+            string url = _configuration["Services:AdresaService"];
+            foreach(var ovlascenoLice in ovlascenaLica)
+            {
+                var ovlascenoLiceDto = _mapper.Map<OvlascenoLiceDto>(ovlascenoLice);
+                if(ovlascenoLice.AdresaId is not null)
+                {
+                    var adresaDto = _adresaServiceCall.SendGetRequestAsync(url + "adresa/" + ovlascenoLice.AdresaId).Result;
+                    ovlascenoLiceDto.Stanovanje = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
+                }
+                else if (ovlascenoLice.DrzavaId is not null)
+                {
+                    var drzavaDto = _drzavaServiceCall.SendGetRequestAsync(url + "drzava/" + ovlascenoLice.DrzavaId).Result;
+                    ovlascenoLiceDto.Stanovanje = drzavaDto.NazivDrzave;
+                }
+                ovlascenaLicaDto.Add(ovlascenoLiceDto);
+            }
+
+            return Ok(ovlascenaLicaDto);
         }
 
         /// <summary>
@@ -79,28 +110,20 @@ namespace OvlascenoLiceService.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<OvlascenoLiceDto>(ovlascenoLice));
-        }
-
-        /// <summary>
-        /// Vraća sva ovlašćena lica za zadate kriterijume
-        /// </summary>
-        /// <returns>Lista ovlašćenih lica</returns>
-        /// <response code="200">Vraća listu ovlašćenih lica</response>
-        /// <response code="404">Nije pronađeno ni jedno ovlašćeno lice</response>
-        [HttpGet("imePrezime")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<List<OvlascenoLiceDto>>> GetAllOvlascenoLiceByImePrezime(string ime, string prezime)
-        {
-            var ovlascenaLica = await _ovlascenoLiceRepository.GetOvlascenaLicaByImePrezime(ime, prezime);
-
-            if (ovlascenaLica == null || ovlascenaLica.Count == 0)
+            string url = _configuration["Services:AdresaService"];
+            var ovlascenoLiceDto = _mapper.Map<OvlascenoLiceDto>(ovlascenoLice);
+            if (ovlascenoLice.AdresaId is not null)
             {
-                return NoContent();
+                var adresaDto = _adresaServiceCall.SendGetRequestAsync(url + "adresa/" + ovlascenoLice.AdresaId).Result;
+                ovlascenoLiceDto.Stanovanje = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
+            }
+            else if (ovlascenoLice.DrzavaId is not null)
+            {
+                var drzavaDto = _drzavaServiceCall.SendGetRequestAsync(url + "drzava/" + ovlascenoLice.DrzavaId).Result;
+                ovlascenoLiceDto.Stanovanje = drzavaDto.NazivDrzave;
             }
 
-            return Ok(_mapper.Map<List<OvlascenoLiceDto>>(ovlascenaLica));
+            return Ok(ovlascenoLiceDto);
         }
 
         /// <summary>
