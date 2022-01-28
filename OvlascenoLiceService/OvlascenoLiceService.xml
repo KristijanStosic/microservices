@@ -9,13 +9,14 @@
             Kontroler za broj table
             </summary>
         </member>
-        <member name="M:OvlascenoLiceService.Controllers.BrojTableController.#ctor(OvlascenoLiceService.Data.Interfaces.IBrojTableRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper)">
+        <member name="M:OvlascenoLiceService.Controllers.BrojTableController.#ctor(OvlascenoLiceService.Data.Interfaces.IBrojTableRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,OvlascenoLiceService.ServiceCalls.ILoggerService)">
             <summary>
             Konstruktor kontrolera broj table - DI
             </summary>
             <param name="brojTableRepository">Repo broj table</param>
             <param name="linkGenerator">Link generator za create zahtev</param>
             <param name="mapper">AutoMapper</param>
+            <param name="loggerService">Logger servis</param>
         </member>
         <member name="M:OvlascenoLiceService.Controllers.BrojTableController.GetAllBrojTable">
             <summary>
@@ -90,7 +91,7 @@
             Kontroler za ovlašćeno lice
             </summary>
         </member>
-        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.#ctor(OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,OvlascenoLiceService.ServiceCalls.IServiceCall{OvlascenoLiceService.Models.OtherServices.AdresaDto},OvlascenoLiceService.ServiceCalls.IServiceCall{OvlascenoLiceService.Models.OtherServices.DrzavaDto},Microsoft.Extensions.Configuration.IConfiguration)">
+        <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.#ctor(OvlascenoLiceService.Data.Interfaces.IOvlascenoLiceRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,OvlascenoLiceService.ServiceCalls.IServiceCall{OvlascenoLiceService.Models.OtherServices.AdresaDto},OvlascenoLiceService.ServiceCalls.IServiceCall{OvlascenoLiceService.Models.OtherServices.DrzavaDto},Microsoft.Extensions.Configuration.IConfiguration,OvlascenoLiceService.ServiceCalls.ILoggerService)">
             <summary>
             Konstruktor kontrolera ovlašćenog lica - DI
             </summary>
@@ -100,6 +101,7 @@
             <param name="adresaServiceCall">Servis adresa - dobijanje adrese</param>
             <param name="drzavaServiceCall">Servis adresa - dobijanje drzave</param>
             <param name="configuration">Konfiguracija za pristup putanji ka servisu adresa</param>
+            <param name="loggerService">Logger servis</param>
         </member>
         <member name="M:OvlascenoLiceService.Controllers.OvlascenoLiceController.GetAllOvlascenoLice(System.String,System.String)">
             <summary>
@@ -589,6 +591,36 @@
             Naziv Drzave
             </summary>
         </member>
+        <member name="T:OvlascenoLiceService.Models.OtherServices.LogModel">
+            <summary>
+            Log model
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OtherServices.LogModel.Level">
+            <summary>
+            Log level - info, warn, error, debug
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OtherServices.LogModel.Servis">
+            <summary>
+            Naziv servisa
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OtherServices.LogModel.Metoda">
+            <summary>
+            Naziv metode
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OtherServices.LogModel.Poruka">
+            <summary>
+            Tekst poruke
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OtherServices.LogModel.Greska">
+            <summary>
+            Greska
+            </summary>
+        </member>
         <member name="T:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceConfirmationDto">
             <summary>
             Confirmation Dto za ovlašćeno lice
@@ -776,6 +808,21 @@
             <param name="args"></param>
             <returns></returns>
         </member>
+        <member name="T:OvlascenoLiceService.ServiceCalls.ILoggerService">
+            <summary>
+            Interfejs loger servisa
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.ServiceCalls.ILoggerService.Log(Microsoft.Extensions.Logging.LogLevel,System.String,System.String,System.Exception)">
+            <summary>
+            Slanje post zahteva za upis novog log zapisa
+            </summary>
+            <param name="level">INFO/DEBUG/WARN/ERROR</param>
+            <param name="metoda">Naziv metode</param>
+            <param name="poruka">Tekst poruke</param>
+            <param name="greska">Exception</param>
+            <returns></returns>
+        </member>
         <member name="T:OvlascenoLiceService.ServiceCalls.IServiceCall`1">
             <summary>
             Interfejs za komunikaciju sa drugim servisima
@@ -787,6 +834,42 @@
             Metoda za slanje get zahteva
             </summary>
             <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.ServiceCalls.LoggerService">
+            <summary>
+            Loger servis
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.ServiceCalls.LoggerService.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Konstruktor loger servisa
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:OvlascenoLiceService.ServiceCalls.LoggerService.Log(Microsoft.Extensions.Logging.LogLevel,System.String,System.String,System.Exception)">
+            <summary>
+            Slanje post zahteva za upis novog log zapisa
+            </summary>
+            <param name="level">INFO/DEBUG/WARN/ERROR</param>
+            <param name="metoda">Naziv metode</param>
+            <param name="poruka">Tekst poruke</param>
+            <param name="greska">Exception</param>
+            <returns></returns>
+        </member>
+        <member name="T:OvlascenoLiceService.ServiceCalls.Mocks.LoggerServiceMock">
+            <summary>
+            Logger service mock
+            </summary>
+        </member>
+        <member name="M:OvlascenoLiceService.ServiceCalls.Mocks.LoggerServiceMock.Log(Microsoft.Extensions.Logging.LogLevel,System.String,System.String,System.Exception)">
+            <summary>
+            Slanje post zahteva za upis novog log zapisa - mock
+            </summary>
+            <param name="level">INFO/DEBUG/WARN/ERROR</param>
+            <param name="metoda">Naziv metode</param>
+            <param name="poruka">Tekst poruke</param>
+            <param name="greska">Exception</param>
             <returns></returns>
         </member>
         <member name="T:OvlascenoLiceService.ServiceCalls.Mocks.ServiceCallAdresaMock`1">
@@ -820,6 +903,12 @@
             Genericka klasa za komunikaciju sa drugim servisima
             </summary>
             <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:OvlascenoLiceService.ServiceCalls.ServiceCall`1.#ctor(OvlascenoLiceService.ServiceCalls.ILoggerService)">
+            <summary>
+            Konstruktor klase service call
+            </summary>
+            <param name="loggerService"></param>
         </member>
         <member name="M:OvlascenoLiceService.ServiceCalls.ServiceCall`1.SendGetRequestAsync(System.String)">
             <summary>

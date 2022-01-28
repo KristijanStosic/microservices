@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System;
+using Microsoft.Extensions.Logging;
 
 namespace OvlascenoLiceService.ServiceCalls
 {
@@ -11,6 +12,17 @@ namespace OvlascenoLiceService.ServiceCalls
     /// <typeparam name="T"></typeparam>
     public class ServiceCall<T> : IServiceCall<T>
     {
+        private readonly ILoggerService _loggerService;
+
+        /// <summary>
+        /// Konstruktor klase service call
+        /// </summary>
+        /// <param name="loggerService"></param>
+        public ServiceCall(ILoggerService loggerService)
+        {
+            _loggerService = loggerService;
+        }
+
         /// <summary>
         /// Metoda za slanje get zahteva
         /// </summary>
@@ -33,9 +45,13 @@ namespace OvlascenoLiceService.ServiceCalls
                         return default;
                     }
 
+                    await _loggerService.Log(LogLevel.Information, "SendGetRequestAsync", "Komunikacija sa drugim servisom je uspešna.");
+
                     return JsonConvert.DeserializeObject<T>(content);
                 }
-                throw new Exception("Desio se problem pri komunikaciji sa drugim mikroservisom");
+                var ex = new Exception("Desio se problem pri komunikaciji sa drugim mikroservisom");
+                await _loggerService.Log(LogLevel.Error, "SendGetRequestAsync", "Greška prilikom komunikacije sa drugim servisom.", ex);
+                throw ex;
             }
         }
     }

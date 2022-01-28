@@ -92,6 +92,7 @@ namespace OvlascenoLiceService
             services.AddScoped<IBrojTableRepository, BrojTableRepository>();
             services.AddScoped<IServiceCall<AdresaDto>, ServiceCallAdresaMock<AdresaDto>>();
             services.AddScoped<IServiceCall<DrzavaDto>, ServiceCallDrzavaMock<DrzavaDto>>();
+            services.AddScoped<ILoggerService, LoggerServiceMock>();
 
             services.AddSwaggerGen(setup =>
             {

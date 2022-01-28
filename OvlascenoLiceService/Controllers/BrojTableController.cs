@@ -2,10 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
 using OvlascenoLiceService.Data.Interfaces;
 using OvlascenoLiceService.Entities;
 using OvlascenoLiceService.Entities.Confirmations;
 using OvlascenoLiceService.Models.BrojTable;
+using OvlascenoLiceService.ServiceCalls;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,6 +26,7 @@ namespace OvlascenoLiceService.Controllers
         private IBrojTableRepository _brojTableRepository;
         private LinkGenerator _linkGenerator;
         private IMapper _mapper;
+        private ILoggerService _loggerService;
 
         /// <summary>
         /// Konstruktor kontrolera broj table - DI
@@ -31,11 +34,13 @@ namespace OvlascenoLiceService.Controllers
         /// <param name="brojTableRepository">Repo broj table</param>
         /// <param name="linkGenerator">Link generator za create zahtev</param>
         /// <param name="mapper">AutoMapper</param>
-        public BrojTableController(IBrojTableRepository brojTableRepository, LinkGenerator linkGenerator, IMapper mapper)
+        /// <param name="loggerService">Logger servis</param>
+        public BrojTableController(IBrojTableRepository brojTableRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
         {
             _brojTableRepository = brojTableRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
+            _loggerService = loggerService;
         }
 
         /// <summary>
@@ -54,8 +59,11 @@ namespace OvlascenoLiceService.Controllers
 
             if (brojeviTabli == null || brojeviTabli.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Error, "GetAllBrojTable", "Lista brojeva tabli je prazna ili null.");
                 return NoContent();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetAllBrojTable", "Lista brojeva tabli je uspešno vraćena.");
 
             return Ok(_mapper.Map<List<BrojTableDto>>(brojeviTabli));
         }
@@ -76,8 +84,11 @@ namespace OvlascenoLiceService.Controllers
 
             if (brojTable == null)
             {
+                await _loggerService.Log(LogLevel.Error, "GetBrojTable", "Broj table nije pronađen.");
                 return NotFound();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetBrojTable", "Broj table je uspešno vraćen.");
 
             return Ok(_mapper.Map<BrojTableDto>(brojTable));
         }
@@ -97,8 +108,11 @@ namespace OvlascenoLiceService.Controllers
 
             if (brojeviTabli == null || brojeviTabli.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Error, "GetAllBrojTableByBrojTable", "Lista brojeva tabli je prazna ili null.");
                 return NoContent();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetAllBrojTableByBrojTable", "Lista brojeva tabli je uspešno vraćena za oznaku table.");
 
             return Ok(_mapper.Map<List<BrojTableDto>>(brojeviTabli));
         }
@@ -132,10 +146,13 @@ namespace OvlascenoLiceService.Controllers
 
                 string lokacija = _linkGenerator.GetPathByAction("GetBrojTable", "BrojTable", new { brojTableId = noviBroj.BrojTableId });
 
+                await _loggerService.Log(LogLevel.Information, "CreateBrojTable", "Broj table je uspešno kreiran.");
+
                 return Created(lokacija, _mapper.Map<BrojTableConfirmationDto>(noviBroj));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "CreateBrojTable", "Greška prilikom unosa broja table.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom unosa broja table.");
             }
         }
@@ -161,6 +178,7 @@ namespace OvlascenoLiceService.Controllers
 
                 if (stariBroj == null)
                 {
+                    await _loggerService.Log(LogLevel.Error, "UpdateBrojTable", "Broj table nije pronađen.");
                     return NotFound();
                 }
 
@@ -170,10 +188,13 @@ namespace OvlascenoLiceService.Controllers
                 _mapper.Map(noviBroj, stariBroj);
                 await _brojTableRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "UpdateBrojTable", "Broj table je uspešno izmenjen.");
+
                 return Ok(_mapper.Map<BrojTableDto>(stariBroj));
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "UpdateBrojTable", "Greška prilikom izmene broja table.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom izmene broja table.");
             }
         }
@@ -198,16 +219,20 @@ namespace OvlascenoLiceService.Controllers
 
                 if (brojTable == null)
                 {
+                    await _loggerService.Log(LogLevel.Error, "DeleteBrojTable", "Broj table nije pronađen.");
                     return NotFound();
                 }
 
                 await _brojTableRepository.DeleteBrojTable(brojTableId);
                 await _brojTableRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "DeleteBrojTable", "Broj table je uspešno obrisan.");
+
                 return NoContent();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "DeleteBrojTable", "Greška prilikom brisanja broja table.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom brisanja broja table.");
             }
         }
