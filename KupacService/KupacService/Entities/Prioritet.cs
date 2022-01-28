@@ -8,9 +8,11 @@ namespace KupacService.Entities
 {
     public class Prioritet
     {
+
         [Key]
         public Guid PrioritetId { get; set; } = Guid.NewGuid();
         public string Opis { get; set; }
+        public virtual List<Kupac> Kupci { get; set; }
 
 
 
