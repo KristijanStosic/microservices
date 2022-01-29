@@ -46,7 +46,7 @@ namespace KupacService.Controllers
 
             if(kontaktOsoba == null)
             {
-                return NoContent();
+                return NotFound();
             }
 
             return Ok(_mapper.Map<KontaktOsobaDto>(kontaktOsoba));

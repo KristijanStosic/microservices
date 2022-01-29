@@ -47,7 +47,7 @@ namespace KupacService.Controllers
 
             if(prioritet == null)
             {
-                return NoContent();
+                return NotFound();
             }
 
             return Ok(_mapper.Map<PrioritetDto>(prioritet));
