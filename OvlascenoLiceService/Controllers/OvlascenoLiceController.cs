@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using OvlascenoLiceService.Data.Interfaces;
 using OvlascenoLiceService.Entities;
 using OvlascenoLiceService.Entities.Confirmations;
@@ -70,7 +71,7 @@ namespace OvlascenoLiceService.Controllers
 
             if (ovlascenaLica == null || ovlascenaLica.Count == 0)
             {
-                await _loggerService.Log(LogLevel.Error, "GetAllOvlascenoLice", "Lista ovlašćenih lica je prazna ili null.");
+                await _loggerService.Log(LogLevel.Warning, "GetAllOvlascenoLice", "Lista ovlašćenih lica je prazna ili null.");
                 return NoContent();
             }
 
@@ -114,7 +115,7 @@ namespace OvlascenoLiceService.Controllers
 
             if (ovlascenoLice == null)
             {
-                await _loggerService.Log(LogLevel.Error, "GetOvlascenoLice", "Ovlašćeno lice je null.");
+                await _loggerService.Log(LogLevel.Warning, "GetOvlascenoLice", $"Ovlašćeno lice sa id-em {ovlascenoLiceId} je null.");
                 return NotFound();
             }
 
@@ -130,7 +131,7 @@ namespace OvlascenoLiceService.Controllers
                 var drzavaDto = _drzavaServiceCall.SendGetRequestAsync(url + "drzava/" + ovlascenoLice.DrzavaId).Result;
                 ovlascenoLiceDto.Stanovanje = drzavaDto.NazivDrzave;
             }
-            await _loggerService.Log(LogLevel.Information, "GetOvlascenoLice", "Ovlašćeno lice je uspešno vraćeno.");
+            await _loggerService.Log(LogLevel.Information, "GetOvlascenoLice", $"Ovlašćeno lice sa id-em {ovlascenoLiceId} je uspešno vraćeno.");
 
             return Ok(ovlascenoLiceDto);
         }
@@ -166,13 +167,13 @@ namespace OvlascenoLiceService.Controllers
 
                 string lokacija = _linkGenerator.GetPathByAction("GetOvlascenoLice", "OvlascenoLice", new { ovlascenoLiceId = novoLice.OvlascenoLiceId });
 
-                await _loggerService.Log(LogLevel.Information, "CreateOvlascenoLice", "Ovlašćeno lice je uspešno kreirano.");
+                await _loggerService.Log(LogLevel.Information, "CreateOvlascenoLice", $"Ovlašćeno lice sa vrednostima: {JsonConvert.SerializeObject(ovlascenoLice)} je uspešno kreirano.");
 
                 return Created(lokacija, _mapper.Map<OvlascenoLiceConfirmationDto>(novoLice));
             }
             catch (Exception ex)
             {
-                await _loggerService.Log(LogLevel.Error, "CreateOvlascenoLice", "Greška prilikom unosa ovlašćenog lica.", ex);
+                await _loggerService.Log(LogLevel.Error, "CreateOvlascenoLice", $"Greška prilikom unosa ovlašćenog lica sa vrednostima: {JsonConvert.SerializeObject(ovlascenoLice)}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom unosa ovlašćenog lica.");
             }
         }
@@ -196,10 +197,11 @@ namespace OvlascenoLiceService.Controllers
             try
             {
                 var staroLice = await _ovlascenoLiceRepository.GetOvlascenoLiceById(ovlascenoLice.OvlascenoLiceId);
+                var stareVrednosti = JsonConvert.SerializeObject(staroLice);
 
                 if (staroLice == null)
                 {
-                    await _loggerService.Log(LogLevel.Error, "UpdateOvlascenoLice", "Ovlašćeno lice je null.");
+                    await _loggerService.Log(LogLevel.Warning, "UpdateOvlascenoLice", $"Ovlašćeno lice sa id-em {ovlascenoLice.OvlascenoLiceId} nije pronađeno.");
                     return NotFound();
                 }
 
@@ -207,13 +209,13 @@ namespace OvlascenoLiceService.Controllers
 
                 _mapper.Map(novoLice, staroLice);
                 await _ovlascenoLiceRepository.SaveChangesAsync();
-                await _loggerService.Log(LogLevel.Information, "UpdateOvlascenoLice", "Ovlašćeno lice je uspešno izmenjeno.");
+                await _loggerService.Log(LogLevel.Information, "UpdateOvlascenoLice", $"Ovlašćeno lice sa id-em {ovlascenoLice.OvlascenoLiceId} je uspešno izmenjeno. Stare vrednosti su: {stareVrednosti}");
 
                 return Ok(_mapper.Map<OvlascenoLiceDto>(staroLice));
             }
             catch (Exception ex)
             {
-                await _loggerService.Log(LogLevel.Error, "UpdateOvlascenoLice", "Greška prilikom izmene ovlašćenog lica.", ex);
+                await _loggerService.Log(LogLevel.Error, "UpdateOvlascenoLice", $"Greška prilikom izmene ovlašćenog lica sa id-em {ovlascenoLice.OvlascenoLiceId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom izmene ovlašćenog lica.");
             }
         }
@@ -238,19 +240,19 @@ namespace OvlascenoLiceService.Controllers
 
                 if (ovlascenoLice == null)
                 {
-                    await _loggerService.Log(LogLevel.Error, "DeleteOvlascenoLice", "Ovlašćeno lice je null.");
+                    await _loggerService.Log(LogLevel.Warning, "DeleteOvlascenoLice", $"Ovlašćeno lice sa id-em {ovlascenoLiceId} nije pronađeno.");
                     return NotFound();
                 }
 
                 await _ovlascenoLiceRepository.DeleteOvlascenoLice(ovlascenoLiceId);
                 await _ovlascenoLiceRepository.SaveChangesAsync();
-                await _loggerService.Log(LogLevel.Information, "DeleteOvlascenoLice", "Ovlašćeno lice je uspešno obrisano.");
+                await _loggerService.Log(LogLevel.Information, "DeleteOvlascenoLice", $"Ovlašćeno lice sa id-em {ovlascenoLiceId} je uspešno obrisano. Obrisane vrednosti: {JsonConvert.SerializeObject(ovlascenoLice)}");
 
                 return NoContent();
             }
             catch (Exception ex)
             {
-                await _loggerService.Log(LogLevel.Error, "DeleteOvlascenoLice", "Greška prilikom brisanja ovlašćenog lica.", ex);
+                await _loggerService.Log(LogLevel.Error, "DeleteOvlascenoLice", $"Greška prilikom brisanja ovlašćenog lica sa id-em {ovlascenoLiceId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom brisanja ovlašćenog lica.");
             }
         }
