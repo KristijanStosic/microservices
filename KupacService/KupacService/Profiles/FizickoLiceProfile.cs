@@ -13,7 +13,30 @@ namespace KupacService.Profiles
 
         public FizickoLiceProfile()
         {
-            CreateMap<FizickoLice, FizickoLiceDto>();
+            /*
+            CreateMap<string, Prioritet>()
+                .ForMember(
+                dest=> dest.Opis,
+                opt => opt.MapFrom(src => src));
+            */
+
+            CreateMap<FizickoLice, FizickoLiceDto>()
+                .ForMember(
+                dest => dest.Prioriteti,
+                opt => opt.MapFrom(src => src.Prioriteti.Select(p => p.Opis).ToList())
+                );
+
+            CreateMap<FizickoLiceDto, FizickoLice>()
+                .ForMember(
+                dest => dest.Prioriteti,
+                opt => opt.Ignore());
+            CreateMap<FizickoLice, FizickoLiceConfirmDto>();
+            CreateMap<FizickoLice, FizickoLice>();
+
+            CreateMap<FizickoLiceUpdateDto, FizickoLice>()
+                .ForMember(
+                dest => dest.Prioriteti,
+                opt => opt.Ignore());
         }
     }
 }

@@ -19,7 +19,7 @@ namespace KupacService.Data
         }
         public async Task<FizickoLice> CreateFizickoLice(FizickoLice fizickoLice)
         {
-            await _kupacContext.Kupci.AddAsync(fizickoLice);
+            //await _kupacContext.Kupci.AddAsync(fizickoLice);
             await _kupacContext.FizickaLica.AddAsync(fizickoLice);
             return fizickoLice;
         }
@@ -27,7 +27,7 @@ namespace KupacService.Data
         public async Task DeleteFizickoLice(Guid kupacId)
         {
             var fizickoLice = await GetFizickoLiceById(kupacId);
-            _kupacContext.Kupci.Remove(fizickoLice);
+           // _kupacContext.Kupci.Remove(fizickoLice);
             _kupacContext.FizickaLica.Remove(fizickoLice);
         }
 

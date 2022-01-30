@@ -50,14 +50,7 @@ namespace KupacService.Entities.DataContext
 
             builder.Entity<Prioritet>()
                 .HasData(prioriteti);
-            /*
-            builder.Entity<Prioritet>()
-           .HasData(new
-           {
-               PrioritetId = Guid.Parse("f2b8faa4-732c-4480-8b0a-34d65e483930"),
-               Opis = "Vlasnik zemljišta koje se graniči sazemljištem koje se daje u zakup"
-           });
-            */
+           
 
             builder.Entity<KontaktOsoba>()
                 .HasData(new
