@@ -19,6 +19,8 @@ namespace ParcelaService.Entities.DataContext
         public DbSet<Klasa> Klasa { get; set; }
         public DbSet<Kultura> Kultura { get; set; }
 
+        public DbSet<Obradivost> Obradivost { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ParcelaDB"));
@@ -59,6 +61,23 @@ namespace ParcelaService.Entities.DataContext
                 {
                     KulturaId = Guid.Parse("d89d9175-bdf0-4066-850a-4232318f80bb"),
                     NazivKulture = "Livada"
+                });
+
+            modelBuilder.Entity<Obradivost>()
+                .HasData(new
+                {
+                    ObradivostId = Guid.Parse("1c48c1d4-122b-4bd2-a8fe-188e54c5a88a"),
+                    OpisObradivosti = "Moze se raditi redukovana obrada u odredjenoj meri"
+                },
+                new
+                {
+                    ObradivostId = Guid.Parse("ec9e3d3e-193d-4de8-bdc4-acc3e4bf834d"),
+                    OpisObradivosti = "Ne moze se raditi direktna setva"
+                },
+                new
+                {
+                    ObradivostId = Guid.Parse("0d62386e-e188-49a9-a8e6-492fa14baeb4"),
+                    OpisObradivosti = "Pogodno gajenje vecine kultura"
                 });
         }
     }

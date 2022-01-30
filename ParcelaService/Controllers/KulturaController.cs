@@ -124,7 +124,7 @@ namespace ParcelaService.Controllers
         }
 
         [HttpOptions]
-        public IActionResult etKulturaOptions()
+        public IActionResult GetKulturaOptions()
         {
             Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
             return Ok();
