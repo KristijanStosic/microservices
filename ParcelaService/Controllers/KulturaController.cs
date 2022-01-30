@@ -73,6 +73,7 @@ namespace ParcelaService.Controllers
             
         }
         
+        [HttpPut]
         public async Task<ActionResult<KulturaDto>> UpdateKultura(KulturaUpdateDto kultura)
         {
             try

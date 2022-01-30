@@ -21,6 +21,8 @@ namespace ParcelaService.Entities.DataContext
 
         public DbSet<Obradivost> Obradivost { get; set; }
 
+        public DbSet<Odvodnjavanje> Odvodnjavanje { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ParcelaDB"));
@@ -78,6 +80,23 @@ namespace ParcelaService.Entities.DataContext
                 {
                     ObradivostId = Guid.Parse("0d62386e-e188-49a9-a8e6-492fa14baeb4"),
                     OpisObradivosti = "Pogodno gajenje vecine kultura"
+                });
+
+            modelBuilder.Entity<Odvodnjavanje>()
+                .HasData(new
+                {
+                    OdvodnjavanjeId = Guid.Parse("b2f93ba3-ec00-41af-824e-fcd1f0c60c5c"),
+                    OpisOdvodnjavanja = "Odvodnjavanje na parceli nije potrebno."
+                },
+                new
+                {
+                    OdvodnjavanjeId = Guid.Parse("d3c4ebaa-178c-4d62-afbc-05819e041021"),
+                    OpisOdvodnjavanja = "Odvodnjavanje na parceli nije potrebno."
+                },
+                new
+                {
+                    OdvodnjavanjeId = Guid.Parse("6601b7a7-d1be-4216-9844-8d68d680847e"),
+                    OpisOdvodnjavanja = "Odvodnjavanje na parceli nije potrebno."
                 });
         }
     }

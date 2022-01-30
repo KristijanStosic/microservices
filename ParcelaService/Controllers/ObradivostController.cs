@@ -73,6 +73,7 @@ namespace ParcelaService.Controllers
 
         }
 
+        [HttpPut]
         public async Task<ActionResult<ObradivostDto>> UpdateObradivost(ObradivostUpdateDto obradivost)
         {
             try
