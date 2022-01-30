@@ -23,6 +23,8 @@ namespace ParcelaService.Entities.DataContext
 
         public DbSet<Odvodnjavanje> Odvodnjavanje { get; set; }
 
+        public DbSet<OblikSvojine> OblikSvojine { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ParcelaDB"));
@@ -97,6 +99,18 @@ namespace ParcelaService.Entities.DataContext
                 {
                     OdvodnjavanjeId = Guid.Parse("6601b7a7-d1be-4216-9844-8d68d680847e"),
                     OpisOdvodnjavanja = "Odvodnjavanje na parceli nije potrebno."
+                });
+
+            modelBuilder.Entity<OblikSvojine>()
+                .HasData(new
+                {
+                    OblikSvojineId = Guid.Parse("f5133187-104c-4849-9d53-995e17e51094"),
+                    OpisOblikaSvojine = "Privatna svojina"
+                },
+                new
+                {
+                    OblikSvojineId = Guid.Parse("03e3208e-eb61-40f1-b9d4-36fb3f63e4c6"),
+                    OpisOblikaSvojine = "Zajednicka svojina"
                 });
         }
     }
