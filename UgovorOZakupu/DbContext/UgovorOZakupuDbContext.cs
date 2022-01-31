@@ -14,8 +14,8 @@ namespace UgovorOZakupu.DbContext
         }
 
         public DbSet<Entities.UgovorOZakupu> UgovoriOZakupu { get; set; }
-        public DbSet<TipGarancije> TipoviGarancije  { get; set; }
-        public DbSet<RokDospeca> RokoviDospeca  { get; set; }
+        public DbSet<TipGarancije> TipoviGarancije { get; set; }
+        public DbSet<RokDospeca> RokoviDospeca { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

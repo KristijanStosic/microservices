@@ -1,8 +1,11 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using UgovorOZakupu.Data.TipGarancije;
+using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.DbContext;
 
 namespace UgovorOZakupu
@@ -13,6 +16,11 @@ namespace UgovorOZakupu
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UgovorOZakupuDbContext>();
+         
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            
+            services.AddScoped<ITipGaranceijeRepository, TipGaranceijeRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             
             services.AddControllers();
             services.AddSwaggerGen(c =>
