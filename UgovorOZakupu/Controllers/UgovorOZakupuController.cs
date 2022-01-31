@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using UgovorOZakupu.Data.TipGarancije;
 using UgovorOZakupu.Data.UgovorOZakupu;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.Models.UgovorOZakupu;
@@ -14,13 +15,16 @@ namespace UgovorOZakupu.Controllers
     public class UgovorOZakupuController : ControllerBase
     {
         private readonly IMapper _mapper;
+        private readonly ITipGaranceijeRepository _tipGaranceijeRepository;
         private readonly IUgovorOZakupuRepository _ugovorOZakupuRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public UgovorOZakupuController(IUgovorOZakupuRepository ugovorOZakupuRepository, IUnitOfWork unitOfWork,
+        public UgovorOZakupuController(IUgovorOZakupuRepository ugovorOZakupuRepository,
+            ITipGaranceijeRepository tipGaranceijeRepository, IUnitOfWork unitOfWork,
             IMapper mapper)
         {
             _ugovorOZakupuRepository = ugovorOZakupuRepository;
+            _tipGaranceijeRepository = tipGaranceijeRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -51,6 +55,9 @@ namespace UgovorOZakupu.Controllers
             _ugovorOZakupuRepository.CreateUgovorOZakupu(ugovorOZakupu);
             await _unitOfWork.CompleteAsync();
 
+            ugovorOZakupu.TipGarancije =
+                await _tipGaranceijeRepository.GetTipGarancijeById(ugovorOZakupu.TipGarancijeId);
+
             return CreatedAtAction(
                 "GetUgovorOZakupuById",
                 new {id = ugovorOZakupu.Id},
@@ -62,11 +69,8 @@ namespace UgovorOZakupu.Controllers
         public async Task<IActionResult> UpdateUgovorOZakupu(Guid id,
             [FromBody] UpdateUgovorOZakupuDto ugovorOZakupuDto)
         {
-            if (id != ugovorOZakupuDto.Id)
-            {
-                return BadRequest();
-            }
-            
+            if (id != ugovorOZakupuDto.Id) return BadRequest();
+
             var ugovor = await _ugovorOZakupuRepository.GetUgovorOZakupuById(id);
 
             if (ugovor == null) return NotFound();
