@@ -11,8 +11,12 @@ using System.Threading.Tasks;
 
 namespace JavnoNadmetanjeService.Controllers
 {
+    /// <summary>
+    /// Kontroler za status
+    /// </summary>
     [Route("api/status")]
     [ApiController]
+    [Produces("application/json", "application/xml")]
     public class StatusController : ControllerBase
     {
         private readonly IStatusRepository _statusRepository;
@@ -26,12 +30,22 @@ namespace JavnoNadmetanjeService.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Vraća sve statuse javnog nadmetanja
+        /// </summary>
+        /// <param name="nazivStatusa">Naziv statusa javnog nadmetanja</param>
+        /// <returns>Lista statusa</returns>
+        /// <response code="200">Vraća listu statusa</response>
+        /// <response code="404">Nije pronađen ni jedan status</response>
         [HttpGet]
+        [HttpHead]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<StatusDto>>> GetAllStatus(string nazivStatusa)
         {
             var statusi = await _statusRepository.GetAllStatus(nazivStatusa);
 
-            if(statusi == null || statusi.Count == 0)
+            if (statusi == null || statusi.Count == 0)
             {
                 return NoContent();
             }
@@ -39,7 +53,16 @@ namespace JavnoNadmetanjeService.Controllers
             return Ok(_mapper.Map<List<StatusDto>>(statusi));
         }
 
+        /// <summary>
+        /// Vraća jedan status javnog nadmetanja na osnovu ID-a
+        /// </summary>
+        /// <param name="statusId">ID statusa</param>
+        /// <returns>Status javnog nadmetanja</returns>
+        /// <response code="200">Vraća traženi status</response>
+        /// <response code="404">Nije pronađen status za uneti ID</response>
         [HttpGet("{statusId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<StatusDto>> GetStatus(Guid statusId)
         {
             var status = await _statusRepository.GetStatusById(statusId);
@@ -52,7 +75,24 @@ namespace JavnoNadmetanjeService.Controllers
             return Ok(_mapper.Map<StatusDto>(status));
         }
 
+        /// <summary>
+        /// Kreira novi status javnog nadmetanja
+        /// </summary>
+        /// <param name="status">Model status</param>
+        /// <remarks>
+        /// Primer zahteva za kreiranje novog statusa \
+        /// POST /api/status \
+        /// { \   
+        ///     "NazivStatusa": "Treci krug" \
+        ///} \
+        /// </remarks>
+        /// <returns>Potvrda o kreiranju statusa</returns>
+        /// <response code="200">Vraća kreiran status</response>
+        /// <response code="500">Desila se greška prilikom unosa novog statusa</response>
         [HttpPost]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<StatusDto>> CreateStatus([FromBody] StatusCreationDto status)
         {
             try
@@ -70,7 +110,19 @@ namespace JavnoNadmetanjeService.Controllers
             }
         }
 
+        /// <summary>
+        /// Izmena statusa javnog nadmetanja
+        /// </summary>
+        /// <param name="status">Model status</param>
+        /// <returns>Potvrda o izmeni statusa</returns>
+        /// <response code="200">Izmenjen status</response>
+        /// <response code="404">Nije pronađen status za uneti ID</response>
+        /// <response code="500">Serverska greška tokom izmene statusa</response>
         [HttpPut]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<StatusDto>> UpdateStatus(StatusUpdateDto status)
         {
             try
@@ -95,7 +147,18 @@ namespace JavnoNadmetanjeService.Controllers
             }
         }
 
+        /// <summary>
+        /// Brisanje statusa javnog nadmetanja na osnovu ID-a
+        /// </summary>
+        /// <param name="statusId">ID statusa</param>
+        /// <returns>Status 204 (NoContent)</returns>
+        /// <response code="204">Status je uspešno obrisan</response>
+        /// <response code="404">Nije pronađen status za uneti ID</response>
+        /// <response code="500">Serverska greška tokom brisanja statusa</response>
         [HttpDelete("{statusId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteStatus(Guid statusId)
         {
             try
@@ -119,6 +182,10 @@ namespace JavnoNadmetanjeService.Controllers
             }
         }
 
+        /// <summary>
+        /// Vraća opcije za rad sa statusima javnog nadmetanja
+        /// </summary>
+        /// <returns></returns>
         [HttpOptions]
         public IActionResult GetStatusOptions()
         {

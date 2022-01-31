@@ -11,8 +11,12 @@ using System.Threading.Tasks;
 
 namespace JavnoNadmetanjeService.Controllers
 {
+    /// <summary>
+    /// Kontroler za tip
+    /// </summary>
     [Route("api/tip")]
     [ApiController]
+    [Produces("application/json", "application/xml")]
     public class TipController : ControllerBase
     {
         private readonly ITipRepository _tipRepository;
@@ -26,7 +30,17 @@ namespace JavnoNadmetanjeService.Controllers
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Vraća sve tipove javnog nadmetanja
+        /// </summary>
+        /// <param name="nazivTipa">Naziv tipa javnog nadmetanja</param>
+        /// <returns>Lista tipova</returns>
+        /// <response code="200">Vraća listu tipova</response>
+        /// <response code="404">Nije pronađen ni jedan tip</response>
         [HttpGet]
+        [HttpHead]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<TipDto>>> GetAllTip(string nazivTipa)
         {
             var tipovi = await _tipRepository.GetAllTip(nazivTipa);
@@ -39,7 +53,16 @@ namespace JavnoNadmetanjeService.Controllers
             return Ok(_mapper.Map<List<TipDto>>(tipovi));
         }
 
+        /// <summary>
+        /// Vraća jedan tip javnog nadmetanja na osnovu ID-a
+        /// </summary>
+        /// <param name="tipId">ID tipa</param>
+        /// <returns>Tip javnog nadmetanja</returns>
+        /// <response code="200">Vraća traženi tip</response>
+        /// <response code="404">Nije pronađen tip za uneti ID</response>
         [HttpGet("{tipId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<TipDto>> GetTip(Guid tipId)
         {
             var tip = await _tipRepository.GetTipById(tipId);
@@ -52,7 +75,24 @@ namespace JavnoNadmetanjeService.Controllers
             return Ok(_mapper.Map<TipDto>(tip));
         }
 
+        /// <summary>
+        /// Kreira novi tip javnog nadmetanja
+        /// </summary>
+        /// <param name="tip">Model tip</param>
+        /// <remarks>
+        /// Primer zahteva za kreiranje novog tipa \
+        /// POST /api/tip \
+        /// { \
+        ///     "NazivTipa": "Tip javnog nadmetanja" \
+        ///} \
+        /// </remarks>
+        /// <returns>Potvrda o kreiranju tipa</returns>
+        /// <response code="200">Vraća kreiran tip</response>
+        /// <response code="500">Desila se greška prilikom unosa novog tipa</response>
         [HttpPost]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<TipDto>> CreateTip([FromBody] TipCreationDto tip)
         {
             try
@@ -70,7 +110,19 @@ namespace JavnoNadmetanjeService.Controllers
             }
         }
 
+        /// <summary>
+        /// Izmena tipa javnog nadmetanja
+        /// </summary>
+        /// <param name="tip">Model tip</param>
+        /// <returns>Potvrda o izmeni tipa</returns>
+        /// <response code="200">Izmenjen tip</response>
+        /// <response code="404">Nije pronađen tip za uneti ID</response>
+        /// <response code="500">Serverska greška tokom izmene tipa</response>
         [HttpPut]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<TipDto>> UpdateTip(TipUpdateDto tip)
         {
             try
@@ -95,7 +147,18 @@ namespace JavnoNadmetanjeService.Controllers
             }
         }
 
+        /// <summary>
+        /// Brisanje tipa javnog nadmetanja na osnovu ID-a
+        /// </summary>
+        /// <param name="tipId">ID tipa</param>
+        /// <returns>Status 204 (NoContent)</returns>
+        /// <response code="204">Tip je uspešno obrisan</response>
+        /// <response code="404">Nije pronađen tip za uneti ID</response>
+        /// <response code="500">Serverska greška tokom brisanja tipa</response>
         [HttpDelete("{tipId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteTip(Guid tipId)
         {
             try
@@ -119,6 +182,10 @@ namespace JavnoNadmetanjeService.Controllers
             }
         }
 
+        /// <summary>
+        /// Vraća opcije za rad sa tipovima javnog nadmetanja
+        /// </summary>
+        /// <returns></returns>
         [HttpOptions]
         public IActionResult GetTipOptions()
         {

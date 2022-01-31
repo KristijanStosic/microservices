@@ -1,0 +1,700 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>JavnoNadmetanjeService</name>
+    </assembly>
+    <members>
+        <member name="T:JavnoNadmetanjeService.Controllers.EtapaController">
+            <summary>
+            Kontroler za etapu
+            </summary>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.EtapaController.GetAllEtapa">
+            <summary>
+            Vraća sve etape
+            </summary>
+            <returns>Lista etapa</returns>
+            <response code="200">Vraća listu etapa</response>
+            <response code="404">Nije pronađena ni jedna etapa</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.EtapaController.GetEtapa(System.Guid)">
+            <summary>
+            Vraća jednu etapu na osnovu ID-a
+            </summary>
+            <param name="etapaId">ID etape</param>
+            <returns>Etapa</returns>
+            <response code="200">Vraća traženu etapu</response>
+            <response code="404">Nije pronađena etapa za uneti ID</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.EtapaController.CreateEtapa(JavnoNadmetanjeService.Models.Etapa.EtapaCreationDto)">
+             <summary>
+             Kreira novu etapu
+             </summary>
+             <param name="etapa">Model etapa</param>
+             <remarks>
+             Primer zahteva za kreiranje nove etape \
+             POST /api/etapa \
+             {  \   
+                 "Datum": "2022-01-31T07:25:31.426Z", \
+                 "DanPoRedu": 1, \
+                 "VremePocetka": "12:00", \
+                 "VremeKraja": "14:00", \
+                 "ZavrsenaUspesno": false, \
+                 "JavnoNadmetanjeId": "417d646c-9e90-4515-a068-21689864330a" \
+            } \
+             </remarks>
+             <returns>Potvrda o kreiranju etape</returns>
+             <response code="200">Vraća kreiranu etapu</response>
+             <response code="500">Desila se greška prilikom unosa nove etape</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.EtapaController.UpdateEtapa(JavnoNadmetanjeService.Models.Etapa.EtapaUpdateDto)">
+            <summary>
+            Izmena etape
+            </summary>
+            <param name="etapa">Model etapa</param>
+            <returns>Potvrda o izmeni etape</returns>
+            <response code="200">Izmenjena etapa</response>
+            <response code="404">Nije pronađena etapa za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene etape</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.EtapaController.DeleteEtapa(System.Guid)">
+            <summary>
+            Brisanje etape na osnovu ID-a
+            </summary>
+            <param name="etapaId">ID etape</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Etapa je uspešno obrisana</response>
+            <response code="404">Nije pronađena etapa za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja etape</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.EtapaController.GetEtapaOptions">
+            <summary>
+            Vraća opcije za rad sa etapama
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Controllers.JavnoNadmetanjeController">
+            <summary>
+            Kontroler za javno nadmetanje
+            </summary>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.JavnoNadmetanjeController.GetAllJavnoNadmetanje">
+            <summary>
+            Vraća sva javna nadmetanja
+            </summary>
+            <returns>Lista javnih nadmetanja</returns>
+            <response code="200">Vraća listu javnih nadmetanja</response>
+            <response code="404">Nije pronađeno ni jedno javno nadmetanje</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.JavnoNadmetanjeController.GetJavnoNadmetanje(System.Guid)">
+            <summary>
+            Vraća jedno javno nadmetanje na osnovu ID-a
+            </summary>
+            <param name="javnoNadmetanjeId">ID javnog nadmetanja</param>
+            <returns>Javno nadmetanje</returns>
+            <response code="200">Vraća traženo javno nadmetanje</response>
+            <response code="404">Nije pronađeno javno nadmetanje za uneti ID</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.JavnoNadmetanjeController.CreateJavnoNadmetanje(JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto)">
+             <summary>
+             Kreira novo javno nadmetanje
+             </summary>
+             <param name="javnoNadmetanje">Model javnog nadmetanja</param>
+             <remarks>
+             Primer zahteva za kreiranje novog javnog nadmetanja \
+             POST /api/javnoNadmetanje \
+             {  \ 
+                 "PocetnaCenaHektar": 550.00000000, \
+                 "PeriodZakupa": 5, \ 
+                 "IzlicitiranaCena": 750, \
+                 "Krug": 1, \
+                 "Izuzeto": false, \
+                 "StatusId": "3B7EE65F-EB68-4A32-AE69-DF7FDF463188", \
+                 "TipId": "D6D56B98-3672-4BDB-A0CB-E916FFE053C8", \
+                 "KupacId": "febd1c29-90e7-40c2-97f3-1e88495fe98d", \
+                 "AdresaId": "37371ef6-4f25-48b3-9bf2-fe72a81f88d2" \
+            } \
+             </remarks>
+             <returns>Potvrda o kreiranju javnog nadmetanja</returns>
+             <response code="200">Vraća kreirano javno nadmetanje</response>
+             <response code="500">Desila se greška prilikom unosa novog javnog nadmetanja</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.JavnoNadmetanjeController.UpdateJavnoNadmetanje(JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto)">
+            <summary>
+            Izmena javnog nadmetanja
+            </summary>
+            <param name="javnoNadmetanje">Model javno nadmetanje</param>
+            <returns>Potvrda o izmeni javnog nadmetanja</returns>
+            <response code="200">Izmenjeno javno nadmetanje</response>
+            <response code="404">Nije pronađeno javno nadmetanje za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene javnog nadmetanja</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.JavnoNadmetanjeController.DeleteJavnoNadmetanje(System.Guid)">
+            <summary>
+            Brisanje javnog nadmetanja na osnovu ID-a
+            </summary>
+            <param name="javnoNadmetanjeId">ID javnog nadmetanja</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Javno nadmetanje je uspešno obrisano</response>
+            <response code="404">Nije pronađeno javno nadmetanje za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja javnog nadmetanja</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.JavnoNadmetanjeController.GetJavnoNadmetanjeOptions">
+            <summary>
+            Vraća opcije za rad sa javnim nadmetanjima
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Controllers.StatusController">
+            <summary>
+            Kontroler za status
+            </summary>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.StatusController.GetAllStatus(System.String)">
+            <summary>
+            Vraća sve statuse javnog nadmetanja
+            </summary>
+            <param name="nazivStatusa">Naziv statusa javnog nadmetanja</param>
+            <returns>Lista statusa</returns>
+            <response code="200">Vraća listu statusa</response>
+            <response code="404">Nije pronađen ni jedan status</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.StatusController.GetStatus(System.Guid)">
+            <summary>
+            Vraća jedan status javnog nadmetanja na osnovu ID-a
+            </summary>
+            <param name="statusId">ID statusa</param>
+            <returns>Status javnog nadmetanja</returns>
+            <response code="200">Vraća traženi status</response>
+            <response code="404">Nije pronađen status za uneti ID</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.StatusController.CreateStatus(JavnoNadmetanjeService.Models.Status.StatusCreationDto)">
+             <summary>
+             Kreira novi status javnog nadmetanja
+             </summary>
+             <param name="status">Model status</param>
+             <remarks>
+             Primer zahteva za kreiranje novog statusa \
+             POST /api/status \
+             { \   
+                 "NazivStatusa": "Treci krug" \
+            } \
+             </remarks>
+             <returns>Potvrda o kreiranju statusa</returns>
+             <response code="200">Vraća kreiran status</response>
+             <response code="500">Desila se greška prilikom unosa novog statusa</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.StatusController.UpdateStatus(JavnoNadmetanjeService.Models.Status.StatusUpdateDto)">
+            <summary>
+            Izmena statusa javnog nadmetanja
+            </summary>
+            <param name="status">Model status</param>
+            <returns>Potvrda o izmeni statusa</returns>
+            <response code="200">Izmenjen status</response>
+            <response code="404">Nije pronađen status za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene statusa</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.StatusController.DeleteStatus(System.Guid)">
+            <summary>
+            Brisanje statusa javnog nadmetanja na osnovu ID-a
+            </summary>
+            <param name="statusId">ID statusa</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Status je uspešno obrisan</response>
+            <response code="404">Nije pronađen status za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja statusa</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.StatusController.GetStatusOptions">
+            <summary>
+            Vraća opcije za rad sa statusima javnog nadmetanja
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Controllers.TipController">
+            <summary>
+            Kontroler za tip
+            </summary>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.TipController.GetAllTip(System.String)">
+            <summary>
+            Vraća sve tipove javnog nadmetanja
+            </summary>
+            <param name="nazivTipa">Naziv tipa javnog nadmetanja</param>
+            <returns>Lista tipova</returns>
+            <response code="200">Vraća listu tipova</response>
+            <response code="404">Nije pronađen ni jedan tip</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.TipController.GetTip(System.Guid)">
+            <summary>
+            Vraća jedan tip javnog nadmetanja na osnovu ID-a
+            </summary>
+            <param name="tipId">ID tipa</param>
+            <returns>Tip javnog nadmetanja</returns>
+            <response code="200">Vraća traženi tip</response>
+            <response code="404">Nije pronađen tip za uneti ID</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.TipController.CreateTip(JavnoNadmetanjeService.Models.Tip.TipCreationDto)">
+             <summary>
+             Kreira novi tip javnog nadmetanja
+             </summary>
+             <param name="tip">Model tip</param>
+             <remarks>
+             Primer zahteva za kreiranje novog tipa \
+             POST /api/tip \
+             { \
+                 "NazivTipa": "Tip javnog nadmetanja" \
+            } \
+             </remarks>
+             <returns>Potvrda o kreiranju tipa</returns>
+             <response code="200">Vraća kreiran tip</response>
+             <response code="500">Desila se greška prilikom unosa novog tipa</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.TipController.UpdateTip(JavnoNadmetanjeService.Models.Tip.TipUpdateDto)">
+            <summary>
+            Izmena tipa javnog nadmetanja
+            </summary>
+            <param name="tip">Model tip</param>
+            <returns>Potvrda o izmeni tipa</returns>
+            <response code="200">Izmenjen tip</response>
+            <response code="404">Nije pronađen tip za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene tipa</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.TipController.DeleteTip(System.Guid)">
+            <summary>
+            Brisanje tipa javnog nadmetanja na osnovu ID-a
+            </summary>
+            <param name="tipId">ID tipa</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Tip je uspešno obrisan</response>
+            <response code="404">Nije pronađen tip za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja tipa</response>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Controllers.TipController.GetTipOptions">
+            <summary>
+            Vraća opcije za rad sa tipovima javnog nadmetanja
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:JavnoNadmetanjeService.Entities.JavnoNadmetanjeContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Unos inicijalnih podataka u bazu
+            </summary>
+            <param name="modelBuilder">Omogucava podesavanja/unos podataka pri kreiranju modela</param>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.Etapa.EtapaConfirmationDto">
+            <summary>
+            Model za potvrdu kreiranja etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaConfirmationDto.Datum">
+            <summary>
+            Datum odrzavanja etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaConfirmationDto.DanPoRedu">
+            <summary>
+            Dan po redu u okviru javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaConfirmationDto.VremePocetka">
+            <summary>
+            Vreme pocetka etapee
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.Etapa.EtapaCreationDto">
+            <summary>
+            Model za kreiranje etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaCreationDto.Datum">
+            <summary>
+            Datum pocetka etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaCreationDto.DanPoRedu">
+            <summary>
+            Dan po redu etape u okviru javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaCreationDto.VremePocetka">
+            <summary>
+            Vreme pocetka etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaCreationDto.VremeKraja">
+            <summary>
+            Vreme kraja etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaCreationDto.ZavrsenaUspesno">
+            <summary>
+            Da li je etapa zavrsena uspesno
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaCreationDto.JavnoNadmetanjeId">
+            <summary>
+            ID javnog nadmetanja u okviru kog se nalazi etapa
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.Etapa.EtapaDto">
+            <summary>
+            Model za etapu
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaDto.EtapaId">
+            <summary>
+            ID etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaDto.Datum">
+            <summary>
+            Datum odrzavanja etape u okviru javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaDto.DanPoRedu">
+            <summary>
+            Dan po redu etape u okviru javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaDto.VremePocetka">
+            <summary>
+            Vreme pocetka etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaDto.VremeKraja">
+            <summary>
+            Vreme kraja etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaDto.ZavrsenaUspesno">
+            <summary>
+            Da li je etapa zavrsena uspesno
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.Etapa.EtapaUpdateDto">
+            <summary>
+            Model za izmenu etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaUpdateDto.EtapaId">
+            <summary>
+            ID etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaUpdateDto.DanPoRedu">
+            <summary>
+            Dan po redu etape u okviru javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaUpdateDto.VremePocetka">
+            <summary>
+            Vreme pocetka etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaUpdateDto.VremeKraja">
+            <summary>
+            Vreme kraja etape
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaUpdateDto.ZavrsenaUspesno">
+            <summary>
+            Da li je etapa zavrsena uspesno
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Etapa.EtapaUpdateDto.JavnoNadmetanjeId">
+            <summary>
+            ID javnog nadmetanja u okviru kog se nalazi etapa
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeConfirmationDto">
+            <summary>
+            Model za potvrdu kreiranja javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeConfirmationDto.PocetnaCenaHektar">
+            <summary>
+            Pocetna cena po hektaru
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeConfirmationDto.PeriodZakupa">
+            <summary>
+            Period zakupa u godinama
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeConfirmationDto.Krug">
+            <summary>
+            Krug po redu
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeConfirmationDto.VisinaDopuneDepozita">
+            <summary>
+            Visina dopuna depozita
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto">
+            <summary>
+            Model za potvrdu kreiranja javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.PocetnaCenaHektar">
+            <summary>
+            Pocetna cena po hektaru
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.PeriodZakupa">
+            <summary>
+            Period zakupa u godinama
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.IzlicitiranaCena">
+            <summary>
+            Izlicitirana cena
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.BrojUcesnika">
+            <summary>
+            Broj ucesnika na javnom nadmetanju
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.Krug">
+            <summary>
+            Krug po redu
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.Izuzeto">
+            <summary>
+            Da li je javno nadmetanje izuzeto
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.StatusId">
+            <summary>
+            ID statusa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.TipId">
+            <summary>
+            ID tipa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.KupacId">
+            <summary>
+            ID najboljeg kupca javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.AdresaId">
+            <summary>
+            ID mesta odrzavanja javnog nadmetanja
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto">
+            <summary>
+            Model javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.JavnoNadmetanjeId">
+            <summary>
+            ID javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.PocetnaCenaHektar">
+            <summary>
+            Pocetna cena po hektaru
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.VisinaDopuneDepozita">
+            <summary>
+            Visina dopune depozita
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.PeriodZakupa">
+            <summary>
+            Period zakupa u godinama
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.IzlicitiranaCena">
+            <summary>
+            Izlicitirana cena
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.BrojUcesnika">
+            <summary>
+            Broj ucesnika na javnom nadmetanju
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Krug">
+            <summary>
+            Krug po redu
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Izuzeto">
+            <summary>
+            Da li je javno nadmetanje izuzeto
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Status">
+            <summary>
+            ID statusa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Tip">
+            <summary>
+            ID tipa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Etape">
+            <summary>
+            Lista etapa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Adresa">
+            <summary>
+            Adresa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Kupac">
+            <summary>
+            Najbolji kupac u javnom nadmetanju
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto">
+            <summary>
+            Model za izmenu javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.JavnoNadmetanjeId">
+            <summary>
+            ID javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.PocetnaCenaHektar">
+            <summary>
+            Pocetna cena po hektaru
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.PeriodZakupa">
+            <summary>
+            Period zakupa u godinama
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.IzlicitiranaCena">
+            <summary>
+            Izlicitirana cena
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.BrojUcesnika">
+            <summary>
+            Broj ucesnika na javnom nadmetanju
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.Krug">
+            <summary>
+            Krug po redu
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.Izuzeto">
+            <summary>
+            Da li je javno nadmetanje izuzeto
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.StatusId">
+            <summary>
+            ID statusa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.TipId">
+            <summary>
+            ID tipa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.KupacId">
+            <summary>
+            ID najboljeg kupca javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.AdresaId">
+            <summary>
+            ID mesta odrzavanja javnog nadmetanja
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.Status.StatusCreationDto">
+            <summary>
+            Model za kreiranje statusa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Status.StatusCreationDto.NazivStatusa">
+            <summary>
+            Naziv statusa javnog nadmetanjaa
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.Status.StatusDto">
+            <summary>
+            Model za status javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Status.StatusDto.StatusId">
+            <summary>
+            Id statusa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Status.StatusDto.NazivStatusa">
+            <summary>
+            Naziv statusa javnog nadmetanjaa
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.Status.StatusUpdateDto">
+            <summary>
+            Model za izmenu statusa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Status.StatusUpdateDto.StatusId">
+            <summary>
+            Id statusa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Status.StatusUpdateDto.NazivStatusa">
+            <summary>
+            Naziv statusa javnog nadmetanjaa
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.Tip.TipCreationDto">
+            <summary>
+            Model za kreiranje tipa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Tip.TipCreationDto.NazivTipa">
+            <summary>
+            Naziv tipa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.Tip.TipDto">
+            <summary>
+            Model za tip javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Tip.TipDto.TipId">
+            <summary>
+            Id tipa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Tip.TipDto.NazivTipa">
+            <summary>
+            Naziv tipa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="T:JavnoNadmetanjeService.Models.Tip.TipUpdateDto">
+            <summary>
+            Model za izmenu tipa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Tip.TipUpdateDto.TipId">
+            <summary>
+            Id tipa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.Tip.TipUpdateDto.NazivTipa">
+            <summary>
+            Naziv tipa javnog nadmetanja
+            </summary>
+        </member>
+    </members>
+</doc>
