@@ -2,9 +2,12 @@
 using JavnoNadmetanjeService.Data.Interfaces;
 using JavnoNadmetanjeService.Entities;
 using JavnoNadmetanjeService.Models.Tip;
+using JavnoNadmetanjeService.ServiceCalls;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -22,12 +25,14 @@ namespace JavnoNadmetanjeService.Controllers
         private readonly ITipRepository _tipRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
-
-        public TipController(ITipRepository tipRepository, LinkGenerator linkGenerator, IMapper mapper)
+        private readonly ILoggerService _loggerService;
+        
+        public TipController(ITipRepository tipRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
         {
             _tipRepository = tipRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
+            _loggerService = loggerService;
         }
 
         /// <summary>
@@ -47,9 +52,12 @@ namespace JavnoNadmetanjeService.Controllers
 
             if (tipovi == null || tipovi.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetAllTip", "Lista tipova javnog nadmetanja je prazna ili null.");
                 return NoContent();
             }
 
+            await _loggerService.Log(LogLevel.Information, "GetAllTip", "Lista tipova javnog nadmetanja je uspešno vraćena.");
+            
             return Ok(_mapper.Map<List<TipDto>>(tipovi));
         }
 
@@ -69,8 +77,11 @@ namespace JavnoNadmetanjeService.Controllers
 
             if (tip == null)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetTip", $"Tip javnog nadmetanja sa id-em {tipId} nije pronađen.");
                 return NotFound();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetTip", $"Tip javnog nadmetanja sa id-em {tipId} je uspešno vraćen.");
 
             return Ok(_mapper.Map<TipDto>(tip));
         }
@@ -101,12 +112,15 @@ namespace JavnoNadmetanjeService.Controllers
                 await _tipRepository.SaveChangesAsync();
 
                 string lokacija = _linkGenerator.GetPathByAction("GetTip", "Tip", new { tipId = noviTip.TipId });
+                
+                await _loggerService.Log(LogLevel.Information, "CreateTip", $"Tip javnog nadmetanja sa vrednostima: {JsonConvert.SerializeObject(tip)} je uspešno kreiran.");
 
                 return Created(lokacija, _mapper.Map<TipDto>(noviTip));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom kreiranja tipa");
+                await _loggerService.Log(LogLevel.Error, "CreateTip", $"Greška prilikom unosa tipa javnog nadmetanja sa vrednostima: {JsonConvert.SerializeObject(tip)}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom kreiranja tipa");
             }
         }
 
@@ -128,9 +142,11 @@ namespace JavnoNadmetanjeService.Controllers
             try
             {
                 var stariTip = await _tipRepository.GetTipById(tip.TipId);
+                var stareVrednosti = JsonConvert.SerializeObject(stariTip);
 
                 if (stariTip == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateTip", $"Tip javnog nadmetanja sa id-em {tip.TipId} nije pronađen.");
                     return NotFound();
                 }
 
@@ -139,11 +155,14 @@ namespace JavnoNadmetanjeService.Controllers
                 _mapper.Map(noviTip, stariTip);
                 await _tipRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "UpdateTip", $"Tip javnog nadmetanja sa id-em {tip.TipId} je uspešno izmenjen. Stare vrednosti su: {stareVrednosti}");
+
                 return Ok(_mapper.Map<TipDto>(noviTip));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom izmene tipa");
+                await _loggerService.Log(LogLevel.Error, "UpdateTip", $"Greška prilikom izmene tipa javnog nadmetanja sa id-em {tip.TipId}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom izmene tipa");
             }
         }
 
@@ -167,18 +186,22 @@ namespace JavnoNadmetanjeService.Controllers
 
                 if (tip == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "DeleteTip", $"Tip javnog nadmetanja sa id-em {tipId} nije pronađen.");
                     return NotFound();
                 }
 
                 await _tipRepository.DeleteTip(tipId);
                 await _tipRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "DeleteTip", $"Tip javnog nadmetanja sa id-em {tipId} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(tip)}");
+
                 return NoContent();
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom brisanja tipa");
+                await _loggerService.Log(LogLevel.Error, "DeleteTip", $"Greška prilikom brisanja tipa javnog nadmetanja sa id-em {tipId}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom brisanja tipa");
             }
         }
 

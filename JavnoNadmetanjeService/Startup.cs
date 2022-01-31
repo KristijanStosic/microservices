@@ -80,6 +80,7 @@ namespace JavnoNadmetanjeService
             services.AddScoped<IJavnoNadmetanjeRepository, JavnoNadmetanjeRepository>();
             services.AddScoped<IServiceCall<AdresaDto>, ServiceCallAdresaMock<AdresaDto>>();
             //services.AddScoped<IServiceCall<AdresaDto>, ServiceCall<AdresaDto>>();
+            services.AddScoped<ILoggerService, LoggerServiceMock>();
 
             services.AddSwaggerGen(setup =>
             {

@@ -1,4 +1,5 @@
 ﻿using JavnoNadmetanjeService.Models.Exceptions;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -7,6 +8,13 @@ namespace JavnoNadmetanjeService.ServiceCalls
 {
     public class ServiceCall<T> : IServiceCall<T>
     {
+        private readonly ILoggerService _loggerService;
+
+        public ServiceCall(ILoggerService loggerService)
+        {
+            _loggerService = loggerService;
+        }
+
         public async Task<T> SendGetRequestAsync(string url)
         {
             using var httpClient = new HttpClient();
@@ -27,7 +35,9 @@ namespace JavnoNadmetanjeService.ServiceCalls
                 return JsonConvert.DeserializeObject<T>(content);
             }
 
-            throw new ServiceCallException("Desio se problem pri komunikaciji sa drugim mikroservisom");
+            var ex = new ServiceCallException("Desio se problem pri komunikaciji sa drugim mikroservisom");
+            await _loggerService.Log(LogLevel.Error, "SendGetRequestAsync", $"Greška prilikom komunikacije sa drugim servisom iz servisa Javno Nadmetanje. Ciljani url: {url}", ex);
+            throw ex;
         }
     }
 }

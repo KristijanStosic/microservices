@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -28,14 +30,16 @@ namespace JavnoNadmetanjeService.Controllers
         private readonly IMapper _mapper;
         private readonly IServiceCall<AdresaDto> _adresaService;
         private readonly IConfiguration _configuration;
+        private readonly ILoggerService _loggerService;
 
-        public JavnoNadmetanjeController(IJavnoNadmetanjeRepository javnoNadmetanjeRepository, LinkGenerator linkGenerator, IMapper mapper, IServiceCall<AdresaDto> adresaService, IConfiguration configuration)
+        public JavnoNadmetanjeController(IJavnoNadmetanjeRepository javnoNadmetanjeRepository, LinkGenerator linkGenerator, IMapper mapper, IServiceCall<AdresaDto> adresaService, IConfiguration configuration, ILoggerService loggerService)
         {
             _javnoNadmetanjeRepository = javnoNadmetanjeRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
             _adresaService = adresaService;
             _configuration = configuration;
+            _loggerService = loggerService;
         }
 
         /// <summary>
@@ -54,6 +58,7 @@ namespace JavnoNadmetanjeService.Controllers
 
             if (javnaNadmetanja == null || javnaNadmetanja.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetAllJavnoNadmetanje", "Lista javnih nadmetanja je prazna ili null.");
                 return NoContent();
             }
 
@@ -70,6 +75,8 @@ namespace JavnoNadmetanjeService.Controllers
                 }
                 javnaNadmetanjaDto.Add(javnoNadDto);
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetAllJavnoNadmetanje", "Lista javnih nadmetanja je uspešno vraćena.");
 
             return Ok(javnaNadmetanjaDto);
         }
@@ -90,6 +97,7 @@ namespace JavnoNadmetanjeService.Controllers
 
             if (javnoNadmetanje == null)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} nije pronađeno.");
                 return NotFound();
             }
 
@@ -100,6 +108,8 @@ namespace JavnoNadmetanjeService.Controllers
                 var adresaDto = _adresaService.SendGetRequestAsync(url + javnoNadmetanje.AdresaId).Result;
                 javnoNadmetanjeDto.Adresa = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} je uspešno vraćeno.");
 
             return Ok(javnoNadmetanjeDto);
         }
@@ -139,11 +149,14 @@ namespace JavnoNadmetanjeService.Controllers
 
                 string lokacija = _linkGenerator.GetPathByAction("GetJavnoNadmetanje", "JavnoNadmetanje", new { javnoNadmetanjeId = novoNadmetanje.JavnoNadmetanjeId });
 
+                await _loggerService.Log(LogLevel.Information, "CreateJavnoNadmetanje", $"Javno nadmetanje sa vrednostima: {JsonConvert.SerializeObject(javnoNadmetanje)} je uspešno kreirano.");
+
                 return Created(lokacija, _mapper.Map<JavnoNadmetanjeConfirmationDto>(novoNadmetanje));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom unosa javnog nadmetanja");
+                await _loggerService.Log(LogLevel.Error, "CreateJavnoNadmetanje", $"Greška prilikom unosa javnog nadmetanja sa vrednostima: {JsonConvert.SerializeObject(javnoNadmetanje)}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom unosa javnog nadmetanja");
             }
         }
 
@@ -165,9 +178,11 @@ namespace JavnoNadmetanjeService.Controllers
             try
             {
                 var staroNadmetanje = await _javnoNadmetanjeRepository.GetJavnoNadmetanjeById(javnoNadmetanje.JavnoNadmetanjeId);
+                var stareVrednosti = JsonConvert.SerializeObject(javnoNadmetanje);
 
                 if (staroNadmetanje == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanje.JavnoNadmetanjeId} nije pronađeno.");
                     return NotFound();
                 }
 
@@ -176,11 +191,14 @@ namespace JavnoNadmetanjeService.Controllers
                 _mapper.Map(novoNadmetanje, staroNadmetanje);
                 await _javnoNadmetanjeRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "UpdateJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanje.JavnoNadmetanjeId} je uspešno izmenjeno. Stare vrednosti su: {stareVrednosti}");
+
                 return Ok(_mapper.Map<JavnoNadmetanjeDto>(staroNadmetanje));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom izmene javnog nadmetanja");
+                await _loggerService.Log(LogLevel.Error, "UpdateJavnoNadmetanje", $"Greška prilikom izmene javnog nadmetanja sa id-em {javnoNadmetanje.JavnoNadmetanjeId}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom izmene javnog nadmetanja");
             }
         }
 
@@ -204,18 +222,22 @@ namespace JavnoNadmetanjeService.Controllers
 
                 if (javnoNadmetanje == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "DeleteJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} nije pronađeno.");
                     return NotFound();
                 }
 
                 await _javnoNadmetanjeRepository.DeleteJavnoNadmetanje(javnoNadmetanjeId);
                 await _javnoNadmetanjeRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "DeleteJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} je uspešno obrisano. Obrisane vrednosti: {JsonConvert.SerializeObject(javnoNadmetanje)}");
+
                 return NoContent();
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom brisanja javnog nadmetanja");
+                await _loggerService.Log(LogLevel.Error, "DeleteJavnoNadmetanje", $"Greška prilikom brisanja javnog nadmetanja sa id-em {javnoNadmetanjeId}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom brisanja javnog nadmetanja");
             }
         }
 

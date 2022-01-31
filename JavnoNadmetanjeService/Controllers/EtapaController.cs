@@ -3,9 +3,12 @@ using JavnoNadmetanjeService.Data.Interfaces;
 using JavnoNadmetanjeService.Entities;
 using JavnoNadmetanjeService.Entities.Confirmations;
 using JavnoNadmetanjeService.Models.Etapa;
+using JavnoNadmetanjeService.ServiceCalls;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -23,12 +26,14 @@ namespace JavnoNadmetanjeService.Controllers
         private readonly IEtapaRepository _etapaRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
+        private readonly ILoggerService _loggerService;
 
-        public EtapaController(IEtapaRepository etapaRepository, LinkGenerator linkGenerator, IMapper mapper)
+        public EtapaController(IEtapaRepository etapaRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
         {
             _etapaRepository = etapaRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
+            _loggerService = loggerService;
         }
 
         /// <summary>
@@ -47,8 +52,11 @@ namespace JavnoNadmetanjeService.Controllers
 
             if (etape == null || etape.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetAllEtapa", "Lista etapa je prazna ili null.");
                 return NoContent();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetAllEtapa", "Lista etapa je uspešno vraćena.");
 
             return Ok(_mapper.Map<List<EtapaDto>>(etape));
         }
@@ -69,8 +77,11 @@ namespace JavnoNadmetanjeService.Controllers
 
             if (etapa == null)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetEtapa", $"Etapa sa id-em {etapaId} nije pronađena.");
                 return NotFound();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetEtapa", $"Etapa sa id-em {etapaId} je uspešno vraćena.");
 
             return Ok(_mapper.Map<EtapaDto>(etapa));
         }
@@ -107,7 +118,7 @@ namespace JavnoNadmetanjeService.Controllers
 
                 if (!proveraValidnosti)
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Vec postoji etapa u okviru ovog javnog nadmetanja koja je uspesno zavrsena!");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Već postoji etapa u okviru ovog javnog nadmetanja koja je uspešno završena!");
                 }
 
                 EtapaConfirmation novaEtapa = await _etapaRepository.CreateEtapa(mapiranaEtapa);
@@ -115,11 +126,14 @@ namespace JavnoNadmetanjeService.Controllers
 
                 string lokacija = _linkGenerator.GetPathByAction("GetEtapa", "Etapa", new { etapaId = novaEtapa.EtapaId });
 
+                await _loggerService.Log(LogLevel.Information, "CreateEtapa", $"Etapa sa vrednostima: {JsonConvert.SerializeObject(etapa)} je uspešno kreirana.");
+
                 return Created(lokacija, _mapper.Map<EtapaConfirmationDto>(novaEtapa));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom unosa etape");
+                await _loggerService.Log(LogLevel.Error, "CreateEtapa", $"Greška prilikom unosa etape sa vrednostima: {JsonConvert.SerializeObject(etapa)}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom unosa etape");
             }
         }
 
@@ -141,9 +155,11 @@ namespace JavnoNadmetanjeService.Controllers
             try
             {
                 var staraEtapa = await _etapaRepository.GetEtapaById(etapa.EtapaId);
+                var stareVrednosti = JsonConvert.SerializeObject(staraEtapa);
 
                 if (staraEtapa == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateEtapa", $"Etapa sa id-em {etapa.EtapaId} nije pronađena.");
                     return NotFound();
                 }
 
@@ -152,11 +168,14 @@ namespace JavnoNadmetanjeService.Controllers
                 _mapper.Map(novaEtapa, staraEtapa);
                 await _etapaRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "UpdateEtapa", $"Etapa sa id-em {etapa.EtapaId} je uspešno izmenjena. Stare vrednosti su: {stareVrednosti}");
+
                 return Ok(_mapper.Map<EtapaDto>(staraEtapa));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom izmene etape");
+                await _loggerService.Log(LogLevel.Error, "UpdateEtapa", $"Greška prilikom izmene etape sa id-em {etapa.EtapaId}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom izmene etape");
             }
         }
 
@@ -180,18 +199,22 @@ namespace JavnoNadmetanjeService.Controllers
 
                 if (etapa == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "DeleteEtapa", $"Etapa sa id-em {etapaId} nije pronađena.");
                     return NotFound();
                 }
 
                 await _etapaRepository.DeleteEtapa(etapaId);
                 await _etapaRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "DeleteEtapa", $"Etapa sa id-em {etapaId} je uspešno obrisana. Obrisane vrednosti: {JsonConvert.SerializeObject(etapa)}");
+
                 return NoContent();
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom brisanja etape");
+                await _loggerService.Log(LogLevel.Error, "DeleteEtapa", $"Greška prilikom brisanja etape sa id-em {etapaId}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom brisanja etape");
             }
         }
 
