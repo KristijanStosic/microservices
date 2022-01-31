@@ -14,17 +14,17 @@ namespace UgovorOZakupu.Controllers
     [ApiController]
     public class TipGarancijeController : ControllerBase
     {
-        private readonly IMapper _mapper;
         private readonly ITipGaranceijeRepository _tipGaranceijeRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public TipGarancijeController(IMapper mapper, ITipGaranceijeRepository tipGaranceijeRepository, IUnitOfWork unitOfWork)
+        public TipGarancijeController(ITipGaranceijeRepository tipGaranceijeRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _mapper = mapper;
             _tipGaranceijeRepository = tipGaranceijeRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
-        
+
         [HttpGet]
         public async Task<ActionResult<List<TipGarancijeDto>>> GetAllTipGarancije()
         {

@@ -15,7 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Models\RokDospeca" />
       <Folder Include="Models\UgovorOZakupu" />
     </ItemGroup>
 

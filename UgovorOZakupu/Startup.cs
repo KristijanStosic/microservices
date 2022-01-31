@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using UgovorOZakupu.Data.RokDospeca;
 using UgovorOZakupu.Data.TipGarancije;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.DbContext;
@@ -18,10 +19,11 @@ namespace UgovorOZakupu
             services.AddDbContext<UgovorOZakupuDbContext>();
          
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-            
-            services.AddScoped<ITipGaranceijeRepository, TipGaranceijeRepository>();
+
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            
+            services.AddScoped<ITipGaranceijeRepository, TipGaranceijeRepository>();
+            services.AddScoped<IRokDospecaRepository, RokDospecaRepository>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

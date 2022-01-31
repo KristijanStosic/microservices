@@ -9,5 +9,8 @@ namespace UgovorOZakupu.Entities
         public Guid Id { get; set; } = Guid.NewGuid();
 
         public int Rok { get; set; }
+
+        public Guid UgovorOZakupuId { get; set; }
+        public UgovorOZakupu UgovorOZakupu { get; set; }
     }
 }
