@@ -59,6 +59,11 @@ namespace UgovorOZakupu.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateRokDospeca(Guid id, [FromBody] UpdateRokDospecaDto rokDospecaDto)
         {
+            if (id != rokDospecaDto.Id)
+            {
+                return BadRequest();
+            }
+            
             var rokDospeca = await _rokDospecaRepository.GetRokDospecaById(id);
 
             if (rokDospeca == null) return NotFound();

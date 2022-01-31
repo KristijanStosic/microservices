@@ -59,13 +59,18 @@ namespace UgovorOZakupu.Controllers
         }
         
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> UpdateTipGarancije(Guid id, [FromBody] TipGarancijeDto tipGarancijeDto)
+        public async Task<IActionResult> UpdateTipGarancije(Guid id, [FromBody] UpdateTipGarancijeDto tipGarancijeDto)
         {
+            if (id != tipGarancijeDto.Id)
+            {
+                return BadRequest();
+            }
+            
             var tipGarancije = await _tipGaranceijeRepository.GetTipGarancijeById(id);
 
             if (tipGarancije == null) return NotFound();
 
-            _mapper.Map(tipGarancijeDto, tipGarancije, typeof(TipGarancijeDto), typeof(TipGarancije));
+            _mapper.Map(tipGarancijeDto, tipGarancije, typeof(UpdateTipGarancijeDto), typeof(TipGarancije));
             await _unitOfWork.CompleteAsync();
 
             return NoContent();

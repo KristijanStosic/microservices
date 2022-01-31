@@ -8,17 +8,12 @@ namespace UgovorOZakupu.Profiles
     {
         public RokDospecaProfile()
         {
-            CreateMap<RokDospeca, RokDospecaDto>();
+            CreateMap<RokDospeca, RokDospecaDto>()
+                .ReverseMap();
 
             CreateMap<CreateRokDospecaDto, RokDospeca>();
 
-            CreateMap<UpdateRokDospecaDto, RokDospeca>()
-                .ForMember(dest => dest.Rok, opt =>
-                    opt.MapFrom((source, dest) => source.Rok ?? dest.Rok)
-                )
-                .ForMember(dest => dest.UgovorOZakupuId, opt =>
-                    opt.MapFrom((source, dest) => source.UgovorOZakupuId ?? dest.UgovorOZakupuId)
-                );
+            CreateMap<UpdateRokDospecaDto, RokDospeca>();
         }
     }
 }

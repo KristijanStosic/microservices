@@ -10,6 +10,8 @@ namespace UgovorOZakupu.Profiles
         {
             CreateMap<TipGarancije, TipGarancijeDto>()
                 .ReverseMap();
+            
+            CreateMap<UpdateTipGarancijeDto, TipGarancije>();
         }
     }
 }

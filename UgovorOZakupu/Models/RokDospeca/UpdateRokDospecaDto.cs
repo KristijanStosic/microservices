@@ -4,8 +4,10 @@ namespace UgovorOZakupu.Models.RokDospeca
 {
     public class UpdateRokDospecaDto
     {
-        public int? Rok { get; set; }
+        public Guid Id { get; set; }
 
-        public Guid? UgovorOZakupuId { get; set; }
+        public int Rok { get; set; }
+
+        public Guid UgovorOZakupuId { get; set; }
     }
 }

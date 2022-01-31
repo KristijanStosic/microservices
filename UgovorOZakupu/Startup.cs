@@ -6,6 +6,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using UgovorOZakupu.Data.RokDospeca;
 using UgovorOZakupu.Data.TipGarancije;
+using UgovorOZakupu.Data.UgovorOZakupu;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.DbContext;
 
@@ -23,6 +24,7 @@ namespace UgovorOZakupu
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITipGaranceijeRepository, TipGaranceijeRepository>();
             services.AddScoped<IRokDospecaRepository, RokDospecaRepository>();
+            services.AddScoped<IUgovorOZakupuRepository, UgovorOZakupuRepository>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
