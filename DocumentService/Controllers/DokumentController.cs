@@ -20,19 +20,20 @@ namespace DocumentService.Controllers
         private readonly ITipDokumentaRepository _tipDokumentaRepository;
         private readonly IUnitOfWork _unitOfWork;
 
-        public DokumentController(IMapper mapper, IDokumentRepository dokumentRepository,
-            ITipDokumentaRepository tipDokumentaRepository, IUnitOfWork unitOfWork)
+        public DokumentController(IDokumentRepository dokumentaRepository,
+            ITipDokumentaRepository tipDokumentaRepository, IUnitOfWork unitOfWork, IMapper mapper)
         {
-            _mapper = mapper;
-            _dokumentaRepository = dokumentRepository;
+            _dokumentaRepository = dokumentaRepository;
             _tipDokumentaRepository = tipDokumentaRepository;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<DokumentDto>>> GetAllDokument()
         {
             var documents = await _dokumentaRepository.GetAllDokument();
+
             return Ok(_mapper.Map<List<DokumentDto>>(documents));
         }
 
@@ -50,6 +51,7 @@ namespace DocumentService.Controllers
         public async Task<IActionResult> CreateDokument([FromBody] CreateDokumentDto dokumentDto)
         {
             var document = _mapper.Map<Dokument>(dokumentDto);
+
             _dokumentaRepository.CreateDokument(document);
             await _unitOfWork.CompleteAsync();
 
@@ -65,12 +67,13 @@ namespace DocumentService.Controllers
         [HttpPut("{id:guid}")]
         public async Task<IActionResult> UpdateDokument(Guid id, [FromBody] UpdateDokumentDto dokumentDto)
         {
+            if (id != dokumentDto.Id) return BadRequest();
+
             var document = await _dokumentaRepository.GetDokumentById(id);
 
             if (document == null) return NotFound();
 
             _mapper.Map(dokumentDto, document, typeof(DokumentDto), typeof(Dokument));
-
             await _unitOfWork.CompleteAsync();
 
             return NoContent();

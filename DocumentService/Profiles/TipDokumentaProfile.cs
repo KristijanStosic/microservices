@@ -10,6 +10,8 @@ namespace DocumentService.Profiles
         {
             CreateMap<TipDokumenta, TipDokumentaDto>()
                 .ReverseMap();
+
+            CreateMap<UpdateTipDokumentaDto, TipDokumenta>();
         }
     }
 }

@@ -18,13 +18,13 @@ namespace DocumentService
         {
             services.AddDbContext<DokumentDbContext>();
 
-            services.AddScoped<ITipDokumentaRepository, TipDokumentaRepository>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ITipDokumentaRepository, TipDokumentaRepository>();
             services.AddScoped<IDokumentRepository, DokumentRepository>();
 
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-            services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
+            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "DocumentService", Version = "v1"});

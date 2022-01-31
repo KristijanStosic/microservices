@@ -30,6 +30,7 @@ namespace DocumentService.Controllers
         public async Task<ActionResult<List<TipDokumentaDto>>> GetAllTipDokumenta()
         {
             var tipoviDokumenta = await _tipDokumentaRepository.GetAllTipDokumenta();
+
             return Ok(_mapper.Map<List<TipDokumentaDto>>(tipoviDokumenta));
         }
 
@@ -47,6 +48,7 @@ namespace DocumentService.Controllers
         public async Task<IActionResult> CreateTipDokumenta([FromBody] TipDokumentaDto tipDokumentaDto)
         {
             var tipDokumenta = _mapper.Map<TipDokumenta>(tipDokumentaDto);
+
             _tipDokumentaRepository.CreateTipDokumenta(tipDokumenta);
             await _unitOfWork.CompleteAsync();
 
@@ -58,13 +60,15 @@ namespace DocumentService.Controllers
         }
 
         [HttpPut("{id:guid}")]
-        public async Task<IActionResult> UpdateTipDokumenta(Guid id, [FromBody] TipDokumentaDto tipDokumentaDto)
+        public async Task<IActionResult> UpdateTipDokumenta(Guid id, [FromBody] UpdateTipDokumentaDto tipDokumentaDto)
         {
+            if (id != tipDokumentaDto.Id) return BadRequest();
+
             var tipDokumenta = await _tipDokumentaRepository.GetTipDokumentaById(id);
 
             if (tipDokumenta == null) return NotFound();
 
-            _mapper.Map(tipDokumentaDto, tipDokumenta, typeof(TipDokumentaDto), typeof(TipDokumenta));
+            _mapper.Map(tipDokumentaDto, tipDokumenta, typeof(UpdateTipDokumentaDto), typeof(TipDokumenta));
             await _unitOfWork.CompleteAsync();
 
             return NoContent();
@@ -79,6 +83,7 @@ namespace DocumentService.Controllers
 
             _tipDokumentaRepository.DeleteTipDokumenta(tipDokumenta);
             await _unitOfWork.CompleteAsync();
+
             return NoContent();
         }
     }
