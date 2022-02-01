@@ -126,12 +126,14 @@ namespace OvlascenoLiceService.Controllers
             if (ovlascenoLice.AdresaId is not null)
             {
                 var adresaDto = _adresaServiceCall.SendGetRequestAsync(url + "adresa/" + ovlascenoLice.AdresaId).Result;
-                ovlascenoLiceDto.Stanovanje = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
+                if (adresaDto is not null)
+                    ovlascenoLiceDto.Stanovanje = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
             }
             else if (ovlascenoLice.DrzavaId is not null)
             {
                 var drzavaDto = _drzavaServiceCall.SendGetRequestAsync(url + "drzava/" + ovlascenoLice.DrzavaId).Result;
-                ovlascenoLiceDto.Stanovanje = drzavaDto.NazivDrzave;
+                if (drzavaDto is not null)
+                    ovlascenoLiceDto.Stanovanje = drzavaDto.NazivDrzave;
             }
             await _loggerService.Log(LogLevel.Information, "GetOvlascenoLice", $"Ovlašćeno lice sa id-em {ovlascenoLiceId} je uspešno vraćeno.");
 
