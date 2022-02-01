@@ -25,6 +25,8 @@ namespace ParcelaService.Entities.DataContext
 
         public DbSet<OblikSvojine> OblikSvojine { get; set; }
 
+        public DbSet<ZasticenaZona> ZasticenaZona { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ParcelaDB"));

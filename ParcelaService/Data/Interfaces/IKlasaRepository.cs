@@ -11,7 +11,7 @@ namespace ParcelaService.Data.Interfaces
         Task<List<Klasa>> GetAllKlasa(string KlasaNaziv = null);
         Task<Klasa> GetKlasaById(Guid klasaId);
         Task<Klasa> CreateKlasa(Klasa klasa);
-        Task DeteleKlasa(Guid klasaId);
+        Task DeleteKlasa(Guid klasaId);
         Task SaveChangesAsync();
     }
 }

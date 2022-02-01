@@ -25,7 +25,7 @@ namespace ParcelaService.Data
             return klasa;
         }
 
-        public async Task DeteleKlasa(Guid klasaId)
+        public async Task DeleteKlasa(Guid klasaId)
         {
             var klasa = await GetKlasaById(klasaId);
 

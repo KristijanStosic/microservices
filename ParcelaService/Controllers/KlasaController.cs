@@ -111,7 +111,7 @@ namespace ParcelaService.Controllers
                     return NotFound();
                 }
 
-                await _klasaRepository.DeteleKlasa(klasaId);
+                await _klasaRepository.DeleteKlasa(klasaId);
                 await _klasaRepository.SaveChangesAsync();
 
                 return NoContent();
