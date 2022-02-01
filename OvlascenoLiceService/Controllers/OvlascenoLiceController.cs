@@ -83,13 +83,15 @@ namespace OvlascenoLiceService.Controllers
                 var ovlascenoLiceDto = _mapper.Map<OvlascenoLiceDto>(ovlascenoLice);
                 if(ovlascenoLice.AdresaId is not null)
                 {
-                    var adresaDto = _adresaServiceCall.SendGetRequestAsync(url + "adresa/" + ovlascenoLice.AdresaId).Result;
-                    ovlascenoLiceDto.Stanovanje = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
+                    var adresaDto = await _adresaServiceCall.SendGetRequestAsync(url + "adresa/" + ovlascenoLice.AdresaId);
+                    if(adresaDto is not null) 
+                        ovlascenoLiceDto.Stanovanje = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
                 }
                 else if (ovlascenoLice.DrzavaId is not null)
                 {
-                    var drzavaDto = _drzavaServiceCall.SendGetRequestAsync(url + "drzava/" + ovlascenoLice.DrzavaId).Result;
-                    ovlascenoLiceDto.Stanovanje = drzavaDto.NazivDrzave;
+                    var drzavaDto = await _drzavaServiceCall.SendGetRequestAsync(url + "drzava/" + ovlascenoLice.DrzavaId);
+                    if(drzavaDto is not null) 
+                        ovlascenoLiceDto.Stanovanje = drzavaDto.NazivDrzave;
                 }
                 ovlascenaLicaDto.Add(ovlascenoLiceDto);
             }
