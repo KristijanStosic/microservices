@@ -93,9 +93,9 @@ namespace JavnoNadmetanjeService.Controllers
         /// <remarks>
         /// Primer zahteva za kreiranje novog statusa \
         /// POST /api/status \
-        /// { \   
+        /// {
         ///     "NazivStatusa": "Treci krug" \
-        ///} \
+        ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju statusa</returns>
         /// <response code="200">Vraća kreiran status</response>

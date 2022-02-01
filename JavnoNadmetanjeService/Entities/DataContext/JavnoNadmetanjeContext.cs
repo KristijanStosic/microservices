@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using JavnoNadmetanjeService.Entities.ManyToMany;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
 
@@ -15,8 +16,11 @@ namespace JavnoNadmetanjeService.Entities
 
         public DbSet<Status> Status { get; set; }
         public DbSet<Tip> Tip { get; set; }
-        public DbSet<JavnoNadmetanje> JavnoNadmetanje { get; set; }
         public DbSet<Etapa> Etapa { get; set; }
+        public DbSet<JavnoNadmetanje> JavnoNadmetanje { get; set; }
+        public DbSet<JavnoNadmetanjeOvlascenoLice> JavnoNadmetanjeOvlascenoLice { get; set; }
+        public DbSet<JavnoNadmetanjeKupac> JavnoNadmetanjeKupac { get; set; }
+        public DbSet<JavnoNadmetanjeDeoParcele> JavnoNadmetanjeDeoParcele { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -24,11 +28,64 @@ namespace JavnoNadmetanjeService.Entities
         }
 
         /// <summary>
-        /// Unos inicijalnih podataka u bazu
+        /// Unos inicijalnih podataka u bazu i definisanje kljuceva
         /// </summary>
         /// <param name="modelBuilder">Omogucava podesavanja/unos podataka pri kreiranju modela</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //Veze i slozeni primarni kljucevi za many to many tabele
+            modelBuilder.Entity<JavnoNadmetanje>()
+                 .HasOne(j => j.Status)
+                 .WithMany()
+                 .HasForeignKey("StatusId")
+                 .OnDelete(DeleteBehavior.Restrict)
+                 .IsRequired();
+
+            modelBuilder.Entity<JavnoNadmetanje>()
+                 .HasOne(j => j.Tip)
+                 .WithMany()
+                 .HasForeignKey("TipId")
+                 .OnDelete(DeleteBehavior.Restrict)
+                 .IsRequired();
+
+            modelBuilder.Entity<Etapa>()
+                 .HasOne(e => e.JavnoNadmetanje)
+                 .WithMany(j => j.Etape)
+                 .HasForeignKey("JavnoNadmetanjeId")
+                 .OnDelete(DeleteBehavior.Restrict)
+                 .IsRequired();
+
+            modelBuilder.Entity<JavnoNadmetanjeOvlascenoLice>()
+                .HasOne(j => j.JavnoNadmetanje)
+                .WithMany()
+                .HasForeignKey("JavnoNadmetanjeId")
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            modelBuilder.Entity<JavnoNadmetanjeOvlascenoLice>()
+                .HasKey(jo => new { jo.JavnoNadmetanjeId, jo.OvlascenoLiceId });
+
+            modelBuilder.Entity<JavnoNadmetanjeKupac>()
+                .HasOne(j => j.JavnoNadmetanje)
+                .WithMany()
+                .HasForeignKey("JavnoNadmetanjeId")
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            modelBuilder.Entity<JavnoNadmetanjeKupac>()
+                .HasKey(jo => new { jo.JavnoNadmetanjeId, jo.KupacId });
+
+            modelBuilder.Entity<JavnoNadmetanjeDeoParcele>()
+                .HasOne(j => j.JavnoNadmetanje)
+                .WithMany()
+                .HasForeignKey("JavnoNadmetanjeId")
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            modelBuilder.Entity<JavnoNadmetanjeDeoParcele>()
+                .HasKey(jo => new { jo.JavnoNadmetanjeId, jo.DeoParceleId });
+
+            //Unos podataka
             modelBuilder.Entity<Status>()
                 .HasData(new
                 {
@@ -88,7 +145,7 @@ namespace JavnoNadmetanjeService.Entities
                     VremeKraja = DateTime.Now.AddHours(4).ToString("HH:mm"),
                     ZavrsenaUspesno = true,
                     JavnoNadmetanjeId = Guid.Parse("56A7CFF5-CB0A-46B8-BFC1-93DB415FEEB4")
-                }) ;
+                });
 
             modelBuilder.Entity<JavnoNadmetanje>()
                 .HasData(new
@@ -103,6 +160,8 @@ namespace JavnoNadmetanjeService.Entities
                     Izuzeto = false,
                     StatusId = Guid.Parse("8457E79A-D24A-4623-A34C-CDE32435DF23"),
                     TipId = Guid.Parse("AB5B1FE9-D09F-471D-8E4C-E55EBD7E87B3"),
+                    AdresaId = Guid.Parse("1c989ee3-13b2-4d3b-abeb-c4e6343eace7"),
+                    KupacId = Guid.Parse("febd1c29-90e7-40c2-97f3-1e88495fe98d")
                 },
                 new
                 {
@@ -110,27 +169,63 @@ namespace JavnoNadmetanjeService.Entities
                     PocetnaCenaHektar = 550.00000000,
                     VisinaDopuneDepozita = 150,
                     PeriodZakupa = 3,
-                    IzlicitiranaCena = 1400,
+                    IzlicitiranaCena = 0,
                     BrojUcesnika = 15,
                     Krug = 1,
                     Izuzeto = false,
                     StatusId = Guid.Parse("3B7EE65F-EB68-4A32-AE69-DF7FDF463188"),
                     TipId = Guid.Parse("D6D56B98-3672-4BDB-A0CB-E916FFE053C8")
-                },                                
+                },
                 new
                 {
                     JavnoNadmetanjeId = Guid.Parse("B195C4C2-2B26-40AD-8FF6-C212474ACC83"),
                     PocetnaCenaHektar = 1350.50000000,
                     VisinaDopuneDepozita = 3,
                     PeriodZakupa = 1,
-                    IzlicitiranaCena = 1000,
+                    IzlicitiranaCena = 0,
                     BrojUcesnika = 7,
                     Krug = 5,
                     Izuzeto = true,
                     StatusId = Guid.Parse("8457E79A-D24A-4623-A34C-CDE32435DF23"),
-                    TipId = Guid.Parse("D6D56B98-3672-4BDB-A0CB-E916FFE053C8")
+                    TipId = Guid.Parse("D6D56B98-3672-4BDB-A0CB-E916FFE053C8"),
+                    AdresaId = Guid.Parse("1c989ee3-13b2-4d3b-abeb-c4e6343eace7")
                 });
 
+            modelBuilder.Entity<JavnoNadmetanjeOvlascenoLice>()
+                .HasData(new
+                {
+                    JavnoNadmetanjeId = Guid.Parse("56A7CFF5-CB0A-46B8-BFC1-93DB415FEEB4"),
+                    OvlascenoLiceId = Guid.Parse("E22F999D-5C61-4DCE-965B-9C6667EFC74D")
+                },
+                new
+                {
+                    JavnoNadmetanjeId = Guid.Parse("56A7CFF5-CB0A-46B8-BFC1-93DB415FEEB4"),
+                    OvlascenoLiceId = Guid.Parse("5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5")
+                },
+                new
+                {
+                    JavnoNadmetanjeId = Guid.Parse("B195C4C2-2B26-40AD-8FF6-C212474ACC83"),
+                    OvlascenoLiceId = Guid.Parse("5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5")
+                });
+
+            modelBuilder.Entity<JavnoNadmetanjeKupac>()
+                .HasData(new
+                {
+                    JavnoNadmetanjeId = Guid.Parse("56A7CFF5-CB0A-46B8-BFC1-93DB415FEEB4"),
+                    KupacId = Guid.Parse("febd1c29-90e7-40c2-97f3-1e88495fe98d")
+                },
+                new
+                {
+                    JavnoNadmetanjeId = Guid.Parse("56A7CFF5-CB0A-46B8-BFC1-93DB415FEEB4"),
+                    KupacId = Guid.Parse("4ba95c01-aa89-4d36-a467-c72b0fcc5b80")
+                },
+                new
+                {
+                    JavnoNadmetanjeId = Guid.Parse("B195C4C2-2B26-40AD-8FF6-C212474ACC83"),
+                    KupacId = Guid.Parse("4ba95c01-aa89-4d36-a467-c72b0fcc5b80")
+                });
+
+            //ToDo: Dodati inicijalne vrednosti i za deo parcele
         }
     }
 }

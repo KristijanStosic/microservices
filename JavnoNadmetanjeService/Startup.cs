@@ -1,6 +1,7 @@
 ﻿using JavnoNadmetanjeService.Data;
 using JavnoNadmetanjeService.Data.Interfaces;
 using JavnoNadmetanjeService.Entities;
+using JavnoNadmetanjeService.Helpers;
 using JavnoNadmetanjeService.Models.Other;
 using JavnoNadmetanjeService.ServiceCalls;
 using JavnoNadmetanjeService.ServiceCalls.Mocks;
@@ -78,7 +79,13 @@ namespace JavnoNadmetanjeService
             services.AddScoped<ITipRepository, TipRepository>();
             services.AddScoped<IEtapaRepository, EtapaRepository>();
             services.AddScoped<IJavnoNadmetanjeRepository, JavnoNadmetanjeRepository>();
+
             services.AddScoped<IServiceCall<AdresaDto>, ServiceCallAdresaMock<AdresaDto>>();
+            services.AddScoped<IServiceCall<KupacDto>, ServiceCallKupacMock<KupacDto>>();
+            services.AddScoped<IServiceCall<OvlascenoLiceDto>, ServiceCallOvlascenoLiceMock<OvlascenoLiceDto>>();
+            services.AddScoped<IServiceCall<DeoParceleDto>, ServiceCallDeoParceleMock<DeoParceleDto>>();
+
+            services.AddScoped<IJavnoNadmetanjeCalls, JavnoNadmetanjeCalls>();
             //services.AddScoped<IServiceCall<AdresaDto>, ServiceCall<AdresaDto>>();
             services.AddScoped<ILoggerService, LoggerServiceMock>();
 

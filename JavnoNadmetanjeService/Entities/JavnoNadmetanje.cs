@@ -1,6 +1,8 @@
-﻿using System;
+﻿using JavnoNadmetanjeService.Entities.ManyToMany;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace JavnoNadmetanjeService.Entities
 {
@@ -24,8 +26,15 @@ namespace JavnoNadmetanjeService.Entities
         public Tip Tip { get; set; }
         public List<Etapa> Etape { get; set; }
 
-        //ToDo: Doraditi komunikaciju sa drugim mikroservisima
         public Guid? KupacId { get; set; }
         public Guid? AdresaId { get; set; }
+
+        [NotMapped]
+        public List<Guid> OvlascenaLica { get; set; }
+        [NotMapped]
+        public List<Guid> Kupci { get; set; }
+        [NotMapped]
+        public List<Guid> DeloviParcele { get; set; }
+
     }
 }

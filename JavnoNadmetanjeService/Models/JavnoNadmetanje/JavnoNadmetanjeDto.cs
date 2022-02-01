@@ -64,6 +64,21 @@ namespace JavnoNadmetanjeService.Models.JavnoNadmetanje
         /// <summary>
         /// Najbolji kupac u javnom nadmetanju
         /// </summary>
-        public string Kupac { get; set; }
+        public KupacDto Kupac { get; set; }
+
+        //Many to many relationships with other microservices
+
+        /// <summary>
+        /// Lista ovlascenih lica
+        /// </summary>
+        public List<OvlascenoLiceDto> OvlascenaLica { get; set; }
+        /// <summary>
+        /// Lista kupaca
+        /// </summary>
+        public List<KupacDto> Kupci { get; set; }
+        /// <summary>
+        /// Lista delova parcele
+        /// </summary>
+        public List<DeoParceleDto> DeloviParcele { get; set; }
     }
 }

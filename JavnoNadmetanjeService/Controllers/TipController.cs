@@ -93,9 +93,9 @@ namespace JavnoNadmetanjeService.Controllers
         /// <remarks>
         /// Primer zahteva za kreiranje novog tipa \
         /// POST /api/tip \
-        /// { \
+        /// {
         ///     "NazivTipa": "Tip javnog nadmetanja" \
-        ///} \
+        /// }
         /// </remarks>
         /// <returns>Potvrda o kreiranju tipa</returns>
         /// <response code="200">Vraća kreiran tip</response>

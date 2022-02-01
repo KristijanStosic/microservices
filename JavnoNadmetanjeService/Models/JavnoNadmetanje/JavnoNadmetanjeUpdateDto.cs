@@ -58,6 +58,19 @@ namespace JavnoNadmetanjeService.Models.JavnoNadmetanje
         /// </summary>
         public Guid? AdresaId { get; set; }
 
+        /// <summary>
+        /// Lista ID-eva ovlascenih lica
+        /// </summary>
+        public List<Guid> OvlascenaLica { get; set; }
+        /// <summary>
+        /// Lista ID-eva kupaca
+        /// </summary>
+        public List<Guid> Kupci { get; set; }
+        /// <summary>
+        /// Lista ID-eva delova parcele
+        /// </summary>
+        public List<Guid> DeloviParcele { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (IzlicitiranaCena < PocetnaCenaHektar)

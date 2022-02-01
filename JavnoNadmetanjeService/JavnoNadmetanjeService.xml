@@ -34,14 +34,14 @@
              <remarks>
              Primer zahteva za kreiranje nove etape \
              POST /api/etapa \
-             {  \   
+             {
                  "Datum": "2022-01-31T07:25:31.426Z", \
                  "DanPoRedu": 1, \
                  "VremePocetka": "12:00", \
                  "VremeKraja": "14:00", \
                  "ZavrsenaUspesno": false, \
                  "JavnoNadmetanjeId": "417d646c-9e90-4515-a068-21689864330a" \
-            } \
+            }
              </remarks>
              <returns>Potvrda o kreiranju etape</returns>
              <response code="200">Vraća kreiranu etapu</response>
@@ -103,17 +103,19 @@
              <remarks>
              Primer zahteva za kreiranje novog javnog nadmetanja \
              POST /api/javnoNadmetanje \
-             {  \ 
+             {
                  "PocetnaCenaHektar": 550.00000000, \
-                 "PeriodZakupa": 5, \ 
+                 "PeriodZakupa": 5, \
                  "IzlicitiranaCena": 750, \
                  "Krug": 1, \
                  "Izuzeto": false, \
                  "StatusId": "3B7EE65F-EB68-4A32-AE69-DF7FDF463188", \
                  "TipId": "D6D56B98-3672-4BDB-A0CB-E916FFE053C8", \
-                 "KupacId": "febd1c29-90e7-40c2-97f3-1e88495fe98d", \
-                 "AdresaId": "37371ef6-4f25-48b3-9bf2-fe72a81f88d2" \
-            } \
+                 "KupacId": "FEBD1C29-90E7-40C2-97F3-1E88495FE98D", \
+                 "AdresaId": "37371ef6-4f25-48b3-9bf2-fe72a81f88d2", \
+                 "OvlascenaLica": ["5E1BFFFC-1AEE-4662-BC04-341C35B9EBDC", "1B070B3A-BBA6-470D-AAD7-40986EFB00EF"], \
+                 "Kupci": ["FEBD1C29-90E7-40C2-97F3-1E88495FE98D", "4BA95C01-AA89-4D36-A467-C72B0FCC5B80"] \
+            }
              </remarks>
              <returns>Potvrda o kreiranju javnog nadmetanja</returns>
              <response code="200">Vraća kreirano javno nadmetanje</response>
@@ -176,9 +178,9 @@
              <remarks>
              Primer zahteva za kreiranje novog statusa \
              POST /api/status \
-             { \   
+             {
                  "NazivStatusa": "Treci krug" \
-            } \
+            }
              </remarks>
              <returns>Potvrda o kreiranju statusa</returns>
              <response code="200">Vraća kreiran status</response>
@@ -234,20 +236,20 @@
             <response code="404">Nije pronađen tip za uneti ID</response>
         </member>
         <member name="M:JavnoNadmetanjeService.Controllers.TipController.CreateTip(JavnoNadmetanjeService.Models.Tip.TipCreationDto)">
-             <summary>
-             Kreira novi tip javnog nadmetanja
-             </summary>
-             <param name="tip">Model tip</param>
-             <remarks>
-             Primer zahteva za kreiranje novog tipa \
-             POST /api/tip \
-             { \
-                 "NazivTipa": "Tip javnog nadmetanja" \
-            } \
-             </remarks>
-             <returns>Potvrda o kreiranju tipa</returns>
-             <response code="200">Vraća kreiran tip</response>
-             <response code="500">Desila se greška prilikom unosa novog tipa</response>
+            <summary>
+            Kreira novi tip javnog nadmetanja
+            </summary>
+            <param name="tip">Model tip</param>
+            <remarks>
+            Primer zahteva za kreiranje novog tipa \
+            POST /api/tip \
+            {
+                "NazivTipa": "Tip javnog nadmetanja" \
+            }
+            </remarks>
+            <returns>Potvrda o kreiranju tipa</returns>
+            <response code="200">Vraća kreiran tip</response>
+            <response code="500">Desila se greška prilikom unosa novog tipa</response>
         </member>
         <member name="M:JavnoNadmetanjeService.Controllers.TipController.UpdateTip(JavnoNadmetanjeService.Models.Tip.TipUpdateDto)">
             <summary>
@@ -277,7 +279,7 @@
         </member>
         <member name="M:JavnoNadmetanjeService.Entities.JavnoNadmetanjeContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <summary>
-            Unos inicijalnih podataka u bazu
+            Unos inicijalnih podataka u bazu i definisanje kljuceva
             </summary>
             <param name="modelBuilder">Omogucava podesavanja/unos podataka pri kreiranju modela</param>
         </member>
@@ -486,6 +488,21 @@
             ID mesta odrzavanja javnog nadmetanja
             </summary>
         </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.OvlascenaLica">
+            <summary>
+            Lista ID-eva ovlascenih lica
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.Kupci">
+            <summary>
+            Lista ID-eva kupaca
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeCreationDto.DeloviParcele">
+            <summary>
+            Lista ID-eva delova parcele
+            </summary>
+        </member>
         <member name="T:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto">
             <summary>
             Model javnog nadmetanja
@@ -556,6 +573,21 @@
             Najbolji kupac u javnom nadmetanju
             </summary>
         </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.OvlascenaLica">
+            <summary>
+            Lista ovlascenih lica
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Kupci">
+            <summary>
+            Lista kupaca
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeDto.DeloviParcele">
+            <summary>
+            Lista delova parcele
+            </summary>
+        </member>
         <member name="T:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto">
             <summary>
             Model za izmenu javnog nadmetanja
@@ -614,6 +646,21 @@
         <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.AdresaId">
             <summary>
             ID mesta odrzavanja javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.OvlascenaLica">
+            <summary>
+            Lista ID-eva ovlascenih lica
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.Kupci">
+            <summary>
+            Lista ID-eva kupaca
+            </summary>
+        </member>
+        <member name="P:JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto.DeloviParcele">
+            <summary>
+            Lista ID-eva delova parcele
             </summary>
         </member>
         <member name="T:JavnoNadmetanjeService.Models.Status.StatusCreationDto">

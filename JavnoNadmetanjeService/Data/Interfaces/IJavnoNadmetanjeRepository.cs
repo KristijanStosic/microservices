@@ -12,6 +12,7 @@ namespace JavnoNadmetanjeService.Data.Interfaces
         Task<List<JavnoNadmetanje>> GetAllJavnoNadmetanje();
         Task<JavnoNadmetanje> GetJavnoNadmetanjeById(Guid javnoNadmetanjeId);
         Task<JavnoNadmetanjeConfirmation> CreateJavnoNadmetanje(JavnoNadmetanje javnoNadmetanje);
+        Task<JavnoNadmetanje> UpdateJavnoNadmetanje(JavnoNadmetanje javnoNadmetanje);
         Task DeleteJavnoNadmetanje(Guid javnoNadmetanjeId);
         Task SaveChangesAsync();
     }

@@ -2,8 +2,8 @@
 using JavnoNadmetanjeService.Data.Interfaces;
 using JavnoNadmetanjeService.Entities;
 using JavnoNadmetanjeService.Entities.Confirmations;
+using JavnoNadmetanjeService.Helpers;
 using JavnoNadmetanjeService.Models.JavnoNadmetanje;
-using JavnoNadmetanjeService.Models.Other;
 using JavnoNadmetanjeService.ServiceCalls;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,18 +28,16 @@ namespace JavnoNadmetanjeService.Controllers
         private readonly IJavnoNadmetanjeRepository _javnoNadmetanjeRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
-        private readonly IServiceCall<AdresaDto> _adresaService;
-        private readonly IConfiguration _configuration;
         private readonly ILoggerService _loggerService;
+        private readonly IJavnoNadmetanjeCalls _javnoNadmetanjeCalls;
 
-        public JavnoNadmetanjeController(IJavnoNadmetanjeRepository javnoNadmetanjeRepository, LinkGenerator linkGenerator, IMapper mapper, IServiceCall<AdresaDto> adresaService, IConfiguration configuration, ILoggerService loggerService)
+        public JavnoNadmetanjeController(IJavnoNadmetanjeRepository javnoNadmetanjeRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService, IJavnoNadmetanjeCalls javnoNadmetanjeCalls)
         {
             _javnoNadmetanjeRepository = javnoNadmetanjeRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
-            _adresaService = adresaService;
-            _configuration = configuration;
             _loggerService = loggerService;
+            _javnoNadmetanjeCalls = javnoNadmetanjeCalls;
         }
 
         /// <summary>
@@ -62,18 +60,10 @@ namespace JavnoNadmetanjeService.Controllers
                 return NoContent();
             }
 
-            //Adresa mikroservis komunikacija - trenutno je preko mock-a, implementiran je i pravi nacin samo sad nema tog mikroservisa jos uvek, samo treba promeniti u startup-u
             var javnaNadmetanjaDto = new List<JavnoNadmetanjeDto>();
-            string url = _configuration["Services:AdresaService"];
             foreach (var javnoNad in javnaNadmetanja)
             {
-                var javnoNadDto = _mapper.Map<JavnoNadmetanjeDto>(javnoNad);
-                if (javnoNad.AdresaId is not null)
-                {
-                    var adresaDto = _adresaService.SendGetRequestAsync(url + javnoNad.AdresaId).Result;
-                    javnoNadDto.Adresa = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
-                }
-                javnaNadmetanjaDto.Add(javnoNadDto);
+                javnaNadmetanjaDto.Add(await _javnoNadmetanjeCalls.GetJavnoNadmetanjeDtoWithOtherServicesInfo(javnoNad));
             }
 
             await _loggerService.Log(LogLevel.Information, "GetAllJavnoNadmetanje", "Lista javnih nadmetanja je uspešno vraćena.");
@@ -101,17 +91,9 @@ namespace JavnoNadmetanjeService.Controllers
                 return NotFound();
             }
 
-            string url = _configuration["Services:AdresaService"];
-            var javnoNadmetanjeDto = _mapper.Map<JavnoNadmetanjeDto>(javnoNadmetanje);
-            if (javnoNadmetanje.AdresaId is not null)
-            {
-                var adresaDto = _adresaService.SendGetRequestAsync(url + javnoNadmetanje.AdresaId).Result;
-                javnoNadmetanjeDto.Adresa = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
-            }
-
             await _loggerService.Log(LogLevel.Information, "GetJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} je uspešno vraćeno.");
 
-            return Ok(javnoNadmetanjeDto);
+            return Ok(await _javnoNadmetanjeCalls.GetJavnoNadmetanjeDtoWithOtherServicesInfo(javnoNadmetanje));
         }
 
         /// <summary>
@@ -121,17 +103,19 @@ namespace JavnoNadmetanjeService.Controllers
         /// <remarks>
         /// Primer zahteva za kreiranje novog javnog nadmetanja \
         /// POST /api/javnoNadmetanje \
-        /// {  \ 
+        /// {
         ///     "PocetnaCenaHektar": 550.00000000, \
-        ///     "PeriodZakupa": 5, \ 
+        ///     "PeriodZakupa": 5, \
         ///     "IzlicitiranaCena": 750, \
         ///     "Krug": 1, \
         ///     "Izuzeto": false, \
         ///     "StatusId": "3B7EE65F-EB68-4A32-AE69-DF7FDF463188", \
         ///     "TipId": "D6D56B98-3672-4BDB-A0CB-E916FFE053C8", \
-        ///     "KupacId": "febd1c29-90e7-40c2-97f3-1e88495fe98d", \
-        ///     "AdresaId": "37371ef6-4f25-48b3-9bf2-fe72a81f88d2" \
-        ///} \
+        ///     "KupacId": "FEBD1C29-90E7-40C2-97F3-1E88495FE98D", \
+        ///     "AdresaId": "37371ef6-4f25-48b3-9bf2-fe72a81f88d2", \
+        ///     "OvlascenaLica": ["5E1BFFFC-1AEE-4662-BC04-341C35B9EBDC", "1B070B3A-BBA6-470D-AAD7-40986EFB00EF"], \
+        ///     "Kupci": ["FEBD1C29-90E7-40C2-97F3-1E88495FE98D", "4BA95C01-AA89-4D36-A467-C72B0FCC5B80"] \
+        ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju javnog nadmetanja</returns>
         /// <response code="200">Vraća kreirano javno nadmetanje</response>
@@ -189,6 +173,7 @@ namespace JavnoNadmetanjeService.Controllers
                 JavnoNadmetanje novoNadmetanje = _mapper.Map<JavnoNadmetanje>(javnoNadmetanje);
 
                 _mapper.Map(novoNadmetanje, staroNadmetanje);
+                await _javnoNadmetanjeRepository.UpdateJavnoNadmetanje(novoNadmetanje);
                 await _javnoNadmetanjeRepository.SaveChangesAsync();
 
                 await _loggerService.Log(LogLevel.Information, "UpdateJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanje.JavnoNadmetanjeId} je uspešno izmenjeno. Stare vrednosti su: {stareVrednosti}");

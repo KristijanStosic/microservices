@@ -93,14 +93,14 @@ namespace JavnoNadmetanjeService.Controllers
         /// <remarks>
         /// Primer zahteva za kreiranje nove etape \
         /// POST /api/etapa \
-        /// {  \   
+        /// {
         ///     "Datum": "2022-01-31T07:25:31.426Z", \
         ///     "DanPoRedu": 1, \
         ///     "VremePocetka": "12:00", \
         ///     "VremeKraja": "14:00", \
         ///     "ZavrsenaUspesno": false, \
         ///     "JavnoNadmetanjeId": "417d646c-9e90-4515-a068-21689864330a" \
-        ///} \
+        ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju etape</returns>
         /// <response code="200">Vraća kreiranu etapu</response>
