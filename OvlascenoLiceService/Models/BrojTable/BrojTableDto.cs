@@ -1,4 +1,5 @@
 ﻿using OvlascenoLiceService.Models.OvlascenoLice;
+using System;
 
 namespace OvlascenoLiceService.Models.BrojTable
 {
@@ -7,6 +8,10 @@ namespace OvlascenoLiceService.Models.BrojTable
     /// </summary>
     public class BrojTableDto
     {
+        /// <summary>
+        /// ID broja table
+        /// </summary>
+        public Guid BrojTableId { get; set; }
         /// <summary>
         /// Redni broj table
         /// </summary>

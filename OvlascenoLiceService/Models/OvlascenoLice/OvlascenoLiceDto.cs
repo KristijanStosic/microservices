@@ -1,4 +1,5 @@
 ﻿using OvlascenoLiceService.Models.BrojTable;
+using System;
 using System.Collections.Generic;
 
 namespace OvlascenoLiceService.Models.OvlascenoLice
@@ -8,6 +9,10 @@ namespace OvlascenoLiceService.Models.OvlascenoLice
     /// </summary>
     public class OvlascenoLiceDto
     {
+        /// <summary>
+        /// ID ovlašćenog lica
+        /// </summary>
+        public Guid OvlascenoLiceId { get; set; }
         /// <summary>
         /// Ime i prezime ovlašćenog lica
         /// </summary>

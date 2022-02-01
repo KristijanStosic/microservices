@@ -521,6 +521,11 @@
             Dto za broj table
             </summary>
         </member>
+        <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableDto.BrojTableId">
+            <summary>
+            ID broja table
+            </summary>
+        </member>
         <member name="P:OvlascenoLiceService.Models.BrojTable.BrojTableDto.RbTable">
             <summary>
             Redni broj table
@@ -681,6 +686,11 @@
         <member name="T:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto">
             <summary>
             Dto za ovlašćeno lice
+            </summary>
+        </member>
+        <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto.OvlascenoLiceId">
+            <summary>
+            ID ovlašćenog lica
             </summary>
         </member>
         <member name="P:OvlascenoLiceService.Models.OvlascenoLice.OvlascenoLiceDto.OvlascenoLice">
