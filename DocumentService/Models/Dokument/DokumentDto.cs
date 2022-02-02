@@ -1,5 +1,4 @@
 ﻿using System;
-using DocumentService.Models.TipDokumenta;
 
 namespace DocumentService.Models.Dokument
 {
@@ -11,6 +10,6 @@ namespace DocumentService.Models.Dokument
 
         public DateTime DatumDonosenjaDokumenta { get; set; } = DateTime.Now;
 
-        public TipDokumentaDto TipDokumenta { get; set; }
+        public string TipDokumenta { get; set; }
     }
 }

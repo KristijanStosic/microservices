@@ -8,7 +8,10 @@ namespace DocumentService.Profiles
     {
         public DokumentProfile()
         {
-            CreateMap<Dokument, DokumentDto>();
+            CreateMap<Dokument, DokumentDto>()
+                .ForMember(d => d.TipDokumenta, options =>
+                    options.MapFrom(d => d.TipDokumenta.NazivTipa)
+                );
 
             CreateMap<CreateDokumentDto, Dokument>();
 
