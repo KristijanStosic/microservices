@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DokumentService.Migrations
 {
     [DbContext(typeof(DokumentDbContext))]
-    [Migration("20220124095402_IntialModels")]
-    partial class IntialModels
+    [Migration("20220124095402_InitialModels")]
+    partial class InitialModels
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
