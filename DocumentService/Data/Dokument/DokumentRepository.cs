@@ -18,6 +18,7 @@ namespace DocumentService.Data.Dokument
         public Task<List<Entities.Dokument>> GetAllDokument()
         {
             return _db.Dokumenti
+                .AsNoTracking()
                 .Include(d => d.TipDokumenta)
                 .ToListAsync();
         }

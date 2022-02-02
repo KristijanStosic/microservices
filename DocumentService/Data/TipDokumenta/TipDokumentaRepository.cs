@@ -17,7 +17,9 @@ namespace DocumentService.Data.TipDokumenta
 
         public Task<List<Entities.TipDokumenta>> GetAllTipDokumenta()
         {
-            return _db.TipoviDokumenta.ToListAsync();
+            return _db.TipoviDokumenta
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public Task<Entities.TipDokumenta> GetTipDokumentaById(Guid id)
