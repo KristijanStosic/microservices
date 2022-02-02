@@ -37,6 +37,17 @@ namespace KupacService.Profiles
                 .ForMember(
                 dest => dest.Prioriteti,
                 opt => opt.Ignore());
+
+
+            CreateMap<Guid, Prioritet>()
+                .ForMember(
+                dest => dest.PrioritetId,
+                opt => opt.MapFrom(src => src));
+            CreateMap<FizickoLiceCreationDto, FizickoLice>()
+                .ForMember(
+                dest => dest.Prioriteti,
+                opt => opt.MapFrom(src => src.Prioriteti));
+
         }
     }
 }
