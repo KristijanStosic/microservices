@@ -27,10 +27,7 @@ namespace KupacService.Profiles
                 dest => dest.Prioriteti,
                 opt => opt.Ignore());
 
-            CreateMap<PravnoLice, PravnoLice>()
-                .ForMember(
-                dest => dest.KontaktOsobaId,
-                opt => opt.MapFrom(src => src.KontaktOsobaId));
+            CreateMap<PravnoLice, PravnoLice>();
 
             CreateMap<PravnoLice, PravnoLiceConfirmDto>();
 
@@ -38,9 +35,6 @@ namespace KupacService.Profiles
                 .ForMember(
                 dest => dest.Prioriteti,
                 opt => opt.Ignore()
-                ).ForMember(
-                dest => dest.KontaktOsobaId,
-                opt => opt.MapFrom(src => src.KontaktOsobaId)
                 );
 
         }

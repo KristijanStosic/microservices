@@ -82,7 +82,7 @@ namespace KupacService.Controllers
 
                 string link = _linkGenerator.GetPathByAction("GetPravnoLiceById", "PravnoLice", new { kupacId = newPravnoLice.KupacId });
 
-                return Created(link, _mapper.Map<PravnoLiceConfirmDto>(newPravnoLice));
+                return Created(link, _mapper.Map<PravnoLiceDto>(newPravnoLice));
             }
             catch (Exception)
             {
@@ -95,7 +95,7 @@ namespace KupacService.Controllers
             try
             {
                 var oldPravnoLice = await _pravnoLiceRepository.GetPravnoLiceById(pravnoLiceUpdate.KupacId);
-
+                KontaktOsoba kontaktOsoba = oldPravnoLice.KontaktOsoba;
                 if (oldPravnoLice == null)
                 {
                     return NotFound();
@@ -118,10 +118,10 @@ namespace KupacService.Controllers
                     }
                     oldPravnoLice.Prioriteti = prioriteti;
                 }
-
+                oldPravnoLice.KontaktOsoba = kontaktOsoba;
                 await _pravnoLiceRepository.SaveChangesAsync();
 
-                return Ok(_mapper.Map<PravnoLiceDto>(oldPravnoLice));
+                return Ok(_mapper.Map<PravnoLiceDto>(newPravnoLice));
 
             }catch(Exception e)
             {
