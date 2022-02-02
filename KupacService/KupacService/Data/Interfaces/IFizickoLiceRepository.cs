@@ -8,13 +8,6 @@ namespace KupacService.Data.Interfaces
 {
     public interface IFizickoLiceRepository
     {
-        /*  
-        Task<List<KontaktOsoba>> GetKontaktOsoba(string ime = null, string prezime = null);
-        Task<KontaktOsoba> GetKontaktOsobaById(Guid kontaktOsobaId);
-        Task<KontaktOsoba> CreateKontaktOsoba(KontaktOsoba kontaktOsoba);
-        Task DeleteKontaktOsoba(Guid KontaktOsobaId);
-        Task SaveChangesAsync();
-        */
 
         Task<List<FizickoLice>> GetFizickoLice(string ime = null,string prezime = null,string brojRacuna = null);
         Task<FizickoLice> GetFizickoLiceById(Guid kupacId);

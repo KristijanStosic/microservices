@@ -56,31 +56,19 @@ namespace KupacService.Controllers
 
         }
         [HttpPost]
-        public async Task<ActionResult<FizickoLiceConfirmDto>> CreateFizickoLice([FromBody]FizickoLiceDto fizickoLice)
+        public async Task<ActionResult<FizickoLiceConfirmDto>> CreateFizickoLice([FromBody]FizickoLiceCreationDto fizickoLice)
         {
             try
             {
                 FizickoLice newFizickoLice = _mapper.Map<FizickoLice>(fizickoLice); 
-               if (fizickoLice.Prioriteti != null && fizickoLice.Prioriteti.Count>0)
-                {
-                    List<Prioritet> prioritets = new List<Prioritet>();
-                    foreach(string prioritetId in fizickoLice.Prioriteti)
-                    {
-                        Prioritet prioritet = await _prioritetRepository.GetPrioritetById(Guid.Parse(prioritetId));
-                        if(prioritet == null)
-                        {
-                            continue;
-                        }
-                        prioritets.Add(prioritet);
-                    }
 
-                    newFizickoLice.Prioriteti = prioritets;
-                }
                 await _fizickoLiceRepository.CreateFizickoLice(newFizickoLice);
                 await _fizickoLiceRepository.SaveChangesAsync();
 
+                string link = _linkGenerator.GetPathByAction("GetFizickoLiceById", "FizickoLice", new { kupacId = newFizickoLice.KupacId });
 
-                return (_mapper.Map<FizickoLiceConfirmDto>(newFizickoLice));
+
+                return Created(link,_mapper.Map<FizickoLiceConfirmDto>(newFizickoLice));
             }
             catch (Exception)
             {
@@ -92,8 +80,7 @@ namespace KupacService.Controllers
         [HttpPut]
         public async Task<ActionResult<FizickoLiceDto>> UpdateFizickoLice([FromBody]FizickoLiceUpdateDto fizickoLiceUpdate)
         {
-            try
-            {
+           
                 FizickoLice oldFizickoLice = await _fizickoLiceRepository.GetFizickoLiceById(fizickoLiceUpdate.KupacId);
 
                 if(oldFizickoLice == null)
@@ -101,9 +88,11 @@ namespace KupacService.Controllers
                     return NoContent();
                 }
                 FizickoLice newFizickoLice = _mapper.Map<FizickoLice>(fizickoLiceUpdate);
-
-                if (fizickoLiceUpdate.Prioriteti != null && fizickoLiceUpdate.Prioriteti.Count > 0)
-                {
+       
+                _mapper.Map(newFizickoLice, oldFizickoLice);
+                
+                 if (fizickoLiceUpdate.Prioriteti != null && fizickoLiceUpdate.Prioriteti.Count > 0)
+                 {
                     List<Prioritet> prioritets = new List<Prioritet>();
                     foreach (string prioritetId in fizickoLiceUpdate.Prioriteti)
                     {
@@ -114,23 +103,14 @@ namespace KupacService.Controllers
                         }
                         prioritets.Add(prioritet);
                     }
-
-                    newFizickoLice.Prioriteti = prioritets;
-                }
-
-                _mapper.Map(newFizickoLice, oldFizickoLice);
+                    oldFizickoLice.Prioriteti = prioritets;
+                  }
 
                 await _fizickoLiceRepository.SaveChangesAsync();
 
                 return Ok(_mapper.Map<FizickoLiceDto>(newFizickoLice));
 
 
-            }
-            catch (Exception)
-            {
-
-                return StatusCode(StatusCodes.Status500InternalServerError, "Update Error");
-            }
         }
 
         [HttpDelete("{kupacId}")]
