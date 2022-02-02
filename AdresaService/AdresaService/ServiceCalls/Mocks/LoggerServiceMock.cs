@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AdresaService.ServiceCalls.Mocks
 {
-    public class LoggerService : ILoggerService
+    public class LoggerServiceMock : ILoggerService
     {
         public async Task<bool> Log(LogLevel level, string metoda, string poruka, Exception greska = null)
         {
