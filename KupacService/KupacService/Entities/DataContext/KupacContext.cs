@@ -26,6 +26,7 @@ namespace KupacService.Entities.DataContext
         public DbSet<KontaktOsoba> KontaktOsobe { get; set; }
         public DbSet<Kupac> Kupci { get; set; }
         public DbSet<FizickoLice> FizickaLica { get; set; }
+        public DbSet<PravnoLice> PravnaLica { get; set; }
 
 
 
@@ -102,7 +103,8 @@ namespace KupacService.Entities.DataContext
                     DuzinaTrajanjaZabraneGod = 2,
                     BrojTelefona = "069453232543",
                     Email = "Firma@gmail.com",
-                    BrojRacuna = "934 ‑ 10501 ‑ 97"
+                    BrojRacuna = "934 ‑ 10501 ‑ 97",
+                    KontaktOsobaId = Guid.Parse("da2197a4-891f-4a40-a1f2-313962701627")
 
                 });
 

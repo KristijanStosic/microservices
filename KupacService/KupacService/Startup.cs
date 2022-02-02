@@ -40,6 +40,7 @@ namespace KupacService
             services.AddScoped<IPrioritetRepository,PrioritetRepository>();
             services.AddScoped<IKontaktOsobaRepository, KontaktOsobaRepository>();
             services.AddScoped<IFizickoLiceRepository, FizickoLiceRepository>();
+            services.AddScoped<IPravnoLiceRepository, PravnoLiceRepository>();
 
 
             services.AddSwaggerGen(c =>
