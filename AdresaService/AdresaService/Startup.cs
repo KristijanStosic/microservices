@@ -1,6 +1,8 @@
-using AdresaService.Data;
+﻿using AdresaService.Data;
 using AdresaService.Data.Interfaces;
 using AdresaService.Entities.DataContext;
+using AdresaService.ServiceCalls;
+using AdresaService.ServiceCalls.Mocks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -15,7 +17,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace AdresaService
@@ -44,7 +48,7 @@ namespace AdresaService
                     ProblemDetailsFactory problemDetailsFactory = context.HttpContext.RequestServices
                         .GetRequiredService<ProblemDetailsFactory>();
 
-                    //Prevodi validacione gre�ke iz ModelState-a u RFC format
+                    //Prevodi validacione greške iz ModelState-a u RFC format
                     ValidationProblemDetails problemDetails = problemDetailsFactory.CreateValidationProblemDetails(context.HttpContext, context.ModelState);
                     problemDetails.Detail = "Pogledajte Error polje za detaljnije informacije.";
                     problemDetails.Instance = context.HttpContext.Request.Path;
@@ -54,7 +58,7 @@ namespace AdresaService
                     if ((context.ModelState.ErrorCount > 0) && (actionExecutiongContext?.ActionArguments.Count == context.ActionDescriptor.Parameters.Count))
                     {
                         problemDetails.Status = StatusCodes.Status422UnprocessableEntity;
-                        problemDetails.Title = "Desila se gre�ka prilikom validacije.";
+                        problemDetails.Title = "Desila se greška prilikom validacije.";
 
                         //Sve se vraca kao UnprocessibleEntity objekat
                         return new UnprocessableEntityObjectResult(problemDetails)
@@ -65,7 +69,7 @@ namespace AdresaService
 
                     //Ako nesto ne moze da se parsira vraca se status kod 400 - Bad Request
                     problemDetails.Status = StatusCodes.Status400BadRequest;
-                    problemDetails.Title = "Desila se gre�ka prilikom parsiranja.";
+                    problemDetails.Title = "Desila se greška prilikom parsiranja.";
                     return new BadRequestObjectResult(problemDetails)
                     {
                         ContentTypes = { "application/problem+json" }
@@ -78,11 +82,30 @@ namespace AdresaService
 
             services.AddScoped<IDrzavaRepository,DrzavaRepository>();
             services.AddScoped<IAdresaRepository, AdresaRepository>();
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
+            services.AddScoped<ILoggerService,LoggerServiceMock>();
 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AdresaService", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo {
+                    Title = "Adresa API",
+                    Version = "v1",
+                    Description = "API Adresa omogućava unos i pregled adresa i država",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                    {
+                        Name = "Gavrilo Stanić",
+                        Email = "stanic.gavrilo@uns.ac.rs",
+                        Url = new Uri("https://github.com/GavriloS")
+                    }
+                });
+
+                //Pomocu refleksije dobijamo ime XML fajla sa komentarima (ovako smo ga nazvali u Project -> Properties)
+                var xmlComments = $"{ Assembly.GetExecutingAssembly().GetName().Name }.xml";
+
+                //Pravimo putanju do XML fajla sa komentarima
+                var xmlCommentsPath = Path.Combine(AppContext.BaseDirectory, xmlComments);
+
+                //Govorimo swagger-u gde se nalazi dati xml fajl sa komentarima
+                c.IncludeXmlComments(xmlCommentsPath);
             });
 
             services.AddDbContext<AdresaContext>();
