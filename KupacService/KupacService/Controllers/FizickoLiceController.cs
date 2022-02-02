@@ -60,8 +60,24 @@ namespace KupacService.Controllers
         {
             try
             {
-                FizickoLice newFizickoLice = _mapper.Map<FizickoLice>(fizickoLice); 
+                FizickoLice newFizickoLice = _mapper.Map<FizickoLice>(fizickoLice);
 
+                if (fizickoLice.Prioriteti != null && fizickoLice.Prioriteti.Count > 0)
+                {
+                    List<Prioritet> prioriteti = new List<Prioritet>();
+
+                    foreach (Guid prioritet in fizickoLice.Prioriteti)
+                    {
+                        Prioritet tempPrioritet = await _prioritetRepository.GetPrioritetById(prioritet);
+                        if (tempPrioritet == null)
+                        {
+                            continue;
+                        }
+                        prioriteti.Add(tempPrioritet);
+                    }
+
+                    newFizickoLice.Prioriteti = prioriteti;
+                }
                 await _fizickoLiceRepository.CreateFizickoLice(newFizickoLice);
                 await _fizickoLiceRepository.SaveChangesAsync();
 
@@ -93,7 +109,7 @@ namespace KupacService.Controllers
                 
                  if (fizickoLiceUpdate.Prioriteti != null && fizickoLiceUpdate.Prioriteti.Count > 0)
                  {
-                    List<Prioritet> prioritets = new List<Prioritet>();
+                    List<Prioritet> prioriteti = new List<Prioritet>();
                     foreach (string prioritetId in fizickoLiceUpdate.Prioriteti)
                     {
                         Prioritet prioritet = await _prioritetRepository.GetPrioritetById(Guid.Parse(prioritetId));
@@ -101,14 +117,14 @@ namespace KupacService.Controllers
                         {
                             continue;
                         }
-                        prioritets.Add(prioritet);
+                        prioriteti.Add(prioritet);
                     }
-                    oldFizickoLice.Prioriteti = prioritets;
+                    oldFizickoLice.Prioriteti = prioriteti;
                   }
 
                 await _fizickoLiceRepository.SaveChangesAsync();
 
-                return Ok(_mapper.Map<FizickoLiceDto>(newFizickoLice));
+                return Ok(_mapper.Map<FizickoLiceDto>(oldFizickoLice));
 
 
         }

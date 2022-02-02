@@ -19,22 +19,6 @@ namespace KupacService.Data
         }
         public async Task<FizickoLice> CreateFizickoLice(FizickoLice fizickoLice)
         {
-            if(fizickoLice.Prioriteti!= null && fizickoLice.Prioriteti.Count > 0)
-            {
-                List<Prioritet> prioriteti = new List<Prioritet>();
-
-                foreach(Prioritet prioritet in fizickoLice.Prioriteti)
-                {
-                    Prioritet tempPrioritet = await _kupacContext.Prioriteti.FirstOrDefaultAsync<Prioritet>(p => p.PrioritetId == prioritet.PrioritetId);
-                    if(tempPrioritet == null)
-                    {
-                        continue;
-                    }
-                    prioriteti.Add(tempPrioritet);
-                }
-
-                fizickoLice.Prioriteti = prioriteti;
-            }
 
             await _kupacContext.FizickaLica.AddAsync(fizickoLice);
             return fizickoLice;
