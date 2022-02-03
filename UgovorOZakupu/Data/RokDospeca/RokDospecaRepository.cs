@@ -17,7 +17,9 @@ namespace UgovorOZakupu.Data.RokDospeca
 
         public Task<List<Entities.RokDospeca>> GetAllRokDospeca()
         {
-            return _db.RokoviDospeca.ToListAsync();
+            return _db.RokoviDospeca
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public Task<Entities.RokDospeca> GetRokDospecaById(Guid id)

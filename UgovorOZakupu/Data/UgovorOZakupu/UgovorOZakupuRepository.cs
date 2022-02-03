@@ -18,6 +18,7 @@ namespace UgovorOZakupu.Data.UgovorOZakupu
         public Task<List<Entities.UgovorOZakupu>> GetAllUgovorOZakupu()
         {
             return _db.UgovoriOZakupu
+                .AsNoTracking()
                 .Include(u => u.TipGarancije)
                 .Include(u => u.RokoviDospeca)
                 .ToListAsync();

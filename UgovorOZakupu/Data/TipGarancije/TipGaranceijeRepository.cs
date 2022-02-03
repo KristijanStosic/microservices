@@ -17,7 +17,9 @@ namespace UgovorOZakupu.Data.TipGarancije
         
         public Task<List<Entities.TipGarancije>> GetAllTipGarancije()
         {
-            return _db.TipoviGarancije.ToListAsync();
+            return _db.TipoviGarancije
+                .AsNoTracking()
+                .ToListAsync();
         }
 
         public Task<Entities.TipGarancije> GetTipGarancijeById(Guid id)

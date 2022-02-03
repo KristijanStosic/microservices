@@ -9,6 +9,7 @@ using UgovorOZakupu.Data.TipGarancije;
 using UgovorOZakupu.Data.UgovorOZakupu;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.DbContext;
+using UgovorOZakupu.Services.Logger;
 
 namespace UgovorOZakupu
 {
@@ -26,6 +27,9 @@ namespace UgovorOZakupu
             services.AddScoped<IRokDospecaRepository, RokDospecaRepository>();
             services.AddScoped<IUgovorOZakupuRepository, UgovorOZakupuRepository>();
 
+            services.AddScoped<ILoggerService, LoggerServiceMock>();
+            // services.AddScoped<ILoggerService, LoggerService>();
+            
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
