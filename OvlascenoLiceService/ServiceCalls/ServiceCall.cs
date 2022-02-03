@@ -30,9 +30,11 @@ namespace OvlascenoLiceService.ServiceCalls
         /// <returns></returns>
         public async Task<T> SendGetRequestAsync(string url)
         {
-            using (HttpClient httpClient = new HttpClient())
+            try
             {
-                HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, url);
+                using var httpClient = new HttpClient();
+
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Add("Accept", "application/json");
 
                 var response = await httpClient.SendAsync(request);
@@ -45,14 +47,16 @@ namespace OvlascenoLiceService.ServiceCalls
                         return default;
                     }
 
-                    await _loggerService.Log(LogLevel.Information, "SendGetRequestAsync", "Komunikacija sa drugim servisom je uspešna.");
-
                     return JsonConvert.DeserializeObject<T>(content);
                 }
-                var ex = new Exception("Desio se problem pri komunikaciji sa drugim mikroservisom");
-                await _loggerService.Log(LogLevel.Error, "SendGetRequestAsync", "Greška prilikom komunikacije sa drugim servisom.", ex);
-                throw ex;
+                return default;
             }
+            catch (Exception e)
+            {
+                await _loggerService.Log(LogLevel.Error, "SendGetRequestAsync", $"Greška prilikom komunikacije sa drugim servisom iz servisa Ovlašćeno Lice. Ciljani url: {url}", e);
+                return default;
+            }
+
         }
     }
 }

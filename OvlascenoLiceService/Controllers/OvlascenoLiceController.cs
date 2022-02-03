@@ -201,13 +201,13 @@ namespace OvlascenoLiceService.Controllers
             try
             {
                 var staroLice = await _ovlascenoLiceRepository.GetOvlascenoLiceById(ovlascenoLice.OvlascenoLiceId);
-                var stareVrednosti = JsonConvert.SerializeObject(staroLice);
 
                 if (staroLice == null)
                 {
                     await _loggerService.Log(LogLevel.Warning, "UpdateOvlascenoLice", $"Ovlašćeno lice sa id-em {ovlascenoLice.OvlascenoLiceId} nije pronađeno.");
                     return NotFound();
                 }
+                var stareVrednosti = staroLice.Ime + " " + staroLice.Prezime;
 
                 OvlascenoLice novoLice = _mapper.Map<OvlascenoLice>(ovlascenoLice);
 

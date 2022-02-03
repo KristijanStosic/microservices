@@ -14,7 +14,6 @@ namespace OvlascenoLiceService.Profiles
         /// </summary>
         public OvlascenoLiceProfile()
         {
-            //CreateMap<OvlascenoLice, OvlascenoLiceDto>();
             CreateMap<OvlascenoLice, OvlascenoLiceDto>()
                 .ForMember(
                     dest => dest.OvlascenoLice,

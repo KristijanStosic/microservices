@@ -24,10 +24,10 @@ namespace OvlascenoLiceService.Controllers
     [Produces("application/json", "application/xml")]
     public class BrojTableController : ControllerBase
     {
-        private IBrojTableRepository _brojTableRepository;
-        private LinkGenerator _linkGenerator;
-        private IMapper _mapper;
-        private ILoggerService _loggerService;
+        private readonly IBrojTableRepository _brojTableRepository;
+        private readonly LinkGenerator _linkGenerator;
+        private readonly IMapper _mapper;
+        private readonly ILoggerService _loggerService;
 
         /// <summary>
         /// Konstruktor kontrolera broj table - DI
@@ -176,13 +176,13 @@ namespace OvlascenoLiceService.Controllers
             try
             {
                 var stariBroj = await _brojTableRepository.GetBrojTableById(brojTable.BrojTableId);
-                var stareVrednosti = JsonConvert.SerializeObject(stariBroj);
 
                 if (stariBroj == null)
                 {
                     await _loggerService.Log(LogLevel.Warning, "UpdateBrojTable", $"Broj table sa id-em {brojTable.BrojTableId} nije pronađen.");
                     return NotFound();
                 }
+                var stareVrednosti = JsonConvert.SerializeObject(stariBroj);
 
                 BrojTable noviBroj = _mapper.Map<BrojTable>(brojTable);
                 noviBroj.RbTable = stariBroj.RbTable;

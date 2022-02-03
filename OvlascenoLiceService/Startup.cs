@@ -106,7 +106,7 @@ namespace OvlascenoLiceService
                         {
                             Name = "Dragan Majkić",
                             Email = "dragan.majkic@uns.ac.rs",
-                            Url = new Uri("https://github.com/draganmajkic")
+                            Url = new Uri(Configuration["Swagger:Github"])
                         }
                     });
                 //Korisitmo refleksiju za dobijanje XML fajla za komentarima
