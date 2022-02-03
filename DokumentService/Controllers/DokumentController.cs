@@ -7,8 +7,13 @@ using DokumentService.Data.TipDokumenta;
 using DokumentService.Data.UnitOfWork;
 using DokumentService.Entities;
 using DokumentService.Models.Dokument;
+using DokumentService.Models.Log;
+using DokumentService.Services;
+using DokumentService.Services.Logger;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace DokumentService.Controllers
 {
@@ -24,14 +29,17 @@ namespace DokumentService.Controllers
         private readonly ITipDokumentaRepository _tipDokumentaRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        
+        private readonly ILoggerService _loggerService;
 
         public DokumentController(IDokumentRepository dokumentaRepository,
-            ITipDokumentaRepository tipDokumentaRepository, IUnitOfWork unitOfWork, IMapper mapper)
+            ITipDokumentaRepository tipDokumentaRepository, IUnitOfWork unitOfWork, IMapper mapper, ILoggerService loggerService)
         {
             _dokumentaRepository = dokumentaRepository;
             _tipDokumentaRepository = tipDokumentaRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _loggerService = loggerService;
         }
 
         /// <summary>
@@ -49,9 +57,12 @@ namespace DokumentService.Controllers
 
             if (documents == null || documents.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetAllDokument", "Lista dokumenata je prazna ili null.");
                 return NoContent();
             }
 
+            await _loggerService.Log(LogLevel.Information, "GetAllDokument", "Lista dokumenata je uspešno vraćena.");
+            
             return Ok(_mapper.Map<List<DokumentDto>>(documents));
         }
 
@@ -69,8 +80,14 @@ namespace DokumentService.Controllers
         {
             var document = await _dokumentaRepository.GetDokumentById(id);
 
-            if (document == null) return NotFound();
+            if (document == null)
+            {
+                await _loggerService.Log(LogLevel.Warning, "GetDokumentById", $"Dokument sa id-jem {id} nije pronadjen.");
+                return NotFound();
+            }
 
+            await _loggerService.Log(LogLevel.Information, "GetDokumentById", $"Dokument sa id-jem {id} je uspešno vraćen.");
+            
             return Ok(_mapper.Map<DokumentDto>(document));
         }
 
@@ -99,8 +116,10 @@ namespace DokumentService.Controllers
 
             _dokumentaRepository.CreateDokument(document);
             await _unitOfWork.CompleteAsync();
-
+            
             document.TipDokumenta = await _tipDokumentaRepository.GetTipDokumentaById(document.TipDokumentaId);
+            
+            await _loggerService.Log(LogLevel.Information, "CreateDokument", $"Dokument sa vrednostima: {JsonConvert.SerializeObject(document)} je uspešno kreiran.");
 
             return CreatedAtAction(
                 "GetDokumentById",
@@ -125,15 +144,26 @@ namespace DokumentService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateDokument(Guid id, [FromBody] UpdateDokumentDto dokumentDto)
         {
-            if (id != dokumentDto.Id) return BadRequest();
+            if (id != dokumentDto.Id)
+            {
+                await _loggerService.Log(LogLevel.Warning, "UpdateDokument", $"ID dokumenta prosledjen kroz url nije isti kao onaj u telu zahteva.");
+                return BadRequest();
+            }
 
             var document = await _dokumentaRepository.GetDokumentById(id);
+            var oldValue = JsonConvert.SerializeObject(document);
 
-            if (document == null) return NotFound();
+            if (document == null)
+            {
+                await _loggerService.Log(LogLevel.Warning, "UpdateDokument", $"Dokument sa id-jem {id} nije pronadjen.");
+                return NotFound();
+            }
 
             _mapper.Map(dokumentDto, document, typeof(DokumentDto), typeof(Dokument));
             await _unitOfWork.CompleteAsync();
-
+            
+            await _loggerService.Log(LogLevel.Information, "UpdateDokument", $"Dokument sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
+            
             return NoContent();
         }
 
@@ -151,11 +181,17 @@ namespace DokumentService.Controllers
         {
             var document = await _dokumentaRepository.GetDokumentById(id);
 
-            if (document == null) return NotFound();
+            if (document == null)
+            {
+                await _loggerService.Log(LogLevel.Warning, "DeleteDokument", $"Dokument sa id-jem {id} nije pronadjen.");
+                return NotFound();
+            }
 
             _dokumentaRepository.DeleteDokument(document);
             await _unitOfWork.CompleteAsync();
 
+            await _loggerService.Log(LogLevel.Information, "DeleteDokument", $"Dokument sa id-em {id} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(document)}");
+            
             return NoContent();
         }
 

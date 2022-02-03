@@ -6,8 +6,11 @@ using DokumentService.Data.TipDokumenta;
 using DokumentService.Data.UnitOfWork;
 using DokumentService.Entities;
 using DokumentService.Models.TipDokumenta;
+using DokumentService.Services.Logger;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 
 namespace DokumentService.Controllers
 {
@@ -22,13 +25,15 @@ namespace DokumentService.Controllers
         private readonly ITipDokumentaRepository _tipDokumentaRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILoggerService _loggerService;
 
         public TipDokumentaController(ITipDokumentaRepository tipDokumentaRepository, IUnitOfWork unitOfWork,
-            IMapper mapper)
+            IMapper mapper, ILoggerService loggerService)
         {
             _tipDokumentaRepository = tipDokumentaRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _loggerService = loggerService;
         }
 
         /// <summary>
@@ -46,9 +51,12 @@ namespace DokumentService.Controllers
 
             if (tipoviDokumenta == null || tipoviDokumenta.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetAllTipDokumenta", "Lista tipova dokumenta je prazna ili null.");
                 return NoContent();
             }
             
+            await _loggerService.Log(LogLevel.Information, "GetAllTipDokumenta", "Lista tipova dokumenta je uspešno vraćena.");
+
             return Ok(_mapper.Map<List<TipDokumentaDto>>(tipoviDokumenta));
         }
 
@@ -66,7 +74,13 @@ namespace DokumentService.Controllers
         {
             var tipDokumenta = await _tipDokumentaRepository.GetTipDokumentaById(id);
 
-            if (tipDokumenta == null) return NotFound();
+            if (tipDokumenta == null)
+            {
+                await _loggerService.Log(LogLevel.Warning, "GetTipDokumentaById", $"Tip dokumenta sa id-jem {id} nije pronadjen.");
+                return NotFound();
+            }
+
+            await _loggerService.Log(LogLevel.Information, "GetTipDokumentaById", $"Tip dokumenta sa id-jem {id} je uspešno vraćen.");
 
             return Ok(_mapper.Map<TipDokumentaDto>(tipDokumenta));
         }
@@ -94,6 +108,8 @@ namespace DokumentService.Controllers
             _tipDokumentaRepository.CreateTipDokumenta(tipDokumenta);
             await _unitOfWork.CompleteAsync();
 
+            await _loggerService.Log(LogLevel.Information, "CreateTipDokumenta", $"Tip dokumenta sa vrednostima: {JsonConvert.SerializeObject(tipDokumenta)} je uspešno kreiran.");
+
             return CreatedAtAction(
                 "GetTipDokumentaById",
                 new {id = tipDokumenta.Id},
@@ -117,14 +133,25 @@ namespace DokumentService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateTipDokumenta(Guid id, [FromBody] UpdateTipDokumentaDto tipDokumentaDto)
         {
-            if (id != tipDokumentaDto.Id) return BadRequest();
+            if (id != tipDokumentaDto.Id)
+            {
+                await _loggerService.Log(LogLevel.Warning, "UpdateTipDokumenta", $"ID tipa dokumenta prosledjen kroz url nije isti kao onaj u telu zahteva.");
+                return BadRequest();
+            }
 
             var tipDokumenta = await _tipDokumentaRepository.GetTipDokumentaById(id);
+            var oldValue = JsonConvert.SerializeObject(tipDokumenta);
 
-            if (tipDokumenta == null) return NotFound();
+            if (tipDokumenta == null)
+            {
+                await _loggerService.Log(LogLevel.Warning, "UpdateTipDokumenta", $"Tip dokumenta sa id-jem {id} nije pronadjen.");
+                return NotFound();
+            }
 
             _mapper.Map(tipDokumentaDto, tipDokumenta, typeof(UpdateTipDokumentaDto), typeof(TipDokumenta));
             await _unitOfWork.CompleteAsync();
+
+            await _loggerService.Log(LogLevel.Information, "UpdateTipDokumenta", $"Tip dokumenta sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
 
             return NoContent();
         }
@@ -143,10 +170,16 @@ namespace DokumentService.Controllers
         {
             var tipDokumenta = await _tipDokumentaRepository.GetTipDokumentaById(id);
 
-            if (tipDokumenta == null) return NotFound();
+            if (tipDokumenta == null)
+            {
+                await _loggerService.Log(LogLevel.Warning, "DeleteTipDokumenta", $"Tip dokumenta sa id-jem {id} nije pronadjen.");
+                return NotFound();
+            }
 
             _tipDokumentaRepository.DeleteTipDokumenta(tipDokumenta);
             await _unitOfWork.CompleteAsync();
+
+            await _loggerService.Log(LogLevel.Information, "DeleteTipDokumenta", $"Tip dokumenta sa id-em {id} je uspešno obrisana. Obrisane vrednosti: {JsonConvert.SerializeObject(tipDokumenta)}");
 
             return NoContent();
         }

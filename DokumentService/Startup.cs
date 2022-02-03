@@ -5,6 +5,7 @@ using DokumentService.Data.Dokument;
 using DokumentService.Data.TipDokumenta;
 using DokumentService.Data.UnitOfWork;
 using DokumentService.DbContext;
+using DokumentService.Services.Logger;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,6 +27,9 @@ namespace DokumentService
             services.AddScoped<ITipDokumentaRepository, TipDokumentaRepository>();
             services.AddScoped<IDokumentRepository, DokumentRepository>();
 
+            // services.AddScoped<ILoggerService, LoggerMockService>();
+            services.AddScoped<ILoggerService, LoggerService>();
+            
             services.AddControllers();
             
             services.AddSwaggerGen(c =>
