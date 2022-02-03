@@ -9,8 +9,14 @@ using ZalbaService.Models.StatusZalbe;
 
 namespace ZalbaService.Profiles
 {
+    // <summary>
+    /// Maper za klasu status zalbe
+    /// </summary>
     public class StatusZalbeProfile : Profile
     {
+        /// <summary>
+        /// Konstruktor za mapiranje statusa zalbe
+        /// </summary>
         public StatusZalbeProfile()
         {
             CreateMap<StatusZalbe, StatusZalbeCreateDto>().ReverseMap();

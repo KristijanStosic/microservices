@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +9,28 @@ using ZalbaService.Models.Exceptions;
 
 namespace ZalbaService.ServicesCalls
 {
+    /// <summary>
+    /// Genericka klasa za komunikaciju sa drugim servisima
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ServiceCall<T> : IServiceCall<T>
     {
+        private readonly ILoggerService _loggerService;
+
+        /// <summary>
+        /// Konstruktor klase service call
+        /// </summary>
+        /// <param name="loggerService"></param>
+        public ServiceCall(ILoggerService loggerService)
+        {
+            _loggerService = loggerService;
+        }
+
+        /// <summary>
+        /// Metoda za slanje get zahteva
+        /// </summary>
+        /// <param name="url">Url putanja ka drugom servisu</param>
+        /// <returns></returns>
         public async Task<T> SendGetRequestAsync(string url)
         {
             using var httpClient = new HttpClient();
@@ -30,7 +51,9 @@ namespace ZalbaService.ServicesCalls
                 return JsonConvert.DeserializeObject<T>(content);
             }
 
-            throw new ServiceCallException("Desio se problem pri komunikaciji sa drugim mikroservisom");
+            var ex = new ServiceCallException("Desio se problem pri komunikaciji sa drugim mikroservisom");
+            await _loggerService.Log(LogLevel.Error, "SendGetRequestAsync", $"Greška prilikom komunikacije sa drugim servisom iz servisa Zalba. Ciljani url: {url}", ex);
+            throw ex;
         }
     }
 }

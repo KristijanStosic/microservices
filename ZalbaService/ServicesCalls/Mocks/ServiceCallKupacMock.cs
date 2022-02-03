@@ -6,8 +6,17 @@ using ZalbaService.Models.Services;
 
 namespace ZalbaService.ServicesCalls
 {
+    /// <summary>
+    /// Mock klasa za dobijanje podatka o kupcu
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class ServiceCallKupacMock<T> : IServiceCall<T>
     {
+        /// <summary>
+        /// Metoda za slanje get zahteva - mock
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns></returns>
         public async Task<T> SendGetRequestAsync(string url)
         {
             var kupac = new KupacDto

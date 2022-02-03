@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace ZalbaService.Models
 {
+    /// <summary>
+    /// Update Dto za status žalbe
+    /// </summary>
     public class StatusZalbeUpdateDto
     {
-        //public Guid StatusZalbeId { get; set; }
+        /// <summary>
+        /// Naziv statusa žalbe
+        /// </summary>
         [Required(ErrorMessage = "Obavezno je uneti naziv statusa zalbe")]
         public string NazivStatusaZalbe { get; set; }
     }

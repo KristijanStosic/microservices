@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace ZalbaService.Models
 {
+    /// <summary>
+    /// Update Dto za tip žalbe
+    /// </summary>
     public class TipZalbeUpdateDto
     {
-        //public Guid TipZalbeId { get; set; }
+        /// <summary>
+        /// Naziv tipa žalbe
+        /// </summary>
         [Required(ErrorMessage = "Obavezno je uneti naziv tipa zalbe")]
         public string NazivTipaZalbe { get; set; }
     }

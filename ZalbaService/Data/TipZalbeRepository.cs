@@ -9,17 +9,29 @@ using ZalbaService.Entities.DataContext;
 
 namespace ZalbaService.Data
 {
+    /// <summary>
+    /// Repozitorijum za tip žalbe
+    /// </summary>
     public class TipZalbeRepository : ITipZalbeRepository
     {
         private readonly ZalbaContext _context;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// Konstruktor repoa tipa žalbe
+        /// </summary>
+        /// <param name="context">Db context</param>
+        /// <param name="mapper">AutoMapper</param>
         public TipZalbeRepository(ZalbaContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Dobijanje podataka o svim tipovima žalbi
+        /// </summary>
+        /// <returns></returns>
         public async Task<List<TipZalbe>> GetAllTipoviZalbe(string nazivTipaZalbe = null)
         {
             return await _context.TipZalbe
@@ -27,11 +39,21 @@ namespace ZalbaService.Data
                 .ToListAsync();
         }
 
+        /// <summary>
+        /// Dobijanje tipa žalbe po id-u
+        /// </summary>
+        /// <param name="tipZalbeId">Id tipa žalbe</param>
+        /// <returns></returns>
         public async Task<TipZalbe> GetTipZalbeById(Guid tipZalbeId)
         {
             return await _context.TipZalbe.FirstOrDefaultAsync(tz => tz.TipZalbeId == tipZalbeId);
         }
 
+        /// <summary>
+        /// Kreiranje tipa žalbe
+        /// </summary>
+        /// <param name="tipZalbe">Objekat tipa žalbe</param>
+        /// <returns></returns>
         public async Task<TipZalbe> CreateTipZalbe(TipZalbe tipZalbe)
         {
             _context.TipZalbe.Add(tipZalbe);
@@ -40,6 +62,11 @@ namespace ZalbaService.Data
             return tipZalbe;
         }
 
+        /// <summary>
+        /// Brisanje tipa žalbe
+        /// </summary>
+        /// <param name="tipZalbeId">Id tipa žalbe</param>
+        /// <returns></returns>
         public async Task DeleteTipZalbe(Guid tipZalbeId)
         {
             var tipZalbe = await GetTipZalbeById(tipZalbeId);
@@ -48,11 +75,19 @@ namespace ZalbaService.Data
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Cuvanje izmena u bazi podataka
+        /// </summary>
+        /// <returns></returns>
         public async Task UpdateTipZalbe(TipZalbe tipZalbe)
         {
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// Provera da li dati podatak postoji u bazi, ako postoji vrati false, ako ne onda true
+        /// </summary>
+        /// <returns></returns>
         public async Task<bool> IsValidTipZalbe(string nazivTipaZalbe)
         {
             // proverava se unos istog naziva tipa zalbe

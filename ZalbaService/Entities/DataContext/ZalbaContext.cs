@@ -7,23 +7,43 @@ using System.Threading.Tasks;
 
 namespace ZalbaService.Entities.DataContext
 {
+    /// <summary>
+    /// Žalba DB Context
+    /// </summary>
     public class ZalbaContext : DbContext
     {
         private readonly IConfiguration _configuration;
 
+        /// <summary>
+        /// Žalba Context konstruktor
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="configuration"></param>
         public ZalbaContext(DbContextOptions options, IConfiguration configuration) : base(options)
         {
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// DBSet za status žalbe
+        /// </summary>
         public DbSet<StatusZalbe> StatusZalbe { get; set; }
-
+        /// <summary>
+        /// DBSet za tip žalbe
+        /// </summary>
         public DbSet<TipZalbe> TipZalbe { get; set; }
-
+        /// <summary>
+        /// DBSet za radnju za žalbu
+        /// </summary>
         public DbSet<RadnjaZaZalbu> RadnjaZaZalbu { get; set; }
-
+        /// <summary>
+        /// DBSet za žalbu
+        /// </summary>
         public DbSet<Zalba> Zalba { get; set; }
-
+        /// <summary>
+        /// Metoda u kojoj se definise konekcioni string za bazu
+        /// </summary>
+        /// <param name="optionsBuilder"></param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ZalbaDB"));

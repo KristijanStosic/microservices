@@ -9,8 +9,14 @@ using ZalbaService.Models.Zalba;
 
 namespace ZalbaService.Profiles
 {
+    /// <summary>
+    /// Maper za klasu zalba
+    /// </summary>
     public class ZalbaProfile : Profile
     {
+        /// <summary>
+        /// Konstruktor za mapiranje zalbe
+        /// </summary>
         public ZalbaProfile()
         {
             CreateMap<Zalba, ZalbaDto>()
