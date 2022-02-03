@@ -444,7 +444,7 @@
             <summary>
             Popunjavamo bazu inicijalnim podacima
             </summary>
-            <param name="builder"></param>
+            <param name="modelBuilder"></param>
         </member>
         <member name="T:OvlascenoLiceService.Entities.OvlascenoLice">
             <summary>

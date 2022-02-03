@@ -42,10 +42,10 @@ namespace OvlascenoLiceService.Entities.DataContext
         /// <summary>
         /// Popunjavamo bazu inicijalnim podacima
         /// </summary>
-        /// <param name="builder"></param>
-        protected override void OnModelCreating(ModelBuilder builder)
+        /// <param name="modelBuilder"></param>
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.Entity<OvlascenoLice>()
+            modelBuilder.Entity<OvlascenoLice>()
                 .HasData(new
                 {
                     OvlascenoLiceId = Guid.Parse("5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5"),
@@ -70,7 +70,7 @@ namespace OvlascenoLiceService.Entities.DataContext
                     DrzavaId = Guid.Parse("9ce21ce2-7809-4e28-ba74-fd2f1bc6466a")
                 });
 
-            builder.Entity<BrojTable>()
+            modelBuilder.Entity<BrojTable>()
                 .HasData(new
                 {
                     BrojTableId = Guid.Parse("F7837323-AFEB-4AA9-BA28-CD0912BB1FAC"),

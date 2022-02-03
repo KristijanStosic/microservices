@@ -12,7 +12,7 @@ namespace OvlascenoLiceService
     /// <summary>
     /// Program class
     /// </summary>
-    public class Program
+    public static class Program
     {
         /// <summary>
         /// Main method
