@@ -4,18 +4,20 @@ using System.Threading.Tasks;
 
 namespace UgovorOZakupu.Services
 {
-    public abstract class Service<T>
+    public abstract class ServiceBase
     {
+        private string _url;
         private HttpClient _http;
 
-        protected Service()
+        protected ServiceBase(string url)
         {
+            _url = url;
             _http = new HttpClient();
         }
 
-        public async Task SendPostRequest(string url, T payload)
+        public async Task SendPostRequest<T>(T payload)
         {
-            await _http.PostAsJsonAsync(url, payload);
+            await _http.PostAsJsonAsync(_url, payload);
         }
     }
 }

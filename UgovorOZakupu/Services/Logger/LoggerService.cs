@@ -6,13 +6,10 @@ using UgovorOZakupu.Models.LogModel;
 
 namespace UgovorOZakupu.Services.Logger
 {
-    public class LoggerService : Service<LogModel>, ILoggerService
+    public class LoggerServiceBase : ServiceBase, ILoggerService
     {
-        private IConfiguration _configuration;
-        
-        public LoggerService(IConfiguration configuration)
+        public LoggerServiceBase(IConfiguration configuration) : base(configuration.GetValue<string>("Services:Logger"))
         {
-            _configuration = configuration;
         }
 
         public async Task Log(LogLevel level, string method, string message, Exception exception = null)
@@ -26,7 +23,7 @@ namespace UgovorOZakupu.Services.Logger
                 Greska = exception
             };
 
-            await SendPostRequest(_configuration.GetValue<string>("Services:Logger"), log);
+            await SendPostRequest(log);
         }
     }
 }
