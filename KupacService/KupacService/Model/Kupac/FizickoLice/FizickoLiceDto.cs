@@ -23,7 +23,7 @@ namespace KupacService.Model.Kupac.FizickoLice
         public string BrojTelefona2 { get; set; }
         public string Email { get; set; }
         public string BrojRacuna { get; set; }
-        public List<string> Prioriteti { get; set; }
+        public List<PrioritetDto> Prioriteti { get; set; }
        
 
     }
