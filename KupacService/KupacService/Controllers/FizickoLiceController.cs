@@ -56,7 +56,7 @@ namespace KupacService.Controllers
                 {
                     var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + fizickoLice.AdresaId);
                     if (adresaDto != null)
-                        fizickoLiceDto.adresa = adresaDto;
+                        fizickoLiceDto.Adresa = adresaDto;
                 }
                 fizickaLicaDto.Add(fizickoLiceDto);
             }
