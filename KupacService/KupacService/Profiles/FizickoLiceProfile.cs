@@ -23,10 +23,7 @@ namespace KupacService.Profiles
 
             CreateMap<FizickoLice, FizickoLiceConfirmDto>();
 
-            CreateMap<FizickoLice, FizickoLice>()
-                .ForMember(
-                dest => dest.Prioriteti,
-                opt => opt.MapFrom(src => src.Prioriteti));
+            CreateMap<FizickoLice, FizickoLice>();
 
             CreateMap<FizickoLiceUpdateDto, FizickoLice>()
                 .ForMember(
