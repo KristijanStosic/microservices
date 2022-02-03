@@ -188,16 +188,22 @@ namespace AdresaService.Controllers
             try
             {
                 var oldAdresa = await _adresaRepository.GetAdresaById(adresaUpdate.AdresaId);
-                var stareVrednosti = JsonConvert.SerializeObject(oldAdresa);
+             
                 if (oldAdresa == null)
                 {
                     await _loggerService.Log(LogLevel.Warning, "UpdateAdresa", $"Adresa sa id-em {adresaUpdate.AdresaId} nije pronađena.");
                     return NotFound();
                 }
+                //Ovo radim kako bi izbegao bug gde se azurirana drzava obrise
+                Drzava drzava = oldAdresa.Drzava;
+
+                var stareVrednosti = JsonConvert.SerializeObject(oldAdresa);
 
                 Adresa adresa = _mapper.Map<Adresa>(adresaUpdate);
                 
                 _mapper.Map(adresa, oldAdresa);
+
+                oldAdresa.Drzava = drzava;
 
                 await _adresaRepository.SaveChangesAsync();
                 await _loggerService.Log(LogLevel.Information, "UpdateAdresa", $"Adresa sa id-em {adresaUpdate} je uspešno izmenjena. Stare vrednosti su: {stareVrednosti}");
