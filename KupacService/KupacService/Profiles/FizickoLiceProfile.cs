@@ -14,11 +14,7 @@ namespace KupacService.Profiles
         public FizickoLiceProfile()
         {
 
-            CreateMap<FizickoLice, FizickoLiceDto>()
-                .ForMember(
-                dest => dest.Prioriteti,
-                opt => opt.MapFrom(src => src.Prioriteti.Select(p => p.Opis).ToList())
-                );
+            CreateMap<FizickoLice, FizickoLiceDto>();
 
             CreateMap<FizickoLiceDto, FizickoLice>()
                 .ForMember(
@@ -26,19 +22,23 @@ namespace KupacService.Profiles
                 opt => opt.Ignore());
 
             CreateMap<FizickoLice, FizickoLiceConfirmDto>();
-            CreateMap<FizickoLice, FizickoLice>();
+
+            CreateMap<FizickoLice, FizickoLice>()
+                .ForMember(
+                dest => dest.Prioriteti,
+                opt => opt.MapFrom(src => src.Prioriteti));
 
             CreateMap<FizickoLiceUpdateDto, FizickoLice>()
                 .ForMember(
                 dest => dest.Prioriteti,
-                opt => opt.Ignore());
+                opt => opt.MapFrom(src => src.Prioriteti));
 
 
             
             CreateMap<FizickoLiceCreationDto, FizickoLice>()
                 .ForMember(
                 dest => dest.Prioriteti,
-                opt => opt.Ignore());
+                opt => opt.MapFrom(src => src.Prioriteti));
 
         }
     }

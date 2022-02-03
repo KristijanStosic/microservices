@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using KupacService.Entities;
+using KupacService.Helpers;
 using KupacService.Model.Prioritet;
 using System;
 using System.Collections.Generic;
@@ -17,6 +18,7 @@ namespace KupacService.Profiles
             CreateMap<PrioritetDto, Prioritet>();
             CreateMap<PrioritetUpdateDto, Prioritet>();
             CreateMap<Prioritet, Prioritet>();
+            CreateMap<Guid, Prioritet>().ConvertUsing<PrioritetConverter>();
 
         }
     }
