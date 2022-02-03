@@ -74,6 +74,17 @@ namespace KupacService.Controllers
                 return NotFound();
             }
 
+            FizickoLiceDto fizickoLiceDto = _mapper.Map<FizickoLiceDto>(fizickoLice);
+          
+            if (fizickoLice.AdresaId != null)
+            {
+                string adresaurl = _configuration["Services:AdresaService"];
+                var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + fizickoLice.AdresaId);
+                if (adresaDto != null)
+                    fizickoLiceDto.adresa = adresaDto;
+            }
+           
+
             return Ok(_mapper.Map<FizickoLiceDto>(fizickoLice));
 
         }
