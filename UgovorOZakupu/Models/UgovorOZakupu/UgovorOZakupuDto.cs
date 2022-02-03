@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UgovorOZakupu.Models.Dokument;
 
 namespace UgovorOZakupu.Models.UgovorOZakupu
 {
@@ -18,5 +19,7 @@ namespace UgovorOZakupu.Models.UgovorOZakupu
         public string TipGarancije { get; set; }
 
         public IEnumerable<int> RokoviDospeca { get; set; }
+
+        public DokumentDto Dokument { get; set; }
     }
 }

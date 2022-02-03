@@ -17,5 +17,7 @@ namespace UgovorOZakupu.Models.UgovorOZakupu
         public DateTime DatumPotpisivanja { get; set; }
 
         public Guid TipGarancijeId { get; set; }
+        
+        public Guid DokumentId { get; set; }
     }
 }

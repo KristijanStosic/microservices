@@ -12,15 +12,15 @@ namespace UgovorOZakupu.Services.Logger
         {
             var log = new LogModel
             {
-                Servis = "Dokument API",
+                Servis = "Javno Nadmetanje API",
                 Level = level,
                 Metoda = method,
                 Poruka = message,
                 Greska = exception
             };
-            
+
             System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(log));
-            
+
             return Task.CompletedTask;
         }
     }

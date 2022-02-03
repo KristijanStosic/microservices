@@ -4,13 +4,15 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
 using UgovorOZakupu.Data.RokDospeca;
 using UgovorOZakupu.Data.TipGarancije;
 using UgovorOZakupu.Data.UgovorOZakupu;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.DbContext;
+using UgovorOZakupu.Models.Dokument;
+using UgovorOZakupu.Services;
 using UgovorOZakupu.Services.Logger;
+using UgovorOZakupu.Services.ServiceCalls;
 
 namespace UgovorOZakupu
 {
@@ -28,9 +30,14 @@ namespace UgovorOZakupu
             services.AddScoped<IRokDospecaRepository, RokDospecaRepository>();
             services.AddScoped<IUgovorOZakupuRepository, UgovorOZakupuRepository>();
 
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
             // services.AddScoped<ILoggerService, LoggerService>();
+            services.AddScoped<ILoggerService, LoggerServiceMock>();
 
+            services.AddScoped<IService<DokumentDto>, Service<DokumentDto>>();
+            
+            services.AddScoped<IServiceCalls, ServiceCalls>();
+            // services.AddScoped<IServiceCalls, ServiceCallsMock>();
+            
             services.AddControllers();
 
             services.AddSwaggerGen(c =>

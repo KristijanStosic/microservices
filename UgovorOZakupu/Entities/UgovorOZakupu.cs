@@ -23,5 +23,7 @@ namespace UgovorOZakupu.Entities
         public TipGarancije TipGarancije { get; set; }
 
         public IEnumerable<RokDospeca> RokoviDospeca { get; set; }
+
+        public Guid DokumentId { get; set; }
     }
 }

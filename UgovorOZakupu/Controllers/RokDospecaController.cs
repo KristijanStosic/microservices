@@ -17,10 +17,11 @@ namespace UgovorOZakupu.Controllers
     [ApiController]
     public class RokDospecaController : ControllerBase
     {
-        private readonly ILoggerService _loggerService;
         private readonly IMapper _mapper;
         private readonly IRokDospecaRepository _rokDospecaRepository;
         private readonly IUnitOfWork _unitOfWork;
+
+        private readonly ILoggerService _loggerService;
 
         public RokDospecaController(IRokDospecaRepository rokDospecaRepository, IUnitOfWork unitOfWork, IMapper mapper,
             ILoggerService loggerService)

@@ -18,5 +18,7 @@ namespace UgovorOZakupu.Models.UgovorOZakupu
         public Guid TipGarancijeId { get; set; }
 
         public IEnumerable<int> RokoviDospeca { get; set; }
+
+        public Guid DokumentId { get; set; }
     }
 }

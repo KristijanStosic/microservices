@@ -10,6 +10,7 @@ using UgovorOZakupu.Data.UgovorOZakupu;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.Models.UgovorOZakupu;
 using UgovorOZakupu.Services.Logger;
+using UgovorOZakupu.Services.ServiceCalls;
 
 namespace UgovorOZakupu.Controllers
 {
@@ -17,21 +18,24 @@ namespace UgovorOZakupu.Controllers
     [ApiController]
     public class UgovorOZakupuController : ControllerBase
     {
-        private readonly ILoggerService _loggerService;
         private readonly IMapper _mapper;
         private readonly ITipGaranceijeRepository _tipGaranceijeRepository;
         private readonly IUgovorOZakupuRepository _ugovorOZakupuRepository;
         private readonly IUnitOfWork _unitOfWork;
+        
+        private readonly ILoggerService _loggerService;
+        private readonly IServiceCalls _serviceCalls;
 
         public UgovorOZakupuController(IUgovorOZakupuRepository ugovorOZakupuRepository,
             ITipGaranceijeRepository tipGaranceijeRepository, IUnitOfWork unitOfWork,
-            IMapper mapper, ILoggerService loggerService)
+            IMapper mapper, ILoggerService loggerService, IServiceCalls serviceCalls)
         {
             _ugovorOZakupuRepository = ugovorOZakupuRepository;
             _tipGaranceijeRepository = tipGaranceijeRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _loggerService = loggerService;
+            _serviceCalls = serviceCalls;
         }
 
         [HttpGet]
@@ -46,10 +50,12 @@ namespace UgovorOZakupu.Controllers
                 return NoContent();
             }
 
+            var ugovoriDto = _mapper.Map<List<UgovorOZakupuDto>>(ugovori);
+
             await _loggerService.Log(LogLevel.Information, "GetAllUgovorOZakupu",
                 "Lista ugovora o zakupu je uspešno vraćena.");
 
-            return Ok(_mapper.Map<List<UgovorOZakupuDto>>(ugovori));
+            return Ok(ugovoriDto);
         }
 
         [HttpGet("{id:guid}")]
@@ -64,10 +70,13 @@ namespace UgovorOZakupu.Controllers
                 return NotFound();
             }
 
+            var ugovorDto = _mapper.Map<UgovorOZakupuDto>(ugovor);
+            ugovorDto.Dokument = await _serviceCalls.GetDokumentById(ugovor.DokumentId);
+            
             await _loggerService.Log(LogLevel.Information, "GetUgovorOZakupuById",
                 $"Ugovor o zakupu sa id-jem {id} je uspešno vraćen.");
 
-            return Ok(_mapper.Map<UgovorOZakupuDto>(ugovor));
+            return Ok(ugovorDto);
         }
 
         [HttpPost]
