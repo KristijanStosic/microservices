@@ -85,7 +85,7 @@ namespace KupacService.Controllers
             }
            
 
-            return Ok(_mapper.Map<FizickoLiceDto>(fizickoLice));
+            return Ok(fizickoLiceDto);
 
         }
         [HttpPost]
