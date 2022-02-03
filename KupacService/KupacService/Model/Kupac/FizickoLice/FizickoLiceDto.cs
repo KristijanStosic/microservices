@@ -1,4 +1,5 @@
-﻿using KupacService.Model.Prioritet;
+﻿using KupacService.Model.OtherServices;
+using KupacService.Model.Prioritet;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -24,6 +25,7 @@ namespace KupacService.Model.Kupac.FizickoLice
         public string Email { get; set; }
         public string BrojRacuna { get; set; }
         public List<PrioritetDto> Prioriteti { get; set; }
+        public AdresaDto adresa { get; set; }
        
 
     }

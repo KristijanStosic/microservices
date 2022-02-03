@@ -87,7 +87,8 @@ namespace KupacService.Entities.DataContext
                     DatumPocetkaZabrane = new DateTime(),
                     BrojTelefona = "069453432543",
                     Email = "filip@gmail.com",
-                    BrojRacuna = "908 ‑ 10501 ‑ 97"
+                    BrojRacuna = "908 ‑ 10501 ‑ 97",
+                    AdresaId = Guid.Parse("1C989EE3-13B2-4D3B-ABEB-C4E6343EACE7")
                 });
             
             builder.Entity<PravnoLice>()

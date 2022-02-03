@@ -23,7 +23,7 @@ namespace KupacService.Entities
         public virtual List<Prioritet> Prioriteti { get; set; }
 
 
-        
+        public Guid? AdresaId { get; set; }
 
     }
 }
