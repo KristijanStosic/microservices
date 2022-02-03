@@ -142,13 +142,13 @@ namespace JavnoNadmetanjeService.Controllers
             try
             {
                 var stariStatus = await _statusRepository.GetStatusById(status.StatusId);
-                var stareVrednosti = JsonConvert.SerializeObject(stariStatus);
 
                 if (stariStatus == null)
                 {
                     await _loggerService.Log(LogLevel.Warning, "UpdateStatus", $"Status javnog nadmetanja sa id-em {status.StatusId} nije pronađen.");
                     return NotFound();
                 }
+                var stareVrednosti = JsonConvert.SerializeObject(stariStatus);
 
                 Status noviStatus = _mapper.Map<Status>(status);
 

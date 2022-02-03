@@ -155,13 +155,13 @@ namespace JavnoNadmetanjeService.Controllers
             try
             {
                 var staraEtapa = await _etapaRepository.GetEtapaById(etapa.EtapaId);
-                var stareVrednosti = JsonConvert.SerializeObject(staraEtapa);
 
                 if (staraEtapa == null)
                 {
                     await _loggerService.Log(LogLevel.Warning, "UpdateEtapa", $"Etapa sa id-em {etapa.EtapaId} nije pronađena.");
                     return NotFound();
                 }
+                var stareVrednosti = JsonConvert.SerializeObject(staraEtapa);
 
                 Etapa novaEtapa = _mapper.Map<Etapa>(etapa);
 

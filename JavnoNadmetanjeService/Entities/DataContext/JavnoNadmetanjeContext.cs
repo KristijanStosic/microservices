@@ -34,27 +34,6 @@ namespace JavnoNadmetanjeService.Entities
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //Veze i slozeni primarni kljucevi za many to many tabele
-            modelBuilder.Entity<JavnoNadmetanje>()
-                 .HasOne(j => j.Status)
-                 .WithMany()
-                 .HasForeignKey("StatusId")
-                 .OnDelete(DeleteBehavior.Restrict)
-                 .IsRequired();
-
-            modelBuilder.Entity<JavnoNadmetanje>()
-                 .HasOne(j => j.Tip)
-                 .WithMany()
-                 .HasForeignKey("TipId")
-                 .OnDelete(DeleteBehavior.Restrict)
-                 .IsRequired();
-
-            modelBuilder.Entity<Etapa>()
-                 .HasOne(e => e.JavnoNadmetanje)
-                 .WithMany(j => j.Etape)
-                 .HasForeignKey("JavnoNadmetanjeId")
-                 .OnDelete(DeleteBehavior.Restrict)
-                 .IsRequired();
-
             modelBuilder.Entity<JavnoNadmetanjeOvlascenoLice>()
                 .HasOne(j => j.JavnoNadmetanje)
                 .WithMany()
@@ -225,7 +204,22 @@ namespace JavnoNadmetanjeService.Entities
                     KupacId = Guid.Parse("4ba95c01-aa89-4d36-a467-c72b0fcc5b80")
                 });
 
-            //ToDo: Dodati inicijalne vrednosti i za deo parcele
+            modelBuilder.Entity<JavnoNadmetanjeDeoParcele>()
+                .HasData(new
+                {
+                    JavnoNadmetanjeId = Guid.Parse("56A7CFF5-CB0A-46B8-BFC1-93DB415FEEB4"),
+                    DeoParceleId = Guid.Parse("17894615-CA22-4943-87C8-16C246A35879")
+                },
+                new
+                {
+                    JavnoNadmetanjeId = Guid.Parse("56A7CFF5-CB0A-46B8-BFC1-93DB415FEEB4"),
+                    DeoParceleId = Guid.Parse("44302280-3611-4667-BCFC-08B4E272BB28")
+                },
+                new
+                {
+                    JavnoNadmetanjeId = Guid.Parse("B195C4C2-2B26-40AD-8FF6-C212474ACC83"),
+                    DeoParceleId = Guid.Parse("44302280-3611-4667-BCFC-08B4E272BB28")
+                });
         }
     }
 }

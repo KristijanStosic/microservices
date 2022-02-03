@@ -162,13 +162,13 @@ namespace JavnoNadmetanjeService.Controllers
             try
             {
                 var staroNadmetanje = await _javnoNadmetanjeRepository.GetJavnoNadmetanjeById(javnoNadmetanje.JavnoNadmetanjeId);
-                var stareVrednosti = JsonConvert.SerializeObject(javnoNadmetanje);
 
                 if (staroNadmetanje == null)
                 {
                     await _loggerService.Log(LogLevel.Warning, "UpdateJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanje.JavnoNadmetanjeId} nije pronađeno.");
                     return NotFound();
                 }
+                var stareVrednosti = JsonConvert.SerializeObject(javnoNadmetanje);
 
                 JavnoNadmetanje novoNadmetanje = _mapper.Map<JavnoNadmetanje>(javnoNadmetanje);
 

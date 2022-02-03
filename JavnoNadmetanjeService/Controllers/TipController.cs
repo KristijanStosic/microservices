@@ -142,13 +142,13 @@ namespace JavnoNadmetanjeService.Controllers
             try
             {
                 var stariTip = await _tipRepository.GetTipById(tip.TipId);
-                var stareVrednosti = JsonConvert.SerializeObject(stariTip);
 
                 if (stariTip == null)
                 {
                     await _loggerService.Log(LogLevel.Warning, "UpdateTip", $"Tip javnog nadmetanja sa id-em {tip.TipId} nije pronađen.");
                     return NotFound();
                 }
+                var stareVrednosti = JsonConvert.SerializeObject(stariTip);
 
                 Tip noviTip = _mapper.Map<Tip>(tip);
 
