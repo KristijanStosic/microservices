@@ -4,6 +4,77 @@
         <name>ZalbaService</name>
     </assembly>
     <members>
+        <member name="T:ZalbaService.Controllers.RadnjaZaZalbuController">
+            <summary>
+            Kontroler radnje za zalbu
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.#ctor(ZalbaService.Data.IRadnjaZaZalbuRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,ZalbaService.ServicesCalls.ILoggerService)">
+            <summary>
+            Konstruktor kontrolera broj table - DI
+            </summary>
+            <param name="radnjaZaZalbuRepository">Repo radnje za albu</param>
+            <param name="linkGenerator">Link generator za create zahtev</param>
+            <param name="mapper">AutoMapper</param>
+            <param name="loggerService">Logger servis</param>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.GetAllRadnjeZaZalbu(System.String)">
+            <summary>
+            Vraca sve radnje za zalbu
+            </summary>
+            <returns>Lista radnji za zalbu</returns>
+            <response code="200">Vraća listu radnji za zalbu</response>
+            <response code="404">Nije pronađena nijedna radnja za zalbu</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.GetRadnjaZaZalbu(System.Guid)">
+            <summary>
+            Vraća jednu radnju za zalbu na osnovu ID-a
+            </summary>
+            <param name="radnjaZaZalbuId">ID radnje za zalbu</param>
+            <returns>Radnja za zalbu</returns>
+            <response code="200">Vraća traženu radnju za zalbu</response>
+            <response code="404">Nije pronađena radnja za zalbu za uneti ID</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.CreateRadnjaZaZalbu(ZalbaService.Models.RadnjaZaZalbuCreateDto)">
+             <summary>
+             Kreira novu radnju za zalbu
+             </summary>
+             <param name="radnjaZaZalbu">Model radnje za zalbu</param>
+             <remarks>
+             Primer zahteva za kreiranje nove radnje za zalbu \
+             POST /api/radnjaZaZalbu \
+             {   
+                 "NazivRadnjeZaZalbu": "Otvorena"
+                 
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju radnje za zalbu</returns>
+             <response code="200">Vraća kreiranu radnju za zalbu</response>
+             <response code="400">Vraća grešku zvog unosa istih podataka za naziv radnje</response>
+             <response code="500">Desila se greška prilikom unosa nove radnje za zalbu</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.UpdateRadnjaZaZalbu(System.Guid,ZalbaService.Models.RadnjaZaZalbuUpdateDto)">
+            <summary>
+            Modifikacija radnje za zalbu
+            </summary>
+            <param name="radnjaZaZalbuId">ID radnje za zalbu</param>
+            <param name="radnjaZaZalbu">Model radnje za zalbu</param>
+            <returns>Potvrda o modifikaciji radnje za zalbu</returns>
+            <response code="200">Izmenjena radnja za zalbu</response>
+            <response code="400">Desila se greška prilikom unosa istih podataka za radnju za zalbu</response>
+            <response code="404">Nije pronađena radnja za zalbu za uneti ID</response>
+            <response code="500">Serverska greška tokom modifikacije radnje za zalbu</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.DeleteRadnjaZaZalbu(System.Guid)">
+            <summary>
+            Brisanje radnje za zalbu na osnovu ID-a
+            </summary>
+            <param name="radnjaZaZalbuId">ID radnje za zalbu</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Radnja za zalbu je uspešno obrisana</response>
+            <response code="404">Nije pronađena radnja za zalbu za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja radnje za zalbu</response>
+        </member>
         <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.GetRadnjaZaZalbuOptions">
             <summary>
             Vraća opcije za rad sa radnjama zalbi
@@ -81,8 +152,8 @@
             Brisanje tipa žalbe na osnovu ID-a
             </summary>
             <param name="tipZalbeId">ID tipa žalbe</param>
-            <returns>Status 200 (Success)</returns>
-            <response code="200">Tip žalbe je uspešno obrisan</response>
+            <returns>Status 204 (No Content)</returns>
+            <response code="204">Tip žalbe je uspešno obrisan</response>
             <response code="404">Nije pronađen tip žalbe za uneti ID</response>
             <response code="500">Serverska greška tokom brisanja tipa žalbe</response>
         </member>
@@ -673,6 +744,11 @@
             Dto za radnju žalbe
             </summary>
         </member>
+        <member name="P:ZalbaService.Models.RadnjaZaZalbuDto.RadnjaZaZalbuId">
+            <summary>
+            Id radnje za zalbu
+            </summary>
+        </member>
         <member name="P:ZalbaService.Models.RadnjaZaZalbuDto.NazivRadnjeZaZalbu">
             <summary>
             Naziv radnje žalbe
@@ -1007,6 +1083,56 @@
             <param name="validationContext"></param>
             <returns></returns>
         </member>
+        <member name="T:ZalbaService.Profiles.RadnjaZaZalbuProfile">
+            <summary>
+            Maper za klasu radnja za zalbu
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Profiles.RadnjaZaZalbuProfile.#ctor">
+            <summary>
+            Konstruktor za mapiranje radnje za zalbu
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:ZalbaService.Profiles.StatusZalbeProfile" -->
+        <member name="M:ZalbaService.Profiles.StatusZalbeProfile.#ctor">
+            <summary>
+            Konstruktor za mapiranje statusa zalbe
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:ZalbaService.Profiles.TipZalbeProfile" -->
+        <member name="M:ZalbaService.Profiles.TipZalbeProfile.#ctor">
+            <summary>
+            Konstruktor za mapiranje tipa zalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Profiles.ZalbaProfile">
+            <summary>
+            Maper za klasu zalba
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Profiles.ZalbaProfile.#ctor">
+            <summary>
+            Konstruktor za mapiranje zalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Program">
+            <summary>
+            Program class
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Program.Main(System.String[])">
+            <summary>
+            Main method
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:ZalbaService.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            CreateHostBuilder method
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
         <member name="T:ZalbaService.ServicesCalls.ILoggerService">
             <summary>
             Interfejs loger servisa
@@ -1020,6 +1146,19 @@
             <param name="metoda">Naziv metode</param>
             <param name="poruka">Tekst poruke</param>
             <param name="greska">Exception</param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.ServicesCalls.IServiceCall`1">
+            <summary>
+            Interfejs za komunikaciju sa drugim servisima
+            </summary>
+            <typeparam name="T">Generic</typeparam>
+        </member>
+        <member name="M:ZalbaService.ServicesCalls.IServiceCall`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva
+            </summary>
+            <param name="url"></param>
             <returns></returns>
         </member>
         <member name="T:ZalbaService.ServicesCalls.LoggerService">
@@ -1056,6 +1195,38 @@
             <param name="metoda">Naziv metode</param>
             <param name="poruka">Tekst poruke</param>
             <param name="greska">Exception</param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.ServicesCalls.ServiceCallKupacMock`1">
+            <summary>
+            Mock klasa za dobijanje podatka o kupcu
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:ZalbaService.ServicesCalls.ServiceCallKupacMock`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva - mock
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.ServicesCalls.ServiceCall`1">
+            <summary>
+            Genericka klasa za komunikaciju sa drugim servisima
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:ZalbaService.ServicesCalls.ServiceCall`1.#ctor(ZalbaService.ServicesCalls.ILoggerService)">
+            <summary>
+            Konstruktor klase service call
+            </summary>
+            <param name="loggerService"></param>
+        </member>
+        <member name="M:ZalbaService.ServicesCalls.ServiceCall`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva
+            </summary>
+            <param name="url">Url putanja ka drugom servisu</param>
             <returns></returns>
         </member>
         <member name="T:ZalbaService.Startup">

@@ -1,11 +1,8 @@
 ﻿using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
-using ZalbaService.Models.Exceptions;
 
 namespace ZalbaService.ServicesCalls
 {
@@ -33,27 +30,32 @@ namespace ZalbaService.ServicesCalls
         /// <returns></returns>
         public async Task<T> SendGetRequestAsync(string url)
         {
-            using var httpClient = new HttpClient();
-
-            var request = new HttpRequestMessage(HttpMethod.Get, url);
-            request.Headers.Add("Accept", "application/json");
-
-            var response = await httpClient.SendAsync(request);
-
-            if (response.IsSuccessStatusCode)
+            try
             {
-                var content = await response.Content.ReadAsStringAsync();
-                if (string.IsNullOrEmpty(content))
+                using var httpClient = new HttpClient();
+
+                var request = new HttpRequestMessage(HttpMethod.Get, url);
+                request.Headers.Add("Accept", "application/json");
+
+                var response = await httpClient.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
                 {
-                    return default;
+                    var content = await response.Content.ReadAsStringAsync();
+                    if (string.IsNullOrEmpty(content))
+                    {
+                        return default;
+                    }
+
+                    return JsonConvert.DeserializeObject<T>(content);
                 }
-
-                return JsonConvert.DeserializeObject<T>(content);
+                return default;
             }
-
-            var ex = new ServiceCallException("Desio se problem pri komunikaciji sa drugim mikroservisom");
-            await _loggerService.Log(LogLevel.Error, "SendGetRequestAsync", $"Greška prilikom komunikacije sa drugim servisom iz servisa Zalba. Ciljani url: {url}", ex);
-            throw ex;
+            catch (Exception e)
+            {
+                await _loggerService.Log(LogLevel.Error, "SendGetRequestAsync", $"Greška prilikom komunikacije sa drugim servisom iz servisa Javno Nadmetanje. Ciljani url: {url}", e);
+                return default;
+            }
         }
     }
 }

@@ -203,8 +203,8 @@ namespace ZalbaService.Controllers
         /// Brisanje tipa žalbe na osnovu ID-a
         /// </summary>
         /// <param name="tipZalbeId">ID tipa žalbe</param>
-        /// <returns>Status 200 (Success)</returns>
-        /// <response code="200">Tip žalbe je uspešno obrisan</response>
+        /// <returns>Status 204 (No Content)</returns>
+        /// <response code="204">Tip žalbe je uspešno obrisan</response>
         /// <response code="404">Nije pronađen tip žalbe za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja tipa žalbe</response>
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -225,14 +225,9 @@ namespace ZalbaService.Controllers
 
                 await _tipZalbeRepository.DeleteTipZalbe(tipZalbeId);
 
-                var response = new
-                {
-                    Message = "Uspesno brisanje"
-                };
-
                 await _loggerService.Log(LogLevel.Information, "DeleteTipZalbe", $"Tip žalbe sa id-em {tipZalbeId} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(tipZalbe)}");
 
-                return Ok(response);
+                return NoContent();
             }
             catch (Exception ex)
             {
