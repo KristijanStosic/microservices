@@ -46,7 +46,7 @@ namespace KupacService
             services.AddScoped<IPravnoLiceRepository, PravnoLiceRepository>();
             services.AddScoped<IKupacRepository, KupacRepository>();
             services.AddScoped<ILoggerService,LoggerServiceMock>();
-            services.AddScoped<IServiceCall<AdresaDto>,ServiceCall<AdresaDto>>();
+            services.AddScoped<IServiceCall<AdresaDto>,ServiceCallAdresaMock<AdresaDto>>();
 
 
             services.AddSwaggerGen(c =>

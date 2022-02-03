@@ -1,4 +1,5 @@
 ﻿using KupacService.Model.KontaktOsoba;
+using KupacService.Model.OtherServices;
 using KupacService.Model.Prioritet;
 using System;
 using System.Collections.Generic;
@@ -24,5 +25,6 @@ namespace KupacService.Model.Kupac
         public KontaktOsobaDto KontaktOsoba { get; set; }
 
         public List<PrioritetDto> Prioriteti { get; set; }
+        public AdresaDto Adresa { get; set; }
     }
 }
