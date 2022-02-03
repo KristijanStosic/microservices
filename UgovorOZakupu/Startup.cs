@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using UgovorOZakupu.Data.RokDospeca;
 using UgovorOZakupu.Data.TipGarancije;
 using UgovorOZakupu.Data.UgovorOZakupu;
@@ -29,8 +30,9 @@ namespace UgovorOZakupu
 
             services.AddScoped<ILoggerService, LoggerServiceMock>();
             // services.AddScoped<ILoggerService, LoggerService>();
-            
+
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {Title = "UgovorOZakupu", Version = "v1"});

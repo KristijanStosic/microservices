@@ -81,8 +81,13 @@ namespace UgovorOZakupu.Controllers
             ugovor.TipGarancije =
                 await _tipGaranceijeRepository.GetTipGarancijeById(ugovor.TipGarancijeId);
 
+            var serialized = JsonConvert.SerializeObject(ugovor, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            
             await _loggerService.Log(LogLevel.Information, "CreateUgovorOZakupu",
-                $"Ugovor o zakupu sa vrednostima: {JsonConvert.SerializeObject(ugovor)} je uspešno kreiran.");
+                $"Ugovor o zakupu sa vrednostima: {serialized} je uspešno kreiran.");
 
             return CreatedAtAction(
                 "GetUgovorOZakupuById",
@@ -111,7 +116,10 @@ namespace UgovorOZakupu.Controllers
                 return NotFound();
             }
 
-            var oldValue = JsonConvert.SerializeObject(ugovor);
+            var oldValue = JsonConvert.SerializeObject(ugovor, Formatting.Indented, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
 
             _mapper.Map(ugovorOZakupuDto, ugovor, typeof(UpdateUgovorOZakupuDto), typeof(Entities.UgovorOZakupu));
             await _unitOfWork.CompleteAsync();

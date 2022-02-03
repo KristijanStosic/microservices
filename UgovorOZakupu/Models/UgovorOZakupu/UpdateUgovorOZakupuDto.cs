@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using UgovorOZakupu.Models.RokDospeca;
 
 namespace UgovorOZakupu.Models.UgovorOZakupu
 {

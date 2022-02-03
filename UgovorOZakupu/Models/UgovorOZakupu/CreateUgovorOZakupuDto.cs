@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UgovorOZakupu.Models.RokDospeca;
 
 namespace UgovorOZakupu.Models.UgovorOZakupu
 {
@@ -18,6 +17,6 @@ namespace UgovorOZakupu.Models.UgovorOZakupu
 
         public Guid TipGarancijeId { get; set; }
 
-        public IEnumerable<RokDospecaDto> RokoviDospeca { get; set; }
+        public IEnumerable<int> RokoviDospeca { get; set; }
     }
 }
