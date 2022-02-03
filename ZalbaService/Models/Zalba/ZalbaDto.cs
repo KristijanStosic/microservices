@@ -15,6 +15,10 @@ namespace ZalbaService.Models.Zalba
     public class ZalbaDto
     {
         /// <summary>
+        /// Id zalbe
+        /// </summary>
+        public Guid ZalbaId { get; set; }
+        /// <summary>
         /// Datum podnošenja
         /// </summary>
         public DateTime DatumPodnosenja { get; set; }

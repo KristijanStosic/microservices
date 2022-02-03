@@ -104,14 +104,14 @@ namespace ZalbaService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju radnje za zalbu</returns>
-        /// <response code="200">Vraća kreiranu radnju za zalbu</response>
+        /// <response code="201">Vraća kreiranu radnju za zalbu</response>
         /// <response code="400">Vraća grešku zvog unosa istih podataka za naziv radnje</response>
         /// <response code="500">Desila se greška prilikom unosa nove radnje za zalbu</response>
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<RadnjaZaZalbuCreateDto>> CreateRadnjaZaZalbu([FromBody] RadnjaZaZalbuCreateDto radnjaZaZalbu)
         {

@@ -103,7 +103,7 @@ namespace ZalbaService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju tipa zalbe</returns>
-        /// <response code="200">Vraća kreiran tip zalbe</response>
+        /// <response code="201">Vraća kreiran tip zalbe</response>
         /// <response code="400">Desila se greška prilikom unosa istih podataka za tip žalbe</response>
         /// <response code="500">Desila se greška prilikom unosa novog tipa zalbe</response>
         [Consumes("application/json")]

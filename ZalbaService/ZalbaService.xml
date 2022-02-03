@@ -1013,6 +1013,11 @@
             Dto za tip žalbe
             </summary>
         </member>
+        <member name="P:ZalbaService.Models.TipZalbeDto.TipZalbeId">
+            <summary>
+            Id tipa zalbe
+            </summary>
+        </member>
         <member name="P:ZalbaService.Models.TipZalbeDto.NazivTipaZalbe">
             <summary>
             Naziv tipa žalbe
@@ -1118,6 +1123,11 @@
         <member name="T:ZalbaService.Models.Zalba.ZalbaDto">
             <summary>
             Dto za žalbu
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaDto.ZalbaId">
+            <summary>
+            Id zalbe
             </summary>
         </member>
         <member name="P:ZalbaService.Models.Zalba.ZalbaDto.DatumPodnosenja">

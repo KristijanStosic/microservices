@@ -79,7 +79,7 @@ namespace ZalbaService.Controllers
                 var zalbaDto = _mapper.Map<ZalbaDto>(zalba);
                 if (zalba.KupacId is not null)
                 {
-                    var kupacDto = await _kupacService.SendGetRequestAsync(url + "kupac/" + zalba.KupacId);
+                    var kupacDto = await _kupacService.SendGetRequestAsync(url + zalba.KupacId);
                     if(kupacDto is not null)
                     {
                         zalbaDto.Kupac = kupacDto.Kupac + ", " + kupacDto.Email + ", " + kupacDto.BrojRacuna + ", " + kupacDto.BrojTelefona1;
@@ -109,7 +109,7 @@ namespace ZalbaService.Controllers
             if (zalba == null)
             {
                 await _loggerService.Log(LogLevel.Warning, "GetZalba", $"Žalba sa id-em {zalbaId} nije pronađena.");
-                return NoContent();
+                return NotFound();
             }
 
             string url = _configuration["Services:KupacService"];
@@ -117,7 +117,7 @@ namespace ZalbaService.Controllers
             var zalbaDto = _mapper.Map<ZalbaDto>(zalba);
             if(zalba.KupacId is not null)
             {
-                var kupacDto = _kupacService.SendGetRequestAsync(url + "kupac/" + zalba.KupacId).Result;
+                var kupacDto = _kupacService.SendGetRequestAsync(url + zalba.KupacId).Result;
                 if(kupacDto is not null)
                 {
                     zalbaDto.Kupac = kupacDto.Kupac + ", " + kupacDto.Email + ", " + kupacDto.BrojRacuna + ", " + kupacDto.BrojTelefona1;

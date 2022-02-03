@@ -11,6 +11,10 @@ namespace ZalbaService.Models
     public class TipZalbeDto
     {
         /// <summary>
+        /// Id tipa zalbe
+        /// </summary>
+        public Guid TipZalbeId { get; set; }
+        /// <summary>
         /// Naziv tipa žalbe
         /// </summary>
         public string NazivTipaZalbe { get; set; }

@@ -102,7 +102,7 @@ namespace ZalbaService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju statusa zalbe</returns>
-        /// <response code="200">Vraća kreiran status zalbe</response>
+        /// <response code="201">Vraća kreiran status zalbe</response>
         /// <response code="400">Desila se greška prilikom unosa istih podataka za status žalbe</response>
         /// <response code="500">Desila se greška prilikom unosa novog statusa zalbe</response>
         [ProducesResponseType(StatusCodes.Status201Created)]

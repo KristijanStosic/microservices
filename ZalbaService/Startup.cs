@@ -98,6 +98,7 @@ namespace ZalbaService
             services.AddScoped<IServiceCall<KupacDto>, ServiceCallKupacMock<KupacDto>>();
             //services.AddScoped<IServiceCall<KupacDto>, ServiceCall<KupacDto>>();
             services.AddScoped<ILoggerService, LoggerServiceMock>();
+            //services.AddScoped<ILoggerService, LoggerService>();
 
             services.AddSwaggerGen(setup =>
             {
@@ -117,7 +118,7 @@ namespace ZalbaService
                 //Korisitmo refleksiju za dobijanje XML fajla za komentarima
                 var xmlComments = $"{ Assembly.GetExecutingAssembly().GetName().Name }.xml";
                 var xmlCommentsPath = Path.Combine(AppContext.BaseDirectory, xmlComments);
-                setup.IncludeXmlComments(xmlComments);
+                setup.IncludeXmlComments(xmlCommentsPath);
             });
 
             services.AddDbContext<ZalbaContext>();
