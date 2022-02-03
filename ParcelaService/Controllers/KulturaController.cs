@@ -12,8 +12,13 @@ using System.Threading.Tasks;
 
 namespace ParcelaService.Controllers
 {
+    /// <summary>
+    /// Kontroler za kulturu
+    /// </summary>
     [Route("api/kultura")]
     [ApiController]
+    [Produces("application/json", "application/xml")]
+
     public class KulturaController : ControllerBase
     {
         private readonly IKulturaRepository _kulturaRepository;
@@ -26,7 +31,13 @@ namespace ParcelaService.Controllers
             _linkGenerator = linkGenerator;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// Vraća sve kulture parcele
+        /// </summary>
+        /// <param name="nazivKulture">Naziv kulture</param>
+        /// <returns>Lista kultura</returns>
+        /// <response code="200">Vraća listu kultura</response>
+        /// <response code="404">Nije pronađena ni jedna kultura</response>
         [HttpGet]
         public async Task<ActionResult<List<KulturaDto>>> GetAllKlasa(string nazivKulture)
         {
@@ -39,8 +50,16 @@ namespace ParcelaService.Controllers
 
             return Ok(_mapper.Map<List<KulturaDto>>(kulture));
         }
-
+        /// <summary>
+        /// Vraća jednu kulturu parcele na osnovu ID-a
+        /// </summary>
+        /// <param name="kulturaId">ID kulture</param>
+        /// <returns>Kultura parcele</returns>
+        /// <response code="200">Vraća traženu kulturu</response>
+        /// <response code="404">Nije pronađena kultura za uneti ID</response>
         [HttpGet("kulturaId")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<KulturaDto>> GetKultura(Guid kulturaId)
         {
             var kultura = await _kulturaRepository.GetKulturaById(kulturaId);
@@ -53,7 +72,25 @@ namespace ParcelaService.Controllers
             return Ok(_mapper.Map<KulturaDto>(kultura));
         }
 
+        /// <summary>
+        /// Kreira novu kulturu parcele
+        /// </summary>
+        /// <param name="kultura">Model kulture</param>
+        /// <remarks>
+        /// Primer zahteva za kreiranje nove kulture \
+        /// POST /api/kultura \
+        /// {
+        ///       "kulturaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        ///       "nazivKulture": "Naziv kulture" \
+        ///}
+        /// </remarks>
+        /// <returns>Potvrda o kreiranju kulture</returns>
+        /// <response code="200">Vraća kreiranu kulturu</response>
+        /// <response code="500">Desila se greška prilikom unosa nove kulture</response>
         [HttpPost]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<KulturaDto>> CreateKultura([FromBody] KulturaCreationDto kultura)
         {
             try
@@ -72,8 +109,19 @@ namespace ParcelaService.Controllers
             }
             
         }
-        
+
+        /// <summary>
+        /// Izmena kulture parcele
+        /// </summary>
+        /// <param name="kultura">Model kulture</param>
+        /// <returns>Potvrda o izmeni kulture</returns>
+        /// <response code="200">Izmenjena kultura</response>
+        /// <response code="404">Nije pronađena kultura za uneti ID</response>
+        /// <response code="500">Serverska greška tokom izmene kulture</response>
         [HttpPut]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<KulturaDto>> UpdateKultura(KulturaUpdateDto kultura)
         {
             try
@@ -99,7 +147,18 @@ namespace ParcelaService.Controllers
             }
         }
 
+        /// <summary>
+        /// Brisanje kulture parcele na osnovu ID-a
+        /// </summary>
+        /// <param name="kulturaId">ID kulture</param>
+        /// <returns>Status 204 (NoContent)</returns>
+        /// <response code="204">Kultura je uspešno obrisana</response>
+        /// <response code="404">Nije pronađena kultura za uneti ID</response>
+        /// <response code="500">Serverska greška tokom brisanja kulture</response>
         [HttpDelete("{kulturaId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult> DeleteKultura (Guid kulturaId)
         {
             try
@@ -124,6 +183,10 @@ namespace ParcelaService.Controllers
             }
         }
 
+        /// <summary>
+        /// Vraća opcije za rad sa kulturama parcele
+        /// </summary>
+        /// <returns></returns>
         [HttpOptions]
         public IActionResult GetKulturaOptions()
         {

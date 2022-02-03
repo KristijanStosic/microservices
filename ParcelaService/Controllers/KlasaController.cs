@@ -12,9 +12,13 @@ using System.Threading.Tasks;
 
 namespace ParcelaService.Controllers
 {
-
+    /// <summary>
+    /// Kontroler za klasu
+    /// </summary>
     [Route("api/klasa")]
     [ApiController]
+    [Produces("application/json", "application/xml")]
+
     public class KlasaController : ControllerBase
     {
         private readonly IKlasaRepository _klasaRepository;
@@ -27,8 +31,16 @@ namespace ParcelaService.Controllers
             _linkGenerator = linkGenerator;
             _mapper = mapper;
         }
-
+        /// <summary>
+        /// Vraća sve klase
+        /// </summary>
+        /// <returns>Lista klasa</returns>
+        /// <response code="200">Vraća listu klasa</response>
+        /// <response code="404">Nije pronađena ni jedna klasa</response>
         [HttpGet]
+        [HttpHead]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<KlasaDto>>> GetAllKlasa(string KlasaNaziv)
         {
             var klase = await _klasaRepository.GetAllKlasa(KlasaNaziv);
@@ -41,7 +53,17 @@ namespace ParcelaService.Controllers
             return Ok(_mapper.Map<List<KlasaDto>>(klase));
         }
 
+        /// <summary>
+        /// Vraća jednu klasu na osnovu ID-a 
+        /// </summary>
+        /// <param name="klasaId">Model klase</param>
+        /// <returns>Klasa</returns>
+        /// <response code="200">Vraća traženu klasu</response>
+        /// <response code="404">Nije pronađena klasa za uneti ID</response>
         [HttpGet("{klasaId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         public async Task<ActionResult<KlasaDto>> GetKlasa(Guid klasaId)
         {
             var klasa = await _klasaRepository.GetKlasaById(klasaId);
@@ -54,7 +76,25 @@ namespace ParcelaService.Controllers
             return Ok(_mapper.Map<KlasaDto>(klasa));
         }
 
+        /// <summary>
+        /// Kreira novu klasu
+        /// </summary>
+        /// <param name="klasa">Model klase</param>
+        /// <remarks>
+        /// Primer zahteva za kreiranje nove klase \
+        /// POST /api/klasa \
+        /// {
+        ///      "klasaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        ///      "klasaNaziv": "Naziv klase"
+        /// }
+        /// </remarks>
+        /// <returns>Potvrda o kreiranju klase</returns>
+        /// <response code="200">Vraća kreiranu klasu</response>
+        /// <response code="500">Desila se greška prilikom unosa nove klase</response>
         [HttpPost]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<KlasaDto>> CreateKlasa([FromBody] KlasaCreationDto klasa)
         {
             try
@@ -74,7 +114,19 @@ namespace ParcelaService.Controllers
             }
         }
 
+        /// <summary>
+        /// Izmena klase
+        /// </summary>
+        /// <param name="klasa">Model klase</param>
+        /// <returns>Potvrda o izmeni klase</returns>
+        /// <response code="200">Izmenjena klasa</response>
+        /// <response code="404">Nije pronađena klasa za uneti ID</response>
+        /// <response code="500">Serverska greška tokom izmene klase</response>
         [HttpPut]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<KlasaDto>> UpdateKlasa(KlasaUpdateDto klasa)
         {
             try
@@ -99,7 +151,18 @@ namespace ParcelaService.Controllers
             }
         }
 
+        /// <summary>
+        /// Brisanje klase na osnovu ID-a
+        /// </summary>
+        /// <param name="klasaId">ID klase</param>
+        /// <returns>Status 204 (NoContent)</returns>
+        /// <response code="204">Klasa je uspešno obrisana</response>
+        /// <response code="404">Nije pronađena klasa za uneti ID</response>
+        /// <response code="500">Serverska greška tokom brisanja klasa</response>
         [HttpDelete("{klasaId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteKlasa(Guid klasaId)
         {
             try
@@ -123,6 +186,10 @@ namespace ParcelaService.Controllers
             }
         }
 
+        /// <summary>
+        /// Vraća opcije za rad sa klasama
+        /// </summary>
+        /// <returns></returns>
         [HttpOptions]
         public IActionResult GetKlasaOptions()
         {
