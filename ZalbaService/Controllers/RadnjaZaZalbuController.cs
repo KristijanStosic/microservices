@@ -30,7 +30,7 @@ namespace ZalbaService.Controllers
         private  ILoggerService _loggerService;
 
         /// <summary>
-        /// Konstruktor kontrolera broj table - DI
+        /// Konstruktor kontrolera radnje za zalbu - DI
         /// </summary>
         /// <param name="radnjaZaZalbuRepository">Repo radnje za albu</param>
         /// <param name="linkGenerator">Link generator za create zahtev</param>

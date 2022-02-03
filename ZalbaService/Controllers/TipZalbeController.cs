@@ -99,7 +99,7 @@ namespace ZalbaService.Controllers
         /// Primer zahteva za kreiranje novog tipa zalbe \
         /// POST /api/tipZalbe \
         /// {   
-        ///     "NazivTipaZalbe": "Odbijena"
+        ///     "NazivTipaZalbe": "Zalba na Odluku o davanju u zakup"
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju tipa zalbe</returns>
@@ -128,9 +128,9 @@ namespace ZalbaService.Controllers
                     return BadRequest(response);
                 }
 
-                 TipZalbe createdTipZalbe = await _tipZalbeRepository.CreateTipZalbe(_mapper.Map<TipZalbe>(tipZalbe));
+                TipZalbe createdTipZalbe = await _tipZalbeRepository.CreateTipZalbe(_mapper.Map<TipZalbe>(tipZalbe));
 
-                 string location = _linkGenerator.GetPathByAction("GetTipZalbe", "TipZalbe", new { tipZalbeId = createdTipZalbe.TipZalbeId });
+                string location = _linkGenerator.GetPathByAction("GetTipZalbe", "TipZalbe", new { tipZalbeId = createdTipZalbe.TipZalbeId });
 
                 await _loggerService.Log(LogLevel.Information, "CreateTipZalbe", $"Tip žalbe sa vrednostima: {JsonConvert.SerializeObject(tipZalbe)} je uspešno kreiran.");
 
@@ -164,14 +164,6 @@ namespace ZalbaService.Controllers
         {
             try
             {
-                var tipZalbeEntity = await _tipZalbeRepository.GetTipZalbeById(tipZalbeId);
-
-                if (tipZalbeEntity == null)
-                {
-                    await _loggerService.Log(LogLevel.Warning, "UpdateTipZalbe", $"Tip zalbe sa id-em {tipZalbeId} nije pronađen.");
-                    return NotFound();
-                }
-
                 var proveraValidnosti = await _tipZalbeRepository.IsValidTipZalbe(tipZalbe.NazivTipaZalbe);
 
                 if (!proveraValidnosti)
@@ -182,6 +174,14 @@ namespace ZalbaService.Controllers
                     };
                     await _loggerService.Log(LogLevel.Warning, "UpdateTipZalbe", $"Greška prilikom unosa tipa žalbe sa vrednostima: {JsonConvert.SerializeObject(tipZalbe)}.");
                     return BadRequest(response);
+                }
+
+                var tipZalbeEntity = await _tipZalbeRepository.GetTipZalbeById(tipZalbeId);
+
+                if (tipZalbeEntity == null)
+                {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateTipZalbe", $"Tip zalbe sa id-em {tipZalbeId} nije pronađen.");
+                    return NotFound();
                 }
 
                 _mapper.Map(tipZalbe, tipZalbeEntity);

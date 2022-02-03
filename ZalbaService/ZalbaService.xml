@@ -11,7 +11,7 @@
         </member>
         <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.#ctor(ZalbaService.Data.IRadnjaZaZalbuRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,ZalbaService.ServicesCalls.ILoggerService)">
             <summary>
-            Konstruktor kontrolera broj table - DI
+            Konstruktor kontrolera radnje za zalbu - DI
             </summary>
             <param name="radnjaZaZalbuRepository">Repo radnje za albu</param>
             <param name="linkGenerator">Link generator za create zahtev</param>
@@ -81,6 +81,76 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:ZalbaService.Controllers.StatusZalbeController">
+            <summary>
+            Kontroler statusa zalbe
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.#ctor(ZalbaService.Data.IStatusZalbeRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,ZalbaService.ServicesCalls.ILoggerService)">
+            <summary>
+            Konstruktor kontrolera broj table - DI
+            </summary>
+            <param name="statusZalbeRepository">Repo statusa zalbe</param>
+            <param name="linkGenerator">Link generator za create zahtev</param>
+            <param name="mapper">AutoMapper</param>
+            <param name="loggerService">Logger servis</param>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.GetAllStatusesZalbe(System.String)">
+            <summary>
+            Vraća sve statuse zalbi
+            </summary>
+            <returns>Lista statusa zalbi</returns>
+            <response code="200">Vraća listu statusa zalbi</response>
+            <response code="204">Nije pronađen ni jedan status zalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.GetStatusZalbe(System.Guid)">
+            <summary>
+            Vraća jedan status zalbe na osnovu ID-a
+            </summary>
+            <param name="statusZalbeId">ID statusa zalbe</param>
+            <returns>Status zalbe</returns>
+            <response code="200">Vraća traženi status zalbe</response>
+            <response code="404">Nije pronađen status zalbe za uneti ID</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.CreateStatusZalbe(ZalbaService.Models.StatusZalbeCreateDto)">
+             <summary>
+             Kreira novi status zalbe
+             </summary>
+             <param name="statusZalbe">Model status zalbe</param>
+             <remarks>
+             Primer zahteva za kreiranje novog statusa zalbe \
+             POST /api/statusZalbe \
+             {   
+                 "NazivStatusaZalbe": "Odbijena"
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju statusa zalbe</returns>
+             <response code="200">Vraća kreiran status zalbe</response>
+             <response code="400">Desila se greška prilikom unosa istih podataka za status žalbe</response>
+             <response code="500">Desila se greška prilikom unosa novog statusa zalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.UpdateStatusZalbe(System.Guid,ZalbaService.Models.StatusZalbeUpdateDto)">
+            <summary>
+            Modifikacija statusa zalbe
+            </summary>
+            <param name="statusZalbeId">ID statusa žalbe</param>
+            <param name="statusZalbe">Model statusa zalbe</param>
+            <returns>Potvrda o modifikaciji statusa zalbe</returns>
+            <response code="200">Izmenjen status zalbe</response>
+            <response code="400">Desila se greška prilikom unosa istih podataka za status žalbe</response>
+            <response code="404">Nije pronađen status zalbe za uneti ID</response>
+            <response code="500">Serverska greška tokom modifikacije statusa zalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.DeleteStatusZalbe(System.Guid)">
+            <summary>
+            Brisanje statusa žalbe na osnovu ID-a
+            </summary>
+            <param name="statusZalbeId">ID statusa žalbe</param>
+            <returns>Status 204 (No Content)</returns>
+            <response code="204">Status žalbe je uspešno obrisan</response>
+            <response code="404">Nije pronađen status žalbe za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja statusa žalbe</response>
+        </member>
         <member name="M:ZalbaService.Controllers.StatusZalbeController.GetZalbaOptions">
             <summary>
             Vraća opcije za rad sa zalbama
@@ -127,7 +197,7 @@
              Primer zahteva za kreiranje novog tipa zalbe \
              POST /api/tipZalbe \
              {   
-                 "NazivTipaZalbe": "Odbijena"
+                 "NazivTipaZalbe": "Zalba na Odluku o davanju u zakup"
             }
              </remarks>
              <returns>Potvrda o kreiranju tipa zalbe</returns>
@@ -162,6 +232,85 @@
             Vraća opcije za rad sa tipovima zalbi
             </summary>
             <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Controllers.ZalbaController">
+            <summary>
+            Kontroler za žalbu
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.#ctor(ZalbaService.Data.Interfaces.IZalbaRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,ZalbaService.ServicesCalls.IServiceCall{ZalbaService.Models.Services.KupacDto},Microsoft.Extensions.Configuration.IConfiguration,ZalbaService.ServicesCalls.ILoggerService)">
+            <summary>
+            Konstruktor kontrolera žalbe - DI
+            </summary>
+            <param name="zalbaRepository">Repo žalbe</param>
+            <param name="linkGenerator">Link generator za create zahtev</param>
+            <param name="mapper">AutoMapper</param>
+            <param name="kupacService">Servis kupac - dobijanje kupca</param>
+            <param name="configuration">Konfiguracija za pristup putanji ka servisu kupac</param>
+            <param name="loggerService">Logger servis</param>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.GetAllZalbe">
+            <summary>
+            Vraća sve žalbe
+            </summary>
+            <returns>Lista žalbi</returns>
+            <response code="200">Vraća listu žalbi</response>
+            <response code="404">Nije pronađena ni jedna žalba</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.GetZalba(System.Guid)">
+            <summary>
+            Vraća jednu žalbu na osnovu ID-a
+            </summary>
+            <param name="zalbaId">ID žalbe</param>
+            <returns>Žalba</returns>
+            <response code="200">Vraća traženu žalbu</response>
+            <response code="404">Nije pronađena žalba za uneti ID</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.CreateZalba(ZalbaService.Models.Zalba.ZalbaCreateDto)">
+             <summary>
+             Kreira novu žalbu
+             </summary>
+             <param name="zalba">Model zalba</param>
+             <remarks>
+             Primer zahteva za kreiranje nove žalbe \
+             POST /api/zalba \
+             {   
+                 "datumPodnosenja": "05-05-2020", \
+                 "datumResenja": "05-12-2021", \
+                 "razlogZalbe": "Nepotpuna dokumentacija", \
+                 "obrazlozenje": "Nevalidna dokumentacija", \
+                 "brojNadmetanja": "TT2913", \
+                 "brojResenja": "PP291", \
+                 "statusZalbeId": "1c989ee3-13b2-4d3b-abeb-c4e6343eace7" \
+                 "tipZalbeId": "1c989ee3-13b2-4d3b-abeb-c4e6343eace7" \
+                 "radnjaZaZalbuId": "1c989ee3-13b2-4d3b-abeb-c4e6343eace7" \
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju žalbe</returns>
+             <response code="201">Vraća kreiranu žalbu</response>
+             <response code="500">Desila se greška prilikom unosa nove žalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.UpdateZalba(System.Guid,ZalbaService.Models.Zalba.ZalbaUpdateDto)">
+            <summary>
+            Modifikacija  zalbe
+            </summary>
+            <param name="zalbaId">ID žalbe</param>
+            <param name="zalba">Model zalbe</param>
+            <returns>Potvrda o modifikaciji zalbe</returns>
+            <response code="200">Izmenjena zalba</response>
+            <response code="400">Desila se greška prilikom unosa istih podataka za žalbu</response>
+            <response code="404">Nije pronađena zalba za uneti ID</response>
+            <response code="500">Serverska greška tokom modifikacije zalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.DeleteZalba(System.Guid)">
+            <summary>
+            Brisanje žalbe na osnovu ID-a
+            </summary>
+            <param name="zalbaId">ID žalbe</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Žalba je uspešno obrisana</response>
+            <response code="404">Nije pronađena žalba za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja žalbe</response>
         </member>
         <member name="M:ZalbaService.Controllers.ZalbaController.GetZalbaOptions">
             <summary>
