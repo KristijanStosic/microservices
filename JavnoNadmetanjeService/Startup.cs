@@ -86,7 +86,6 @@ namespace JavnoNadmetanjeService
             services.AddScoped<IServiceCall<DeoParceleDto>, ServiceCallDeoParceleMock<DeoParceleDto>>();
 
             services.AddScoped<IJavnoNadmetanjeCalls, JavnoNadmetanjeCalls>();
-            //services.AddScoped<IServiceCall<AdresaDto>, ServiceCall<AdresaDto>>();
             services.AddScoped<ILoggerService, LoggerServiceMock>();
 
             services.AddSwaggerGen(setup =>
@@ -101,7 +100,7 @@ namespace JavnoNadmetanjeService
                         {
                             Name = "Dragan Majkić",
                             Email = "dragan.majkic@uns.ac.rs",
-                            Url = new Uri("https://github.com/draganmajkic")
+                            Url = new Uri(Configuration["Swagger:Github"])
                         }
                     });
                 //Korisitmo refleksiju za dobijanje XML fajla sa komentarima
