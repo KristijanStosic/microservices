@@ -1,15 +1,17 @@
-﻿using System;
+﻿using KupacService.Model.KontaktOsoba;
+using KupacService.Model.Prioritet;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KupacService.Entities
+namespace KupacService.Model.Kupac
 {
-    public abstract class Kupac
+    public class KupacDto
     {
-        [Key]
-        public Guid KupacId { get; set; } = Guid.NewGuid();
+        public string Naziv { get; set; }
+        public string Faks { get; set; }
         public double OstvarenaPovrsina { get; set; }
         public bool ImaZabranu { get; set; }
         [DataType(DataType.Date)]
@@ -19,11 +21,8 @@ namespace KupacService.Entities
         public string BrojTelefona2 { get; set; }
         public string Email { get; set; }
         public string BrojRacuna { get; set; }
+        public KontaktOsobaDto KontaktOsoba { get; set; }
 
-        public virtual List<Prioritet> Prioriteti { get; set; }
-
-
-        
-
+        public List<PrioritetDto> Prioriteti { get; set; }
     }
 }

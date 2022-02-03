@@ -41,6 +41,7 @@ namespace KupacService
             services.AddScoped<IKontaktOsobaRepository, KontaktOsobaRepository>();
             services.AddScoped<IFizickoLiceRepository, FizickoLiceRepository>();
             services.AddScoped<IPravnoLiceRepository, PravnoLiceRepository>();
+            services.AddScoped<IKupacRepository, KupacRepository>();
 
 
             services.AddSwaggerGen(c =>
