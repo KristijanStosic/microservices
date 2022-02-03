@@ -110,8 +110,8 @@
              <remarks>
              Primer zahteva za kreiranje nove države \
              POST /api/drzava \
-             {    
-            "nazivDrzave": "string"
+             {    \
+            "nazivDrzave": "string" \
              }
              </remarks>
              <returns>Potvrda o kreiranju države</returns>
