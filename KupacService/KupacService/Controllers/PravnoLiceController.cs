@@ -55,7 +55,7 @@ namespace KupacService.Controllers
                 {
                     var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + pravnoLice.AdresaId);
                     if (adresaDto != null)
-                        pravnoLiceDto.adresa = adresaDto;
+                        pravnoLiceDto.Adresa = adresaDto;
                 }
                 pravnaLicaDto.Add(pravnoLiceDto);
             }
@@ -81,7 +81,7 @@ namespace KupacService.Controllers
                 string adresaurl = _configuration["Services:AdresaService"];
                 var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + pravnoLice.AdresaId);
                 if (adresaDto != null)
-                    pravnoLiceDto.adresa = adresaDto;
+                    pravnoLiceDto.Adresa = adresaDto;
             }
 
             return Ok(pravnoLiceDto);

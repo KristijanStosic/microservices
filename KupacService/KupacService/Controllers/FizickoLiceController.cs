@@ -81,7 +81,7 @@ namespace KupacService.Controllers
                 string adresaurl = _configuration["Services:AdresaService"];
                 var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + fizickoLice.AdresaId);
                 if (adresaDto != null)
-                    fizickoLiceDto.adresa = adresaDto;
+                    fizickoLiceDto.Adresa = adresaDto;
             }
            
 
