@@ -24,5 +24,6 @@ namespace KupacService.Model.Kupac.PravnoLice
         public string BrojRacuna { get; set; }
         public KontaktOsobaDto KontaktOsoba { get; set; }
         public List<PrioritetDto> Prioriteti { get; set; }
+        public AdresaDto adresa { get; set; }
     }
 }

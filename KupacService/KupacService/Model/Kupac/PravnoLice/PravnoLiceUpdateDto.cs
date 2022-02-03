@@ -25,5 +25,6 @@ namespace KupacService.Model.Kupac.PravnoLice
         [Required]
         public Guid KontaktOsobaId { get; set; }
         public List<Guid> Prioriteti { get; set; }
+        public Guid AdresaId { get; set; }
     }
 }

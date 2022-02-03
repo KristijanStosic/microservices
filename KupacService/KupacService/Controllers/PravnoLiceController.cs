@@ -2,9 +2,12 @@
 using KupacService.Data.Interfaces;
 using KupacService.Entities;
 using KupacService.Model.Kupac.PravnoLice;
+using KupacService.Model.OtherServices;
+using KupacService.ServiceCalls;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,14 +22,17 @@ namespace KupacService.Controllers
         private readonly IPravnoLiceRepository _pravnoLiceRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
-        private readonly IPrioritetRepository _prioritetRepository;
+        private readonly IConfiguration _configuration;
+        private readonly IServiceCall<AdresaDto> _adresaServiceCall;
 
-        public PravnoLiceController(IPravnoLiceRepository pravnoLiceRepository,LinkGenerator linkGenerator,IMapper mapper, IPrioritetRepository prioritetRepository) 
+        public PravnoLiceController(IPravnoLiceRepository pravnoLiceRepository,LinkGenerator linkGenerator,IMapper mapper,
+            IConfiguration configuration, IServiceCall<AdresaDto> adresaServiceCall) 
         {
             this._pravnoLiceRepository = pravnoLiceRepository;
             this._linkGenerator = linkGenerator;
             this._mapper = mapper;
-            this._prioritetRepository = prioritetRepository;
+            this._configuration = configuration;
+            this._adresaServiceCall = adresaServiceCall;
         }
 
         [HttpGet]
@@ -38,7 +44,23 @@ namespace KupacService.Controllers
             {
                 return NoContent();
             }
-            return Ok(_mapper.Map<List<PravnoLiceDto>>(pravnaLica));
+
+            List<PravnoLiceDto> pravnaLicaDto = new List<PravnoLiceDto>();
+            string adresaurl = _configuration["Services:AdresaService"];
+            foreach (var pravnoLice in pravnaLica)
+            {
+                PravnoLiceDto pravnoLiceDto = _mapper.Map<PravnoLiceDto>(pravnoLice);
+
+                if (pravnoLice.AdresaId != null)
+                {
+                    var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + pravnoLice.AdresaId);
+                    if (adresaDto != null)
+                        pravnoLiceDto.adresa = adresaDto;
+                }
+                pravnaLicaDto.Add(pravnoLiceDto);
+            }
+
+            return Ok(pravnaLicaDto);
 
         }
 
@@ -52,7 +74,17 @@ namespace KupacService.Controllers
                 return NotFound();
             }
 
-            return Ok(_mapper.Map<PravnoLiceDto>(pravnoLice));
+            PravnoLiceDto pravnoLiceDto = _mapper.Map<PravnoLiceDto>(pravnoLice);
+
+            if (pravnoLice.AdresaId != null)
+            {
+                string adresaurl = _configuration["Services:AdresaService"];
+                var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + pravnoLice.AdresaId);
+                if (adresaDto != null)
+                    pravnoLiceDto.adresa = adresaDto;
+            }
+
+            return Ok(pravnoLiceDto);
         }
 
         [HttpPost]
