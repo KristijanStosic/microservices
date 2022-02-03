@@ -24,6 +24,6 @@ namespace KupacService.Model.Kupac.PravnoLice
         public string BrojRacuna { get; set; }
         [Required]
         public Guid KontaktOsobaId { get; set; }
-        public List<string> Prioriteti { get; set; }
+        public List<Guid> Prioriteti { get; set; }
     }
 }

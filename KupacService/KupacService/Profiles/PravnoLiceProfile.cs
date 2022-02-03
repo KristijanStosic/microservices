@@ -12,20 +12,13 @@ namespace KupacService.Profiles
     {
         public PravnoLiceProfile()
         {
-            CreateMap<PravnoLice, PravnoLiceDto>()
-                .ForMember(
-                dest => dest.Prioriteti,
-                opt => opt.MapFrom(src => src.Prioriteti.Select(p => p.Opis).ToList())
-                )
-                .ForMember(
-                dest => dest.KontaktOsoba,
-                opt => opt.MapFrom(src => src.KontaktOsoba.Ime+" "+src.KontaktOsoba.Prezime+","+src.KontaktOsoba.Telefon)
-                );
+            CreateMap<PravnoLice, PravnoLiceDto>();
+                
 
             CreateMap<PravnoLiceCreateDto, PravnoLice>()
                 .ForMember(
                 dest => dest.Prioriteti,
-                opt => opt.Ignore());
+                opt => opt.MapFrom(src => src.Prioriteti));
 
             CreateMap<PravnoLice, PravnoLice>();
 
@@ -34,7 +27,7 @@ namespace KupacService.Profiles
             CreateMap<PravnoLiceUpdateDto, PravnoLice>()
                 .ForMember(
                 dest => dest.Prioriteti,
-                opt => opt.Ignore()
+                opt => opt.MapFrom(src => src.Prioriteti)
                 );
 
         }

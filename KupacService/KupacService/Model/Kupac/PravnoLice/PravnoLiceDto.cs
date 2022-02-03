@@ -1,4 +1,6 @@
-﻿using System;
+﻿using KupacService.Model.KontaktOsoba;
+using KupacService.Model.Prioritet;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,7 +22,7 @@ namespace KupacService.Model.Kupac.PravnoLice
         public string BrojTelefona2 { get; set; }
         public string Email { get; set; }
         public string BrojRacuna { get; set; }
-        public string KontaktOsoba { get; set; }
-        public List<string> Prioriteti { get; set; }
+        public KontaktOsobaDto KontaktOsoba { get; set; }
+        public List<PrioritetDto> Prioriteti { get; set; }
     }
 }

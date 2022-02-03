@@ -61,22 +61,7 @@ namespace KupacService.Controllers
             try
             {
                 PravnoLice newPravnoLice = _mapper.Map<PravnoLice>(pravnoLice);
-                if (pravnoLice.Prioriteti != null && pravnoLice.Prioriteti.Count > 0)
-                {
-                    List<Prioritet> prioritets = new List<Prioritet>();
-                    foreach (string prioritetId in pravnoLice.Prioriteti)
-                    {
-                        Prioritet prioritet = await _prioritetRepository.GetPrioritetById(Guid.Parse(prioritetId));
-                        if (prioritet == null)
-                        {
-                            continue;
-                        }
-                        prioritets.Add(prioritet);
-                    }
-
-                    newPravnoLice.Prioriteti = prioritets;
-                }
-
+                
                 await _pravnoLiceRepository.CreatePravnoLice(newPravnoLice);
                 await _pravnoLiceRepository.SaveChangesAsync();
 
@@ -84,9 +69,9 @@ namespace KupacService.Controllers
 
                 return Created(link, _mapper.Map<PravnoLiceDto>(newPravnoLice));
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Create Error ");
             }
         }
         [HttpPut]
@@ -100,28 +85,15 @@ namespace KupacService.Controllers
                 {
                     return NotFound();
                 }
-                PravnoLice newPravnoLice = _mapper.Map<PravnoLice>(pravnoLiceUpdate);
+              
 
-                _mapper.Map(newPravnoLice, oldPravnoLice);
+                _mapper.Map(pravnoLiceUpdate, oldPravnoLice);
 
-                if (pravnoLiceUpdate.Prioriteti != null && pravnoLiceUpdate.Prioriteti.Count > 0)
-                {
-                    List<Prioritet> prioriteti = new List<Prioritet>();
-                    foreach (string prioritetId in pravnoLiceUpdate.Prioriteti)
-                    {
-                        Prioritet prioritet = await _prioritetRepository.GetPrioritetById(Guid.Parse(prioritetId));
-                        if (prioritet == null)
-                        {
-                            continue;
-                        }
-                        prioriteti.Add(prioritet);
-                    }
-                    oldPravnoLice.Prioriteti = prioriteti;
-                }
+               
                 oldPravnoLice.KontaktOsoba = kontaktOsoba;
                 await _pravnoLiceRepository.SaveChangesAsync();
 
-                return Ok(_mapper.Map<PravnoLiceDto>(newPravnoLice));
+                return Ok(_mapper.Map<PravnoLiceDto>(oldPravnoLice));
 
             }catch(Exception e)
             {
