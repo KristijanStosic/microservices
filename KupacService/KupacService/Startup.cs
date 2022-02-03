@@ -1,6 +1,8 @@
 using KupacService.Data;
 using KupacService.Data.Interfaces;
 using KupacService.Entities.DataContext;
+using KupacService.ServiceCalls;
+using KupacService.ServiceCalls.Mocks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -42,6 +44,7 @@ namespace KupacService
             services.AddScoped<IFizickoLiceRepository, FizickoLiceRepository>();
             services.AddScoped<IPravnoLiceRepository, PravnoLiceRepository>();
             services.AddScoped<IKupacRepository, KupacRepository>();
+            services.AddScoped<ILoggerService,LoggerServiceMock>();
 
 
             services.AddSwaggerGen(c =>
