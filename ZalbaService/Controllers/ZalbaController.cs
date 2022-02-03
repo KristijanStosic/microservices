@@ -79,7 +79,7 @@ namespace ZalbaService.Controllers
                 var zalbaDto = _mapper.Map<ZalbaDto>(zalba);
                 if (zalba.KupacId is not null)
                 {
-                    var kupacDto = _kupacService.SendGetRequestAsync(url + "kupac/" + zalba.KupacId).Result;
+                    var kupacDto = await _kupacService.SendGetRequestAsync(url + "kupac/" + zalba.KupacId);
                     if(kupacDto is not null)
                     {
                         zalbaDto.Kupac = kupacDto.Kupac + ", " + kupacDto.Email + ", " + kupacDto.BrojRacuna + ", " + kupacDto.BrojTelefona1;
