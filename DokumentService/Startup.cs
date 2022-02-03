@@ -27,8 +27,8 @@ namespace DokumentService
             services.AddScoped<ITipDokumentaRepository, TipDokumentaRepository>();
             services.AddScoped<IDokumentRepository, DokumentRepository>();
 
-            // services.AddScoped<ILoggerService, LoggerMockService>();
-            services.AddScoped<ILoggerService, LoggerService>();
+            services.AddScoped<ILoggerService, LoggerMockService>();
+            // services.AddScoped<ILoggerService, LoggerService>();
             
             services.AddControllers();
             

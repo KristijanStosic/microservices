@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using DokumentService.Models.Log;
+using DokumentService.Models.LogModel;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 
