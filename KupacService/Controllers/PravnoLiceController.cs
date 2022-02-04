@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KupacService.Data.Interfaces;
 using KupacService.Entities;
+using KupacService.Helpers;
 using KupacService.Model.Kupac.PravnoLice;
 using KupacService.Model.OtherServices;
 using KupacService.ServiceCalls;
@@ -24,15 +25,17 @@ namespace KupacService.Controllers
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IServiceCall<AdresaDto> _adresaServiceCall;
+        private readonly IKupacCalls _kupacCalls;
 
         public PravnoLiceController(IPravnoLiceRepository pravnoLiceRepository,LinkGenerator linkGenerator,IMapper mapper,
-            IConfiguration configuration, IServiceCall<AdresaDto> adresaServiceCall) 
+            IConfiguration configuration, IServiceCall<AdresaDto> adresaServiceCall,IKupacCalls kupacCalls) 
         {
             this._pravnoLiceRepository = pravnoLiceRepository;
             this._linkGenerator = linkGenerator;
             this._mapper = mapper;
             this._configuration = configuration;
             this._adresaServiceCall = adresaServiceCall;
+            this._kupacCalls = kupacCalls;
         }
 
         [HttpGet]
@@ -46,17 +49,12 @@ namespace KupacService.Controllers
             }
 
             List<PravnoLiceDto> pravnaLicaDto = new List<PravnoLiceDto>();
-            string adresaurl = _configuration["Services:AdresaService"];
+       
             foreach (var pravnoLice in pravnaLica)
             {
                 PravnoLiceDto pravnoLiceDto = _mapper.Map<PravnoLiceDto>(pravnoLice);
-
-                if (pravnoLice.AdresaId != null)
-                {
-                    var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + pravnoLice.AdresaId);
-                    if (adresaDto != null)
-                        pravnoLiceDto.Adresa = adresaDto;
-                }
+                var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(pravnoLice);
+                _mapper.Map(otherServicesDto, pravnoLiceDto);
                 pravnaLicaDto.Add(pravnoLiceDto);
             }
 
@@ -76,13 +74,9 @@ namespace KupacService.Controllers
 
             PravnoLiceDto pravnoLiceDto = _mapper.Map<PravnoLiceDto>(pravnoLice);
 
-            if (pravnoLice.AdresaId != null)
-            {
-                string adresaurl = _configuration["Services:AdresaService"];
-                var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + pravnoLice.AdresaId);
-                if (adresaDto != null)
-                    pravnoLiceDto.Adresa = adresaDto;
-            }
+            var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(pravnoLice);
+            _mapper.Map(otherServicesDto, pravnoLiceDto);
+         
 
             return Ok(pravnoLiceDto);
         }
@@ -120,6 +114,7 @@ namespace KupacService.Controllers
               
 
                 _mapper.Map(pravnoLiceUpdate, oldPravnoLice);
+                await _pravnoLiceRepository.UpdateKupacOvlascenoLice(oldPravnoLice);
 
                
                 oldPravnoLice.KontaktOsoba = kontaktOsoba;

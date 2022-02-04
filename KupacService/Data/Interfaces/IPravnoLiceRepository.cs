@@ -13,5 +13,6 @@ namespace KupacService.Data.Interfaces
         Task<PravnoLice> CreatePravnoLice(PravnoLice pravnoLice);
         Task DeletePravnoLice(Guid kupacId);
         Task SaveChangesAsync();
+        Task UpdateKupacOvlascenoLice(PravnoLice pravnoLice);
     }
 }
