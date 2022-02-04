@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using ParcelaService.Data.Interfaces;
 using ParcelaService.Entities;
 using ParcelaService.Models.Klasa;
+using ParcelaService.ServiceCalls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +27,14 @@ namespace ParcelaService.Controllers
         private readonly IKlasaRepository _klasaRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
+        private readonly ILoggerService _loggerService;
 
-        public KlasaController(IKlasaRepository klasaRepository, LinkGenerator linkGenerator, IMapper mapper)
+        public KlasaController(IKlasaRepository klasaRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
         {
             _klasaRepository = klasaRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
+            _loggerService = loggerService;
         }
         /// <summary>
         /// Vraća sve klase
@@ -47,8 +52,11 @@ namespace ParcelaService.Controllers
 
             if (klase == null || klase.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetAllKlasa", "Lista klasa parcele je prazna ili null.");
                 return NoContent();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetAllKlasa", "Lista klasa parcele je uspešno vraćena.");
 
             return Ok(_mapper.Map<List<KlasaDto>>(klase));
         }
@@ -70,8 +78,11 @@ namespace ParcelaService.Controllers
 
             if (klasa == null)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetKlasa", $"Klasa parcele sa id-em {klasaId} nije pronađena.");
                 return NotFound();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetKlasa", $"Klasa parcele sa id-em {klasaId} je uspešno vraćena.");
 
             return Ok(_mapper.Map<KlasaDto>(klasa));
         }
@@ -89,7 +100,7 @@ namespace ParcelaService.Controllers
         /// }
         /// </remarks>
         /// <returns>Potvrda o kreiranju klase</returns>
-        /// <response code="200">Vraća kreiranu klasu</response>
+        /// <response code="201">Vraća kreiranu klasu</response>
         /// <response code="500">Desila se greška prilikom unosa nove klase</response>
         [HttpPost]
         [Consumes("application/json")]
@@ -104,13 +115,16 @@ namespace ParcelaService.Controllers
 
                 string lokacija = _linkGenerator.GetPathByAction("GetKlasa", "Klasa", new { klasaId = novaKlasa.KlasaId });
 
+                await _loggerService.Log(LogLevel.Information, "CreateKlasa", $"Klasa parcele sa vrednostima: {JsonConvert.SerializeObject(klasa)} je uspešno kreirana.");
+
+
                 return Created(lokacija, _mapper.Map<KlasaDto>(novaKlasa));
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "CreateKlasa", $"Greška prilikom unosa klase parcele sa vrednostima: {JsonConvert.SerializeObject(klasa)}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom kreiranja klase!");
-
             }
         }
 
@@ -135,18 +149,23 @@ namespace ParcelaService.Controllers
 
                 if (staraKlasa == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateKlasa", $"Klasa parcele sa id-em {klasa.KlasaId} nije pronađena.");
                     return NotFound();
                 }
+                var stareVrednosti = JsonConvert.SerializeObject(staraKlasa);
 
                 Klasa novaKlasa = _mapper.Map<Klasa>(klasa);
 
                 _mapper.Map(novaKlasa, staraKlasa);
                 await _klasaRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "UpdateKlasa", $"Klasa parcele sa id-em {klasa.KlasaId} je uspešno izmenjena. Stare vrednosti su: {stareVrednosti}");
+
                 return Ok(_mapper.Map<KlasaDto>(staraKlasa));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "UpdateKlasa", $"Greška prilikom izmene klase parcele sa id-em {klasa.KlasaId}.",ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom izmene klase");
             }
         }
@@ -171,17 +190,21 @@ namespace ParcelaService.Controllers
 
                 if (klasa == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "DeleteKlasa", $"Klasa parcele sa id-em {klasaId} nije pronađena.");
                     return NotFound();
                 }
 
                 await _klasaRepository.DeleteKlasa(klasaId);
                 await _klasaRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "DeleteKlasa", $"Klasa parcele sa id-em {klasaId} je uspešno obrisana. Obrisane vrednosti: {JsonConvert.SerializeObject(klasa)}");
+
                 return NoContent();
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "DeleteKlasa", $"Greška prilikom brisanja klase parcele sa id-em {klasaId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom brisanja klase");
             }
         }

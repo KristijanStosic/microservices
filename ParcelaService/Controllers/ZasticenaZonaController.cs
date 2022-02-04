@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using ParcelaService.Data.Interfaces;
 using ParcelaService.Entities;
 using ParcelaService.Models.ZasticenaZona;
+using ParcelaService.ServiceCalls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +26,15 @@ namespace ParcelaService.Controllers
         private readonly IZasticenaZonaRepository _zasticenaZonaRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
+        private readonly ILoggerService _loggerService;
 
-        public ZasticenaZonaController(IZasticenaZonaRepository zasticenaZonaRepository, LinkGenerator linkGenerator, IMapper mapper)
+
+        public ZasticenaZonaController(IZasticenaZonaRepository zasticenaZonaRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
         {
             _zasticenaZonaRepository = zasticenaZonaRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
+            _loggerService = loggerService;
         }
 
         /// <summary>
@@ -47,8 +53,11 @@ namespace ParcelaService.Controllers
 
             if(zasticeneZone == null || zasticeneZone.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetAllZasticenaZona", "Lista zaštićenih zona je prazna ili null.");
                 return NoContent();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetAllZasticenaZona", "Lista  zaštićenih zona je uspešno vraćena.");
 
             return Ok(_mapper.Map<List<ZasticenaZonaDto>>(zasticeneZone));
         }
@@ -69,8 +78,11 @@ namespace ParcelaService.Controllers
 
             if(zasticenaZona == null)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetZasticenaZona", $"Zaštićena zona sa id-em {zasticenaZonaId} nije pronađena.");
                 return NotFound();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetZasticenaZona", $"Zaštićena zona sa id-em {zasticenaZonaId} je uspešno vraćena.");
 
             return Ok(_mapper.Map<ZasticenaZonaDto>(zasticenaZona));
         }
@@ -88,7 +100,7 @@ namespace ParcelaService.Controllers
         /// }
         /// </remarks>
         /// <returns>Potvrda o kreiranju zaštićene zone</returns>
-        /// <response code="200">Vraća kreiranu zaštićenu zonu</response>
+        /// <response code="201">Vraća kreiranu zaštićenu zonu</response>
         /// <response code="500">Desila se greška prilikom unosa nove zaštićene zone</response>
         [HttpPost]
         [Consumes("application/json")]
@@ -103,10 +115,13 @@ namespace ParcelaService.Controllers
 
                 string lokacija = _linkGenerator.GetPathByAction("GetZasticenaZona", "ZasticenaZona", new { zasticenaZonaId = novaZasticenaZona.ZasticenaZonaId });
 
+                await _loggerService.Log(LogLevel.Information, "CreateZasticenaZona", $"Zaštićena zona sa vrednostima: {JsonConvert.SerializeObject(zasticenaZona)} je uspešno kreiran.");
+
                 return Created(lokacija, _mapper.Map<ZasticenaZonaDto>(novaZasticenaZona));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "CreateZasticenaZona", $"Greška prilikom unosa zaštićene zone sa vrednostima: {JsonConvert.SerializeObject(zasticenaZona)}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom kreiranja zasticene zone!");
             }
         }
@@ -132,18 +147,23 @@ namespace ParcelaService.Controllers
 
                 if(staraZasticenaZona == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateZasticenaZona", $"Zaštićena zona sa id-em {zasticenaZona.ZasticenaZonaId} nije pronađena.");
                     return NotFound();
                 }
+                var stareVrednosti = JsonConvert.SerializeObject(staraZasticenaZona);
 
                 ZasticenaZona novaZasticenaZona = _mapper.Map<ZasticenaZona>(zasticenaZona);
 
                 _mapper.Map(staraZasticenaZona, novaZasticenaZona);
                 await _zasticenaZonaRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "UpdateZasticenaZona", $"Zaštićena zona sa id-em {zasticenaZona.ZasticenaZonaId} je uspešno izmenjena. Stare vrednosti su: {stareVrednosti}");
+
                 return Ok(_mapper.Map<ZasticenaZonaDto>(staraZasticenaZona));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "UpdateZasticenaZona", $"Greška prilikom izmene zaštićene zone sa id-em {zasticenaZona.ZasticenaZonaId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom izmene zasticene zone!");
             }
         }
@@ -168,16 +188,20 @@ namespace ParcelaService.Controllers
 
                 if(zasticenaZona == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "DeleteZasticenaZona", $"Zastićena zona sa id-em {zasticenaZonaId} nije pronađena.");
                     return NotFound();
                 }
 
                 await _zasticenaZonaRepository.DeleteZasticenaZona(zasticenaZonaId);
                 await _zasticenaZonaRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "DeleteZasticenaZona", $"Zaštićena zona sa id-em {zasticenaZonaId} je uspešno obrisana. Obrisane vrednosti: {JsonConvert.SerializeObject(zasticenaZona)}");
+
                 return NoContent();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "DeleteZasticenaZona", $"Greška prilikom brisanja zaštićene zone sa id-em {zasticenaZonaId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom brisanja zasticene zone!");
             }
         }

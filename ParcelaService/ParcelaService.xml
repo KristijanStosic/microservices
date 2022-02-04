@@ -40,7 +40,7 @@
             }
             </remarks>
             <returns>Potvrda o kreiranju katastarske opštine</returns>
-            <response code="200">Vraća kreiranu katastarsku opštinu</response>
+            <response code="201">Vraća kreiranu katastarsku opštinu</response>
             <responese code="500">Desila se greška prilikom unosa nove katastarske opštine</responese>
         </member>
         <member name="M:ParcelaService.Controllers.KatastarskaOpstinaController.UpdateKatastarskaOpstina(ParcelaService.Models.KatastarskaOpstina.KatastarskaOpstinaUpdateDto)">
@@ -105,7 +105,7 @@
             }
             </remarks>
             <returns>Potvrda o kreiranju klase</returns>
-            <response code="200">Vraća kreiranu klasu</response>
+            <response code="201">Vraća kreiranu klasu</response>
             <response code="500">Desila se greška prilikom unosa nove klase</response>
         </member>
         <member name="M:ParcelaService.Controllers.KlasaController.UpdateKlasa(ParcelaService.Models.Klasa.KlasaUpdateDto)">
@@ -171,7 +171,7 @@
             }
              </remarks>
              <returns>Potvrda o kreiranju kulture</returns>
-             <response code="200">Vraća kreiranu kulturu</response>
+             <response code="201">Vraća kreiranu kulturu</response>
              <response code="500">Desila se greška prilikom unosa nove kulture</response>
         </member>
         <member name="M:ParcelaService.Controllers.KulturaController.UpdateKultura(ParcelaService.Models.Kultura.KulturaUpdateDto)">
@@ -237,7 +237,7 @@
             }
             </remarks>
             <returns>Potvrda o kreiranju oblika svojine</returns>
-            <response code="200">Vraća kreiran oblik svojine</response>
+            <response code="201">Vraća kreiran oblik svojine</response>
             <response code="500">Desila se greška prilikom unosa novog oblika svojine</response>
         </member>
         <member name="M:ParcelaService.Controllers.OblikSvojineController.UpdateOblikSvojine(ParcelaService.Models.OblikSvojine.OblikSvojineUpdateDto)">
@@ -302,7 +302,7 @@
             }
             </remarks>
             <returns>Potvrda o kreiranju obradivosti</returns>
-            <response code="200">Vraća kreiranu obradivost</response>
+            <response code="201">Vraća kreiranu obradivost</response>
             <response code="500">Desila se greška prilikom unosa nove obradivosti</response>
         </member>
         <member name="M:ParcelaService.Controllers.ObradivostController.UpdateObradivost(ParcelaService.Models.Obradivost.ObradivostUpdateDto)">
@@ -367,7 +367,7 @@
             }
             </remarks>
             <returns>Potvrda o kreiranju odvodnjavanja</returns>
-            <response code="200">Vraća kreirano odvodnjavanje</response>
+            <response code="201">Vraća kreirano odvodnjavanje</response>
             <response code="500">Desila se greška prilikom unosa novog odvodnjavanja</response>
         </member>
         <member name="M:ParcelaService.Controllers.OdvodnjavanjeController.UpdateOdvodnjavanje(ParcelaService.Models.Odvodnjavanje.OdvodnjavanjeUpdateDto)">
@@ -432,7 +432,7 @@
             }
             </remarks>
             <returns>Potvrda o kreiranju zaštićene zone</returns>
-            <response code="200">Vraća kreiranu zaštićenu zonu</response>
+            <response code="201">Vraća kreiranu zaštićenu zonu</response>
             <response code="500">Desila se greška prilikom unosa nove zaštićene zone</response>
         </member>
         <member name="M:ParcelaService.Controllers.ZasticenaZonaController.UpdateZasticenaZona(ParcelaService.Models.ZasticenaZona.ZasticenaZonaUpdateDto)">

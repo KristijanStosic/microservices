@@ -13,6 +13,8 @@ using Microsoft.OpenApi.Models;
 using ParcelaService.Data;
 using ParcelaService.Data.Interfaces;
 using ParcelaService.Entities.DataContext;
+using ParcelaService.ServiceCalls;
+using ParcelaService.ServiceCalls.Mocks;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -84,6 +86,8 @@ namespace ParcelaService
             services.AddScoped<IOdvodnjavanjeRepository, OdvodnjavanjeRepository>();
             services.AddScoped<IZasticenaZonaRepository, ZasticenaZonaRepository>();
             services.AddScoped<IKatastarskaOpstinaRepository, KatastarskaOpstinaRepository>();
+
+            services.AddScoped<ILoggerService, LoggerServiceMock>();
 
 
 

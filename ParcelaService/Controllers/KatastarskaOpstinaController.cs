@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using ParcelaService.Data.Interfaces;
 using ParcelaService.Entities;
 using ParcelaService.Models.KatastarskaOpstina;
+using ParcelaService.ServiceCalls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +26,15 @@ namespace ParcelaService.Controllers
         private readonly IKatastarskaOpstinaRepository _katastarskaOpstinaRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
+        private readonly ILoggerService _loggerService;
 
-        public KatastarskaOpstinaController(IKatastarskaOpstinaRepository katastarskaOpstinaRepository, LinkGenerator linkGenerator, IMapper mapper)
+
+        public KatastarskaOpstinaController(IKatastarskaOpstinaRepository katastarskaOpstinaRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
         {
             _katastarskaOpstinaRepository = katastarskaOpstinaRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
+            _loggerService = loggerService;
         }
 
         /// <summary>
@@ -47,8 +53,12 @@ namespace ParcelaService.Controllers
 
             if(katastarskeOpstine == null || katastarskeOpstine.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetAllKatastarskaOpstina", "Lista katastarskih opština je prazna ili null.");
                 return NoContent();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetAllKatastarskaOpstina", "Lista katastarskih opština je uspešno vraćena.");
+
 
             return Ok(_mapper.Map<List<KatastarskaOpstinaDto>>(katastarskeOpstine));
         }
@@ -70,8 +80,12 @@ namespace ParcelaService.Controllers
 
             if(katastarskaOpstina == null)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetKatastarskaOpstina", $"Katastarska opština sa id-em {katastarskaOpstinaId} nije pronađena.");
                 return NotFound();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetKatastarskaOpstina", $"Etapa sa id-em {katastarskaOpstinaId} je uspešno vraćena.");
+
 
             return Ok(_mapper.Map<KatastarskaOpstinaDto>(katastarskaOpstina));
         }
@@ -89,7 +103,7 @@ namespace ParcelaService.Controllers
         /// }
         /// </remarks>
         /// <returns>Potvrda o kreiranju katastarske opštine</returns>
-        /// <response code="200">Vraća kreiranu katastarsku opštinu</response>
+        /// <response code="201">Vraća kreiranu katastarsku opštinu</response>
         /// <responese code="500">Desila se greška prilikom unosa nove katastarske opštine</responese>
         [HttpPost]
         [Consumes("application/json")]
@@ -103,11 +117,16 @@ namespace ParcelaService.Controllers
                 await _katastarskaOpstinaRepository.SaveChangesAsync();
 
                 string lokacija = _linkGenerator.GetPathByAction("GetKatastarskaOpstina", "KatastarskaOpstina", new { katastarskaOpstinaId = novaKatastarskaOpstina.KatastarskaOpstinaId });
+
+                await _loggerService.Log(LogLevel.Information, "CreateKatastarskaOpstina", $"Katastarska opština sa vrednostima: {JsonConvert.SerializeObject(katastarskaOpstina)} je uspešno kreirana.");
+
+
                 return Created(lokacija, _mapper.Map<KatastarskaOpstinaDto>(novaKatastarskaOpstina));
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "CreateKatastarskaOpstina", $"Greška prilikom unosa katastarske opštine sa vrednostima: {JsonConvert.SerializeObject(katastarskaOpstina)}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom kreiranja katastarske opstine");
             }
         }
@@ -132,18 +151,24 @@ namespace ParcelaService.Controllers
 
                 if(staraKatastarskaOpstina == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateKatastarskaOpstina", $"Katastarska opština sa id-em {katastarskaOpstina.KatastarskaOpstinaId} nije pronađena.");
                     return NotFound();
                 }
+                var stareVrednosti = JsonConvert.SerializeObject(staraKatastarskaOpstina);
 
                 KatastarskaOpstina novaKatastarskaOpstina = _mapper.Map<KatastarskaOpstina>(katastarskaOpstina);
 
                 _mapper.Map(staraKatastarskaOpstina, novaKatastarskaOpstina);
                 await _katastarskaOpstinaRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "UpdateKatastarskaOpstina", $"Katastarska opština sa id-em {katastarskaOpstina.KatastarskaOpstinaId} je uspešno izmenjena. Stare vrednosti su: {stareVrednosti}");
+
+
                 return Ok(_mapper.Map<KatastarskaOpstinaDto>(staraKatastarskaOpstina));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "UpdateKatastarskaOpstina", $"Greška prilikom izmene katastarske opštine sa id-em {katastarskaOpstina.KatastarskaOpstinaId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom izmene katastarske opstine");
             }
         }
@@ -167,16 +192,21 @@ namespace ParcelaService.Controllers
 
                 if(katastarskaOpstina == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "DeleteKatastarskaOpstina", $"Katastarska opština sa id-em {katastarskaOpstinaId} nije pronađen.");
                     return NotFound();
                 }
 
                 await _katastarskaOpstinaRepository.DeleteKatastarskaOpstina(katastarskaOpstinaId);
                 await _katastarskaOpstinaRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "DeleteKatastarskaOpstina", $"Katastarska opštinasa id-em {katastarskaOpstinaId} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(katastarskaOpstina)}");
+
+
                 return NoContent();
             }
-            catch(Exception)
+            catch(Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "DeleteKatastarskaOpstina", $"Greška prilikom brisanja katastarske opštine sa id-em {katastarskaOpstinaId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom brisanja katastarske opstine");
             }
         }

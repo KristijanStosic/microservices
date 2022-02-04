@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using ParcelaService.Data.Interfaces;
 using ParcelaService.Entities;
 using ParcelaService.Models.Kultura;
+using ParcelaService.ServiceCalls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,12 +27,14 @@ namespace ParcelaService.Controllers
         private readonly IKulturaRepository _kulturaRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
+        private readonly ILoggerService _loggerService;
 
-        public KulturaController(IKulturaRepository kulturaRepository, LinkGenerator linkGenerator, IMapper mapper)
+        public KulturaController(IKulturaRepository kulturaRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
         {
             _kulturaRepository = kulturaRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
+            _loggerService = loggerService;
         }
         /// <summary>
         /// Vraća sve kulture parcele
@@ -39,14 +44,20 @@ namespace ParcelaService.Controllers
         /// <response code="200">Vraća listu kultura</response>
         /// <response code="404">Nije pronađena ni jedna kultura</response>
         [HttpGet]
+        [HttpHead]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<KulturaDto>>> GetAllKlasa(string nazivKulture)
         {
             var kulture = await _kulturaRepository.GetAllKultura(nazivKulture);
 
             if(kulture == null || kulture.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetAllKultura", "Lista kultura parcele je prazna ili null.");
                 return NoContent();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetAllKultura", "Lista kultura parcele je uspešno vraćena.");
 
             return Ok(_mapper.Map<List<KulturaDto>>(kulture));
         }
@@ -66,8 +77,11 @@ namespace ParcelaService.Controllers
 
             if(kultura == null)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetKultura", $"Kultura parcele sa id-em {kulturaId} nije pronađena.");
                 return NotFound();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetKultura", $"Kultura parcele sa id-em {kulturaId} je uspešno vraćena.");
 
             return Ok(_mapper.Map<KulturaDto>(kultura));
         }
@@ -85,7 +99,7 @@ namespace ParcelaService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju kulture</returns>
-        /// <response code="200">Vraća kreiranu kulturu</response>
+        /// <response code="201">Vraća kreiranu kulturu</response>
         /// <response code="500">Desila se greška prilikom unosa nove kulture</response>
         [HttpPost]
         [Consumes("application/json")]
@@ -100,11 +114,14 @@ namespace ParcelaService.Controllers
 
                 string lokacija = _linkGenerator.GetPathByAction("GetKultura", "Kultura", new { kulturaId = novaKultura.KulturaId });
 
+                await _loggerService.Log(LogLevel.Information, "CreateKultura", $"Kultura parcele sa vrednostima: {JsonConvert.SerializeObject(kultura)} je uspešno kreirana.");
+
                 return Created(lokacija, _mapper.Map<KulturaDto>(novaKultura));
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "CreateKultura", $"Greška prilikom unosa kulture parcele sa vrednostima: {JsonConvert.SerializeObject(kultura)}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom kreiranja kulture!");
             }
             
@@ -130,20 +147,25 @@ namespace ParcelaService.Controllers
 
                 if(staraKultura == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateKultura", $"Kultura parcele sa id-em {kultura.KulturaId} nije pronađena.");
                     return NotFound();
                 }
+
+                var stareVrednosti = JsonConvert.SerializeObject(staraKultura);
 
                 Kultura novaKultura = _mapper.Map<Kultura>(kultura);
 
                 _mapper.Map(staraKultura, novaKultura);
                 await _kulturaRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "UpdateKultura", $"Kultura parcele sa id-em {kultura.KulturaId} je uspešno izmenjena. Stare vrednosti su: {stareVrednosti}");
+
                 return Ok(_mapper.Map<KulturaDto>(staraKultura));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "UpdateKultura", $"Greška prilikom izmene kulture parcele sa id-em {kultura.KulturaId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom izmene kulture!");
-
             }
         }
 
@@ -167,19 +189,22 @@ namespace ParcelaService.Controllers
 
                 if (kultura == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "DeleteKultura", $"Kultura parcele sa id-em {kulturaId} nije pronađena.");
                     return NotFound();
                 }
 
                 await _kulturaRepository.DeleteKultura(kulturaId);
                 await _kulturaRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "DeleteKultura", $"Kultura parcele sa id-em {kulturaId} je uspešno obrisana. Obrisane vrednosti: {JsonConvert.SerializeObject(kultura)}");
+
                 return NoContent();
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "DeleteKultura", $"Greška prilikom brisanja kulture parcele sa id-em {kulturaId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom brisanja kulture!");
-
             }
         }
 

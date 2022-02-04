@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using ParcelaService.Data.Interfaces;
 using ParcelaService.Entities;
 using ParcelaService.Models.OblikSvojine;
+using ParcelaService.ServiceCalls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +26,14 @@ namespace ParcelaService.Controllers
         private readonly IOblikSvojineRepository _oblikSvojineRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
+        private readonly ILoggerService _loggerService;
 
-        public OblikSvojineController(IOblikSvojineRepository oblikSvojineRepository, LinkGenerator linkGenerator, IMapper mapper)
+        public OblikSvojineController(IOblikSvojineRepository oblikSvojineRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
         {
             _oblikSvojineRepository = oblikSvojineRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
+            _loggerService = loggerService;
         }
 
         /// <summary>
@@ -48,8 +53,11 @@ namespace ParcelaService.Controllers
 
             if (obliciSvojine == null || obliciSvojine.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetAllOblikSvojine", "Lista oblika svojina parcele je prazna ili null.");
                 return NoContent();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetAllOblikSvojine", "Lista oblika svojina parcele je uspešno vraćena.");
 
             return Ok(_mapper.Map<List<OblikSvojineDto>>(obliciSvojine));
         }
@@ -70,8 +78,11 @@ namespace ParcelaService.Controllers
 
             if (oblikSvojine == null)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetOblikSvojine", $"Oblik svojine parcele sa id-em {oblikSvojineId} nije pronađen.");
                 return NotFound();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetOblikSvojine", $"Oblik svojine parcele sa id-em {oblikSvojineId} je uspešno vraćen.");
 
             return Ok(_mapper.Map<OblikSvojineDto>(oblikSvojine));
         }
@@ -89,7 +100,7 @@ namespace ParcelaService.Controllers
         /// }
         /// </remarks>
         /// <returns>Potvrda o kreiranju oblika svojine</returns>
-        /// <response code="200">Vraća kreiran oblik svojine</response>
+        /// <response code="201">Vraća kreiran oblik svojine</response>
         /// <response code="500">Desila se greška prilikom unosa novog oblika svojine</response>
         [HttpPost]
         [Consumes("application/json")]
@@ -104,11 +115,14 @@ namespace ParcelaService.Controllers
 
                 string lokacija = _linkGenerator.GetPathByAction("GetOblikSvojine", "OblikSvojine", new { oblikSvojineId = noviOblikSvojine.OblikSvojineId });
 
+                await _loggerService.Log(LogLevel.Information, "CreateOblikSvojine", $"Oblik svojine parcele sa vrednostima: {JsonConvert.SerializeObject(oblikSvojine)} je uspešno kreiran.");
+
                 return Created(lokacija, _mapper.Map<OblikSvojineDto>(noviOblikSvojine));
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "CreateOblikSvojine", $"Greška prilikom unosa oblika svjoine parcele sa vrednostima: {JsonConvert.SerializeObject(oblikSvojine)}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom kreiranja oblika svojine");
             }
         }
@@ -133,20 +147,25 @@ namespace ParcelaService.Controllers
 
                 if(stariOblikSvojine == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateOblikSvojine", $"Oblik svojine parcele sa id-em {oblikSvojine.OblikSvojineId} nije pronađen.");
                     return NotFound();
                 }
+
+                var stareVrednosti = JsonConvert.SerializeObject(stariOblikSvojine);
 
                 OblikSvojine noviOblikSvojine = _mapper.Map<OblikSvojine>(oblikSvojine);
 
                 _mapper.Map(stariOblikSvojine, noviOblikSvojine);
                 await _oblikSvojineRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "UpdateOblikSvojine", $"Oblik svojine parcele sa id-em {oblikSvojine.OblikSvojineId} je uspešno izmenjen. Stare vrednosti su: {stareVrednosti}");
+
                 return Ok(_mapper.Map<OblikSvojineDto>(stariOblikSvojine));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "UpdateOblikSvojine", $"Greška prilikom izmene oblika svojine parcele sa id-em {oblikSvojine.OblikSvojineId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom izmene oblika svojine");
-
             }
         }
 
@@ -170,18 +189,21 @@ namespace ParcelaService.Controllers
 
                 if(oblikSvojine == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "DeleteOblikSvojine", $"Oblik svojine parcele sa id-em {oblikSvojineId} nije pronađen.");
                     return NotFound();
                 }
 
                 await _oblikSvojineRepository.DeleteOblikSvojine(oblikSvojineId);
                 await _oblikSvojineRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "DeleteOblikSvojine", $"Oblik svojine parcele sa id-em {oblikSvojineId} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(oblikSvojine)}");
+
                 return NoContent();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "DeleteOblikSvojine", $"Greška prilikom brisanja oblika svojine parcele sa id-em {oblikSvojineId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom brisanja oblika svojine");
-
             }
         }
 

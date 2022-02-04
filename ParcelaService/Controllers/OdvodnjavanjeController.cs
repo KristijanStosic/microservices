@@ -2,9 +2,12 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using ParcelaService.Data.Interfaces;
 using ParcelaService.Entities;
 using ParcelaService.Models.Odvodnjavanje;
+using ParcelaService.ServiceCalls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,12 +26,14 @@ namespace ParcelaService.Controllers
         private readonly IOdvodnjavanjeRepository _odvodnjavanjeRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
+        private readonly ILoggerService _loggerService;
 
-        public OdvodnjavanjeController(IOdvodnjavanjeRepository odvodnjavanjeRepository, LinkGenerator linkGenerator, IMapper mapper)
+        public OdvodnjavanjeController(IOdvodnjavanjeRepository odvodnjavanjeRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
         {
             _odvodnjavanjeRepository = odvodnjavanjeRepository;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
+            _loggerService = loggerService;
         }
 
         /// <summary>
@@ -47,8 +52,11 @@ namespace ParcelaService.Controllers
 
             if(odvodnjavanje == null || odvodnjavanje.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetAllOdvodnjavanje", "Lista odvodnjavanja parcele je prazna ili null.");
                 return NoContent();
             }
+
+            await _loggerService.Log(LogLevel.Information, "GetAllOdvodnjavanje", "Lista odvodnjavanja parcele je uspešno vraćena.");
 
             return Ok(_mapper.Map<List<OdvodnjavanjeDto>>(odvodnjavanje));
         }
@@ -69,6 +77,7 @@ namespace ParcelaService.Controllers
 
             if(odvodnjavanje == null)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetOdvodnjavanje", $"Odvodnjavanje parcele sa id-em {odvodnjavanje} nije pronađen.");
                 return NotFound();
             }
 
@@ -88,7 +97,7 @@ namespace ParcelaService.Controllers
         /// }
         /// </remarks>
         /// <returns>Potvrda o kreiranju odvodnjavanja</returns>
-        /// <response code="200">Vraća kreirano odvodnjavanje</response>
+        /// <response code="201">Vraća kreirano odvodnjavanje</response>
         /// <response code="500">Desila se greška prilikom unosa novog odvodnjavanja</response>
         [HttpPost]
         [Consumes("application/json")]
@@ -102,12 +111,15 @@ namespace ParcelaService.Controllers
                 await _odvodnjavanjeRepository.SaveChangesAsync();
 
                 string lokacija = _linkGenerator.GetPathByAction("GetOdvodnjavanje", "Odvodnjavanje", new { odvodnjavanjeId = novoOdvodnjavanje.OdvodnjavanjeId });
+                await _loggerService.Log(LogLevel.Information, "CreateOdvodnjavanje", $"Odovdnjavanje parcele sa vrednostima: {JsonConvert.SerializeObject(odvodnjavanje)} je uspešno kreirano.");
+
 
                 return Created(lokacija, _mapper.Map<OdvodnjavanjeDto>(novoOdvodnjavanje));
             }
 
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "CreateStatus", $"Greška prilikom unosa odvodnjavanja parcele sa vrednostima: {JsonConvert.SerializeObject(odvodnjavanje)}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom kreiranja odvodnjavanja!");
             }
         }
@@ -133,18 +145,23 @@ namespace ParcelaService.Controllers
 
                 if(staroOdvodnjavanje == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateOdvodnjavanje", $"Odvodnjavanje parcele sa id-em {odvodnjavanje.OdvodnjavanjeId} nije pronađeno.");
                     return NotFound();
                 }
+                var stareVrednosti = JsonConvert.SerializeObject(staroOdvodnjavanje);
 
                 Odvodnjavanje novoOdvodnjavanje = _mapper.Map<Odvodnjavanje>(odvodnjavanje);
 
                 _mapper.Map(staroOdvodnjavanje, novoOdvodnjavanje);
                 await _odvodnjavanjeRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "UpdateOdvodnjavanje", $"Odvodnjavnje parcele sa id-em {odvodnjavanje.OdvodnjavanjeId} je uspešno izmenjeno. Stare vrednosti su: {stareVrednosti}");
+
                 return Ok(_mapper.Map<OdvodnjavanjeDto>(staroOdvodnjavanje));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "UpdateOdvodnjavanje", $"Greška prilikom izmene odvodnjavanja parcele sa id-em {odvodnjavanje.OdvodnjavanjeId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom izmene odvodnjavanja!");
             }
         }
@@ -169,6 +186,7 @@ namespace ParcelaService.Controllers
 
                 if(odvodnjavanje == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "DeleteOdvodnjavanje", $"Odvodnjavanje parcele sa id-em {odvodnjavanjeId} nije pronađeno.");
                     return NotFound();
                 }
 
@@ -177,8 +195,9 @@ namespace ParcelaService.Controllers
 
                 return NoContent();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                await _loggerService.Log(LogLevel.Error, "DeleteOdvodnjavanje", $"Greška prilikom brisanja odvodnjavanja parcele sa id-em {odvodnjavanjeId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greska prilikom brisanja odvodnjavanja!");
 
             }
