@@ -95,7 +95,6 @@ namespace ParcelaService.Controllers
         /// Primer zahteva za kreiranje nove zaštićene zone \
         /// POST /api/zasticenaZona \
         /// {
-        ///   "ZasticenaZonaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         ///   "brojZasticeneZone": "Broj zaštićene zone"
         /// }
         /// </remarks>

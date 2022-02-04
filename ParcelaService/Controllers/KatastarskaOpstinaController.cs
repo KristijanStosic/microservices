@@ -98,7 +98,6 @@ namespace ParcelaService.Controllers
         /// Primer zahteva za kreiranje nove katastarske opštine \
         /// POST /api/katastarskaOpstina \
         /// {
-        ///       "katastarskaOpstinaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         ///       "nazivKatastarskeOpstine": "Naziv katastarske opštine"
         /// }
         /// </remarks>

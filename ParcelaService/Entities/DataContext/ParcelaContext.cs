@@ -29,6 +29,10 @@ namespace ParcelaService.Entities.DataContext
 
         public DbSet<KatastarskaOpstina> KatastarskaOpstina  { get; set; }
 
+        public DbSet<Parcela> Parcela { get; set; }
+
+        public DbSet<DeoParcele> DeoParcele { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ParcelaDB"));

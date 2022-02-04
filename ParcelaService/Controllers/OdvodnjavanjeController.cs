@@ -92,7 +92,6 @@ namespace ParcelaService.Controllers
         /// Primer zahteva za kreiranje novog odvodnjavanja \
         /// POST /api/odvodnjavanje \
         /// {
-        ///       "odvodnjavanjeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         ///       "opisOdvodnjavanja": "Opis odvodnjavanja"
         /// }
         /// </remarks>

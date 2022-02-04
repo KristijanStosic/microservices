@@ -94,7 +94,6 @@ namespace ParcelaService.Controllers
         /// Primer zahteva za kreiranje nove kulture \
         /// POST /api/kultura \
         /// {
-        ///       "kulturaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
         ///       "nazivKulture": "Naziv kulture" \
         ///}
         /// </remarks>

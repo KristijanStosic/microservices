@@ -35,7 +35,6 @@
             Primer zahteva za kreiranje nove katastarske opštine \
             POST /api/katastarskaOpstina \
             {
-                  "katastarskaOpstinaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                   "nazivKatastarskeOpstine": "Naziv katastarske opštine"
             }
             </remarks>
@@ -100,7 +99,6 @@
             Primer zahteva za kreiranje nove klase \
             POST /api/klasa \
             {
-                 "klasaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                  "klasaNaziv": "Naziv klase"
             }
             </remarks>
@@ -166,7 +164,6 @@
              Primer zahteva za kreiranje nove kulture \
              POST /api/kultura \
              {
-                   "kulturaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                    "nazivKulture": "Naziv kulture" \
             }
              </remarks>
@@ -232,7 +229,6 @@
             Primer zahteva za kreiranje novog oblika svojine \
             POST /api/oblikSvojine \
             {
-              "oblikSvojineId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                "opisOblikaSvojine": "Opis oblika svojine"
             }
             </remarks>
@@ -297,7 +293,6 @@
             Primer zahteva za kreiranje nove obradivosti \
             POST /api/obradivost \
             {
-                  "obradivostId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                   "opisObradivosti": "Opis obradivosti"
             }
             </remarks>
@@ -362,7 +357,6 @@
             Primer zahteva za kreiranje novog odvodnjavanja \
             POST /api/odvodnjavanje \
             {
-                  "odvodnjavanjeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
                   "opisOdvodnjavanja": "Opis odvodnjavanja"
             }
             </remarks>
@@ -396,6 +390,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:ParcelaService.Controllers.ParcelaController">
+            <summary>
+            Kontroler za parcelu
+            </summary>
+        </member>
         <member name="T:ParcelaService.Controllers.ZasticenaZonaController">
             <summary>
             Kontroler za zaštićenu zonu
@@ -427,7 +426,6 @@
             Primer zahteva za kreiranje nove zaštićene zone \
             POST /api/zasticenaZona \
             {
-              "ZasticenaZonaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
               "brojZasticeneZone": "Broj zaštićene zone"
             }
             </remarks>
@@ -460,6 +458,151 @@
             Vraća opcije za rad sa zaštićenim zonama
             </summary>
             <returns></returns>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleConfirmationDto.RedniBrojDela">
+            <summary>
+            Redni broj dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleConfirmationDto.PovrsinaDela">
+            <summary>
+            Povrsina dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.RedniBrojDela">
+            <summary>
+            Redni broj dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.PovrsinaDela">
+            <summary>
+            Povrsina dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.KulturaId">
+            <summary>
+            Id kulture
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.KlasaId">
+            <summary>
+            Id klase
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.ObradivostId">
+            <summary>
+            Id obradivosti
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.ParcelaId">
+            <summary>
+            Id parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.KupacId">
+            <summary>
+            Id kupca
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.DeoParceleId">
+            <summary>
+            Id dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.RedniBrojDela">
+            <summary>
+            Redni broj dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.PovrsinaDela">
+            <summary>
+            Povrsina dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.BrojParcele">
+            <summary>
+            Broj parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.Kultura">
+            <summary>
+            Kultura
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.Klasa">
+            <summary>
+            Klasa
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.Obradivost">
+            <summary>
+            Obradivost
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.KatastarskaOpstina">
+            <summary>
+            Katastarska opština
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.OblikSvojine">
+            <summary>
+            Oblik svojine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.ZasticenaZona">
+            <summary>
+            Zastićena zona
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.Odvodnjavanje">
+            <summary>
+            Odvodnjavanje
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.Kupac">
+            <summary>
+            Kupac
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.DeoParceleId">
+            <summary>
+            Id dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.RedniBrojDela">
+            <summary>
+            Redni broj dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.PovrsinaDela">
+            <summary>
+            Povrsina dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.KulturaId">
+            <summary>
+            Id kulture
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.KlasaId">
+            <summary>
+            Id klase
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.ObradivostId">
+            <summary>
+            Id obradivosti
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.ParcelaId">
+            <summary>
+            Id parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.KupacId">
+            <summary>
+            Id kupca
+            </summary>
         </member>
         <member name="T:ParcelaService.Models.KatastarskaOpstina.KatastarskaOpstinaCreationDto">
             <summary>
@@ -699,6 +842,141 @@
         <member name="P:ParcelaService.Models.Odvodnjavanje.OdvodnjavanjeUpdateDto.OpisOdvodnjavanja">
             <summary>
             Opis odvodnjavanja parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaConfirmationDto.BrojParcele">
+            <summary>
+            Broj parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaConfirmationDto.PovrsinaParcele">
+            <summary>
+            Površina parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaConfirmationDto.BrojListeNepokretnosti">
+            <summary>
+            Broj liste nepokretnosti
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.BrojParcele">
+            <summary>
+            Broj parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.PovrsinaParcele">
+            <summary>
+            Površina parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.BrojListeNepokretnosti">
+            <summary>
+            Broj liste nepokretnosti
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.ZasticenaZonaId">
+            <summary>
+            Id zaštićene zone
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.OblikSvojineId">
+            <summary>
+            Id oblika svojine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.OdvodnjavanjeId">
+            <summary>
+            Id odvodnjavanja
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.KatastarskaOpstinaId">
+            <summary>
+            Id katastarske opštine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.ParcelaId">
+            <summary>
+            Id parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.BrojParcele">
+            <summary>
+            Broj parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.PovrsinaParcele">
+            <summary>
+            Površina parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.BrojListeNepokretnosti">
+            <summary>
+            Broj liste nepokretnosti
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.KatastarskaOpstina">
+            <summary>
+            Katastarska opština
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.OblikSvojine">
+            <summary>
+            Oblik svojine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.ZasticenaZona">
+            <summary>
+            Zastićena zona
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.Odvodnjavanje">
+            <summary>
+            Odvodnjavanje
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.DeloviParcele">
+            <summary>
+            Lista delova parcela
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.ParcelaId">
+            <summary>
+            Id parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.BrojParcele">
+            <summary>
+            Broj parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.PovrsinaParcele">
+            <summary>
+            Površina parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.BrojListeNepokretnosti">
+            <summary>
+            Broj liste nepokretnosti
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.ZasticenaZonaId">
+            <summary>
+            Id zaštićene zone
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.OblikSvojineId">
+            <summary>
+            Id oblika svojine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.OdvodnjavanjeId">
+            <summary>
+            Id odvodnjavanja
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.KatastarskaOpstinaId">
+            <summary>
+            Id katastarske opštine
             </summary>
         </member>
         <member name="T:ParcelaService.Models.ZasticenaZona.ZasticenaZonaCreationDto">
