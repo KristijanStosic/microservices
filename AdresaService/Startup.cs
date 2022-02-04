@@ -94,7 +94,7 @@ namespace AdresaService
                     {
                         Name = "Gavrilo Stanić",
                         Email = "stanic.gavrilo@uns.ac.rs",
-                        Url = new Uri(Configuration["Swagger: Github"])
+                        Url = new Uri(Configuration["Swagger:Github"])
                     }
                 });
 
