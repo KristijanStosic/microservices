@@ -25,5 +25,7 @@ namespace UgovorOZakupu.Entities
         public IEnumerable<RokDospeca> RokoviDospeca { get; set; }
 
         public Guid DokumentId { get; set; }
+        
+        public Guid JavnoNadmetanjeId { get; set; }
     }
 }

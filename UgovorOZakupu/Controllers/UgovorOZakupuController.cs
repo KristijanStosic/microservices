@@ -69,9 +69,8 @@ namespace UgovorOZakupu.Controllers
                     $"Ugovor o zakupu sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
-
-            var ugovorDto = _mapper.Map<UgovorOZakupuDto>(ugovor);
-            ugovorDto.Dokument = await _serviceCalls.GetDokumentById(ugovor.DokumentId);
+            
+            var ugovorDto = await _serviceCalls.GetUgovorOZakupuInfo(ugovor);
             
             await _loggerService.Log(LogLevel.Information, "GetUgovorOZakupuById",
                 $"Ugovor o zakupu sa id-jem {id} je uspešno vraćen.");

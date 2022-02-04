@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UgovorOZakupu.Models.Dokument;
+using UgovorOZakupu.Models.JavnoNadmetanje;
 
 namespace UgovorOZakupu.Models.UgovorOZakupu
 {
@@ -21,5 +22,7 @@ namespace UgovorOZakupu.Models.UgovorOZakupu
         public IEnumerable<int> RokoviDospeca { get; set; }
 
         public DokumentDto Dokument { get; set; }
+        
+        public JavnoNadmetanjeDto JavnoNadmetanje { get; set; }
     }
 }

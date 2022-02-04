@@ -1,11 +1,10 @@
-﻿using System;
-using System.Threading.Tasks;
-using UgovorOZakupu.Models.Dokument;
+﻿using System.Threading.Tasks;
+using UgovorOZakupu.Models.UgovorOZakupu;
 
 namespace UgovorOZakupu.Services.ServiceCalls
 {
     public interface IServiceCalls
     {
-        Task<DokumentDto> GetDokumentById(Guid id);
+        Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(Entities.UgovorOZakupu ugovor);
     }
 }
