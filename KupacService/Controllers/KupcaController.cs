@@ -9,6 +9,7 @@ using KupacService.ServiceCalls;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,15 +27,17 @@ namespace KupacService.Controllers
         private readonly IConfiguration _configuration;
         private readonly IServiceCall<AdresaDto> _adresaServiceCall;
         private readonly IKupacCalls _kupacCalls;
+        private readonly ILoggerService _loggerService;
 
         public KupcaController(IKupacRepository kupacRepository,IMapper mapper, IConfiguration configuration, IServiceCall<AdresaDto> adresaServiceCall,
-            IKupacCalls kupacCalls)
+            IKupacCalls kupacCalls,ILoggerService loggerService)
         {
             this._kupacRepository = kupacRepository;
             this._mapper = mapper;
             this._configuration = configuration;
             this._adresaServiceCall = adresaServiceCall;
             this._kupacCalls = kupacCalls;
+            this._loggerService = loggerService;
         }
 
         [HttpGet]
@@ -43,6 +46,7 @@ namespace KupacService.Controllers
             var kupci = await _kupacRepository.GetKupci();
             if(kupci == null && kupci.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetKupci", "Lista kupaca je prazna ili null.");
                 return NoContent();
             }
 
@@ -56,7 +60,7 @@ namespace KupacService.Controllers
                 _mapper.Map(otherServicesDto, kupacDto);
                 kupciDto.Add(kupacDto);
             }
-
+            await _loggerService.Log(LogLevel.Information, "GetKupci", "Lista kupaca je uspešno vraćena.");
             return Ok(kupciDto);
         }
 
@@ -67,6 +71,7 @@ namespace KupacService.Controllers
 
             if(kupac == null)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetKupacById", $"Kupac sa id-em {kupacId} nije pronađen.");
                 return NotFound();
             }
 
@@ -75,6 +80,7 @@ namespace KupacService.Controllers
             var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(kupac);
             _mapper.Map(otherServicesDto, kupacDto);
 
+            await _loggerService.Log(LogLevel.Information, "GetKupacById", $"Kupac sa id-em {kupacId} je uspešno vraćen.");
             return Ok(kupacDto);
         }
         [HttpGet("uplata/{uplataId}")]
@@ -84,6 +90,7 @@ namespace KupacService.Controllers
 
             if(kupci == null || kupci.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetKupceByUplataId", $"Nisu pronađeni kupci koji pripadaju uplati {uplataId}.");
                 return NoContent();
             }
 
@@ -97,16 +104,22 @@ namespace KupacService.Controllers
 
             if(kupci == null || kupci.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetKupceByOvlascenoLiceId", $"Nisu pronađeni kupci koji pripadaju ovlasšćenom licu {ovlascenoLiceId}.");
                 return NoContent();
             }
 
             return Ok(_mapper.Map<List<KupacManyToManyDto>>(kupci));
         }
 
-        
 
 
-        
+        [HttpOptions]
+        public IActionResult GetKontaktOsobaOptions()
+        {
+            Response.Headers.Add("Allow", "GET");
+            return Ok();
+        }
+
 
     }
 }

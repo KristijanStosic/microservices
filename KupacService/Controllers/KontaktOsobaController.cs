@@ -2,9 +2,12 @@
 using KupacService.Data.Interfaces;
 using KupacService.Entities;
 using KupacService.Model.KontaktOsoba;
+using KupacService.ServiceCalls;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,24 +22,27 @@ namespace KupacService.Controllers
         private readonly IKontaktOsobaRepository _kontaktOsobaRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
+        private readonly ILoggerService _loggerService;
 
-        public KontaktOsobaController(IKontaktOsobaRepository kontaktOsobaRepository,LinkGenerator linkGenerator,IMapper mapper)
+        public KontaktOsobaController(IKontaktOsobaRepository kontaktOsobaRepository,LinkGenerator linkGenerator,IMapper mapper,ILoggerService loggerService)
         {
             this._kontaktOsobaRepository = kontaktOsobaRepository;
             this._linkGenerator = linkGenerator;
             this._mapper = mapper;
+            this._loggerService = loggerService;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<KontaktOsobaDto>>> GetKontaktOsoba(string ime, string prezime)
+        public async Task<ActionResult<List<KontaktOsobaDto>>> GetKontaktOsobe(string ime, string prezime)
         {
             var kontaktOsobe = await _kontaktOsobaRepository.GetKontaktOsoba(ime, prezime);
 
             if(kontaktOsobe == null || kontaktOsobe.Count == 0)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetKontaktOsobe", "Lista kontak osobi je prazna ili null.");
                 return NoContent();
             }
-
+            await _loggerService.Log(LogLevel.Information, "GetKontaktOsobe", "Lista kontakt osobi je uspešno vraćena.");
             return Ok(_mapper.Map<List<KontaktOsobaDto>>(kontaktOsobe));
         }
         [HttpGet("{kontaktOsobaId}")]
@@ -46,9 +52,10 @@ namespace KupacService.Controllers
 
             if(kontaktOsoba == null)
             {
+                await _loggerService.Log(LogLevel.Warning, "GetKontaktOsobaById", $"Kontakt osoba sa id-em {kontaktOsobaId} nije pronađena.");
                 return NotFound();
             }
-
+            await _loggerService.Log(LogLevel.Information, "GetKontaktOsobaById", $"Kontakt osoba sa id-em {kontaktOsobaId} je uspešno vraćena.");
             return Ok(_mapper.Map<KontaktOsobaDto>(kontaktOsoba));
         }
         [HttpPost]
@@ -61,11 +68,13 @@ namespace KupacService.Controllers
                 await _kontaktOsobaRepository.CreateKontaktOsoba(newKontaktOsoba);
                 await _kontaktOsobaRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "CreateJavnoNadmetanje", $"Kontakt osoba sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<KontaktOsobaDto>(kontaktOsoba))} je uspešno kreirana.");
                 string link = _linkGenerator.GetPathByAction("GetKontaktOsobaById", "KontaktOsoba", new { kontaktOsobaId = newKontaktOsoba.KontaktOsobaId });
                 return Created(link, kontaktOsoba);
             }
-            catch(Exception)
+            catch(Exception e)
             {
+                await _loggerService.Log(LogLevel.Error, "CreateKontaktOsoba", $"Greška prilikom unosa kontakt osobe sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<KontaktOsobaDto>(kontaktOsoba))}.", e);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
             }
         }
@@ -79,22 +88,24 @@ namespace KupacService.Controllers
 
                 if(oldKontaktOsoba == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateKontaktOsoba", $"Kontakt osoba  sa id-em {kontaktOsobaUpdate.KontaktOsobaId} nije pronađena.");
                     return NotFound();
                 }
-
+                var stareVrednosti = JsonConvert.SerializeObject(_mapper.Map<KontaktOsobaDto>(oldKontaktOsoba));
                 KontaktOsoba kontaktOsoba = _mapper.Map<KontaktOsoba>(kontaktOsobaUpdate);
 
                 _mapper.Map(kontaktOsoba, oldKontaktOsoba);
 
                 await _kontaktOsobaRepository.SaveChangesAsync();
 
+                await _loggerService.Log(LogLevel.Information, "UpdateKontaktOsoba", $"Kontakt osoba sa id-em {kontaktOsoba.KontaktOsobaId} je uspešno izmenjena. Stare vrednosti su: {stareVrednosti}");
                 return Ok(_mapper.Map<KontaktOsobaDto>(kontaktOsoba));
 
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
+                await _loggerService.Log(LogLevel.Error, "UpdateKontaktOsoba", $"Greška prilikom izmene kontakt osobe sa id-em {kontaktOsobaUpdate.KontaktOsobaId}.", e);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Update Error");
             }
         }
@@ -107,12 +118,13 @@ namespace KupacService.Controllers
 
                 if(kontaktOsoba == null)
                 {
+                    await _loggerService.Log(LogLevel.Warning, "DeleteKontaktOsoba", $"Kontakt osoba sa id-em {kontaktOsobaId} nije pronađena.");
                     return NotFound();
                 }
 
                 await _kontaktOsobaRepository.DeleteKontaktOsoba(kontaktOsobaId);
                 await _kontaktOsobaRepository.SaveChangesAsync();
-
+                await _loggerService.Log(LogLevel.Information, "DeleteJavnoNadmetanje", $"Kontakt osoba sa id-em {kontaktOsobaId} je uspešno obrisana. Obrisane vrednosti: {JsonConvert.SerializeObject(_mapper.Map<KontaktOsobaDto>(kontaktOsoba))}");
                 return Ok();
             }
             catch (Exception)
