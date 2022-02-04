@@ -13,7 +13,10 @@ namespace KupacService.Profiles
     {
         public PravnoLiceProfile()
         {
-            CreateMap<PravnoLice, PravnoLiceDto>();
+            CreateMap<PravnoLice, PravnoLiceDto>()
+                  .ForMember(
+                dest => dest.OvlascenaLica,
+                opt => opt.Ignore());
                 
 
             CreateMap<PravnoLiceCreateDto, PravnoLice>()

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using KupacService.Data.Interfaces;
 using KupacService.Entities;
+using KupacService.Helpers;
 using KupacService.Model.Kupac;
+using KupacService.Model.ManyToMany;
 using KupacService.Model.OtherServices;
 using KupacService.ServiceCalls;
 using Microsoft.AspNetCore.Mvc;
@@ -23,13 +25,16 @@ namespace KupacService.Controllers
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IServiceCall<AdresaDto> _adresaServiceCall;
+        private readonly IKupacCalls _kupacCalls;
 
-        public KupcaController(IKupacRepository kupacRepository,IMapper mapper, IConfiguration configuration, IServiceCall<AdresaDto> adresaServiceCall)
+        public KupcaController(IKupacRepository kupacRepository,IMapper mapper, IConfiguration configuration, IServiceCall<AdresaDto> adresaServiceCall,
+            IKupacCalls kupacCalls)
         {
             this._kupacRepository = kupacRepository;
             this._mapper = mapper;
             this._configuration = configuration;
             this._adresaServiceCall = adresaServiceCall;
+            this._kupacCalls = kupacCalls;
         }
 
         [HttpGet]
@@ -43,17 +48,12 @@ namespace KupacService.Controllers
 
 
             List<KupacDto> kupciDto = new List<KupacDto>();
-            string adresaurl = _configuration["Services:AdresaService"];
+        
             foreach (var kupac in kupci)
             {
                 KupacDto kupacDto = _mapper.Map<KupacDto>(kupac);
-
-                if (kupac.AdresaId != null)
-                {
-                    var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + kupac.AdresaId);
-                    if (adresaDto != null)
-                        kupacDto.Adresa = adresaDto;
-                }
+                var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(kupac);
+                _mapper.Map(otherServicesDto, kupacDto);
                 kupciDto.Add(kupacDto);
             }
 
@@ -72,15 +72,22 @@ namespace KupacService.Controllers
 
             KupacDto kupacDto = _mapper.Map<KupacDto>(kupac);
 
-            if (kupac.AdresaId != null)
-            {
-                string adresaurl = _configuration["Services:AdresaService"];
-                var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + kupac.AdresaId);
-                if (adresaDto != null)
-                    kupacDto.Adresa = adresaDto;
-            }
+            var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(kupac);
+            _mapper.Map(otherServicesDto, kupacDto);
 
             return Ok(kupacDto);
+        }
+        [HttpGet("ovlascenoLice/{ovlascenoLiceId}")]
+        public async Task<ActionResult<List<KupacOvlascenoLiceDto>>> GetKupacOvlascenoLiceByOvlascenoLiceId(Guid ovlascenoLiceId)
+        {
+            var kupci = await _kupacRepository.GetKupacOvlascenoLiceByOvlascenoLiceId(ovlascenoLiceId);
+
+            if(kupci == null || kupci.Count == 0)
+            {
+                return NoContent();
+            }
+
+            return Ok(_mapper.Map<List<KupacOvlascenoLiceDto>>(kupci));
         }
 
 

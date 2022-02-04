@@ -1,6 +1,8 @@
 ﻿using KupacService.Data.Interfaces;
 using KupacService.Entities;
 using KupacService.Entities.DataContext;
+using KupacService.Entities.ManyToMany;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +14,13 @@ namespace KupacService.Data
     {
         private readonly IPravnoLiceRepository _pravnoLiceRepository;
         private readonly IFizickoLiceRepository _fizickoLiceRepository;
+        private readonly KupacContext _context;
 
-        public KupacRepository(IPravnoLiceRepository pravnoLiceRepository,IFizickoLiceRepository fizickoLiceRepository)
+        public KupacRepository(IPravnoLiceRepository pravnoLiceRepository,IFizickoLiceRepository fizickoLiceRepository,KupacContext context)
         {
             this._pravnoLiceRepository = pravnoLiceRepository;
             this._fizickoLiceRepository = fizickoLiceRepository;
+            this._context = context;
         }
 
        
@@ -38,6 +42,11 @@ namespace KupacService.Data
             return kupci;
         }
 
+
+        public async Task<List<KupacOvlascenoLice>> GetKupacOvlascenoLiceByOvlascenoLiceId(Guid ovlascenoLiceId)
+        {
+            return await _context.kupacOvlascenoLice.Where(ko => ko.OvlascenoLiceId == ovlascenoLiceId).ToListAsync<KupacOvlascenoLice>();
+        }
         public async Task<Kupac> GetKupacById(Guid kupacId)
         {
             Kupac kupac = await _fizickoLiceRepository.GetFizickoLiceById(kupacId);

@@ -1,4 +1,5 @@
 ﻿using KupacService.Entities;
+using KupacService.Entities.ManyToMany;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace KupacService.Data.Interfaces
 
         Task<List<Kupac>> GetKupci();
         Task<Kupac> GetKupacById(Guid kupacId);
+        Task<List<KupacOvlascenoLice>> GetKupacOvlascenoLiceByOvlascenoLiceId(Guid ovlascenoLiceId);
 
 
     }

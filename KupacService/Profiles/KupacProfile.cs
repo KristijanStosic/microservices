@@ -21,9 +21,17 @@ namespace KupacService.Profiles
                 opt => opt.Ignore())
                 .ForMember(
                 dest => dest.Faks,
+                opt => opt.Ignore())
+                  .ForMember(
+                dest => dest.OvlascenaLica,
                 opt => opt.Ignore());
 
-            CreateMap<PravnoLice, KupacDto>();
+            CreateMap<PravnoLice, KupacDto>()
+                  .ForMember(
+                dest => dest.OvlascenaLica,
+                opt => opt.Ignore());
+
+            CreateMap<KupacOtherServicesDto, KupacDto>();
         }
     }
 }

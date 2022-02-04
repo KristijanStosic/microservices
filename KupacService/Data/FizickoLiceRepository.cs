@@ -86,10 +86,7 @@ namespace KupacService.Data
             return fizickoLice;
         }
 
-        public async Task<List<KupacOvlascenoLice>> GetKupacOvlascenoLiceByOvlascenoLiceId(Guid ovlascenoLiceId)
-        {
-            return await _kupacContext.kupacOvlascenoLice.Where(ko => ko.OvlascenoLiceId == ovlascenoLiceId).ToListAsync<KupacOvlascenoLice>();
-        }
+
 
         public async Task SaveChangesAsync()
         {
