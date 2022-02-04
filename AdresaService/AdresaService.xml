@@ -267,6 +267,11 @@
             Dto za adresu
             </summary>
         </member>
+        <member name="P:AdresaService.Model.Adresa.AdresaDto.AdresaId">
+            <summary>
+            Id adrese
+            </summary>
+        </member>
         <member name="P:AdresaService.Model.Adresa.AdresaDto.Ulica">
             <summary>
             Naziv ulice
@@ -330,6 +335,11 @@
         <member name="T:AdresaService.Model.Drzava.DrzavaDto">
             <summary>
             Dto za državu
+            </summary>
+        </member>
+        <member name="P:AdresaService.Model.Drzava.DrzavaDto.DrzavaId">
+            <summary>
+            ID države
             </summary>
         </member>
         <member name="P:AdresaService.Model.Drzava.DrzavaDto.NazivDrzave">

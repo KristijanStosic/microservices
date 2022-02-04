@@ -11,6 +11,10 @@ namespace AdresaService.Model.Drzava
     public class DrzavaDto
     {
         /// <summary>
+        /// ID države
+        /// </summary>
+        public Guid DrzavaId { get; set; }
+        /// <summary>
         /// Naziv Države
         /// </summary>
         public string NazivDrzave { get; set; }
