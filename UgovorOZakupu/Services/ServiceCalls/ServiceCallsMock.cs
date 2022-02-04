@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using UgovorOZakupu.Models.Dokument;
 using UgovorOZakupu.Models.JavnoNadmetanje;
+using UgovorOZakupu.Models.Kupac;
 using UgovorOZakupu.Models.UgovorOZakupu;
 
 namespace UgovorOZakupu.Services.ServiceCalls
@@ -23,6 +24,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
             
             ugovorDto.Dokument = GetDokument();
             ugovorDto.JavnoNadmetanje = GetJavnoNadmetanje();
+            ugovorDto.Kupac = GetKupac();
             
             return Task.FromResult(ugovorDto);
         }
@@ -76,7 +78,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
                     }
                 },
                 Adresa = "Bulevar Oslobodjenja 50, 21000 Novi Sad, Srbija",
-                Kupac = new KupacDto
+                JavnoNadmetanjeKupac = new JavnoNadmetanjeKupacDto
                 {
                     Kupac = "Milana Milanovic",
                     Email = "milana@gmail.com",
@@ -98,7 +100,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
                         Stanovanje = "Bulevar Cara Lazara 11, Novi Sad, Srbija"
                     }
                 },
-                Kupci = new List<KupacDto>
+                Kupci = new List<JavnoNadmetanjeKupacDto>
                 {
                     new()
                     {
@@ -143,6 +145,11 @@ namespace UgovorOZakupu.Services.ServiceCalls
                     }
                 }
             };
+        }
+
+        private KupacDto GetKupac()
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace UgovorOZakupu.Models.JavnoNadmetanje
 {
-    public class KupacDto
+    public class JavnoNadmetanjeKupacDto
     {
         public string Kupac { get; set; }
         public string Email { get; set; }

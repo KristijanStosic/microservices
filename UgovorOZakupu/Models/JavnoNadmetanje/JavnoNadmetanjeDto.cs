@@ -60,7 +60,7 @@ namespace UgovorOZakupu.Models.JavnoNadmetanje
         /// <summary>
         /// Najbolji kupac u javnom nadmetanju
         /// </summary>
-        public KupacDto Kupac { get; set; }
+        public JavnoNadmetanjeKupacDto JavnoNadmetanjeKupac { get; set; }
 
         //Many to many relationships with other microservices
         /// <summary>
@@ -70,7 +70,7 @@ namespace UgovorOZakupu.Models.JavnoNadmetanje
         /// <summary>
         /// Lista kupaca
         /// </summary>
-        public List<KupacDto> Kupci { get; set; }
+        public List<JavnoNadmetanjeKupacDto> Kupci { get; set; }
         /// <summary>
         /// Lista delova parcele
         /// </summary>

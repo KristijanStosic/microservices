@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UgovorOZakupu.Models.Dokument;
 using UgovorOZakupu.Models.JavnoNadmetanje;
+using UgovorOZakupu.Models.Kupac;
 
 namespace UgovorOZakupu.Models.UgovorOZakupu
 {
@@ -24,5 +25,7 @@ namespace UgovorOZakupu.Models.UgovorOZakupu
         public DokumentDto Dokument { get; set; }
         
         public JavnoNadmetanjeDto JavnoNadmetanje { get; set; }
+        
+        public KupacDto Kupac { get; set; }
     }
 }

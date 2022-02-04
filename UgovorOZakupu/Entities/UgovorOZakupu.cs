@@ -27,5 +27,7 @@ namespace UgovorOZakupu.Entities
         public Guid DokumentId { get; set; }
         
         public Guid JavnoNadmetanjeId { get; set; }
+        
+        public Guid KupacId { get; set; }
     }
 }
