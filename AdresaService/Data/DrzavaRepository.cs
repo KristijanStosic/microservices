@@ -13,12 +13,11 @@ namespace AdresaService.Data
     public class DrzavaRepository : IDrzavaRepository
     {
         private readonly AdresaContext _context;
-        private readonly IMapper _mapper;
 
-        public DrzavaRepository(AdresaContext context, IMapper mapper)
+
+        public DrzavaRepository(AdresaContext context)
         {
             this._context = context;
-            this._mapper = mapper;
         }
 
 
@@ -38,7 +37,7 @@ namespace AdresaService.Data
 
         public async Task<List<Drzava>> GetAllDrzava(string nazivDrzave = null)
         {
-            return await _context.Drzave.Where(d => (nazivDrzave == null || d.NazivDrzave == nazivDrzave)).ToListAsync<Drzava>();
+            return await _context.Drzave.Where(d => (nazivDrzave == null || d.NazivDrzave.Contains(nazivDrzave))).ToListAsync<Drzava>();
         }
 
         public async Task<Drzava> GetDrzavaById(Guid drzavaId)
