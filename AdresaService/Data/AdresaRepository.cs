@@ -13,12 +13,11 @@ namespace AdresaService.Data
     public class AdresaRepository : IAdresaRepository
     {
         private readonly AdresaContext _context;
-        private readonly IMapper _mapper;
+    
 
-        public AdresaRepository(AdresaContext context, IMapper mapper)
+        public AdresaRepository(AdresaContext context)
         {
             this._context = context;
-            this._mapper = mapper;
         }
 
         public async Task<Adresa> CreateAdresa(Adresa adresa)

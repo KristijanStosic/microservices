@@ -30,22 +30,22 @@ namespace AdresaService.Entities.DataContext
         /// <summary>
         /// Popunjava bazu sa nekim inicijalnim podacima
         /// </summary>
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.Entity<Drzava>()
+            modelBuilder.Entity<Drzava>()
                 .HasData(new
                 {
                     DrzavaId = Guid.Parse("f320743f-6c87-47ca-9f82-50191c1d31ac"),
                     NazivDrzave = "Srbija"
                 });
 
-            builder.Entity<Drzava>()
+            modelBuilder.Entity<Drzava>()
                .HasData(new
                {
                    DrzavaId = Guid.Parse("9ce21ce2-7809-4e28-ba74-fd2f1bc6466a"),
                    NazivDrzave = "Bosna i hercegovina"
                });
-            builder.Entity<Adresa>()
+            modelBuilder.Entity<Adresa>()
                 .HasData(new
                 {
                     AdresaId = Guid.Parse("1c989ee3-13b2-4d3b-abeb-c4e6343eace7"),
@@ -55,7 +55,7 @@ namespace AdresaService.Entities.DataContext
                     PostanskiBroj = "21000",
                     DrzavaId = Guid.Parse("f320743f-6c87-47ca-9f82-50191c1d31ac")
                 });
-            builder.Entity<Adresa>()
+            modelBuilder.Entity<Adresa>()
                 .HasData(new
                 {
                     AdresaId = Guid.Parse("37371ef6-4f25-48b3-9bf2-fe72a81f88d2"),
