@@ -77,18 +77,33 @@ namespace KupacService.Controllers
 
             return Ok(kupacDto);
         }
-        [HttpGet("ovlascenoLice/{ovlascenoLiceId}")]
-        public async Task<ActionResult<List<KupacOvlascenoLiceDto>>> GetKupacOvlascenoLiceByOvlascenoLiceId(Guid ovlascenoLiceId)
+        [HttpGet("uplata/{uplataId}")]
+        public async Task<ActionResult<List<KupacManyToManyDto>>> GetKupceByUplataId(Guid uplataId)
         {
-            var kupci = await _kupacRepository.GetKupacOvlascenoLiceByOvlascenoLiceId(ovlascenoLiceId);
+            var kupci = await _kupacRepository.GetKupceByUplataId(uplataId);
 
             if(kupci == null || kupci.Count == 0)
             {
                 return NoContent();
             }
 
-            return Ok(_mapper.Map<List<KupacOvlascenoLiceDto>>(kupci));
+            return Ok(_mapper.Map<List<KupacManyToManyDto>>(kupci));
         }
+
+        [HttpGet("ovlascenoLice/{ovlascenoLiceId}")]
+        public async Task<ActionResult<List<KupacManyToManyDto>>> GetKupceByOvlascenoLiceId(Guid ovlascenoLiceId)
+        {
+            var kupci = await _kupacRepository.GetKupceByOvlascenoLiceId(ovlascenoLiceId);
+
+            if(kupci == null || kupci.Count == 0)
+            {
+                return NoContent();
+            }
+
+            return Ok(_mapper.Map<List<KupacManyToManyDto>>(kupci));
+        }
+
+        
 
 
         

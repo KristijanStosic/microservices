@@ -27,6 +27,8 @@ namespace KupacService.Entities
         public Guid? AdresaId { get; set; }
         [NotMapped]
         public List<Guid> OvlascenaLica { get; set; }
+        [NotMapped]
+        public List<Guid> Uplate { get; set; }
 
     }
 }

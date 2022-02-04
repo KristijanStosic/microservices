@@ -12,7 +12,8 @@ namespace KupacService.Data.Interfaces
 
         Task<List<Kupac>> GetKupci();
         Task<Kupac> GetKupacById(Guid kupacId);
-        Task<List<KupacOvlascenoLice>> GetKupacOvlascenoLiceByOvlascenoLiceId(Guid ovlascenoLiceId);
+        Task<List<KupacOvlascenoLice>> GetKupceByOvlascenoLiceId(Guid ovlascenoLiceId);
+        Task<List<KupacUplata>> GetKupceByUplataId(Guid uplataId);
 
 
     }

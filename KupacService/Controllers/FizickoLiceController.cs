@@ -116,7 +116,7 @@ namespace KupacService.Controllers
                 }
                
                 _mapper.Map(fizickoLiceUpdate, oldFizickoLice);
-                await _fizickoLiceRepository.UpdateKupacOvlascenoLice(oldFizickoLice);
+                await _fizickoLiceRepository.UpdateManyToManyTables(oldFizickoLice);
                 
                 await _fizickoLiceRepository.SaveChangesAsync();
 

@@ -18,13 +18,11 @@ namespace KupacService.Profiles
             CreateMap<FizickoLice, FizickoLiceDto>()
                 .ForMember(
                 dest => dest.OvlascenaLica,
-                opt => opt.Ignore());
-            /*
-            CreateMap<FizickoLiceDto, FizickoLice>()
+                opt => opt.Ignore())
                 .ForMember(
-                dest => dest.Prioriteti,
+                dest => dest.Uplate,
                 opt => opt.Ignore());
-            */
+          
 
 
             CreateMap<KupacOtherServicesDto, FizickoLiceDto>();

@@ -11,6 +11,7 @@ namespace KupacService.Model.Kupac
     {
         public AdresaDto Adresa { get; set; }
         public List<OvlascenoLiceDto> OvlascenaLica { get;set;}
+        public List<UplataDto> Uplate { get; set; }
 
 
     }

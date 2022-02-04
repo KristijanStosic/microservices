@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace KupacService.Profiles
 {
-    public class KupacOvlascenoLiceProfile: Profile
+    public class KupacManyToManyProfile: Profile
     {
-        public KupacOvlascenoLiceProfile()
+        public KupacManyToManyProfile()
         {
-            CreateMap<KupacOvlascenoLice, KupacOvlascenoLiceDto>();
+            CreateMap<KupacOvlascenoLice, KupacManyToManyDto>();
+            CreateMap<KupacUplata, KupacManyToManyDto>();
         }
     }
 }

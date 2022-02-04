@@ -49,6 +49,7 @@ namespace KupacService
             services.AddScoped<ILoggerService,LoggerServiceMock>();
             services.AddScoped<IServiceCall<AdresaDto>,ServiceCallAdresaMock<AdresaDto>>();
             services.AddScoped<IServiceCall<OvlascenoLiceDto>, ServiceCallOvlascenoLiceMock<OvlascenoLiceDto>>();
+            services.AddScoped<IServiceCall<UplataDto>, ServiceCallUplataMock<UplataDto>>();
             services.AddScoped<IKupacCalls, KupacCalls>();
 
 

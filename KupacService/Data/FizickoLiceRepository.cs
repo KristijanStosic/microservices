@@ -23,28 +23,47 @@ namespace KupacService.Data
 
             await _kupacContext.FizickaLica.AddAsync(fizickoLice);
 
-            foreach(var ovlascenoLiceId in fizickoLice.OvlascenaLica)
+            var kupacOvlascenaLicaList = new List<KupacOvlascenoLice>();
+            foreach (var ovlascenoLiceId in fizickoLice.OvlascenaLica)
             {
-                var kupac_ovlascenoLice = new KupacOvlascenoLice()
-                { 
+                var kupacOvlascenoLice = new KupacOvlascenoLice()
+                {
                     KupacId = fizickoLice.KupacId,
                     OvlascenoLiceId = ovlascenoLiceId
-                
                 };
-                _kupacContext.kupacOvlascenoLice.Add(kupac_ovlascenoLice);
+                kupacOvlascenaLicaList.Add(kupacOvlascenoLice);
+
+
             }
+            await _kupacContext.kupacOvlascenoLice.AddRangeAsync(kupacOvlascenaLicaList);
+
+
+            var kupacUplataList = new List<KupacUplata>();
+            foreach (var uplataId in fizickoLice.Uplate)
+            {
+                var kupacUplata = new KupacUplata()
+                {
+                    KupacId = fizickoLice.KupacId,
+                    UplataId = uplataId
+                };
+                kupacUplataList.Add(kupacUplata);
+            }
+
+            await _kupacContext.kupacUplata.AddRangeAsync(kupacUplataList);
+
 
 
             return fizickoLice;
         }
 
-        public async Task UpdateKupacOvlascenoLice(FizickoLice fizickoLice)
+        public async Task UpdateManyToManyTables(FizickoLice fizickoLice)
         {
 
             var oldOvlascenaLica = await _kupacContext.kupacOvlascenoLice.Where(ko => ko.KupacId == fizickoLice.KupacId).ToListAsync();
             _kupacContext.kupacOvlascenoLice.RemoveRange(oldOvlascenaLica);
 
             List<Guid> ovlascenaLica = fizickoLice.OvlascenaLica;
+            var kupacOvlascenaLicaList = new List<KupacOvlascenoLice>();
             foreach(var ovlascenoLiceId in ovlascenaLica)
             {
                 var kupacOvlascenoLice = new KupacOvlascenoLice()
@@ -52,8 +71,29 @@ namespace KupacService.Data
                     KupacId = fizickoLice.KupacId,
                     OvlascenoLiceId = ovlascenoLiceId
                 };
-                await _kupacContext.kupacOvlascenoLice.AddAsync(kupacOvlascenoLice);
+                kupacOvlascenaLicaList.Add(kupacOvlascenoLice);
+
+              
             }
+            await _kupacContext.kupacOvlascenoLice.AddRangeAsync(kupacOvlascenaLicaList);
+
+            var oldUplate = await _kupacContext.kupacUplata.Where(ku => ku.KupacId == fizickoLice.KupacId).ToListAsync();
+            _kupacContext.kupacUplata.RemoveRange(oldUplate);
+
+            List<Guid> uplate = fizickoLice.Uplate;
+            var kupacUplataList = new List<KupacUplata>();
+            foreach(var uplataId in uplate)
+            {
+                var kupacUplata = new KupacUplata() 
+                {
+                    KupacId = fizickoLice.KupacId,
+                    UplataId = uplataId
+                };
+                kupacUplataList.Add(kupacUplata);
+            }
+
+            await _kupacContext.kupacUplata.AddRangeAsync(kupacUplataList);
+
 
         }
 
@@ -73,6 +113,7 @@ namespace KupacService.Data
             foreach(var fizickoLice in fizickaLica)
             {
                 fizickoLice.OvlascenaLica = await _kupacContext.kupacOvlascenoLice.Where(ko => ko.KupacId == fizickoLice.KupacId).Select(o => o.OvlascenoLiceId).ToListAsync();
+                fizickoLice.Uplate = await _kupacContext.kupacUplata.Where(ku => ku.KupacId == fizickoLice.KupacId).Select(u => u.UplataId).ToListAsync();
             }
 
             return fizickaLica;
@@ -83,6 +124,7 @@ namespace KupacService.Data
             var fizickoLice = await _kupacContext.FizickaLica.Include(p => p.Prioriteti).FirstOrDefaultAsync(f => f.KupacId == kupacId);
 
             fizickoLice.OvlascenaLica = await _kupacContext.kupacOvlascenoLice.Where(ko => ko.KupacId == fizickoLice.KupacId).Select(o => o.OvlascenoLiceId).ToListAsync();
+            fizickoLice.Uplate = await _kupacContext.kupacUplata.Where(ku => ku.KupacId == fizickoLice.KupacId).Select(u => u.UplataId).ToListAsync();
             return fizickoLice;
         }
 

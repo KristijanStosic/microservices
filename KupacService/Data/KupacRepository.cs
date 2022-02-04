@@ -43,10 +43,17 @@ namespace KupacService.Data
         }
 
 
-        public async Task<List<KupacOvlascenoLice>> GetKupacOvlascenoLiceByOvlascenoLiceId(Guid ovlascenoLiceId)
+        public async Task<List<KupacOvlascenoLice>> GetKupceByOvlascenoLiceId(Guid ovlascenoLiceId)
         {
             return await _context.kupacOvlascenoLice.Where(ko => ko.OvlascenoLiceId == ovlascenoLiceId).ToListAsync<KupacOvlascenoLice>();
         }
+
+        public async Task<List<KupacUplata>> GetKupceByUplataId(Guid uplataId)
+        {
+            return await _context.kupacUplata.Where(ku => ku.UplataId == uplataId).ToListAsync();
+
+        }
+
         public async Task<Kupac> GetKupacById(Guid kupacId)
         {
             Kupac kupac = await _fizickoLiceRepository.GetFizickoLiceById(kupacId);

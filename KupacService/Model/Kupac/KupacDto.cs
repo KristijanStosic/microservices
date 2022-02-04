@@ -28,5 +28,6 @@ namespace KupacService.Model.Kupac
         public List<PrioritetDto> Prioriteti { get; set; }
         public AdresaDto Adresa { get; set; }
         public List<OvlascenoLiceDto> OvlascenaLica { get; set; }
+        public List<UplataDto> Uplate { get; set; }
     }
 }

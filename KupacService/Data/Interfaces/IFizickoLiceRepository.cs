@@ -14,7 +14,7 @@ namespace KupacService.Data.Interfaces
         Task<FizickoLice> CreateFizickoLice(FizickoLice fizickoLice);
         Task DeleteFizickoLice(Guid kupacId);
         Task SaveChangesAsync();
-        Task UpdateKupacOvlascenoLice(FizickoLice fizickoLice);
+        Task UpdateManyToManyTables(FizickoLice fizickoLice);
 
     }
 }

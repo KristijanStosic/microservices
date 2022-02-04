@@ -114,7 +114,7 @@ namespace KupacService.Controllers
               
 
                 _mapper.Map(pravnoLiceUpdate, oldPravnoLice);
-                await _pravnoLiceRepository.UpdateKupacOvlascenoLice(oldPravnoLice);
+                await _pravnoLiceRepository.UpdateManyToManyTables(oldPravnoLice);
 
                
                 oldPravnoLice.KontaktOsoba = kontaktOsoba;

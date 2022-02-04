@@ -16,6 +16,9 @@ namespace KupacService.Profiles
             CreateMap<PravnoLice, PravnoLiceDto>()
                   .ForMember(
                 dest => dest.OvlascenaLica,
+                opt => opt.Ignore())
+                  .ForMember(
+                dest => dest.Uplate,
                 opt => opt.Ignore());
                 
 

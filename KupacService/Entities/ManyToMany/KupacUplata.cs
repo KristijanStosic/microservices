@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace KupacService.Model.ManyToMany
+namespace KupacService.Entities.ManyToMany
 {
-    public class KupacOvlascenoLiceDto
+    public class KupacUplata
     {
         public Guid KupacId { get; set; }
+        public Kupac Kupac { get; set; }
+        public Guid UplataId { get; set; }
     }
 }

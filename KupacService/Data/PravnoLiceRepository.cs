@@ -23,27 +23,45 @@ namespace KupacService.Data
         {
             await _context.AddAsync<PravnoLice>(pravnoLice);
 
+            var kupacOvlascenaLicaList = new List<KupacOvlascenoLice>();
             foreach (var ovlascenoLiceId in pravnoLice.OvlascenaLica)
             {
-                var kupac_ovlascenoLice = new KupacOvlascenoLice()
+                var kupacOvlascenoLice = new KupacOvlascenoLice()
                 {
                     KupacId = pravnoLice.KupacId,
                     OvlascenoLiceId = ovlascenoLiceId
-
                 };
-                _context.kupacOvlascenoLice.Add(kupac_ovlascenoLice);
+                kupacOvlascenaLicaList.Add(kupacOvlascenoLice);
+
+
             }
+            await _context.kupacOvlascenoLice.AddRangeAsync(kupacOvlascenaLicaList);
+
+            var kupacUplataList = new List<KupacUplata>();
+            foreach (var uplataId in pravnoLice.Uplate)
+            {
+                var kupacUplata = new KupacUplata()
+                {
+                    KupacId = pravnoLice.KupacId,
+                    UplataId = uplataId
+                };
+                kupacUplataList.Add(kupacUplata);
+            }
+
+            await _context.kupacUplata.AddRangeAsync(kupacUplataList);
+
 
             return pravnoLice;        
         }
 
-        public async Task UpdateKupacOvlascenoLice(PravnoLice pravnoLice)
+        public async Task UpdateManyToManyTables(PravnoLice pravnoLice)
         {
 
             var oldOvlascenaLica = await _context.kupacOvlascenoLice.Where(ko => ko.KupacId == pravnoLice.KupacId).ToListAsync();
             _context.kupacOvlascenoLice.RemoveRange(oldOvlascenaLica);
 
             List<Guid> ovlascenaLica = pravnoLice.OvlascenaLica;
+            var kupacOvlascenaLicaList = new List<KupacOvlascenoLice>();
             foreach (var ovlascenoLiceId in ovlascenaLica)
             {
                 var kupacOvlascenoLice = new KupacOvlascenoLice()
@@ -51,8 +69,30 @@ namespace KupacService.Data
                     KupacId = pravnoLice.KupacId,
                     OvlascenoLiceId = ovlascenoLiceId
                 };
-                await _context.kupacOvlascenoLice.AddAsync(kupacOvlascenoLice);
+                kupacOvlascenaLicaList.Add(kupacOvlascenoLice);
+
+
             }
+            await _context.kupacOvlascenoLice.AddRangeAsync(kupacOvlascenaLicaList);
+
+
+            var oldUplate = await _context.kupacUplata.Where(ku => ku.KupacId == pravnoLice.KupacId).ToListAsync();
+            _context.kupacUplata.RemoveRange(oldUplate);
+
+            List<Guid> uplate = pravnoLice.Uplate;
+            var kupacUplataList = new List<KupacUplata>();
+            foreach (var uplataId in uplate)
+            {
+                var kupacUplata = new KupacUplata()
+                {
+                    KupacId = pravnoLice.KupacId,
+                    UplataId = uplataId
+                };
+                kupacUplataList.Add(kupacUplata);
+            }
+
+            await _context.kupacUplata.AddRangeAsync(kupacUplataList);
+
 
         }
 
@@ -70,6 +110,8 @@ namespace KupacService.Data
             foreach (var pravnoLice in pravnaLica)
             {
                 pravnoLice.OvlascenaLica = await _context.kupacOvlascenoLice.Where(ko => ko.KupacId == pravnoLice.KupacId).Select(o => o.OvlascenoLiceId).ToListAsync();
+                pravnoLice.Uplate = await _context.kupacUplata.Where(ku => ku.KupacId == pravnoLice.KupacId).Select(u => u.UplataId).ToListAsync();
+
             }
 
             return pravnaLica;
@@ -80,7 +122,7 @@ namespace KupacService.Data
             var pravnoLice = await _context.PravnaLica.Include(p => p.Prioriteti).Include(ko => ko.KontaktOsoba).FirstOrDefaultAsync<PravnoLice>(p => p.KupacId == kupacId);
 
             pravnoLice.OvlascenaLica = await _context.kupacOvlascenoLice.Where(ko => ko.KupacId == pravnoLice.KupacId).Select(o => o.OvlascenoLiceId).ToListAsync();
-
+            pravnoLice.Uplate = await _context.kupacUplata.Where(ku => ku.KupacId == pravnoLice.KupacId).Select(u => u.UplataId).ToListAsync();
             return pravnoLice;
         }
 

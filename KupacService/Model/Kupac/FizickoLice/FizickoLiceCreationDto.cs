@@ -23,5 +23,6 @@ namespace KupacService.Model.Kupac.FizickoLice
         public List<Guid> Prioriteti { get; set; }
         public Guid AdresaId { get; set; }
         public List<Guid> OvlascenaLica { get; set; }
+        public List<Guid> Uplate { get; set; }
     }
 }
