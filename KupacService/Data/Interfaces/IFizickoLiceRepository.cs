@@ -1,4 +1,5 @@
 ﻿using KupacService.Entities;
+using KupacService.Entities.ManyToMany;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace KupacService.Data.Interfaces
         Task<FizickoLice> CreateFizickoLice(FizickoLice fizickoLice);
         Task DeleteFizickoLice(Guid kupacId);
         Task SaveChangesAsync();
+        Task UpdateKupacOvlascenoLice(FizickoLice fizickoLice);
+        Task<List<KupacOvlascenoLice>> GetKupacOvlascenoLiceByOvlascenoLiceId(Guid ovlascenoLiceId);
     }
 }

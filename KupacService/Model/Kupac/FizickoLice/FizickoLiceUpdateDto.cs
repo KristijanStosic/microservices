@@ -24,5 +24,6 @@ namespace KupacService.Model.Kupac.FizickoLice
         public string BrojRacuna { get; set; }
         public List<Guid> Prioriteti { get; set; }
         public Guid AdresaId { get; set; }
+        public List<Guid> OvlascenaLica { get; set; }
     }
 }

@@ -26,7 +26,8 @@ namespace KupacService.Model.Kupac.FizickoLice
         public string BrojRacuna { get; set; }
         public List<PrioritetDto> Prioriteti { get; set; }
         public AdresaDto Adresa { get; set; }
-       
+        public List<OvlascenoLiceDto> OvlascenaLica { get; set; }
+
 
     }
 }

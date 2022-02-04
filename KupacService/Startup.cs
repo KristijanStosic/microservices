@@ -1,6 +1,7 @@
 using KupacService.Data;
 using KupacService.Data.Interfaces;
 using KupacService.Entities.DataContext;
+using KupacService.Helpers;
 using KupacService.Model.OtherServices;
 using KupacService.ServiceCalls;
 using KupacService.ServiceCalls.Mocks;
@@ -47,6 +48,8 @@ namespace KupacService
             services.AddScoped<IKupacRepository, KupacRepository>();
             services.AddScoped<ILoggerService,LoggerServiceMock>();
             services.AddScoped<IServiceCall<AdresaDto>,ServiceCallAdresaMock<AdresaDto>>();
+            services.AddScoped<IServiceCall<OvlascenoLiceDto>, ServiceCallOvlascenoLiceMock<OvlascenoLiceDto>>();
+            services.AddScoped<IKupacCalls, KupacCalls>();
 
 
             services.AddSwaggerGen(c =>

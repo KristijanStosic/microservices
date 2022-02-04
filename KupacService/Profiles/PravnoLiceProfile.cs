@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using KupacService.Entities;
+using KupacService.Model.Kupac;
 using KupacService.Model.Kupac.PravnoLice;
 using System;
 using System.Collections.Generic;
@@ -30,6 +31,7 @@ namespace KupacService.Profiles
                 opt => opt.MapFrom(src => src.Prioriteti)
                 );
 
+            CreateMap<KupacOtherServicesDto, PravnoLiceDto>();
         }
     }
 }

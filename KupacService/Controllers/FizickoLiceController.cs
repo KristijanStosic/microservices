@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using KupacService.Data.Interfaces;
 using KupacService.Entities;
+using KupacService.Helpers;
 using KupacService.Model.Kupac.FizickoLice;
 using KupacService.Model.OtherServices;
 using KupacService.ServiceCalls;
@@ -24,15 +25,17 @@ namespace KupacService.Controllers
         private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
         private readonly IServiceCall<AdresaDto> _adresaServiceCall;
+        private readonly IKupacCalls _kupacCalls;
 
         public FizickoLiceController(IFizickoLiceRepository fizickoLiceRepository,LinkGenerator linkGenerator,IMapper mapper,
-            IConfiguration configuration,IServiceCall<AdresaDto> adresaServiceCall)
+            IConfiguration configuration,IServiceCall<AdresaDto> adresaServiceCall,IKupacCalls kupacCalls)
         {
             this._fizickoLiceRepository = fizickoLiceRepository;
             this._linkGenerator = linkGenerator;
             this._mapper = mapper;
             this._configuration = configuration;
             this._adresaServiceCall = adresaServiceCall;
+            this._kupacCalls = kupacCalls;
         }
 
         [HttpGet]
@@ -47,17 +50,12 @@ namespace KupacService.Controllers
 
 
             List<FizickoLiceDto> fizickaLicaDto = new List<FizickoLiceDto>();
-            string adresaurl = _configuration["Services:AdresaService"];
+       
             foreach (var fizickoLice in fizickaLica)
             {
                 FizickoLiceDto fizickoLiceDto = _mapper.Map<FizickoLiceDto>(fizickoLice);
-
-                if(fizickoLice.AdresaId != null)
-                {
-                    var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + fizickoLice.AdresaId);
-                    if (adresaDto != null)
-                        fizickoLiceDto.Adresa = adresaDto;
-                }
+                var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(fizickoLice);
+                _mapper.Map(otherServicesDto, fizickoLiceDto);
                 fizickaLicaDto.Add(fizickoLiceDto);
             }
 
@@ -75,19 +73,15 @@ namespace KupacService.Controllers
             }
 
             FizickoLiceDto fizickoLiceDto = _mapper.Map<FizickoLiceDto>(fizickoLice);
-          
-            if (fizickoLice.AdresaId != null)
-            {
-                string adresaurl = _configuration["Services:AdresaService"];
-                var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaurl + "adresa/" + fizickoLice.AdresaId);
-                if (adresaDto != null)
-                    fizickoLiceDto.Adresa = adresaDto;
-            }
-           
+
+            var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(fizickoLice);
+            _mapper.Map(otherServicesDto, fizickoLiceDto);
 
             return Ok(fizickoLiceDto);
 
         }
+
+
         [HttpPost]
         public async Task<ActionResult<FizickoLiceConfirmDto>> CreateFizickoLice([FromBody]FizickoLiceCreationDto fizickoLice)
         {
@@ -122,6 +116,7 @@ namespace KupacService.Controllers
                 }
                
                 _mapper.Map(fizickoLiceUpdate, oldFizickoLice);
+                await _fizickoLiceRepository.UpdateKupacOvlascenoLice(oldFizickoLice);
                 
                 await _fizickoLiceRepository.SaveChangesAsync();
 

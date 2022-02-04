@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using KupacService.Entities;
+using KupacService.Model.Kupac;
 using KupacService.Model.Kupac.FizickoLice;
 using System;
 using System.Collections.Generic;
@@ -14,12 +15,19 @@ namespace KupacService.Profiles
         public FizickoLiceProfile()
         {
 
-            CreateMap<FizickoLice, FizickoLiceDto>();
-
+            CreateMap<FizickoLice, FizickoLiceDto>()
+                .ForMember(
+                dest => dest.OvlascenaLica,
+                opt => opt.Ignore());
+            /*
             CreateMap<FizickoLiceDto, FizickoLice>()
                 .ForMember(
                 dest => dest.Prioriteti,
                 opt => opt.Ignore());
+            */
+
+
+            CreateMap<KupacOtherServicesDto, FizickoLiceDto>();
 
             CreateMap<FizickoLice, FizickoLiceConfirmDto>();
 

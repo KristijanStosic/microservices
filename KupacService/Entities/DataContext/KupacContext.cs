@@ -1,4 +1,5 @@
 ﻿
+using KupacService.Entities.ManyToMany;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -27,14 +28,26 @@ namespace KupacService.Entities.DataContext
         public DbSet<Kupac> Kupci { get; set; }
         public DbSet<FizickoLice> FizickaLica { get; set; }
         public DbSet<PravnoLice> PravnaLica { get; set; }
+        public DbSet<KupacOvlascenoLice> kupacOvlascenoLice { get; set; }
 
 
 
         /// <summary>
         /// Popunjava bazu sa nekim inicijalnim podacima
         /// </summary>
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
+            modelBuilder.Entity<KupacOvlascenoLice>()
+                .HasOne(k => k.Kupac)
+                .WithMany()
+                .HasForeignKey("KupacId")
+                .OnDelete(DeleteBehavior.Cascade)
+                .IsRequired();
+
+            modelBuilder.Entity<KupacOvlascenoLice>()
+                .HasKey(ko => new { ko.KupacId, ko.OvlascenoLiceId });
+
             List<Prioritet> prioriteti = new List<Prioritet>
             {
                 new Prioritet()
@@ -49,11 +62,11 @@ namespace KupacService.Entities.DataContext
                 }
             };
 
-            builder.Entity<Prioritet>()
+            modelBuilder.Entity<Prioritet>()
                 .HasData(prioriteti);
            
 
-            builder.Entity<KontaktOsoba>()
+            modelBuilder.Entity<KontaktOsoba>()
                 .HasData(new
                 {
                     KontaktOsobaId = Guid.Parse("244fb7c4-aab8-4ec4-8960-e48e017bad37"),
@@ -64,7 +77,7 @@ namespace KupacService.Entities.DataContext
 
                 });
 
-            builder.Entity<KontaktOsoba>()
+            modelBuilder.Entity<KontaktOsoba>()
                .HasData(new
                {
                    KontaktOsobaId = Guid.Parse("da2197a4-891f-4a40-a1f2-313962701627"),
@@ -75,7 +88,7 @@ namespace KupacService.Entities.DataContext
 
                });
             
-            builder.Entity<FizickoLice>()
+            modelBuilder.Entity<FizickoLice>()
                 .HasData(new FizickoLice
                 {
                     KupacId = Guid.Parse("febd1c29-90e7-40c2-97f3-1e88495fe98d"),
@@ -91,7 +104,7 @@ namespace KupacService.Entities.DataContext
                     AdresaId = Guid.Parse("1C989EE3-13B2-4D3B-ABEB-C4E6343EACE7")
                 });
             
-            builder.Entity<PravnoLice>()
+            modelBuilder.Entity<PravnoLice>()
                 .HasData(new
                 {
                     KupacId = Guid.Parse("4ba95c01-aa89-4d36-a467-c72b0fcc5b80"),
@@ -110,7 +123,7 @@ namespace KupacService.Entities.DataContext
                 });
 
 
-            builder.Entity<Kupac>()
+            modelBuilder.Entity<Kupac>()
                .HasMany(k => k.Prioriteti)
                .WithMany(p => p.Kupci)
                .UsingEntity<Dictionary<string, object>>(
@@ -128,7 +141,22 @@ namespace KupacService.Entities.DataContext
 
 
 
-
+            modelBuilder.Entity<KupacOvlascenoLice>()
+                .HasData(
+                new { 
+                    KupacId =Guid.Parse("febd1c29-90e7-40c2-97f3-1e88495fe98d"),
+                    OvlascenoLiceId = Guid.Parse("5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5")
+                },
+                new
+                {
+                    KupacId = Guid.Parse("4ba95c01-aa89-4d36-a467-c72b0fcc5b80"),
+                    OvlascenoLiceId = Guid.Parse("5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5")
+                },
+                new
+                {
+                    KupacId = Guid.Parse("4ba95c01-aa89-4d36-a467-c72b0fcc5b80"),
+                    OvlascenoLiceId = Guid.Parse("5E1BFFFC-1AEE-4662-BC04-341C35B9EBDC")
+                });
 
 
 
