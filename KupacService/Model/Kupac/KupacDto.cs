@@ -11,6 +11,7 @@ namespace KupacService.Model.Kupac
 {
     public class KupacDto
     {
+        public Guid KupacId { get; set; }
         public string Naziv { get; set; }
         public string Faks { get; set; }
         public double OstvarenaPovrsina { get; set; }

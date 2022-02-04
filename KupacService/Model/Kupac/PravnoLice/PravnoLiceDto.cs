@@ -11,6 +11,7 @@ namespace KupacService.Model.Kupac.PravnoLice
 {
     public class PravnoLiceDto
     {
+        public Guid KupacId { get; set; }
         public string Naziv { get; set; }
         public string MaticniBroj { get; set; }
         public string Faks { get; set; }

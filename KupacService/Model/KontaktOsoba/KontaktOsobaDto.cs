@@ -7,7 +7,7 @@ namespace KupacService.Model.KontaktOsoba
 {
     public class KontaktOsobaDto
     {
-        
+        public Guid KontaktOsobaId { get; set; }
         public string Ime { get; set; }
         public string Prezime { get; set; }
         public string Telefon { get; set; }

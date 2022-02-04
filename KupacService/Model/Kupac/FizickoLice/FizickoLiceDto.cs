@@ -11,7 +11,7 @@ namespace KupacService.Model.Kupac.FizickoLice
 {
     public class FizickoLiceDto
     {
-
+        public Guid KupacId { get; set; }
         public string Ime { get; set; }
         public string Prezime { get; set; }
         public string JMBG { get; set; }
