@@ -1,7 +1,8 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using LoggerService.Data;
 using Microsoft.AspNetCore.Builder;
@@ -32,9 +33,25 @@ namespace LoggerService
         {
             services.AddSingleton<ILoggerManager, LoggerManager>();
             services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(setup =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "LoggerService", Version = "v1" });
+                setup.SwaggerDoc("v1",
+                    new OpenApiInfo()
+                    {
+                        Title = "Logger API",
+                        Version = "v1",
+                        Description = "API logger omogućava unos log poruke u txt fajl.",
+                        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                        {
+                            Name = "Stefan Bulaja",
+                            Email = "stefan.bulaja99@uns.ac.rs",
+                            Url = new Uri("https://github.com/stefanbulaja")
+                        }
+                    });
+                //Korisitmo refleksiju za dobijanje XML fajla sa komentarima
+                var xmlComments = $"{ Assembly.GetExecutingAssembly().GetName().Name }.xml";
+                var xmlCommentsPath = Path.Combine(AppContext.BaseDirectory, xmlComments);
+                setup.IncludeXmlComments(xmlCommentsPath);
             });
         }
 
@@ -44,11 +61,17 @@ namespace LoggerService
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "LoggerService v1"));
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(setupAction =>
+            {
+                setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Logger API");
+                setupAction.RoutePrefix = "";
+            });
 
             app.UseRouting();
 

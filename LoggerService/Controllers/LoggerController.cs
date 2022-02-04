@@ -21,7 +21,11 @@ namespace LoggerService.Controllers
             _logger = logger;
         }
 
-
+        /// <summary>
+        /// Kreira se poruka koja se upisuje nakon  konkatenacije servisa sa kojeg dolazi poruka, metoda koja je upisana i poruka o metodi
+        /// </summary>
+        /// <param name="logModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
