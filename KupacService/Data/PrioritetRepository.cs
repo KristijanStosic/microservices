@@ -13,12 +13,10 @@ namespace KupacService.Data
     public class PrioritetRepository : IPrioritetRepository
     {
         private readonly KupacContext _context;
-        private readonly IMapper _mapper;
 
-        public PrioritetRepository(KupacContext context, IMapper mapper)
+        public PrioritetRepository(KupacContext context)
         {
             this._context = context;
-            this._mapper = mapper;
         }
         public async Task<Prioritet> CreatePrioritet(Prioritet prioritet)
         {

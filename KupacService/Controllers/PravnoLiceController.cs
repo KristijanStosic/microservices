@@ -25,18 +25,15 @@ namespace KupacService.Controllers
         private readonly IPravnoLiceRepository _pravnoLiceRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
-
         private readonly IKupacCalls _kupacCalls;
         private readonly ILoggerService _loggerService;
 
         public PravnoLiceController(IPravnoLiceRepository pravnoLiceRepository,LinkGenerator linkGenerator,IMapper mapper,
-            IConfiguration configuration,IKupacCalls kupacCalls,ILoggerService loggerService) 
+            IKupacCalls kupacCalls,ILoggerService loggerService) 
         {
             this._pravnoLiceRepository = pravnoLiceRepository;
             this._linkGenerator = linkGenerator;
             this._mapper = mapper;
-            this._configuration = configuration;
             this._kupacCalls = kupacCalls;
             this._loggerService = loggerService;
         }
@@ -113,12 +110,13 @@ namespace KupacService.Controllers
             try
             {
                 var oldPravnoLice = await _pravnoLiceRepository.GetPravnoLiceById(pravnoLiceUpdate.KupacId);
-                KontaktOsoba kontaktOsoba = oldPravnoLice.KontaktOsoba;
+                
                 if (oldPravnoLice == null)
                 {
                     await _loggerService.Log(LogLevel.Warning, "UpdatePravnoLice", $"Pravno lice  sa id-em {pravnoLiceUpdate.KupacId} nije pronađeno.");
                     return NotFound();
                 }
+                KontaktOsoba kontaktOsoba = oldPravnoLice.KontaktOsoba;
                 var stareVrednosti = JsonConvert.SerializeObject(_mapper.Map<PravnoLiceDto>(oldPravnoLice));
 
                 _mapper.Map(pravnoLiceUpdate, oldPravnoLice);
@@ -160,6 +158,7 @@ namespace KupacService.Controllers
 
             }catch(Exception e)
             {
+                await _loggerService.Log(LogLevel.Error, "DeletePravnoLice", $"Greška prilikom brisanja pravnog lica sa id-em {kupacId}.", e);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Delete Error");
             }
         }

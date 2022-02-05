@@ -16,16 +16,14 @@ namespace KupacService.Helpers
         private readonly IServiceCall<AdresaDto> _adresaServiceCall;
         private readonly IServiceCall<OvlascenoLiceDto> _ovlascenoLiceServiceCall;
         private readonly IServiceCall<UplataDto> _uplataServiceCall;
-        private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
 
         public KupacCalls(IServiceCall<AdresaDto> adresaServiceCall,IServiceCall<OvlascenoLiceDto> ovlascenoLiceServiceCall,
-            IServiceCall<UplataDto> uplataServiceCall,IMapper mapper,IConfiguration configuration)
+            IServiceCall<UplataDto> uplataServiceCall,IConfiguration configuration)
         {
             this._adresaServiceCall = adresaServiceCall;
             this._ovlascenoLiceServiceCall = ovlascenoLiceServiceCall;
             this._uplataServiceCall = uplataServiceCall;
-            this._mapper = mapper;
             this._configuration = configuration;
         }
         public async Task<KupacOtherServicesDto> GetKupacDtoWithOtherServicesInfo(Kupac kupac)

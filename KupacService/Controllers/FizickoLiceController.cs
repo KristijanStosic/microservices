@@ -25,19 +25,15 @@ namespace KupacService.Controllers
         private readonly IFizickoLiceRepository _fizickoLiceRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
-        private readonly IServiceCall<AdresaDto> _adresaServiceCall;
         private readonly IKupacCalls _kupacCalls;
         private readonly ILoggerService _loggerService;
 
-        public FizickoLiceController(IFizickoLiceRepository fizickoLiceRepository,LinkGenerator linkGenerator,IMapper mapper,
-            IConfiguration configuration,IServiceCall<AdresaDto> adresaServiceCall,IKupacCalls kupacCalls,ILoggerService loggerService)
+        public FizickoLiceController(IFizickoLiceRepository fizickoLiceRepository,LinkGenerator linkGenerator,IMapper mapper
+            ,IKupacCalls kupacCalls,ILoggerService loggerService)
         {
             this._fizickoLiceRepository = fizickoLiceRepository;
             this._linkGenerator = linkGenerator;
             this._mapper = mapper;
-            this._configuration = configuration;
-            this._adresaServiceCall = adresaServiceCall;
             this._kupacCalls = kupacCalls;
             this._loggerService = loggerService;
         }
