@@ -1,0 +1,401 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44201
+        }
+      ],
+      "UpstreamPathTemplate": "/licitacija/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "licitacija"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44202
+        }
+      ],
+      "UpstreamPathTemplate": "/parcela/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "parcela"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44203
+        }
+      ],
+      "UpstreamPathTemplate": "/adresa/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "adresa"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44204
+        }
+      ],
+      "UpstreamPathTemplate": "/kupac/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "kupac"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44205
+        }
+      ],
+      "UpstreamPathTemplate": "/javnoNadmetanje/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "javnoNadmetanje"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44206
+        }
+      ],
+      "UpstreamPathTemplate": "/ovlascenoLice/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "ovlascenoLice"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44207
+        }
+      ],
+      "UpstreamPathTemplate": "/uplata/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "uplata"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44208
+        }
+      ],
+      "UpstreamPathTemplate": "/zalba/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "zalba"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44209
+        }
+      ],
+      "UpstreamPathTemplate": "/prijava/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "prijava"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44210
+        }
+      ],
+      "UpstreamPathTemplate": "/korisnikSistema/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "korisnikSistema"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44211
+        }
+      ],
+      "UpstreamPathTemplate": "/ugovorOZakupu/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "ugovorOZakupu"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44212
+        }
+      ],
+      "UpstreamPathTemplate": "/dokument/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "dokument"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44213
+        }
+      ],
+      "UpstreamPathTemplate": "/licnost/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "licnost"
+    },
+    {
+      "DownstreamPathTemplate": "/api/{everything}",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 44214
+        }
+      ],
+      "UpstreamPathTemplate": "/logger/{everything}",
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer",
+        "AllowedScopes": []
+      },
+      "FileCacheOptions": { "TtlSeconds": 30 },
+      "SwaggerKey": "logger"
+    }
+  ],
+  "SwaggerEndPoints": [
+    {
+      "Key": "licitacija",
+      "Config": [
+        {
+          "Name": "Licitacija API",
+          "Version": "v1",
+          "Url": "http://localhost:44201/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "parcela",
+      "Config": [
+        {
+          "Name": "Parcela API",
+          "Version": "v1",
+          "Url": "http://localhost:44202/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "adresa",
+      "Config": [
+        {
+          "Name": "Adresa API",
+          "Version": "v1",
+          "Url": "http://localhost:44203/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "kupac",
+      "Config": [
+        {
+          "Name": "Kupac API",
+          "Version": "v1",
+          "Url": "http://localhost:44204/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "javnoNadmetanje",
+      "Config": [
+        {
+          "Name": "Javno Nadmetanje API",
+          "Version": "v1",
+          "Url": "http://localhost:44205/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "ovlascenoLice",
+      "Config": [
+        {
+          "Name": "Ovlasceno Lice API",
+          "Version": "v1",
+          "Url": "http://localhost:44206/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "uplata",
+      "Config": [
+        {
+          "Name": "Uplata API",
+          "Version": "v1",
+          "Url": "http://localhost:44207/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "zalba",
+      "Config": [
+        {
+          "Name": "Zalba API",
+          "Version": "v1",
+          "Url": "http://localhost:44208/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "prijava",
+      "Config": [
+        {
+          "Name": "Prijava API",
+          "Version": "v1",
+          "Url": "http://localhost:44209/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "korisnikSistema",
+      "Config": [
+        {
+          "Name": "Korisnik sistema API",
+          "Version": "v1",
+          "Url": "http://localhost:44210/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "ugovorOZakupu",
+      "Config": [
+        {
+          "Name": "Ugovor o zakupu API",
+          "Version": "v1",
+          "Url": "http://localhost:44211/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "dokument",
+      "Config": [
+        {
+          "Name": "Dokument API",
+          "Version": "v1",
+          "Url": "http://localhost:44212/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "licnost",
+      "Config": [
+        {
+          "Name": "Licnost API",
+          "Version": "v1",
+          "Url": "http://localhost:44213/swagger/v1/swagger.json"
+        }
+      ]
+    },
+    {
+      "Key": "logger",
+      "Config": [
+        {
+          "Name": "Logger API",
+          "Version": "v1",
+          "Url": "http://localhost:44214/swagger/v1/swagger.json"
+        }
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost"
+  }
+}

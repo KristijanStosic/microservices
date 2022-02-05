@@ -1,0 +1,345 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>UplataService</name>
+    </assembly>
+    <members>
+        <member name="T:UplataService.Controllers.UplataController">
+            <summary>
+            Kontroler za uplatu
+            </summary>
+        </member>
+        <member name="M:UplataService.Controllers.UplataController.#ctor(UplataService.Repository.IUplataRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,UplataService.ServiceCalls.ILoggerService,Microsoft.Extensions.Configuration.IConfiguration,UplataService.ServiceCalls.IServiceCall{UplataService.Model.Services.JavnoNadmetanjeDto})">
+            <summary>
+            Konstruktor kontrolera uplate - DI
+            </summary>
+            <param name="uplataRepository">Repo uplate</param>
+            <param name="linkGenerator">Link generator za create zahtev</param>
+            <param name="mapper">AutoMapper</param>
+            <param name="loggerService">Logger servis</param>
+            <param name="javnoNadmetanjeService">Servis javno nadmetanje - dobijanje javnog nadmetanja</param>
+            <param name="configuration">Konfiguracija za pristup putanji ka servisu javno nadmetanje</param>
+        </member>
+        <member name="M:UplataService.Controllers.UplataController.GetAllUplate">
+            <summary>
+            Vraća sve uplate
+            </summary>
+            <returns>Lista uplata</returns>
+            <response code="200">Vraća listu uplata</response>
+            <response code="204">Nije pronađen ni jedan tip zalbe</response>
+        </member>
+        <member name="M:UplataService.Controllers.UplataController.GetUplata(System.Guid)">
+            <summary>
+            Vraća jednu uplatu na osnovu ID-a
+            </summary>
+            <param name="uplataId">ID uplate</param>
+            <returns>Žalba</returns>
+            <response code="200">Vraća traženu uplatu</response>
+            <response code="404">Nije pronađena uplata za uneti ID</response>
+        </member>
+        <member name="M:UplataService.Controllers.UplataController.CreateUplata(UplataService.Model.UplataCreateDto)">
+             <summary>
+             Kreira novu uplatu
+             </summary>
+             <param name="uplata">Model uplata</param>
+             <remarks>
+             Primer zahteva za kreiranje nove uplate \
+             POST /api/uplata \
+             {   
+                 "brojRacuna": "115-5658588888800-55", \
+                 "pozivNaBroj": "90-7485-5858-9558", \
+                 "iznos": "2000", \
+                 "svrhaUplate": "Uplata na racun", \
+                 "datumUplate": "2017-05-03", \
+                 "kurs": {
+                     "vrednostKursa": 120
+                 }
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju uplate</returns>
+             <response code="201">Vraća kreiranu uplatu</response>
+             <response code="500">Desila se greška prilikom unosa nove uplate</response>
+        </member>
+        <member name="M:UplataService.Controllers.UplataController.UpdateUplata(System.Guid,UplataService.Model.UplataUpdateDto)">
+            <summary>
+            Modifikacija uplate
+            </summary>
+            <param name="uplataId">ID uplate</param>
+            <param name="uplata">Model uplate</param>
+            <returns>Potvrda o modifikaciji uplate</returns>
+            <response code="200">Izmenjena uplate</response>
+            <response code="400">Desila se greška prilikom unosa istih podataka za uplatu</response>
+            <response code="404">Nije pronađena uplata za uneti ID</response>
+            <response code="500">Serverska greška tokom modifikacije uplate</response>
+        </member>
+        <member name="M:UplataService.Controllers.UplataController.DeleteUplata(System.Guid)">
+            <summary>
+            Brisanje uplate na osnovu ID-a
+            </summary>
+            <param name="uplataId">ID uplate</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Uplata je uspešno obrisana</response>
+            <response code="404">Nije pronađena uplata za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja uplate</response>
+        </member>
+        <member name="M:UplataService.Controllers.UplataController.GetUplataOptions">
+            <summary>
+            Vraća opcije za rad sa uplata
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:UplataService.Entities.UplataConfirmation">
+            <summary>
+            Predstavlja potvrdu kreiranja uplate 
+            </summary>
+        </member>
+        <member name="P:UplataService.Entities.UplataConfirmation.UplataId">
+            <summary>
+            ID uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Entities.UplataConfirmation.BrojRacuna">
+            <summary>
+            Broj racuna
+            </summary>
+        </member>
+        <member name="P:UplataService.Entities.UplataConfirmation.PozivNaBroj">
+            <summary>
+            Poziv na broj
+            </summary>
+        </member>
+        <member name="P:UplataService.Entities.UplataConfirmation.DatumUplate">
+            <summary>
+            Datum uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Entities.UplataConfirmation.Iznos">
+            <summary>
+            Iznos uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Entities.UplataConfirmation.SvrhaUplate">
+            <summary>
+            Svrha uplate
+            </summary>
+        </member>
+        <member name="T:UplataService.Model.UplataConfirmationDto">
+            <summary>
+            Vraca potvrdu o uplati
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataConfirmationDto.BrojRacuna">
+            <summary>
+            Broj racuna
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataConfirmationDto.PozivNaBroj">
+            <summary>
+            Poziv na broj
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataConfirmationDto.DatumUplate">
+            <summary>
+            Datum uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataConfirmationDto.Iznos">
+            <summary>
+            Iznos uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataConfirmationDto.SvrhaUplate">
+            <summary>
+            Svrha uplate
+            </summary>
+        </member>
+        <member name="T:UplataService.Model.UplataCreateDto">
+            <summary>
+            Create dto za uplatu
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataCreateDto.BrojRacuna">
+            <summary>
+            Broj racuna 
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataCreateDto.PozivNaBroj">
+            <summary>
+            Poziv na broj
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataCreateDto.Iznos">
+            <summary>
+            Iznos
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataCreateDto.SvrhaUplate">
+            <summary>
+            Svrha uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataCreateDto.DatumUplate">
+            <summary>
+            Datum uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataCreateDto.JavnoNadmetanjeId">
+            <summary>
+            Id javnog nadmetanja - veza sa mikroservisom Javno nadmetanje
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataCreateDto.Kurs">
+            <summary>
+            Vrednost kursa
+            </summary>
+        </member>
+        <member name="T:UplataService.Model.UplataDto">
+            <summary>
+            DTO Uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataDto.UplataId">
+            <summary>
+            ID uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataDto.BrojRacuna">
+            <summary>
+            Broj racuna
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataDto.PozivNaBroj">
+            <summary>
+            Poziv na broj
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataDto.Iznos">
+            <summary>
+            Iznos 
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataDto.SvrhaUplate">
+            <summary>
+            Svrha uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataDto.DatumUplate">
+            <summary>
+            Datum uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataDto.JavnoNadmetanje">
+            <summary>
+            Id javnog nadmetanja - veza sa mikroservisom Javno nadmetanje
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataDto.Kurs">
+            <summary>
+            Kurs DTO
+            </summary>
+        </member>
+        <member name="T:UplataService.Model.UplataUpdateDto">
+            <summary>
+            Update dto za uplatu
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataUpdateDto.BrojRacuna">
+            <summary>
+            Broj racuna 
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataUpdateDto.PozivNaBroj">
+            <summary>
+            Poziv na broj
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataUpdateDto.Iznos">
+            <summary>
+            Iznos
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataUpdateDto.SvrhaUplate">
+            <summary>
+            Svrha uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataUpdateDto.DatumUplate">
+            <summary>
+            Datum uplate
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataUpdateDto.JavnoNadmetanjeId">
+            <summary>
+            Id javnog nadmetanja - veza sa mikroservisom Javno nadmetanje
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.UplataUpdateDto.Kurs">
+            <summary>
+            Vrednost kursa
+            </summary>
+        </member>
+        <member name="T:UplataService.ServiceCalls.IServiceCall`1">
+            <summary>
+            Interfejs za komunikaciju sa drugim servisima
+            </summary>
+            <typeparam name="T">Generic</typeparam>
+        </member>
+        <member name="M:UplataService.ServiceCalls.IServiceCall`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="M:UplataService.ServiceCalls.LoggerService.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Konstruktor loger servisa
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:UplataService.ServiceCalls.LoggerService.Log(Microsoft.Extensions.Logging.LogLevel,System.String,System.String,System.Exception)">
+            <summary>
+            Slanje post zahteva za upis novog log zapisa
+            </summary>
+            <param name="level">INFO/DEBUG/WARN/ERROR</param>
+            <param name="metoda">Naziv metode</param>
+            <param name="poruka">Tekst poruke</param>
+            <param name="greska">Exception</param>
+            <returns></returns>
+        </member>
+        <member name="T:UplataService.ServiceCalls.Mocks.LoggerServiceMock">
+            <summary>
+            Logger service mock
+            </summary>
+        </member>
+        <member name="M:UplataService.ServiceCalls.Mocks.LoggerServiceMock.Log(Microsoft.Extensions.Logging.LogLevel,System.String,System.String,System.Exception)">
+            <summary>
+            Slanje post zahteva za upis novog log zapisa - mock
+            </summary>
+            <param name="level">INFO/DEBUG/WARN/ERROR</param>
+            <param name="metoda">Naziv metode</param>
+            <param name="poruka">Tekst poruke</param>
+            <param name="greska">Exception</param>
+            <returns></returns>
+        </member>
+        <member name="T:UplataService.ServiceCalls.ServiceCall`1">
+            <summary>
+            Genericka klasa za komunikaciju sa drugim servisima
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:UplataService.ServiceCalls.ServiceCall`1.#ctor(UplataService.ServiceCalls.ILoggerService)">
+            <summary>
+            Konstruktor klase service call
+            </summary>
+            <param name="loggerService"></param>
+        </member>
+        <member name="M:UplataService.ServiceCalls.ServiceCall`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva
+            </summary>
+            <param name="url">Url putanja ka drugom servisu</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
