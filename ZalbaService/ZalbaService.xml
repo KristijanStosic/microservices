@@ -1,0 +1,1421 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ZalbaService</name>
+    </assembly>
+    <members>
+        <member name="T:ZalbaService.Controllers.RadnjaZaZalbuController">
+            <summary>
+            Kontroler radnje za zalbu
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.#ctor(ZalbaService.Data.IRadnjaZaZalbuRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,ZalbaService.ServicesCalls.ILoggerService)">
+            <summary>
+            Konstruktor kontrolera radnje za zalbu - DI
+            </summary>
+            <param name="radnjaZaZalbuRepository">Repo radnje za albu</param>
+            <param name="linkGenerator">Link generator za create zahtev</param>
+            <param name="mapper">AutoMapper</param>
+            <param name="loggerService">Logger servis</param>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.GetAllRadnjeZaZalbu(System.String)">
+            <summary>
+            Vraca sve radnje za zalbu
+            </summary>
+            <returns>Lista radnji za zalbu</returns>
+            <response code="200">Vraća listu radnji za zalbu</response>
+            <response code="404">Nije pronađena nijedna radnja za zalbu</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.GetRadnjaZaZalbu(System.Guid)">
+            <summary>
+            Vraća jednu radnju za zalbu na osnovu ID-a
+            </summary>
+            <param name="radnjaZaZalbuId">ID radnje za zalbu</param>
+            <returns>Radnja za zalbu</returns>
+            <response code="200">Vraća traženu radnju za zalbu</response>
+            <response code="404">Nije pronađena radnja za zalbu za uneti ID</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.CreateRadnjaZaZalbu(ZalbaService.Models.RadnjaZaZalbuCreateDto)">
+             <summary>
+             Kreira novu radnju za zalbu
+             </summary>
+             <param name="radnjaZaZalbu">Model radnje za zalbu</param>
+             <remarks>
+             Primer zahteva za kreiranje nove radnje za zalbu \
+             POST /api/radnjaZaZalbu \
+             {   
+                 "NazivRadnjeZaZalbu": "Otvorena"
+                 
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju radnje za zalbu</returns>
+             <response code="200">Vraća kreiranu radnju za zalbu</response>
+             <response code="400">Vraća grešku zvog unosa istih podataka za naziv radnje</response>
+             <response code="500">Desila se greška prilikom unosa nove radnje za zalbu</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.UpdateRadnjaZaZalbu(System.Guid,ZalbaService.Models.RadnjaZaZalbuUpdateDto)">
+            <summary>
+            Modifikacija radnje za zalbu
+            </summary>
+            <param name="radnjaZaZalbuId">ID radnje za zalbu</param>
+            <param name="radnjaZaZalbu">Model radnje za zalbu</param>
+            <returns>Potvrda o modifikaciji radnje za zalbu</returns>
+            <response code="200">Izmenjena radnja za zalbu</response>
+            <response code="400">Desila se greška prilikom unosa istih podataka za radnju za zalbu</response>
+            <response code="404">Nije pronađena radnja za zalbu za uneti ID</response>
+            <response code="500">Serverska greška tokom modifikacije radnje za zalbu</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.DeleteRadnjaZaZalbu(System.Guid)">
+            <summary>
+            Brisanje radnje za zalbu na osnovu ID-a
+            </summary>
+            <param name="radnjaZaZalbuId">ID radnje za zalbu</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Radnja za zalbu je uspešno obrisana</response>
+            <response code="404">Nije pronađena radnja za zalbu za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja radnje za zalbu</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.RadnjaZaZalbuController.GetRadnjaZaZalbuOptions">
+            <summary>
+            Vraća opcije za rad sa radnjama zalbi
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Controllers.StatusZalbeController">
+            <summary>
+            Kontroler statusa zalbe
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.#ctor(ZalbaService.Data.IStatusZalbeRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,ZalbaService.ServicesCalls.ILoggerService)">
+            <summary>
+            Konstruktor kontrolera broj table - DI
+            </summary>
+            <param name="statusZalbeRepository">Repo statusa zalbe</param>
+            <param name="linkGenerator">Link generator za create zahtev</param>
+            <param name="mapper">AutoMapper</param>
+            <param name="loggerService">Logger servis</param>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.GetAllStatusesZalbe(System.String)">
+            <summary>
+            Vraća sve statuse zalbi
+            </summary>
+            <returns>Lista statusa zalbi</returns>
+            <response code="200">Vraća listu statusa zalbi</response>
+            <response code="204">Nije pronađen ni jedan status zalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.GetStatusZalbe(System.Guid)">
+            <summary>
+            Vraća jedan status zalbe na osnovu ID-a
+            </summary>
+            <param name="statusZalbeId">ID statusa zalbe</param>
+            <returns>Status zalbe</returns>
+            <response code="200">Vraća traženi status zalbe</response>
+            <response code="404">Nije pronađen status zalbe za uneti ID</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.CreateStatusZalbe(ZalbaService.Models.StatusZalbeCreateDto)">
+             <summary>
+             Kreira novi status zalbe
+             </summary>
+             <param name="statusZalbe">Model status zalbe</param>
+             <remarks>
+             Primer zahteva za kreiranje novog statusa zalbe \
+             POST /api/statusZalbe \
+             {   
+                 "NazivStatusaZalbe": "Odbijena"
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju statusa zalbe</returns>
+             <response code="200">Vraća kreiran status zalbe</response>
+             <response code="400">Desila se greška prilikom unosa istih podataka za status žalbe</response>
+             <response code="500">Desila se greška prilikom unosa novog statusa zalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.UpdateStatusZalbe(System.Guid,ZalbaService.Models.StatusZalbeUpdateDto)">
+            <summary>
+            Modifikacija statusa zalbe
+            </summary>
+            <param name="statusZalbeId">ID statusa žalbe</param>
+            <param name="statusZalbe">Model statusa zalbe</param>
+            <returns>Potvrda o modifikaciji statusa zalbe</returns>
+            <response code="200">Izmenjen status zalbe</response>
+            <response code="400">Desila se greška prilikom unosa istih podataka za status žalbe</response>
+            <response code="404">Nije pronađen status zalbe za uneti ID</response>
+            <response code="500">Serverska greška tokom modifikacije statusa zalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.DeleteStatusZalbe(System.Guid)">
+            <summary>
+            Brisanje statusa žalbe na osnovu ID-a
+            </summary>
+            <param name="statusZalbeId">ID statusa žalbe</param>
+            <returns>Status 204 (No Content)</returns>
+            <response code="204">Status žalbe je uspešno obrisan</response>
+            <response code="404">Nije pronađen status žalbe za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja statusa žalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.StatusZalbeController.GetZalbaOptions">
+            <summary>
+            Vraća opcije za rad sa zalbama
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Controllers.TipZalbeController">
+            <summary>
+            Kontroler za tip zalbe
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Controllers.TipZalbeController.#ctor(ZalbaService.Data.ITipZalbeRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,ZalbaService.ServicesCalls.ILoggerService)">
+            <summary>
+            Konstruktor kontrolera tipa zalbe - DI
+            </summary>
+            <param name="tipZalbeRepository">Repo tip zalbe</param>
+            <param name="linkGenerator">Link generator za create zahtev</param>
+            <param name="mapper">AutoMapper</param>
+            <param name="loggerService">Logger servis</param>
+        </member>
+        <member name="M:ZalbaService.Controllers.TipZalbeController.GetAllTipoviZalbe(System.String)">
+            <summary>
+            Vraća sve tipove zalbi
+            </summary>
+            <returns>Lista tipova zalbi</returns>
+            <response code="200">Vraća listu tipova zalbi</response>
+            <response code="204">Nije pronađen ni jedan tip zalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.TipZalbeController.GetTipZalbe(System.Guid)">
+            <summary>
+            Vraća jedan tip zalbe na osnovu ID-a
+            </summary>
+            <param name="tipZalbeId">ID tipa zalbe</param>
+            <returns>Tip zalbe</returns>
+            <response code="200">Vraća traženi tip zalbe</response>
+            <response code="404">Nije pronađen tip zalbe za uneti ID</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.TipZalbeController.CreateTipZalbe(ZalbaService.Models.TipZalbeCreateDto)">
+             <summary>
+             Kreira novi tip zalbe
+             </summary>
+             <param name="tipZalbe">Model tip zalbe</param>
+             <remarks>
+             Primer zahteva za kreiranje novog tipa zalbe \
+             POST /api/tipZalbe \
+             {   
+                 "NazivTipaZalbe": "Zalba na Odluku o davanju u zakup"
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju tipa zalbe</returns>
+             <response code="200">Vraća kreiran tip zalbe</response>
+             <response code="400">Desila se greška prilikom unosa istih podataka za tip žalbe</response>
+             <response code="500">Desila se greška prilikom unosa novog tipa zalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.TipZalbeController.UpdateTipZalbe(System.Guid,ZalbaService.Models.TipZalbeUpdateDto)">
+            <summary>
+            Modifikacija tipa zalbe
+            </summary>
+            <param name="tipZalbeId">ID tipa žalbe</param>
+            <param name="tipZalbe">Model tip zalbe</param>
+            <returns>Potvrda o modifikaciji tipa zalbe</returns>
+            <response code="200">Izmenjen tip zalbe</response>
+            <response code="400">Desila se greška prilikom unosa istih podataka za tip žalbe</response>
+            <response code="404">Nije pronađen tip zalbe za uneti ID</response>
+            <response code="500">Serverska greška tokom modifikacije tipa zalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.TipZalbeController.DeleteTipZalbe(System.Guid)">
+            <summary>
+            Brisanje tipa žalbe na osnovu ID-a
+            </summary>
+            <param name="tipZalbeId">ID tipa žalbe</param>
+            <returns>Status 204 (No Content)</returns>
+            <response code="204">Tip žalbe je uspešno obrisan</response>
+            <response code="404">Nije pronađen tip žalbe za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja tipa žalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.TipZalbeController.GetTipZalbeOptions">
+            <summary>
+            Vraća opcije za rad sa tipovima zalbi
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Controllers.ZalbaController">
+            <summary>
+            Kontroler za žalbu
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.#ctor(ZalbaService.Data.Interfaces.IZalbaRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,ZalbaService.ServicesCalls.IServiceCall{ZalbaService.Models.Services.KupacDto},Microsoft.Extensions.Configuration.IConfiguration,ZalbaService.ServicesCalls.ILoggerService)">
+            <summary>
+            Konstruktor kontrolera žalbe - DI
+            </summary>
+            <param name="zalbaRepository">Repo žalbe</param>
+            <param name="linkGenerator">Link generator za create zahtev</param>
+            <param name="mapper">AutoMapper</param>
+            <param name="kupacService">Servis kupac - dobijanje kupca</param>
+            <param name="configuration">Konfiguracija za pristup putanji ka servisu kupac</param>
+            <param name="loggerService">Logger servis</param>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.GetAllZalbe">
+            <summary>
+            Vraća sve žalbe
+            </summary>
+            <returns>Lista žalbi</returns>
+            <response code="200">Vraća listu žalbi</response>
+            <response code="404">Nije pronađena ni jedna žalba</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.GetZalba(System.Guid)">
+            <summary>
+            Vraća jednu žalbu na osnovu ID-a
+            </summary>
+            <param name="zalbaId">ID žalbe</param>
+            <returns>Žalba</returns>
+            <response code="200">Vraća traženu žalbu</response>
+            <response code="404">Nije pronađena žalba za uneti ID</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.CreateZalba(ZalbaService.Models.Zalba.ZalbaCreateDto)">
+             <summary>
+             Kreira novu žalbu
+             </summary>
+             <param name="zalba">Model zalba</param>
+             <remarks>
+             Primer zahteva za kreiranje nove žalbe \
+             POST /api/zalba \
+             {   
+                 "datumPodnosenja": "05-05-2020", \
+                 "datumResenja": "05-12-2021", \
+                 "razlogZalbe": "Nepotpuna dokumentacija", \
+                 "obrazlozenje": "Nevalidna dokumentacija", \
+                 "brojNadmetanja": "TT2913", \
+                 "brojResenja": "PP291", \
+                 "statusZalbeId": "1c989ee3-13b2-4d3b-abeb-c4e6343eace7" \
+                 "tipZalbeId": "1c989ee3-13b2-4d3b-abeb-c4e6343eace7" \
+                 "radnjaZaZalbuId": "1c989ee3-13b2-4d3b-abeb-c4e6343eace7" \
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju žalbe</returns>
+             <response code="201">Vraća kreiranu žalbu</response>
+             <response code="500">Desila se greška prilikom unosa nove žalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.UpdateZalba(System.Guid,ZalbaService.Models.Zalba.ZalbaUpdateDto)">
+            <summary>
+            Modifikacija  zalbe
+            </summary>
+            <param name="zalbaId">ID žalbe</param>
+            <param name="zalba">Model zalbe</param>
+            <returns>Potvrda o modifikaciji zalbe</returns>
+            <response code="200">Izmenjena zalba</response>
+            <response code="400">Desila se greška prilikom unosa istih podataka za žalbu</response>
+            <response code="404">Nije pronađena zalba za uneti ID</response>
+            <response code="500">Serverska greška tokom modifikacije zalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.DeleteZalba(System.Guid)">
+            <summary>
+            Brisanje žalbe na osnovu ID-a
+            </summary>
+            <param name="zalbaId">ID žalbe</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Žalba je uspešno obrisana</response>
+            <response code="404">Nije pronađena žalba za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja žalbe</response>
+        </member>
+        <member name="M:ZalbaService.Controllers.ZalbaController.GetZalbaOptions">
+            <summary>
+            Vraća opcije za rad sa zalbama
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Data.IRadnjaZaZalbuRepository">
+            <summary>
+            Interfejs za kreiranje repo-a za tip žalbe
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ZalbaService.Data.IRadnjaZaZalbuRepository.GetAllRadnjeZaZalbu(System.String)" -->
+        <member name="M:ZalbaService.Data.IRadnjaZaZalbuRepository.GetRadnjaZaZalbuById(System.Guid)">
+            <summary>
+            Dobijanje radnje za žalbu po id-u
+            </summary>
+            <param name="radnjaZaZalbuId">Id radnje za žalbu</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.IRadnjaZaZalbuRepository.CreateRadnjaZaZalbu(ZalbaService.Entities.RadnjaZaZalbu)">
+            <summary>
+            Kreiranje radnje za žalbu
+            </summary>
+            <param name="radnjaZaZalbu">Objekat radnja za žalbu</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.IRadnjaZaZalbuRepository.DeleteRadnjaZaZalbu(System.Guid)">
+            <summary>
+            Brisanje radnje za žalbu
+            </summary>
+            <param name="radnjaZaZalbuId">Id radnje za žalbu</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.IRadnjaZaZalbuRepository.UpdateRadnjaZaZalbu(ZalbaService.Entities.RadnjaZaZalbu)">
+            <summary>
+            Modifikacija radnje za žalbu
+            </summary>
+            <param name="radnjaZaZalbu">Objekat radnja za žalbu</param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ZalbaService.Data.IRadnjaZaZalbuRepository.IsValidRadnjaZaZalbu(System.String)" -->
+        <member name="T:ZalbaService.Data.IStatusZalbeRepository">
+            <summary>
+            Interfejs za kreiranje repo-a za status žalbe
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ZalbaService.Data.IStatusZalbeRepository.GetAllStatusesZalbe(System.String)" -->
+        <member name="M:ZalbaService.Data.IStatusZalbeRepository.GetStatusZalbeById(System.Guid)">
+            <summary>
+            Dobijanje statusa žalbe po id-u
+            </summary>
+            <param name="statusZalbeId">Id statusa žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.IStatusZalbeRepository.CreateStatusZalbe(ZalbaService.Entities.StatusZalbe)">
+            <summary>
+            Kreiranje statusa žalbe
+            </summary>
+            <param name="statusZalbe">Objekat statusa žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.IStatusZalbeRepository.DeleteStatusZalbe(System.Guid)">
+            <summary>
+            Brisanje statusa žalbe
+            </summary>
+            <param name="statusZalbeId">Id statusa žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.IStatusZalbeRepository.UpdateStatusZalbe(ZalbaService.Entities.StatusZalbe)">
+            <summary>
+            Modifikacija statusa žalbe
+            </summary>
+            <param name="statusZalbe">Objekat statusa žalbe</param>
+            <returns></returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:ZalbaService.Data.IStatusZalbeRepository.IsValidStatusZalbe(System.String)" -->
+        <member name="T:ZalbaService.Data.ITipZalbeRepository">
+            <summary>
+            Interfejs za kreiranje repo-a za tip žalbe
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Data.ITipZalbeRepository.GetAllTipoviZalbe(System.String)">
+            <summary>
+            Dobijanje podataka o svim tipovima žalbi
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.ITipZalbeRepository.GetTipZalbeById(System.Guid)">
+            <summary>
+            Dobijanje tipa žalbe po id-u
+            </summary>
+            <param name="tipZalbeId">Id broja table</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.ITipZalbeRepository.CreateTipZalbe(ZalbaService.Entities.TipZalbe)">
+            <summary>
+            Kreiranje tipa žalbe
+            </summary>
+            <param name="tipZalbe">Objekat tip žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.ITipZalbeRepository.DeleteTipZalbe(System.Guid)">
+            <summary>
+            Brisanje tipa žalbe
+            </summary>
+            <param name="tipZalbeId">Id tipa žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.ITipZalbeRepository.UpdateTipZalbe(ZalbaService.Entities.TipZalbe)">
+            <summary>
+            Modifikacija tipa žalbe
+            </summary>
+            <param name="tipZalbe">Objekat tip žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.ITipZalbeRepository.IsValidTipZalbe(System.String)">
+            <summary>
+            Provera validnosti za unos tipa žalbe
+            </summary>
+            <param name="nazivTipaZalbe">Id broja table</param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Data.Interfaces.IZalbaRepository">
+            <summary>
+            Interfejs za kreiranje repo-a za žalbu
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Data.Interfaces.IZalbaRepository.GetAllZalbe">
+            <summary>
+            Dobijanje podataka o svim žalbama
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.Interfaces.IZalbaRepository.GetZalbaById(System.Guid)">
+            <summary>
+            Dobijanje žalbe po id-u
+            </summary>
+            <param name="zalbaId">Id žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.Interfaces.IZalbaRepository.CreateZalba(ZalbaService.Entities.Zalba)">
+            <summary>
+            Kreiranje žalbe
+            </summary>
+            <param name="zalba">Objekat žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.Interfaces.IZalbaRepository.DeleteZalba(System.Guid)">
+            <summary>
+            Brisanje žalbe
+            </summary>
+            <param name="zalbaId">Id žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.Interfaces.IZalbaRepository.UpdateZalba(ZalbaService.Entities.Zalba)">
+            <summary>
+            Modifikacija žalbe
+            </summary>
+            <param name="zalba">Objekat žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.Interfaces.IZalbaRepository.IsValidZalba(ZalbaService.Entities.Zalba)">
+            <summary>
+            Provera validnosti za unos žalbe
+            </summary>
+            <param name="zalba">Id broja table</param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Data.RadnjaZaZalbuRepository">
+            <summary>
+            Repozitorijum radnje za žalbu
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Data.RadnjaZaZalbuRepository.#ctor(ZalbaService.Entities.DataContext.ZalbaContext,AutoMapper.IMapper)">
+            <summary>
+            Konstruktor repoa radnje za žalbu
+            </summary>
+            <param name="context">Db context</param>
+            <param name="mapper">AutoMapper</param>
+        </member>
+        <member name="M:ZalbaService.Data.RadnjaZaZalbuRepository.GetAllRadnjeZaZalbu(System.String)">
+            <summary>
+            Dobijanje podataka o svim radnjama za žalbu
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.RadnjaZaZalbuRepository.GetRadnjaZaZalbuById(System.Guid)">
+            <summary>
+            Dobijanje radnje za žalbu po id-u
+            </summary>
+            <param name="radnjaZaZalbuId">Id radnje za žalbu</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.RadnjaZaZalbuRepository.CreateRadnjaZaZalbu(ZalbaService.Entities.RadnjaZaZalbu)">
+            <summary>
+            Kreiranje radnje za žalbu
+            </summary>
+            <param name="radnjaZaZalbu">Objekat radnje za žalbu</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.RadnjaZaZalbuRepository.DeleteRadnjaZaZalbu(System.Guid)">
+            <summary>
+            Brisanje radnje za žalbu
+            </summary>
+            <param name="radnjaZaZalbuId">Id radnje za žalbu</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.RadnjaZaZalbuRepository.UpdateRadnjaZaZalbu(ZalbaService.Entities.RadnjaZaZalbu)">
+            <summary>
+            Cuvanje izmena u bazi podataka
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.RadnjaZaZalbuRepository.IsValidRadnjaZaZalbu(System.String)">
+            <summary>
+            Provera da li dati podatak postoji u bazi, ako postoji vrati false, ako ne onda true
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Data.StatusZalbeRepository">
+            <summary>
+            Repozitorijum za status žalbe
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Data.StatusZalbeRepository.#ctor(ZalbaService.Entities.DataContext.ZalbaContext,AutoMapper.IMapper)">
+            <summary>
+            Konstruktor repoa statusa žalbe
+            </summary>
+            <param name="context">Db context</param>
+            <param name="mapper">AutoMapper</param>
+        </member>
+        <member name="M:ZalbaService.Data.StatusZalbeRepository.GetAllStatusesZalbe(System.String)">
+            <summary>
+            Dobijanje podataka o svim statusima žalbe
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.StatusZalbeRepository.GetStatusZalbeById(System.Guid)">
+            <summary>
+            Dobijanje statusa žalbe po id-u
+            </summary>
+            <param name="statusZalbeId">Id statusa žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.StatusZalbeRepository.CreateStatusZalbe(ZalbaService.Entities.StatusZalbe)">
+            <summary>
+            Kreiranje statusa žalbe
+            </summary>
+            <param name="statusZalbe">Objekat statusa žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.StatusZalbeRepository.DeleteStatusZalbe(System.Guid)">
+            <summary>
+            Brisanje statusa žalbe
+            </summary>
+            <param name="statusZalbeId">Id statusa žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.StatusZalbeRepository.UpdateStatusZalbe(ZalbaService.Entities.StatusZalbe)">
+            <summary>
+            Cuvanje izmena u bazi podataka
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.StatusZalbeRepository.IsValidStatusZalbe(System.String)">
+            <summary>
+            Provera da li dati podatak postoji u bazi, ako postoji vrati false, ako ne onda true
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Data.TipZalbeRepository">
+            <summary>
+            Repozitorijum za tip žalbe
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Data.TipZalbeRepository.#ctor(ZalbaService.Entities.DataContext.ZalbaContext,AutoMapper.IMapper)">
+            <summary>
+            Konstruktor repoa tipa žalbe
+            </summary>
+            <param name="context">Db context</param>
+            <param name="mapper">AutoMapper</param>
+        </member>
+        <member name="M:ZalbaService.Data.TipZalbeRepository.GetAllTipoviZalbe(System.String)">
+            <summary>
+            Dobijanje podataka o svim tipovima žalbi
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.TipZalbeRepository.GetTipZalbeById(System.Guid)">
+            <summary>
+            Dobijanje tipa žalbe po id-u
+            </summary>
+            <param name="tipZalbeId">Id tipa žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.TipZalbeRepository.CreateTipZalbe(ZalbaService.Entities.TipZalbe)">
+            <summary>
+            Kreiranje tipa žalbe
+            </summary>
+            <param name="tipZalbe">Objekat tipa žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.TipZalbeRepository.DeleteTipZalbe(System.Guid)">
+            <summary>
+            Brisanje tipa žalbe
+            </summary>
+            <param name="tipZalbeId">Id tipa žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.TipZalbeRepository.UpdateTipZalbe(ZalbaService.Entities.TipZalbe)">
+            <summary>
+            Cuvanje izmena u bazi podataka
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.TipZalbeRepository.IsValidTipZalbe(System.String)">
+            <summary>
+            Provera da li dati podatak postoji u bazi, ako postoji vrati false, ako ne onda true
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Data.ZalbaRepository">
+            <summary>
+            Repozitorijum za žalbu
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Data.ZalbaRepository.#ctor(ZalbaService.Entities.DataContext.ZalbaContext,AutoMapper.IMapper)">
+            <summary>
+            Konstruktor repoa žalbe
+            </summary>
+            <param name="context">Db context</param>
+            <param name="mapper">AutoMapper</param>
+        </member>
+        <member name="M:ZalbaService.Data.ZalbaRepository.GetAllZalbe">
+            <summary>
+            Dobijanje podataka o svim žalbama
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.ZalbaRepository.GetZalbaById(System.Guid)">
+            <summary>
+            Dobijanje žalbe po id-u
+            </summary>
+            <param name="zalbaId">Id žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.ZalbaRepository.CreateZalba(ZalbaService.Entities.Zalba)">
+            <summary>
+            Kreiranje žalbe
+            </summary>
+            <param name="zalba">Objekat žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.ZalbaRepository.DeleteZalba(System.Guid)">
+            <summary>
+            Brisanje žalbe
+            </summary>
+            <param name="zalbaId">Id žalbe</param>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.ZalbaRepository.UpdateZalba(ZalbaService.Entities.Zalba)">
+            <summary>
+            Cuvanje izmena u bazi podataka
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:ZalbaService.Data.ZalbaRepository.IsValidZalba(ZalbaService.Entities.Zalba)">
+            <summary>
+            Provera da li dati podatak postoji u bazi, ako postoji vrati false, ako ne onda true
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Entities.Confirmations.ZalbaConfirmation">
+            <summary>
+            Predstavlja potvrdu kreiranja zalbe 
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Confirmations.ZalbaConfirmation.ZalbaId">
+            <summary>
+            ID žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Confirmations.ZalbaConfirmation.BrojNadmetanja">
+            <summary>
+            Broj nadmetanja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Confirmations.ZalbaConfirmation.BrojResenja">
+            <summary>
+            Broj resenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Confirmations.ZalbaConfirmation.DatumPodnosenja">
+            <summary>
+            Datum podnosenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Confirmations.ZalbaConfirmation.DatumResenja">
+            <summary>
+            Datum resenja
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Entities.DataContext.ZalbaContext">
+            <summary>
+            Žalba DB Context
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Entities.DataContext.ZalbaContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Žalba Context konstruktor
+            </summary>
+            <param name="options"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:ZalbaService.Entities.DataContext.ZalbaContext.StatusZalbe">
+            <summary>
+            DBSet za status žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.DataContext.ZalbaContext.TipZalbe">
+            <summary>
+            DBSet za tip žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.DataContext.ZalbaContext.RadnjaZaZalbu">
+            <summary>
+            DBSet za radnju za žalbu
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.DataContext.ZalbaContext.Zalba">
+            <summary>
+            DBSet za žalbu
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Entities.DataContext.ZalbaContext.OnConfiguring(Microsoft.EntityFrameworkCore.DbContextOptionsBuilder)">
+            <summary>
+            Metoda u kojoj se definise konekcioni string za bazu
+            </summary>
+            <param name="optionsBuilder"></param>
+        </member>
+        <member name="M:ZalbaService.Entities.DataContext.ZalbaContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Unos inicijalnih podataka u bazu
+            </summary>
+            <param name="modelBuilder">Omogucava podesavanja/unos podataka pri kreiranju modela</param>
+        </member>
+        <member name="T:ZalbaService.Entities.RadnjaZaZalbu">
+            <summary>
+            Predstavlja radnju za žalbu
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.RadnjaZaZalbu.RadnjaZaZalbuId">
+            <summary>
+            ID radnje za žalbu
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.RadnjaZaZalbu.NazivRadnjeZaZalbu">
+            <summary>
+            Naziv radnje za žalbu
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Entities.StatusZalbe">
+            <summary>
+            Predstavlja status žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.StatusZalbe.StatusZalbeId">
+            <summary>
+            ID statusa žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.StatusZalbe.NazivStatusaZalbe">
+            <summary>
+            Naziv statusa žalbe 
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Entities.TipZalbe">
+            <summary>
+            Predstavlja Tip žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.TipZalbe.TipZalbeId">
+            <summary>
+            ID tipa žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.TipZalbe.NazivTipaZalbe">
+            <summary>
+            Naziv tipa žalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Entities.Zalba">
+            <summary>
+            Predstavlja Žalbu
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.ZalbaId">
+            <summary>
+            ID žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.DatumPodnosenja">
+            <summary>
+            Datum podnosenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.DatumResenja">
+            <summary>
+            Datum resenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.RazlogZalbe">
+            <summary>
+            Razlog zalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.Obrazlozenje">
+            <summary>
+            Obrazlozenje
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.BrojNadmetanja">
+            <summary>
+            Broj nadmetanja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.BrojResenja">
+            <summary>
+            Broj resenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.StatusZalbeId">
+            <summary>
+            ID statusa žalbe - strani kljuc
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.StatusZalbe">
+            <summary>
+            Objekat statusa žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.TipZalbeId">
+            <summary>
+            ID tipa žalbe - strani kljuc
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.TipZalbe">
+            <summary>
+            Objekat tipa žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.RadnjaZaZalbuId">
+            <summary>
+            ID radnje za žalbu - strani kljuc
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.RadnjaZaZalbu">
+            <summary>
+            Objekat radnje za žalbu
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Entities.Zalba.KupacId">
+            <summary>
+            Id kupca - veza sa mikroservisom Kupac 
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.RadnjaZaZalbuCreateDto">
+            <summary>
+            Creation Dto za radnju žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.RadnjaZaZalbuCreateDto.NazivRadnjeZaZalbu">
+            <summary>
+            Naziv radnje žalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.RadnjaZaZalbuDto">
+            <summary>
+            Dto za radnju žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.RadnjaZaZalbuDto.RadnjaZaZalbuId">
+            <summary>
+            Id radnje za zalbu
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.RadnjaZaZalbuDto.NazivRadnjeZaZalbu">
+            <summary>
+            Naziv radnje žalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.RadnjaZaZalbuUpdateDto">
+            <summary>
+            Update Dto za radnju žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.RadnjaZaZalbuUpdateDto.NazivRadnjeZaZalbu">
+            <summary>
+            Naziv radnje žalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.Services.KupacDto">
+            <summary>
+            Dto Kupac - Entitet iz drugog agregata
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Services.KupacDto.Kupac">
+            <summary>
+            Naziv kupca
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Services.KupacDto.Email">
+            <summary>
+            Email
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Services.KupacDto.BrojRacuna">
+            <summary>
+            Broj racuna
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Services.KupacDto.BrojTelefona1">
+            <summary>
+            Broj telefona 1
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.Services.LogModel">
+            <summary>
+            Log model
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Services.LogModel.Level">
+            <summary>
+            Log level - info, warn, error, debug
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Services.LogModel.Servis">
+            <summary>
+            Naziv servisa
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Services.LogModel.Metoda">
+            <summary>
+            Naziv metode
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Services.LogModel.Poruka">
+            <summary>
+            Tekst poruke
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Services.LogModel.Greska">
+            <summary>
+            Greska
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.StatusZalbeCreateDto">
+            <summary>
+            Creation Dto za status žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.StatusZalbeCreateDto.NazivStatusaZalbe">
+            <summary>
+            Naziv statusa žalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.StatusZalbe.StatusZalbeDto">
+            <summary>
+            Dto za status žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.StatusZalbe.StatusZalbeDto.NazivStatusaZalbe">
+            <summary>
+            Naziv statusa žalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.StatusZalbeUpdateDto">
+            <summary>
+            Update Dto za status žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.StatusZalbeUpdateDto.NazivStatusaZalbe">
+            <summary>
+            Naziv statusa žalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.TipZalbeCreateDto">
+            <summary>
+            Creation Dto za tip žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.TipZalbeCreateDto.NazivTipaZalbe">
+            <summary>
+            Naziv tipa žalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.TipZalbeDto">
+            <summary>
+            Dto za tip žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.TipZalbeDto.TipZalbeId">
+            <summary>
+            Id tipa zalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.TipZalbeDto.NazivTipaZalbe">
+            <summary>
+            Naziv tipa žalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.TipZalbeUpdateDto">
+            <summary>
+            Update Dto za tip žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.TipZalbeUpdateDto.NazivTipaZalbe">
+            <summary>
+            Naziv tipa žalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.Zalba.ZalbaConfirmationDto">
+            <summary>
+            Confirmation Dto za žalbu
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaConfirmationDto.BrojNadmetanja">
+            <summary>
+            Broj nadmetanja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaConfirmationDto.BrojResenja">
+            <summary>
+            Broj rešenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaConfirmationDto.DatumPodnosenja">
+            <summary>
+            Datum podnošenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaConfirmationDto.DatumResenja">
+            <summary>
+            Datum rešenja
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.Zalba.ZalbaCreateDto">
+            <summary>
+            Creation Dto za žalbu
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaCreateDto.DatumPodnosenja">
+            <summary>
+            Datum podnošenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaCreateDto.DatumResenja">
+            <summary>
+            Datum rešenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaCreateDto.RazlogZalbe">
+            <summary>
+            Razlog žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaCreateDto.Obrazlozenje">
+            <summary>
+            Obrazlozenje
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaCreateDto.BrojNadmetanja">
+            <summary>
+            Broj Nadmetanja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaCreateDto.BrojResenja">
+            <summary>
+            Broj Resenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaCreateDto.StatusZalbeId">
+            <summary>
+            Status Zalbe Id
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaCreateDto.TipZalbeId">
+            <summary>
+            Tip Zalbe Id
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaCreateDto.RadnjaZaZalbuId">
+            <summary>
+            Radnja Za ZalbuId
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaCreateDto.KupacId">
+            <summary>
+            Id kupca - veza sa mikroservisom Kupac
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Models.Zalba.ZalbaCreateDto.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Validacija unetih vrednosti za kreiranje žalbe
+            </summary>
+            <param name="validationContext"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Models.Zalba.ZalbaDto">
+            <summary>
+            Dto za žalbu
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaDto.ZalbaId">
+            <summary>
+            Id zalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaDto.DatumPodnosenja">
+            <summary>
+            Datum podnošenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaDto.DatumResenja">
+            <summary>
+            Datum rešenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaDto.RazlogZalbe">
+            <summary>
+            Razlog žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaDto.Obrazlozenje">
+            <summary>
+            Obrazloženje
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaDto.BrojNadmetanja">
+            <summary>
+            Broj nadmetanja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaDto.BrojResenja">
+            <summary>
+            Broj resenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaDto.StatusZalbe">
+            <summary>
+            Status zalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaDto.TipZalbe">
+            <summary>
+            Tip zalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaDto.RadnjaZaZalbu">
+            <summary>
+            Radnja za zalbu
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaDto.Kupac">
+            <summary>
+            Informacije o kupcu - Mikroservis Kupac
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Models.Zalba.ZalbaUpdateDto">
+            <summary>
+            Update dto za žalbu
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaUpdateDto.DatumPodnosenja">
+            <summary>
+            Datum podnošenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaUpdateDto.DatumResenja">
+            <summary>
+            Datum resenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaUpdateDto.RazlogZalbe">
+            <summary>
+            Razlog žalbe
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaUpdateDto.Obrazlozenje">
+            <summary>
+            Obrazloženje
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaUpdateDto.BrojNadmetanja">
+            <summary>
+            Broj nadmetanja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaUpdateDto.BrojResenja">
+            <summary>
+            Broj resenja
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaUpdateDto.StatusZalbeId">
+            <summary>
+            Status žalbe id - strani kljuc
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaUpdateDto.TipZalbeId">
+            <summary>
+            Tip Zalbe Id - strani kljuc
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaUpdateDto.RadnjaZaZalbuId">
+            <summary>
+            Radnja za zalbu Id - strani kljuc
+            </summary>
+        </member>
+        <member name="P:ZalbaService.Models.Zalba.ZalbaUpdateDto.KupacId">
+            <summary>
+            Id kupca - veza sa mikroservisom Kupac
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Models.Zalba.ZalbaUpdateDto.Validate(System.ComponentModel.DataAnnotations.ValidationContext)">
+            <summary>
+            Validacija unetih vrednosti za update žalbe
+            </summary>
+            <param name="validationContext"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Profiles.RadnjaZaZalbuProfile">
+            <summary>
+            Maper za klasu radnja za zalbu
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Profiles.RadnjaZaZalbuProfile.#ctor">
+            <summary>
+            Konstruktor za mapiranje radnje za zalbu
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:ZalbaService.Profiles.StatusZalbeProfile" -->
+        <member name="M:ZalbaService.Profiles.StatusZalbeProfile.#ctor">
+            <summary>
+            Konstruktor za mapiranje statusa zalbe
+            </summary>
+        </member>
+        <!-- Badly formed XML comment ignored for member "T:ZalbaService.Profiles.TipZalbeProfile" -->
+        <member name="M:ZalbaService.Profiles.TipZalbeProfile.#ctor">
+            <summary>
+            Konstruktor za mapiranje tipa zalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Profiles.ZalbaProfile">
+            <summary>
+            Maper za klasu zalba
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Profiles.ZalbaProfile.#ctor">
+            <summary>
+            Konstruktor za mapiranje zalbe
+            </summary>
+        </member>
+        <member name="T:ZalbaService.Program">
+            <summary>
+            Program class
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Program.Main(System.String[])">
+            <summary>
+            Main method
+            </summary>
+            <param name="args"></param>
+        </member>
+        <member name="M:ZalbaService.Program.CreateHostBuilder(System.String[])">
+            <summary>
+            CreateHostBuilder method
+            </summary>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.ServicesCalls.ILoggerService">
+            <summary>
+            Interfejs loger servisa
+            </summary>
+        </member>
+        <member name="M:ZalbaService.ServicesCalls.ILoggerService.Log(Microsoft.Extensions.Logging.LogLevel,System.String,System.String,System.Exception)">
+            <summary>
+            Slanje post zahteva za upis novog log zapisa
+            </summary>
+            <param name="level">INFO/DEBUG/WARN/ERROR</param>
+            <param name="metoda">Naziv metode</param>
+            <param name="poruka">Tekst poruke</param>
+            <param name="greska">Exception</param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.ServicesCalls.IServiceCall`1">
+            <summary>
+            Interfejs za komunikaciju sa drugim servisima
+            </summary>
+            <typeparam name="T">Generic</typeparam>
+        </member>
+        <member name="M:ZalbaService.ServicesCalls.IServiceCall`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.ServicesCalls.LoggerService">
+            <summary>
+            Loger servis
+            </summary>
+        </member>
+        <member name="M:ZalbaService.ServicesCalls.LoggerService.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Konstruktor loger servisa
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:ZalbaService.ServicesCalls.LoggerService.Log(Microsoft.Extensions.Logging.LogLevel,System.String,System.String,System.Exception)">
+            <summary>
+            Slanje post zahteva za upis novog log zapisa
+            </summary>
+            <param name="level">INFO/DEBUG/WARN/ERROR</param>
+            <param name="metoda">Naziv metode</param>
+            <param name="poruka">Tekst poruke</param>
+            <param name="greska">Exception</param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.ServicesCalls.Mocks.LoggerServiceMock">
+            <summary>
+            Logger service mock
+            </summary>
+        </member>
+        <member name="M:ZalbaService.ServicesCalls.Mocks.LoggerServiceMock.Log(Microsoft.Extensions.Logging.LogLevel,System.String,System.String,System.Exception)">
+            <summary>
+            Slanje post zahteva za upis novog log zapisa - mock
+            </summary>
+            <param name="level">INFO/DEBUG/WARN/ERROR</param>
+            <param name="metoda">Naziv metode</param>
+            <param name="poruka">Tekst poruke</param>
+            <param name="greska">Exception</param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.ServicesCalls.ServiceCallKupacMock`1">
+            <summary>
+            Mock klasa za dobijanje podatka o kupcu
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:ZalbaService.ServicesCalls.ServiceCallKupacMock`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva - mock
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.ServicesCalls.ServiceCall`1">
+            <summary>
+            Genericka klasa za komunikaciju sa drugim servisima
+            </summary>
+            <typeparam name="T"></typeparam>
+        </member>
+        <member name="M:ZalbaService.ServicesCalls.ServiceCall`1.#ctor(ZalbaService.ServicesCalls.ILoggerService)">
+            <summary>
+            Konstruktor klase service call
+            </summary>
+            <param name="loggerService"></param>
+        </member>
+        <member name="M:ZalbaService.ServicesCalls.ServiceCall`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva
+            </summary>
+            <param name="url">Url putanja ka drugom servisu</param>
+            <returns></returns>
+        </member>
+        <member name="T:ZalbaService.Startup">
+            <summary>
+            Startup class
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Startup.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Startup klasa konstruktor
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="P:ZalbaService.Startup.Configuration">
+            <summary>
+            IConfiguration property
+            </summary>
+        </member>
+        <member name="M:ZalbaService.Startup.ConfigureServices(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            This method gets called by the runtime. Use this method to add services to the container.
+            </summary>
+            <param name="services"></param>
+        </member>
+        <member name="M:ZalbaService.Startup.Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder,Microsoft.AspNetCore.Hosting.IWebHostEnvironment)">
+            <summary>
+            This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+            </summary>
+            <param name="app"></param>
+            <param name="env"></param>
+        </member>
+    </members>
+</doc>
