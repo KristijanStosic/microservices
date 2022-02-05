@@ -94,22 +94,32 @@ namespace DokumentService.Controllers
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateDokument([FromBody] CreateDokumentDto dokumentDto)
-        { 
-            var document = _mapper.Map<Dokument>(dokumentDto);
+        {
+            try
+            {
+                var document = _mapper.Map<Dokument>(dokumentDto);
 
-            _unitOfWork.Dokument.CreateDokument(document);
-            await _unitOfWork.CompleteAsync();
+                _unitOfWork.Dokument.CreateDokument(document);
+                await _unitOfWork.CompleteAsync();
 
-            document.TipDokumenta = await _unitOfWork.TipDokumenta.GetTipDokumentaById(document.TipDokumentaId);
+                document.TipDokumenta = await _unitOfWork.TipDokumenta.GetTipDokumentaById(document.TipDokumentaId);
 
-            await _loggerService.Log(LogLevel.Information, "CreateDokument",
-                $"Dokument sa vrednostima: {JsonConvert.SerializeObject(document)} je uspešno kreiran.");
+                await _loggerService.Log(LogLevel.Information, "CreateDokument",
+                    $"Dokument sa vrednostima: {JsonConvert.SerializeObject(document)} je uspešno kreiran.");
 
-            return CreatedAtAction(
-                "GetDokumentById",
-                new {id = document.Id},
-                _mapper.Map<DokumentDto>(document)
-            );
+                return CreatedAtAction(
+                    "GetDokumentById",
+                    new {id = document.Id},
+                    _mapper.Map<DokumentDto>(document)
+                );
+            }
+            catch (Exception ex)
+            {
+                await _loggerService.Log(LogLevel.Error, "CreateDokument",
+                    $"Greška prilikom kreiranja dokumenta sa vrednostima: {JsonConvert.SerializeObject(dokumentDto)}.",
+                    ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom kreiranja dokumenta.");
+            }
         }
 
         /// <summary>
@@ -127,30 +137,40 @@ namespace DokumentService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateDokument(Guid id, [FromBody] UpdateDokumentDto dokumentDto)
         {
-            if (id != dokumentDto.Id)
+            try
             {
-                await _loggerService.Log(LogLevel.Warning, "UpdateDokument",
-                    "ID dokumenta prosledjen kroz url nije isti kao onaj u telu zahteva.");
-                return BadRequest();
+                if (id != dokumentDto.Id)
+                {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateDokument",
+                        "ID dokumenta prosledjen kroz url nije isti kao onaj u telu zahteva.");
+                    return BadRequest();
+                }
+
+                var document = await _unitOfWork.Dokument.GetDokumentById(id);
+                var oldValue = JsonConvert.SerializeObject(document);
+
+                if (document == null)
+                {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateDokument",
+                        $"Dokument sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                _mapper.Map(dokumentDto, document, typeof(DokumentDto), typeof(Dokument));
+                await _unitOfWork.CompleteAsync();
+
+                await _loggerService.Log(LogLevel.Information, "UpdateDokument",
+                    $"Dokument sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
+
+                return NoContent();
             }
-
-            var document = await _unitOfWork.Dokument.GetDokumentById(id);
-            var oldValue = JsonConvert.SerializeObject(document);
-
-            if (document == null)
+            catch (Exception ex)
             {
-                await _loggerService.Log(LogLevel.Warning, "UpdateDokument",
-                    $"Dokument sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                await _loggerService.Log(LogLevel.Error, "UpdateDokument",
+                    $"Greška prilikom izmene dokumenta sa vrednostima: {JsonConvert.SerializeObject(dokumentDto)}.",
+                    ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom izmene dokumenta.");
             }
-
-            _mapper.Map(dokumentDto, document, typeof(DokumentDto), typeof(Dokument));
-            await _unitOfWork.CompleteAsync();
-
-            await _loggerService.Log(LogLevel.Information, "UpdateDokument",
-                $"Dokument sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
-
-            return NoContent();
         }
 
         /// <summary>

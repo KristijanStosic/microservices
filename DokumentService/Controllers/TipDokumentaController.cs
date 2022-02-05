@@ -97,19 +97,30 @@ namespace DokumentService.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateTipDokumenta([FromBody] TipDokumentaDto tipDokumentaDto)
         {
-            var tipDokumenta = _mapper.Map<TipDokumenta>(tipDokumentaDto);
+            try
+            {
+                var tipDokumenta = _mapper.Map<TipDokumenta>(tipDokumentaDto);
 
-            _unitOfWork.TipDokumenta.CreateTipDokumenta(tipDokumenta);
-            await _unitOfWork.CompleteAsync();
+                _unitOfWork.TipDokumenta.CreateTipDokumenta(tipDokumenta);
+                await _unitOfWork.CompleteAsync();
 
-            await _loggerService.Log(LogLevel.Information, "CreateTipDokumenta",
-                $"Tip dokumenta sa vrednostima: {JsonConvert.SerializeObject(tipDokumenta)} je uspešno kreiran.");
+                await _loggerService.Log(LogLevel.Information, "CreateTipDokumenta",
+                    $"Tip dokumenta sa vrednostima: {JsonConvert.SerializeObject(tipDokumenta)} je uspešno kreiran.");
 
-            return CreatedAtAction(
-                "GetTipDokumentaById",
-                new {id = tipDokumenta.Id},
-                _mapper.Map<TipDokumentaDto>(tipDokumenta)
-            );
+                return CreatedAtAction(
+                    "GetTipDokumentaById",
+                    new {id = tipDokumenta.Id},
+                    _mapper.Map<TipDokumentaDto>(tipDokumenta)
+                );
+            }
+            catch (Exception ex)
+            {
+                await _loggerService.Log(LogLevel.Error, "CreateTipDokumenta",
+                    $"Greška prilikom kreiranja tipa dokumenta sa vrednostima: {JsonConvert.SerializeObject(tipDokumentaDto)}.",
+                    ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Greška prilikom kreiranja tipa dokumenta.");
+            }
         }
 
         /// <summary>
@@ -127,30 +138,40 @@ namespace DokumentService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateTipDokumenta(Guid id, [FromBody] UpdateTipDokumentaDto tipDokumentaDto)
         {
-            if (id != tipDokumentaDto.Id)
+            try
             {
-                await _loggerService.Log(LogLevel.Warning, "UpdateTipDokumenta",
-                    "ID tipa dokumenta prosledjen kroz url nije isti kao onaj u telu zahteva.");
-                return BadRequest();
+                if (id != tipDokumentaDto.Id)
+                {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateTipDokumenta",
+                        "ID tipa dokumenta prosledjen kroz url nije isti kao onaj u telu zahteva.");
+                    return BadRequest();
+                }
+
+                var tipDokumenta = await _unitOfWork.TipDokumenta.GetTipDokumentaById(id);
+                var oldValue = JsonConvert.SerializeObject(tipDokumenta);
+
+                if (tipDokumenta == null)
+                {
+                    await _loggerService.Log(LogLevel.Warning, "UpdateTipDokumenta",
+                        $"Tip dokumenta sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                _mapper.Map(tipDokumentaDto, tipDokumenta, typeof(UpdateTipDokumentaDto), typeof(TipDokumenta));
+                await _unitOfWork.CompleteAsync();
+
+                await _loggerService.Log(LogLevel.Information, "UpdateTipDokumenta",
+                    $"Tip dokumenta sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
+
+                return NoContent();
             }
-
-            var tipDokumenta = await _unitOfWork.TipDokumenta.GetTipDokumentaById(id);
-            var oldValue = JsonConvert.SerializeObject(tipDokumenta);
-
-            if (tipDokumenta == null)
+            catch (Exception ex)
             {
-                await _loggerService.Log(LogLevel.Warning, "UpdateTipDokumenta",
-                    $"Tip dokumenta sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                await _loggerService.Log(LogLevel.Error, "UpdateTipDokumenta",
+                    $"Greška prilikom izmene tipa dokumenta sa vrednostima: {JsonConvert.SerializeObject(tipDokumentaDto)}.",
+                    ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom izmene tipa dokumenta.");
             }
-
-            _mapper.Map(tipDokumentaDto, tipDokumenta, typeof(UpdateTipDokumentaDto), typeof(TipDokumenta));
-            await _unitOfWork.CompleteAsync();
-
-            await _loggerService.Log(LogLevel.Information, "UpdateTipDokumenta",
-                $"Tip dokumenta sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
-
-            return NoContent();
         }
 
         /// <summary>
