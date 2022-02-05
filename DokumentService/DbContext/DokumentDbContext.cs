@@ -29,9 +29,10 @@ namespace DokumentService.DbContext
                     new TipDokumenta
                     {
                         Id = Guid.Parse("77CBE573-4AD7-4DB8-B9B1-7A9F45BEC5DB"),
-                        NazivTipa = "Potvrda o statusu poljoprivrednog gazdinstava u registru poljoprivrednih gazdinstava"
+                        NazivTipa =
+                            "Potvrda o statusu poljoprivrednog gazdinstava u registru poljoprivrednih gazdinstava"
                     }
-                    ,new TipDokumenta
+                    , new TipDokumenta
                     {
                         Id = Guid.Parse("3E649B2D-5569-4463-80F3-04382EF4A7EB"),
                         NazivTipa = "Izvod iz javne evidencije o nepokretnosti"
@@ -42,6 +43,7 @@ namespace DokumentService.DbContext
                 .HasData(
                     new Dokument
                     {
+                        Id = Guid.Parse("854a5603-31c6-4815-b393-a2b61887ba5e"),
                         ZavodniBroj = "PSPG-1/2022",
                         Datum = DateTime.Now,
                         DatumDonosenjaDokumenta = DateTime.Now.AddDays(3),
@@ -49,6 +51,7 @@ namespace DokumentService.DbContext
                     },
                     new Dokument
                     {
+                        Id = Guid.Parse("13b6c9df-03b9-4313-af6a-6c2e076e8a0a"),
                         ZavodniBroj = "IJEN-1/2022",
                         Datum = DateTime.Now,
                         DatumDonosenjaDokumenta = DateTime.Now.AddDays(3),
@@ -56,18 +59,13 @@ namespace DokumentService.DbContext
                     },
                     new Dokument
                     {
+                        Id = Guid.Parse("7147fd52-b938-4cec-8b81-dfa51f123f0c"),
                         ZavodniBroj = "PSPG-2/2022",
                         Datum = DateTime.Now,
                         DatumDonosenjaDokumenta = DateTime.Now.AddDays(3),
                         TipDokumentaId = Guid.Parse("77CBE573-4AD7-4DB8-B9B1-7A9F45BEC5DB")
-                    },
-                    new Dokument
-                    {
-                        ZavodniBroj = "IJEN-2/2022",
-                        Datum = DateTime.Now,
-                        DatumDonosenjaDokumenta = DateTime.Now.AddDays(3),
-                        TipDokumentaId = Guid.Parse("3E649B2D-5569-4463-80F3-04382EF4A7EB")
-                    });
+                    }
+                );
         }
     }
 }

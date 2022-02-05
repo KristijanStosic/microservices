@@ -7,7 +7,6 @@ using DokumentService.Data.TipDokumenta;
 using DokumentService.Data.UnitOfWork;
 using DokumentService.Entities;
 using DokumentService.Models.Dokument;
-using DokumentService.Services;
 using DokumentService.Services.Logger;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
