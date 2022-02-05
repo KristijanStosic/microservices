@@ -20,14 +20,17 @@ namespace UgovorOZakupu.Entities
         public DateTime DatumPotpisivanja { get; set; }
 
         public Guid TipGarancijeId { get; set; }
+        
         public TipGarancije TipGarancije { get; set; }
 
         public IEnumerable<RokDospeca> RokoviDospeca { get; set; }
 
-        public Guid DokumentId { get; set; }
+        public Guid DokumentId { get; set; } // Odluka
         
         public Guid JavnoNadmetanjeId { get; set; }
         
-        public Guid KupacId { get; set; }
+        public Guid KupacId { get; set; } // Lice
+        
+        public Guid LicnostId { get; set; } // Ministar
     }
 }

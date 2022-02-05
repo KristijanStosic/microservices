@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +19,12 @@ namespace UgovorOZakupu.Controllers
     [ApiController]
     public class UgovorOZakupuController : ControllerBase
     {
+        private readonly ILoggerService _loggerService;
         private readonly IMapper _mapper;
+        private readonly IServiceCalls _serviceCalls;
         private readonly ITipGaranceijeRepository _tipGaranceijeRepository;
         private readonly IUgovorOZakupuRepository _ugovorOZakupuRepository;
         private readonly IUnitOfWork _unitOfWork;
-        
-        private readonly ILoggerService _loggerService;
-        private readonly IServiceCalls _serviceCalls;
 
         public UgovorOZakupuController(IUgovorOZakupuRepository ugovorOZakupuRepository,
             ITipGaranceijeRepository tipGaranceijeRepository, IUnitOfWork unitOfWork,
@@ -50,7 +50,11 @@ namespace UgovorOZakupu.Controllers
                 return NoContent();
             }
 
-            var ugovoriDto = _mapper.Map<List<UgovorOZakupuDto>>(ugovori);
+            var ugovoriDto = Task.WhenAll(
+                    ugovori.Select(u => _serviceCalls.GetUgovorOZakupuInfo(u))
+            )
+                .Result
+                .ToList();
 
             await _loggerService.Log(LogLevel.Information, "GetAllUgovorOZakupu",
                 "Lista ugovora o zakupu je uspešno vraćena.");
@@ -69,9 +73,9 @@ namespace UgovorOZakupu.Controllers
                     $"Ugovor o zakupu sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
-            
+
             var ugovorDto = await _serviceCalls.GetUgovorOZakupuInfo(ugovor);
-            
+
             await _loggerService.Log(LogLevel.Information, "GetUgovorOZakupuById",
                 $"Ugovor o zakupu sa id-jem {id} je uspešno vraćen.");
 
@@ -93,7 +97,7 @@ namespace UgovorOZakupu.Controllers
             {
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
-            
+
             await _loggerService.Log(LogLevel.Information, "CreateUgovorOZakupu",
                 $"Ugovor o zakupu sa vrednostima: {serialized} je uspešno kreiran.");
 

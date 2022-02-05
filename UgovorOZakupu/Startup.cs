@@ -12,6 +12,7 @@ using UgovorOZakupu.DbContext;
 using UgovorOZakupu.Models.Dokument;
 using UgovorOZakupu.Models.JavnoNadmetanje;
 using UgovorOZakupu.Models.Kupac;
+using UgovorOZakupu.Models.Licnost;
 using UgovorOZakupu.Services;
 using UgovorOZakupu.Services.Logger;
 using UgovorOZakupu.Services.ServiceCalls;
@@ -38,6 +39,7 @@ namespace UgovorOZakupu
             services.AddScoped<IService<DokumentDto>, Service<DokumentDto>>();
             services.AddScoped<IService<JavnoNadmetanjeDto>, Service<JavnoNadmetanjeDto>>();
             services.AddScoped<IService<KupacDto>, Service<KupacDto>>();
+            services.AddScoped<IService<LicnostDto>, Service<LicnostDto>>();
             
             // services.AddScoped<IServiceCalls, ServiceCalls>();
             services.AddScoped<IServiceCalls, ServiceCallsMock>();

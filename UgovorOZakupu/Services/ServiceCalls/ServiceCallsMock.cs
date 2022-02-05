@@ -5,6 +5,7 @@ using AutoMapper;
 using UgovorOZakupu.Models.Dokument;
 using UgovorOZakupu.Models.JavnoNadmetanje;
 using UgovorOZakupu.Models.Kupac;
+using UgovorOZakupu.Models.Licnost;
 using UgovorOZakupu.Models.UgovorOZakupu;
 
 namespace UgovorOZakupu.Services.ServiceCalls
@@ -22,9 +23,10 @@ namespace UgovorOZakupu.Services.ServiceCalls
         {
             var ugovorDto = _mapper.Map<UgovorOZakupuDto>(ugovor);
             
-            ugovorDto.Dokument = GetDokument();
+            ugovorDto.Odluka = GetDokument();
             ugovorDto.JavnoNadmetanje = GetJavnoNadmetanje();
-            ugovorDto.Kupac = GetKupac();
+            // ugovorDto.Lice = GetKupac();
+            ugovorDto.Ministar = GetLicnost();
             
             return Task.FromResult(ugovorDto);
         }
@@ -150,6 +152,17 @@ namespace UgovorOZakupu.Services.ServiceCalls
         private KupacDto GetKupac()
         {
             throw new NotImplementedException();
+        }
+
+        private LicnostDto GetLicnost()
+        {
+            return new LicnostDto
+            {
+                LicnostId = Guid.NewGuid(),
+                Ime = "Marko",
+                Prezime = "Markovic",
+                Funkcija = "Licitant"
+            };
         }
     }
 }

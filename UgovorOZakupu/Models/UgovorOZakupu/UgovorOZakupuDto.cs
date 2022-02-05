@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UgovorOZakupu.Models.Dokument;
 using UgovorOZakupu.Models.JavnoNadmetanje;
 using UgovorOZakupu.Models.Kupac;
+using UgovorOZakupu.Models.Licnost;
 
 namespace UgovorOZakupu.Models.UgovorOZakupu
 {
@@ -21,11 +22,12 @@ namespace UgovorOZakupu.Models.UgovorOZakupu
         public string TipGarancije { get; set; }
 
         public IEnumerable<int> RokoviDospeca { get; set; }
-
-        public DokumentDto Dokument { get; set; }
         
+        public DokumentDto Odluka { get; set; }
         public JavnoNadmetanjeDto JavnoNadmetanje { get; set; }
-        
-        public KupacDto Kupac { get; set; }
+
+        public KupacDto Lice { get; set; }
+
+        public LicnostDto Ministar { get; set; }
     }
 }

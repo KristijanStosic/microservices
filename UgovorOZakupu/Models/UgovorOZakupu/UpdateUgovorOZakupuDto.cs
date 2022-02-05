@@ -18,6 +18,12 @@ namespace UgovorOZakupu.Models.UgovorOZakupu
 
         public Guid TipGarancijeId { get; set; }
         
-        public Guid DokumentId { get; set; }
+        public Guid DokumentId { get; set; } // Odluka
+        
+        public Guid JavnoNadmetanjeId { get; set; }
+        
+        public Guid KupacId { get; set; } // Lice
+        
+        public Guid LicnostId { get; set; } // Ministar
     }
 }
