@@ -13,12 +13,11 @@ namespace KupacService.Data
     public class KontaktOsobaRepository : IKontaktOsobaRepository
     {
         private readonly KupacContext _kupacContext;
-        private readonly IMapper _mapper;
 
-        public KontaktOsobaRepository(KupacContext kupacContext,IMapper mapper)
+
+        public KontaktOsobaRepository(KupacContext kupacContext)
         {
             this._kupacContext = kupacContext;
-            this._mapper = mapper;
         }
         public async Task<KontaktOsoba> CreateKontaktOsoba(KontaktOsoba kontaktOsoba)
         {
