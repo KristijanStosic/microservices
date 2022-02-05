@@ -80,7 +80,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
                     }
                 },
                 Adresa = "Bulevar Oslobodjenja 50, 21000 Novi Sad, Srbija",
-                JavnoNadmetanjeKupac = new JavnoNadmetanjeKupacDto
+                Kupac = new JavnoNadmetanjeKupacDto
                 {
                     Kupac = "Milana Milanovic",
                     Email = "milana@gmail.com",
@@ -91,15 +91,33 @@ namespace UgovorOZakupu.Services.ServiceCalls
                 {
                     new()
                     {
+                        OvlascenoLiceId = Guid.NewGuid(),
                         OvlascenoLice = "Petar Petrović",
                         BrojDokumenta = "0224989800025",
-                        Stanovanje = "Bulevar Oslobodjenja 50, Novi Sad, Srbija"
+                        Stanovanje = "Bulevar Oslobodjenja 50, Novi Sad, Srbija",
+                        BrojeviTabli = new List<BrojTableDto>()
                     },
                     new()
                     {
+                        OvlascenoLiceId = Guid.NewGuid(),
                         OvlascenoLice = "Milica Radivojević",
                         BrojDokumenta = "0263989802415",
-                        Stanovanje = "Bulevar Cara Lazara 11, Novi Sad, Srbija"
+                        Stanovanje = "Bulevar Cara Lazara 11, Novi Sad, Srbija",
+                        BrojeviTabli = new List<BrojTableDto>
+                        {
+                            new()
+                            {
+                                BrojTableId = Guid.NewGuid(),
+                                OznakaTable = "Talba1",
+                                RbTable = 1
+                            },
+                            new()
+                            {
+                                BrojTableId = Guid.NewGuid(),
+                                OznakaTable = "Talba2",
+                                RbTable = 2
+                            }
+                        }
                     }
                 },
                 Kupci = new List<JavnoNadmetanjeKupacDto>

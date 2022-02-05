@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -15,8 +16,12 @@ using UgovorOZakupu.Services.ServiceCalls;
 
 namespace UgovorOZakupu.Controllers
 {
-    [Route("api/[controller]")]
+    /// <summary>
+    /// Kontroler za ugovor o zakupu
+    /// </summary>
     [ApiController]
+    [Route("api/[controller]")]
+    [Produces("application/json")]
     public class UgovorOZakupuController : ControllerBase
     {
         private readonly ILoggerService _loggerService;
@@ -38,7 +43,15 @@ namespace UgovorOZakupu.Controllers
             _serviceCalls = serviceCalls;
         }
 
+        /// <summary>
+        /// Vraća sve ugovore o zakupu
+        /// </summary>
+        /// <returns>Lista ugovora o zakupu</returns>
+        /// <response code="200">Vraća listu ugovora o zakupu</response>
+        /// <response code="204">Nije pronadjen nijedan ugovor o zakupu</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<UgovorOZakupuDto>>> GetAllUgovorOZakupu()
         {
             var ugovori = await _ugovorOZakupuRepository.GetAllUgovorOZakupu();
@@ -62,7 +75,16 @@ namespace UgovorOZakupu.Controllers
             return Ok(ugovoriDto);
         }
 
+        /// <summary>
+        /// Vraća jedan ugovor o zakupu na osnovu ID-a
+        /// </summary>
+        /// <param name="id">ID ugovora o zakupu</param>
+        /// <returns>Ugovor o zakupu</returns>
+        /// <response code="200">Vraća traženi ugovor o zakupu</response>
+        /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
         [HttpGet("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UgovorOZakupuDto>> GetUgovorOZakupuById(Guid id)
         {
             var ugovor = await _ugovorOZakupuRepository.GetUgovorOZakupuById(id);
@@ -82,7 +104,15 @@ namespace UgovorOZakupu.Controllers
             return Ok(ugovorDto);
         }
 
+        /// <summary>
+        /// Kreira novi ugovor o zakupu
+        /// </summary>
+        /// <param name="ugovorOZakupuDto">Model ugovora o zakupu za kreiranje</param>
+        /// <returns>Ugovor o zakupu</returns>
+        /// <response code="201">Vraća kreirani ugovor o zakupu</response>
         [HttpPost]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateUgovorOZakupu([FromBody] CreateUgovorOZakupuDto ugovorOZakupuDto)
         {
             var ugovor = _mapper.Map<Entities.UgovorOZakupu>(ugovorOZakupuDto);
@@ -108,7 +138,20 @@ namespace UgovorOZakupu.Controllers
             );
         }
 
+        /// <summary>
+        /// Izmena ugovor o zakupu
+        /// </summary>
+        /// <param name="id">ID ugovora o zakupu</param>
+        /// <param name="ugovorOZakupuDto">Model ugovora o zakupu za izmenu</param>
+        /// <returns>Status 204 (NoContent)</returns>
+        /// <response code="204">Potvrda o izmeni ugovora o zakupu</response>
+        /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
+        /// <response code="400">ID nije isti kao onaj proledjen u modelu ugovora o zakupu</response>
         [HttpPut("{id:guid}")]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> UpdateUgovorOZakupu(Guid id,
             [FromBody] UpdateUgovorOZakupuDto ugovorOZakupuDto)
         {
@@ -142,7 +185,15 @@ namespace UgovorOZakupu.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// Brisanje ugovora o zakupu na osnovu ID-a
+        /// </summary>
+        /// <param name="id">ID ugovora o zakupu</param>
+        /// <response code="204">Ugovor o zakupu je uspešno obrisan</response>
+        /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
         [HttpDelete("{id:guid}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteUgovorOZakupu(Guid id)
         {
             var ugovor = await _ugovorOZakupuRepository.GetUgovorOZakupuById(id);
@@ -161,6 +212,18 @@ namespace UgovorOZakupu.Controllers
                 $"Ugovor o zakupu sa id-em {id} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(ugovor)}");
 
             return NoContent();
+        }
+        
+        /// <summary>
+        /// Vraća opcije za rad sa ugovorima o zakupu
+        /// </summary>
+        /// <response code="200">Vraća listu opcija u header-u</response>
+        [HttpOptions]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetUgovorOZakupuOptions()
+        {
+            Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
+            return Ok();
         }
     }
 }

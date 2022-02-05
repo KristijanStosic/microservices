@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UgovorOZakupu.Models.Adresa;
 using UgovorOZakupu.Models.JavnoNadmetanje;
 
 namespace UgovorOZakupu.Models.Kupac
@@ -21,7 +20,7 @@ namespace UgovorOZakupu.Models.Kupac
         public KontaktOsobaDto KontaktOsoba { get; set; }
 
         public List<PrioritetDto> Prioriteti { get; set; }
-        public AdresaDto Adresa { get; set; }
+        // public AdresaDto Adresa { get; set; }
         public List<OvlascenoLiceDto> OvlascenaLica { get; set; }
     }
 }
