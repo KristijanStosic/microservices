@@ -25,12 +25,12 @@ namespace UplataService.Controllers
     [Produces("application/json", "application/xml")]
     public class UplataController : ControllerBase
     {
-        private IUplataRepository _uplataRepository;
-        private LinkGenerator _linkGenerator;
-        private IMapper _mapper;
-        private ILoggerService _loggerService;
-        private IConfiguration _configuration;
-        private IServiceCall<JavnoNadmetanjeDto> _javnoNadmetanjeService;
+        private readonly IUplataRepository _uplataRepository;
+        private readonly LinkGenerator _linkGenerator;
+        private readonly IMapper _mapper;
+        private readonly ILoggerService _loggerService;
+        private readonly IConfiguration _configuration;
+        private readonly IServiceCall<JavnoNadmetanjeDto> _javnoNadmetanjeService;
 
         /// <summary>
         /// Konstruktor kontrolera uplate - DI

@@ -6,7 +6,7 @@ namespace UplataService.Entities.DataContext
 {
     public class UplataContext : DbContext
     {
-        private  IConfiguration _configuration;
+        private  readonly IConfiguration _configuration;
         public UplataContext(DbContextOptions options, IConfiguration configuration) : base(options)
         {
             _configuration = configuration;
@@ -19,9 +19,9 @@ namespace UplataService.Entities.DataContext
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("UplataDB"));
         }
 
-        protected override void OnModelCreating(ModelBuilder builder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            builder.Entity<Uplata>(b =>
+            modelBuilder.Entity<Uplata>(b =>
             {
                 b.ToTable("Uplata").HasKey(x => x.UplataId);
                 b.Property(x => x.BrojRacuna).HasMaxLength(20).HasDefaultValue(string.Empty);
@@ -36,7 +36,7 @@ namespace UplataService.Entities.DataContext
                 });
             });
 
-            builder.Entity<Uplata>()
+            modelBuilder.Entity<Uplata>()
                 .HasData(new
                 {
                     UplataId = Guid.Parse("8E297AD0-9072-4941-B951-5970EAED18F3"),
