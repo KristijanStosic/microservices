@@ -1,0 +1,1162 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ParcelaService</name>
+    </assembly>
+    <members>
+        <member name="T:ParcelaService.Controllers.DeoParceleController">
+            <summary>
+            Kontroler za deo parcele
+            </summary>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.#ctor(ParcelaService.Data.Interfaces.IDeoParceleRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,ParcelaService.ServiceCalls.IServiceCall{ParcelaService.Models.OtherServices.KupacDto},Microsoft.Extensions.Configuration.IConfiguration,ParcelaService.ServiceCalls.ILoggerService)">
+            <summary>
+            Konstruktor kontrolera dela parcele
+            </summary>
+            <param name="deoParceleRepository">Repo deo parcele</param>
+            <param name="linkGenerator">Link generator za create zahtev</param>
+            <param name="mapper">AutoMapper</param>
+            <param name="kupacServiceCall">Servis kupac - dobijanje kupca</param>
+            <param name="configuration">Konfiguracija za pristup putanji ka servisu kupac</param>
+            <param name="loggerService">Logger servis</param>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.GetAllDeoParcele">
+            <summary>
+            Vraća sve delove parcela
+            </summary>
+            <returns>Lista delova parcela</returns>
+            <response code="200">Vraća listu delova parcela</response>
+            <response code="404">Nije pronađeno ni jedan deo parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.GetDeoParcele(System.Guid)">
+            <summary>
+            Vraća jedan deo parcele na osnovu ID-a
+            </summary>
+            <param name="deoParceleId">ID dela parcele</param>
+            <returns>Deo parcele</returns>
+            <response code="200">Vraća traženi deo parcele</response>
+            <response code="404">Nije pronađen deo parcele za uneti ID</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.CreateDeoParcele(ParcelaService.Models.DeoParcele.DeoParceleCreationDto)">
+             <summary>
+             Kreira novi deo parcele
+             </summary>
+             <param name="deoParcele">Model deo parcele</param>
+             <remarks>
+             Primer zahteva za kreiranje novog dela parcele \
+             POST /api/deoParcele \
+             {   
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju dela parcele</returns>
+             <response code="200">Vraća kreirani deo parcele</response>
+             <response code="500">Desila se greška prilikom unosa novog dela parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.UpdateDeoParcele(ParcelaService.Models.DeoParcele.DeoParceleUpdateDto)">
+            <summary>
+            Izmena dela parcele
+            </summary>
+            <param name="deoParcele">Model deo parcele</param>
+            <returns>Potvrda o izmeni dela parcele</returns>
+            <response code="200">Izmenjeni deo parcele</response>
+            <response code="404">Nije pronađen deo parcele za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene dela parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.DeleteDeoParcele(System.Guid)">
+            <summary>
+            Brisanje dela parcele na osnovu ID-a
+            </summary>
+            <param name="deoParceleId">ID dela parcele</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Deo parcele je uspešno obrisan</response>
+            <response code="404">Nije pronađeno deo parcele za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja dela parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.GetDeoParceleOptions">
+            <summary>
+            Vraća opcije za rad sa delom parcele
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ParcelaService.Controllers.KatastarskaOpstinaController">
+            <summary>
+            Kontroler za katastarsku opstinu
+            </summary>
+        </member>
+        <member name="M:ParcelaService.Controllers.KatastarskaOpstinaController.GetAllKatastarskaOpstina(System.String)">
+            <summary>
+            Vraća sve katastarske opštine
+            </summary>
+            <returns>Lista katastarskih opština</returns>
+            <response code="200">Vraća listu katastarskih opština</response>
+            <response code="404">Nije pronađena ni jedna katastarska opština</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KatastarskaOpstinaController.GetKatastarskaOpstina(System.Guid)">
+            <summary>
+            Vraća jednu katastarsku opštinu na osnovu ID-a
+            </summary>
+            <param name="katastarskaOpstinaId">ID katastarske opštine</param>
+            <returns>Katastarska opština</returns>
+            <response code="200">Vraća traženu katastarsku opštinu</response>
+            <response code="404">Nije pronađena katastarska opština za uneti ID</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KatastarskaOpstinaController.CreateKatastarskaOpstina(ParcelaService.Models.KatastarskaOpstina.KatastarskaOpstinaCreationDto)">
+            <summary>
+            Kreira novu katastarsku opštinu
+            </summary>
+            <param name="katastarskaOpstina">Model katastarske opštine</param>
+            <remarks>
+            Primer zahteva za kreiranje nove katastarske opštine \
+            POST /api/katastarskaOpstina \
+            {
+                  "nazivKatastarskeOpstine": "Naziv katastarske opštine"
+            }
+            </remarks>
+            <returns>Potvrda o kreiranju katastarske opštine</returns>
+            <response code="201">Vraća kreiranu katastarsku opštinu</response>
+            <responese code="500">Desila se greška prilikom unosa nove katastarske opštine</responese>
+        </member>
+        <member name="M:ParcelaService.Controllers.KatastarskaOpstinaController.UpdateKatastarskaOpstina(ParcelaService.Models.KatastarskaOpstina.KatastarskaOpstinaUpdateDto)">
+            <summary>
+            Izmena katastarske oštine
+            </summary>
+            <param name="katastarskaOpstina">Model katastarske opštine</param>
+            <returns>Potvrda o izmeni katastarske opštine</returns>
+            <response code="200">Izmena katastarske opštine</response>
+            <response code="404">Nije pronađena katastarska opština za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene katastarske opštine</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KatastarskaOpstinaController.DeleteKatastarskaOpstina(System.Guid)">
+            <summary>
+            Brisanje katastarske opštine
+            </summary>
+            <param name="katastarskaOpstinaId"></param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Katastarska opština je uspešno obrisana</response>
+            <response code="404">Nije pronađena katastarska opština za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja katastarske opštine</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KatastarskaOpstinaController.GetKatastarskaOpstinaOptions">
+            <summary>
+            Vraća opcije za rad sa katastarskim opštinama
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ParcelaService.Controllers.KlasaController">
+            <summary>
+            Kontroler za klasu
+            </summary>
+        </member>
+        <member name="M:ParcelaService.Controllers.KlasaController.GetAllKlasa(System.String)">
+            <summary>
+            Vraća sve klase
+            </summary>
+            <returns>Lista klasa</returns>
+            <response code="200">Vraća listu klasa</response>
+            <response code="404">Nije pronađena ni jedna klasa</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KlasaController.GetKlasa(System.Guid)">
+            <summary>
+            Vraća jednu klasu na osnovu ID-a 
+            </summary>
+            <param name="klasaId">Model klase</param>
+            <returns>Klasa</returns>
+            <response code="200">Vraća traženu klasu</response>
+            <response code="404">Nije pronađena klasa za uneti ID</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KlasaController.CreateKlasa(ParcelaService.Models.Klasa.KlasaCreationDto)">
+            <summary>
+            Kreira novu klasu
+            </summary>
+            <param name="klasa">Model klase</param>
+            <remarks>
+            Primer zahteva za kreiranje nove klase \
+            POST /api/klasa \
+            {
+                 "klasaNaziv": "Naziv klase"
+            }
+            </remarks>
+            <returns>Potvrda o kreiranju klase</returns>
+            <response code="201">Vraća kreiranu klasu</response>
+            <response code="500">Desila se greška prilikom unosa nove klase</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KlasaController.UpdateKlasa(ParcelaService.Models.Klasa.KlasaUpdateDto)">
+            <summary>
+            Izmena klase
+            </summary>
+            <param name="klasa">Model klase</param>
+            <returns>Potvrda o izmeni klase</returns>
+            <response code="200">Izmenjena klasa</response>
+            <response code="404">Nije pronađena klasa za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene klase</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KlasaController.DeleteKlasa(System.Guid)">
+            <summary>
+            Brisanje klase na osnovu ID-a
+            </summary>
+            <param name="klasaId">ID klase</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Klasa je uspešno obrisana</response>
+            <response code="404">Nije pronađena klasa za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja klasa</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KlasaController.GetKlasaOptions">
+            <summary>
+            Vraća opcije za rad sa klasama
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ParcelaService.Controllers.KulturaController">
+            <summary>
+            Kontroler za kulturu
+            </summary>
+        </member>
+        <member name="M:ParcelaService.Controllers.KulturaController.GetAllKlasa(System.String)">
+            <summary>
+            Vraća sve kulture parcele
+            </summary>
+            <param name="nazivKulture">Naziv kulture</param>
+            <returns>Lista kultura</returns>
+            <response code="200">Vraća listu kultura</response>
+            <response code="404">Nije pronađena ni jedna kultura</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KulturaController.GetKultura(System.Guid)">
+            <summary>
+            Vraća jednu kulturu parcele na osnovu ID-a
+            </summary>
+            <param name="kulturaId">ID kulture</param>
+            <returns>Kultura parcele</returns>
+            <response code="200">Vraća traženu kulturu</response>
+            <response code="404">Nije pronađena kultura za uneti ID</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KulturaController.CreateKultura(ParcelaService.Models.Kultura.KulturaCreationDto)">
+             <summary>
+             Kreira novu kulturu parcele
+             </summary>
+             <param name="kultura">Model kulture</param>
+             <remarks>
+             Primer zahteva za kreiranje nove kulture \
+             POST /api/kultura \
+             {
+                   "nazivKulture": "Naziv kulture" \
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju kulture</returns>
+             <response code="201">Vraća kreiranu kulturu</response>
+             <response code="500">Desila se greška prilikom unosa nove kulture</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KulturaController.UpdateKultura(ParcelaService.Models.Kultura.KulturaUpdateDto)">
+            <summary>
+            Izmena kulture parcele
+            </summary>
+            <param name="kultura">Model kulture</param>
+            <returns>Potvrda o izmeni kulture</returns>
+            <response code="200">Izmenjena kultura</response>
+            <response code="404">Nije pronađena kultura za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene kulture</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KulturaController.DeleteKultura(System.Guid)">
+            <summary>
+            Brisanje kulture parcele na osnovu ID-a
+            </summary>
+            <param name="kulturaId">ID kulture</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Kultura je uspešno obrisana</response>
+            <response code="404">Nije pronađena kultura za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja kulture</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.KulturaController.GetKulturaOptions">
+            <summary>
+            Vraća opcije za rad sa kulturama parcele
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ParcelaService.Controllers.OblikSvojineController">
+            <summary>
+            Kontroler za oblik svojine
+            </summary>
+        </member>
+        <member name="M:ParcelaService.Controllers.OblikSvojineController.GetAllOblikSvojine(System.String)">
+            <summary>
+            Vraća sve oblike svojine parcele
+            </summary>
+            <param name="opisOblikaSvojine">Oblik svojine parcele</param>
+            <returns>Lista oblika svojina</returns>
+            <response code="200">Vraća listu oblika svojina</response>
+            <response code="404">Nije pronađen ni jedan oblik svojine</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.OblikSvojineController.GetOblikSvojine(System.Guid)">
+            <summary>
+            Vraća jedan oblik svojine parcele na osnovu ID-a
+            </summary>
+            <param name="oblikSvojineId">ID oblika svojine</param>
+            <returns>Oblik svojine parcele</returns>
+            <response code="200">Vraća traženi oblik svojine</response>
+            <response code="404">Nije pronađen oblik svojine za uneti ID</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.OblikSvojineController.CreateOblikSvojine(ParcelaService.Models.OblikSvojine.OblikSvojineCreationDto)">
+            <summary>
+            Kreira novi oblik svojine parcele
+            </summary>
+            <param name="oblikSvojine">Model oblik svojine</param>
+            <remarks>
+            Primer zahteva za kreiranje novog oblika svojine \
+            POST /api/oblikSvojine \
+            {
+               "opisOblikaSvojine": "Opis oblika svojine"
+            }
+            </remarks>
+            <returns>Potvrda o kreiranju oblika svojine</returns>
+            <response code="201">Vraća kreiran oblik svojine</response>
+            <response code="500">Desila se greška prilikom unosa novog oblika svojine</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.OblikSvojineController.UpdateOblikSvojine(ParcelaService.Models.OblikSvojine.OblikSvojineUpdateDto)">
+            <summary>
+            Izmena oblika svojine parcele
+            </summary>
+            <param name="oblikSvojine">Model oblik svojine</param>
+            <returns>Potvrda o izmeni oblika svojine</returns>
+            <response code="200">Izmenjen oblika svojine</response>
+            <response code="404">Nije pronađen oblik svojine za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene oblika svojine</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.OblikSvojineController.DeleteOblikSvojine(System.Guid)">
+            <summary>
+            Brisanje oblika svojine javnog nadmetanja na osnovu ID-a
+            </summary>
+            <param name="oblikSvojineId">ID oblika svojine</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Oblik svojine je uspešno obrisan</response>
+            <response code="404">Nije pronađen oblik svojine za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja oblika svojine</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.OblikSvojineController.GetOblikSvojineOptions">
+            <summary>
+            Vraća opcije za rad sa oblicima svojine parcele
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ParcelaService.Controllers.ObradivostController">
+            <summary>
+            Kontroler za obradivost
+            </summary>
+        </member>
+        <member name="M:ParcelaService.Controllers.ObradivostController.GetAllObradivost(System.String)">
+            <summary>
+            Vraća sve obradivosti
+            </summary>
+            <returns>Lista obradivosti</returns>
+            <response code="200">Vraća listu obradivosti</response>
+            <response code="404">Nije pronađena ni jedna obradivost</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ObradivostController.GetObradivost(System.Guid)">
+            <summary>
+            Vraća jednu obradivost na osnovu ID-a
+            </summary>
+            <param name="obradivostId">ID obradivosti</param>
+            <returns>Obradivost</returns>
+            <response code="200">Vraća traženu obradivost</response>
+            <response code="404">Nije pronađena obradivost za uneti ID</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ObradivostController.CreateObradivost(ParcelaService.Models.Obradivost.ObradivostCreationDto)">
+            <summary>
+            Kreira novu obradivost
+            </summary>
+            <param name="obradivost">Model obradivosti</param>
+            <remarks>
+            Primer zahteva za kreiranje nove obradivosti \
+            POST /api/obradivost \
+            {
+                  "opisObradivosti": "Opis obradivosti"
+            }
+            </remarks>
+            <returns>Potvrda o kreiranju obradivosti</returns>
+            <response code="201">Vraća kreiranu obradivost</response>
+            <response code="500">Desila se greška prilikom unosa nove obradivosti</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ObradivostController.UpdateObradivost(ParcelaService.Models.Obradivost.ObradivostUpdateDto)">
+            <summary>
+            Izmena obradivosti
+            </summary>
+            <param name="obradivost">Model obradivost</param>
+            <returns>Potvrda o izmeni obradivosti</returns>
+            <response code="200">Izmenjena obradivost</response>
+            <response code="404">Nije pronađena obradivost za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene obradivosti</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ObradivostController.DeleteObradivost(System.Guid)">
+            <summary>
+            Brisanje obradivosti na osnovu ID-a
+            </summary>
+            <param name="obradivostId">ID obradivosti</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Obradivost je uspešno obrisana</response>
+            <response code="404">Nije pronađena obradivost za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja obradivosti</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ObradivostController.GetObradivostOptions">
+            <summary>
+            Vraća opcije za rad sa obradivostima
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ParcelaService.Controllers.OdvodnjavanjeController">
+            <summary>
+            Kontroler za odvodnjavanje
+            </summary>
+        </member>
+        <member name="M:ParcelaService.Controllers.OdvodnjavanjeController.GetAllOdvodnjavanje(System.String)">
+            <summary>
+            Vraća sva odvodnjavanja
+            </summary>
+            <returns>Lista odvodnjavanja</returns>
+            <response code="200">Vraća listu odvodnjavanja</response>
+            <response code="404">Nije pronađeno ni jedno odvodnjavanje</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.OdvodnjavanjeController.GetOdvodnjavanje(System.Guid)">
+            <summary>
+            Vraća jedno odvodnjavanje na osnovu ID-a
+            </summary>
+            <param name="odvodnjavanjeId">ID odvodnjavanja</param>
+            <returns>Odvodnjavanje</returns>
+            <response code="200">Vraća traženo odvodnjavanje</response>
+            <response code="404">Nije pronađeno odvodnjavanje za uneti ID</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.OdvodnjavanjeController.CreateOdvodnjavanje(ParcelaService.Models.Odvodnjavanje.OdvodnjavanjeCreationDto)">
+            <summary>
+            Kreira novo odvodnjavanje
+            </summary>
+            <param name="odvodnjavanje">Model odvodnjavanje</param>
+            <remarks>
+            Primer zahteva za kreiranje novog odvodnjavanja \
+            POST /api/odvodnjavanje \
+            {
+                  "opisOdvodnjavanja": "Opis odvodnjavanja"
+            }
+            </remarks>
+            <returns>Potvrda o kreiranju odvodnjavanja</returns>
+            <response code="201">Vraća kreirano odvodnjavanje</response>
+            <response code="500">Desila se greška prilikom unosa novog odvodnjavanja</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.OdvodnjavanjeController.UpdateOdvodnjavanje(ParcelaService.Models.Odvodnjavanje.OdvodnjavanjeUpdateDto)">
+            <summary>
+            Izmena odvodnjavanja
+            </summary>
+            <param name="odvodnjavanje">Model odvodnjavanje</param>
+            <returns>Potvrda o izmeni odvodnjavanja</returns>
+            <response code="200">Izmenjena odvodnjavanja</response>
+            <response code="404">Nije pronađeno odvodnjavanje za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene odvodnjavanja</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.OdvodnjavanjeController.DeleteOdvodnjavanje(System.Guid)">
+            <summary>
+            Brisanje odvodnjavanja na osnovu ID-a
+            </summary>
+            <param name="odvodnjavanjeId">ID odvodnjavanja</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Odvodnjavanje je uspešno obrisano</response>
+            <response code="404">Nije pronađeno odvodnjavanje za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja odvodnjavanja</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.OdvodnjavanjeController.GetOdvodnjavanjeOptions">
+            <summary>
+            Vraća opcije za rad sa odvodnjavanjem
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ParcelaService.Controllers.ParcelaController">
+            <summary>
+            Kontroler za parcelu
+            </summary>
+        </member>
+        <member name="M:ParcelaService.Controllers.ParcelaController.GetAllParcela">
+            <summary>
+            Vraća sve parcele
+            </summary>
+            <returns>Lista parcela</returns>
+            <response code="200">Vraća listu parcela</response>
+            <response code="404">Nije pronađena ni jedna parcela </response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ParcelaController.GetParcela(System.Guid)">
+            <summary>
+            Vraća jednu parcelu na osnovu ID-a
+            </summary>
+            <param name="parcelaId">ID parcele</param>
+            <returns>Parcela</returns>
+            <response code="200">Vraća traženu parcelu</response>
+            <response code="404">Nije pronađena parcela za uneti ID</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ParcelaController.CreateParcela(ParcelaService.Models.Parcela.ParcelaCreationDto)">
+            <summary>
+            Kreira novu parcelu
+            </summary>
+            <param name="parcela">Model parcele</param>
+            <remarks>
+            Primer zahteva za kreiranje nove parcele \
+            POST /api/parcela \
+            {
+              "brojParcele": "broj parcele",
+              "povrsinaParcele": "Površina parcele",
+              "brojListeNepokretnosti": "Broj liste nepokretnosti",
+              "zasticenaZonaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "oblikSvojineId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "odvodnjavanjeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "katastarskaOpstinaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            }
+            </remarks>
+            <returns>Potvrda o kreiranju parcele</returns>
+            <response code="201">Vraća kreiranu parcelu </response>
+            <response code="500">Desila se greška prilikom unosa nove parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ParcelaController.UpdateParcela(ParcelaService.Models.Parcela.ParcelaUpdateDto)">
+            <summary>
+            Izmena parcele
+            </summary>
+            <param name="parcela">Model parcele</param>
+            <returns>Potvrda o izmeni parcele</returns>
+            <response code="200">Izmenjena parcela</response>
+            <response code="404">Nije pronađena parcela za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ParcelaController.DeleteParcela(System.Guid)">
+            <summary>
+            Brisanje parcele na osnovu ID-a
+            </summary>
+            <param name="parcelaId">ID parcele</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Parcela je uspešno obrisan</response>
+            <response code="404">Nije pronađena parcela za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ParcelaController.GetParcelaOptions">
+            <summary>
+            Vraća opcije za rad sa parcelama
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:ParcelaService.Controllers.ZasticenaZonaController">
+            <summary>
+            Kontroler za zaštićenu zonu
+            </summary>
+        </member>
+        <member name="M:ParcelaService.Controllers.ZasticenaZonaController.GetAllZasticenaZona(System.String)">
+            <summary>
+            Vraća sve zaštićene zone
+            </summary>
+            <returns>Lista zaštićenih zona</returns>
+            <response code="200">Vraća listu zaštićenih zona</response>
+            <response code="404">Nije pronađena ni jedna zaštićena zona</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ZasticenaZonaController.GetZasticenaZona(System.Guid)">
+            <summary>
+            Vraća jednu zaštićenu zonu na osnovu ID-a
+            </summary>
+            <param name="zasticenaZonaId">ID zaštićene zone</param>
+            <returns>Zaštićena zona</returns>
+            <response code="200">Vraća traženu zaštićenu zonu</response>
+            <response code="404">Nije pronađena zaštićena zona za uneti ID</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ZasticenaZonaController.CreateZasticenaZona(ParcelaService.Models.ZasticenaZona.ZasticenaZonaCreationDto)">
+            <summary>
+            Kreira novu zaštićenu zonu
+            </summary>
+            <param name="zasticenaZona">Model zaštićena zona</param>
+            <remarks>
+            Primer zahteva za kreiranje nove zaštićene zone \
+            POST /api/zasticenaZona \
+            {
+              "brojZasticeneZone": "Broj zaštićene zone"
+            }
+            </remarks>
+            <returns>Potvrda o kreiranju zaštićene zone</returns>
+            <response code="201">Vraća kreiranu zaštićenu zonu</response>
+            <response code="500">Desila se greška prilikom unosa nove zaštićene zone</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ZasticenaZonaController.UpdateZasticenaZona(ParcelaService.Models.ZasticenaZona.ZasticenaZonaUpdateDto)">
+            <summary>
+            Izmena zaštićene zone
+            </summary>
+            <param name="zasticenaZona">Model zaštićena zona</param>
+            <returns>Potvrda o izmeni zaštićene zone</returns>
+            <response code="200">Izmenjena zaštićena zona</response>
+            <response code="404">Nije pronađena zaštićena zona za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene zaštićene zone</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ZasticenaZonaController.DeleteZasticenaZona(System.Guid)">
+            <summary>
+            Brisanje zaštićene zone na osnovu ID-a
+            </summary>
+            <param name="zasticenaZonaId">ID zaštićene zone</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Zaštićena zona je uspešno obrisana</response>
+            <response code="404">Nije pronađena zaštićena zona za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja zaštićene zone</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ZasticenaZonaController.GetKulturaOptions">
+            <summary>
+            Vraća opcije za rad sa zaštićenim zonama
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleConfirmationDto.RedniBrojDela">
+            <summary>
+            Redni broj dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleConfirmationDto.PovrsinaDela">
+            <summary>
+            Povrsina dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.RedniBrojDela">
+            <summary>
+            Redni broj dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.PovrsinaDela">
+            <summary>
+            Povrsina dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.KulturaId">
+            <summary>
+            Id kulture
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.KlasaId">
+            <summary>
+            Id klase
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.ObradivostId">
+            <summary>
+            Id obradivosti
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.ParcelaId">
+            <summary>
+            Id parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleCreationDto.KupacId">
+            <summary>
+            Id kupca
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.DeoParceleId">
+            <summary>
+            Id dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.RedniBrojDela">
+            <summary>
+            Redni broj dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.PovrsinaDela">
+            <summary>
+            Povrsina dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.BrojParcele">
+            <summary>
+            Broj parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.Kultura">
+            <summary>
+            Kultura
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.Klasa">
+            <summary>
+            Klasa
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.Obradivost">
+            <summary>
+            Obradivost
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.KatastarskaOpstina">
+            <summary>
+            Katastarska opština
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.OblikSvojine">
+            <summary>
+            Oblik svojine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.ZasticenaZona">
+            <summary>
+            Zastićena zona
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.Odvodnjavanje">
+            <summary>
+            Odvodnjavanje
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleDto.Kupac">
+            <summary>
+            Kupac
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.DeoParceleId">
+            <summary>
+            Id dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.RedniBrojDela">
+            <summary>
+            Redni broj dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.PovrsinaDela">
+            <summary>
+            Povrsina dela parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.KulturaId">
+            <summary>
+            Id kulture
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.KlasaId">
+            <summary>
+            Id klase
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.ObradivostId">
+            <summary>
+            Id obradivosti
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.ParcelaId">
+            <summary>
+            Id parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.DeoParcele.DeoParceleUpdateDto.KupacId">
+            <summary>
+            Id kupca
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.KatastarskaOpstina.KatastarskaOpstinaCreationDto">
+            <summary>
+            Model za kreiranje 
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.KatastarskaOpstina.KatastarskaOpstinaCreationDto.NazivKatastarskeOpstine">
+            <summary>
+            Naziv katastarkse opstine
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.KatastarskaOpstina.KatastarskaOpstinaDto">
+            <summary>
+            Model za katastarsku opstinu parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.KatastarskaOpstina.KatastarskaOpstinaDto.KatastarskaOpstinaId">
+            <summary>
+            Id katastarske opstine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.KatastarskaOpstina.KatastarskaOpstinaDto.NazivKatastarskeOpstine">
+            <summary>
+            Naziv katastarske opstine
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.KatastarskaOpstina.KatastarskaOpstinaUpdateDto">
+            <summary>
+            Model za izmenu katastarske opstine 
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.KatastarskaOpstina.KatastarskaOpstinaUpdateDto.KatastarskaOpstinaId">
+            <summary>
+            Id katastarske opstine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.KatastarskaOpstina.KatastarskaOpstinaUpdateDto.NazivKatastarskeOpstine">
+            <summary>
+            Naziv katastarske opstine
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.Klasa.KlasaCreationDto">
+            <summary>
+            Model za kreiranje klase parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Klasa.KlasaCreationDto.KlasaNaziv">
+            <summary>
+            Naziv klase parcele
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.Klasa.KlasaDto">
+            <summary>
+            Model za klasu parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Klasa.KlasaDto.KlasaId">
+            <summary>
+            Id klase parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Klasa.KlasaDto.KlasaNaziv">
+            <summary>
+            Naziv klase 
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.Klasa.KlasaUpdateDto">
+            <summary>
+            Model za izmenu klase parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Klasa.KlasaUpdateDto.KlasaId">
+            <summary>
+            Id klase parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Klasa.KlasaUpdateDto.KlasaNaziv">
+            <summary>
+            Naziv klase
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.Kultura.KulturaCreationDto">
+            <summary>
+            Model za kreiranje kulture parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Kultura.KulturaCreationDto.NazivKulture">
+            <summary>
+            Naziv kulture
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.Kultura.KulturaDto">
+            <summary>
+            Model za kulturu parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Kultura.KulturaDto.KulturaId">
+            <summary>
+            Id kulture parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Kultura.KulturaDto.NazivKulture">
+            <summary>
+            Naziv kulture
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.Kultura.KulturaUpdateDto">
+            <summary>
+            Model za izmenu kulture parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Kultura.KulturaUpdateDto.KulturaId">
+            <summary>
+            Id kulture parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Kultura.KulturaUpdateDto.NazivKulture">
+            <summary>
+            Naziv kulture parcele
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.OblikSvojine.OblikSvojineCreationDto">
+            <summary>
+            Model za kreiranje oblika svojine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.OblikSvojine.OblikSvojineCreationDto.OpisOblikaSvojine">
+            <summary>
+            Opis oblika svojine
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.OblikSvojine.OblikSvojineDto">
+            <summary>
+            Model za oblik svojine parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.OblikSvojine.OblikSvojineDto.OblikSvojineId">
+            <summary>
+            Id oblika svojine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.OblikSvojine.OblikSvojineDto.OpisOblikaSvojine">
+            <summary>
+            Opis oblika svojine
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.OblikSvojine.OblikSvojineUpdateDto">
+            <summary>
+            Model za izmenu oblika svojine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.OblikSvojine.OblikSvojineUpdateDto.OblikSvojineId">
+            <summary>
+            Id oblika svojine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.OblikSvojine.OblikSvojineUpdateDto.OpisOblikaSvojine">
+            <summary>
+            Opis oblika svojine
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.Obradivost.ObradivostCreationDto">
+            <summary>
+            Model za kreiranje obradivosti parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Obradivost.ObradivostCreationDto.OpisObradivosti">
+            <summary>
+            Opis obradivosti
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.Obradivost.ObradivostDto">
+            <summary>
+            Model za obradivost parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Obradivost.ObradivostDto.ObradivostId">
+            <summary>
+            Id obradivosti parele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Obradivost.ObradivostDto.OpisObradivosti">
+            <summary>
+            Opis obradivosti parcele
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.Obradivost.ObradivostUpdateDto">
+            <summary>
+            Model za izmenu obradivosti parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Obradivost.ObradivostUpdateDto.ObradivostId">
+            <summary>
+            Id obradivosti parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Obradivost.ObradivostUpdateDto.OpisObradivosti">
+            <summary>
+            Opis obradivosti parcele
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.Odvodnjavanje.OdvodnjavanjeCreationDto">
+            <summary>
+            Model za kreiranje odvodnjavanja parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Odvodnjavanje.OdvodnjavanjeCreationDto.OpisOdvodnjavanja">
+            <summary>
+            Opis odvodnjavanja parcele
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.Odvodnjavanje.OdvodnjavanjeDto">
+            <summary>
+            Model za odvodnjavanje parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Odvodnjavanje.OdvodnjavanjeDto.OdvodnjavanjeId">
+            <summary>
+            Id odvodnjavanja parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Odvodnjavanje.OdvodnjavanjeDto.OpisOdvodnjavanja">
+            <summary>
+            Opis odvodnjavanja parcele
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.Odvodnjavanje.OdvodnjavanjeUpdateDto">
+            <summary>
+            Model za izmenu odvodnjavanja parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Odvodnjavanje.OdvodnjavanjeUpdateDto.OdvodnjavanjeId">
+            <summary>
+            Id odvodnjavanja parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Odvodnjavanje.OdvodnjavanjeUpdateDto.OpisOdvodnjavanja">
+            <summary>
+            Opis odvodnjavanja parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaConfirmationDto.BrojParcele">
+            <summary>
+            Broj parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaConfirmationDto.PovrsinaParcele">
+            <summary>
+            Površina parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaConfirmationDto.BrojListeNepokretnosti">
+            <summary>
+            Broj liste nepokretnosti
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.BrojParcele">
+            <summary>
+            Broj parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.PovrsinaParcele">
+            <summary>
+            Površina parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.BrojListeNepokretnosti">
+            <summary>
+            Broj liste nepokretnosti
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.ZasticenaZonaId">
+            <summary>
+            Id zaštićene zone
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.OblikSvojineId">
+            <summary>
+            Id oblika svojine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.OdvodnjavanjeId">
+            <summary>
+            Id odvodnjavanja
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaCreationDto.KatastarskaOpstinaId">
+            <summary>
+            Id katastarske opštine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.ParcelaId">
+            <summary>
+            Id parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.BrojParcele">
+            <summary>
+            Broj parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.PovrsinaParcele">
+            <summary>
+            Površina parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.BrojListeNepokretnosti">
+            <summary>
+            Broj liste nepokretnosti
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.KatastarskaOpstina">
+            <summary>
+            Katastarska opština
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.OblikSvojine">
+            <summary>
+            Oblik svojine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.ZasticenaZona">
+            <summary>
+            Zastićena zona
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.Odvodnjavanje">
+            <summary>
+            Odvodnjavanje
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.DeloviParcele">
+            <summary>
+            Lista delova parcela
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.ParcelaId">
+            <summary>
+            Id parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.BrojParcele">
+            <summary>
+            Broj parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.PovrsinaParcele">
+            <summary>
+            Površina parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.BrojListeNepokretnosti">
+            <summary>
+            Broj liste nepokretnosti
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.ZasticenaZonaId">
+            <summary>
+            Id zaštićene zone
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.OblikSvojineId">
+            <summary>
+            Id oblika svojine
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.OdvodnjavanjeId">
+            <summary>
+            Id odvodnjavanja
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.KatastarskaOpstinaId">
+            <summary>
+            Id katastarske opštine
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.ZasticenaZona.ZasticenaZonaCreationDto">
+            <summary>
+            Model za kreiranje zasticene zone parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.ZasticenaZona.ZasticenaZonaCreationDto.BrojZasticeneZone">
+            <summary>
+            Broj zasticene zone parcele
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.ZasticenaZona.ZasticenaZonaDto">
+            <summary>
+            Model za zasticenu zonu parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.ZasticenaZona.ZasticenaZonaDto.ZasticenaZonaId">
+            <summary>
+            Id broja zasticene zone parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.ZasticenaZona.ZasticenaZonaDto.BrojZasticeneZone">
+            <summary>
+            Broj zasticene zone parcele
+            </summary>
+        </member>
+        <member name="T:ParcelaService.Models.ZasticenaZona.ZasticenaZonaUpdateDto">
+            <summary>
+            Model za izmenu zasticene zone parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.ZasticenaZona.ZasticenaZonaUpdateDto.ZasticenaZonaId">
+            <summary>
+            Id zasticene zone parcele
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.ZasticenaZona.ZasticenaZonaUpdateDto.BrojZasticeneZone">
+            <summary>
+            Broj zasticene zone parcele
+            </summary>
+        </member>
+    </members>
+</doc>
