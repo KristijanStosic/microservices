@@ -24,10 +24,10 @@ namespace ZalbaService.Controllers
     [Produces("application/json", "application/xml")]
     public class RadnjaZaZalbuController : ControllerBase 
     {
-        private  IRadnjaZaZalbuRepository _radnjaZaZalbuRepository;
-        private  LinkGenerator _linkGenerator;
-        private  IMapper _mapper;
-        private  ILoggerService _loggerService;
+        private readonly IRadnjaZaZalbuRepository _radnjaZaZalbuRepository;
+        private readonly LinkGenerator _linkGenerator;
+        private readonly IMapper _mapper;
+        private readonly ILoggerService _loggerService;
 
         /// <summary>
         /// Konstruktor kontrolera radnje za zalbu - DI

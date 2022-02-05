@@ -15,17 +15,14 @@ namespace ZalbaService.Data
     public class StatusZalbeRepository : IStatusZalbeRepository
     {
         private readonly ZalbaContext _context;
-        private readonly IMapper _mapper;
 
         /// <summary>
         /// Konstruktor repoa statusa žalbe
         /// </summary>
         /// <param name="context">Db context</param>
-        /// <param name="mapper">AutoMapper</param>
-        public StatusZalbeRepository(ZalbaContext context, IMapper mapper)
+        public StatusZalbeRepository(ZalbaContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         /// <summary>

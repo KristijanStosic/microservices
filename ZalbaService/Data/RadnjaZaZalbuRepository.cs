@@ -15,17 +15,14 @@ namespace ZalbaService.Data
     public class RadnjaZaZalbuRepository : IRadnjaZaZalbuRepository
     {
         private readonly ZalbaContext _context;
-        private readonly IMapper _mapper;
 
         /// <summary>
         /// Konstruktor repoa radnje za žalbu
         /// </summary>
         /// <param name="context">Db context</param>
-        /// <param name="mapper">AutoMapper</param>
-        public RadnjaZaZalbuRepository(ZalbaContext context, IMapper mapper)
+        public RadnjaZaZalbuRepository(ZalbaContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         /// <summary>

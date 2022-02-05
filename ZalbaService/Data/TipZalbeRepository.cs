@@ -15,17 +15,14 @@ namespace ZalbaService.Data
     public class TipZalbeRepository : ITipZalbeRepository
     {
         private readonly ZalbaContext _context;
-        private readonly IMapper _mapper;
 
         /// <summary>
         /// Konstruktor repoa tipa žalbe
         /// </summary>
         /// <param name="context">Db context</param>
-        /// <param name="mapper">AutoMapper</param>
-        public TipZalbeRepository(ZalbaContext context, IMapper mapper)
+        public TipZalbeRepository(ZalbaContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
         /// <summary>

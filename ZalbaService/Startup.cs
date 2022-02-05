@@ -96,9 +96,7 @@ namespace ZalbaService
 
 
             services.AddScoped<IServiceCall<KupacDto>, ServiceCallKupacMock<KupacDto>>();
-            //services.AddScoped<IServiceCall<KupacDto>, ServiceCall<KupacDto>>();
             services.AddScoped<ILoggerService, LoggerServiceMock>();
-            //services.AddScoped<ILoggerService, LoggerService>();
 
             services.AddSwaggerGen(setup =>
             {
@@ -112,7 +110,7 @@ namespace ZalbaService
                         {
                             Name = "Kristijan Stošić",
                             Email = "stosic@uns.ac.rs",
-                            Url = new Uri("https://github.com/KristijanStosic")
+                            Url = new Uri(Configuration["Swagger:Github"])
                         }
                     });
                 //Korisitmo refleksiju za dobijanje XML fajla za komentarima
