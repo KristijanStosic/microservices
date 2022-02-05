@@ -13,12 +13,11 @@ namespace AdresaService.Data
     public class AdresaRepository : IAdresaRepository
     {
         private readonly AdresaContext _context;
-        private readonly IMapper _mapper;
+    
 
-        public AdresaRepository(AdresaContext context, IMapper mapper)
+        public AdresaRepository(AdresaContext context)
         {
             this._context = context;
-            this._mapper = mapper;
         }
 
         public async Task<Adresa> CreateAdresa(Adresa adresa)
@@ -35,8 +34,8 @@ namespace AdresaService.Data
 
         public async Task<List<Adresa>> GetAdrese(string ulica = null, string mesto = null, string postanskiBroj = null)
         {
-            return await _context.Adrese.Where(a => (ulica == null || a.Ulica == ulica) &&
-                                              (mesto == null || a.Mesto == mesto)&&
+            return await _context.Adrese.Where(a => (ulica == null || a.Ulica.Contains(ulica)) &&
+                                              (mesto == null || a.Mesto.Contains(mesto))&&
                                               (postanskiBroj == null || a.PostanskiBroj == postanskiBroj))
                                                .Include(d => d.Drzava).ToListAsync();
         }

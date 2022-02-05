@@ -1,0 +1,333 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>LicnostService</name>
+    </assembly>
+    <members>
+        <member name="T:LicnostService.Controllers.KomisijaController">
+            <summary>
+            Kontroler za komisiju
+            </summary>
+        </member>
+        <member name="M:LicnostService.Controllers.KomisijaController.GetAllKomisije(System.String)">
+            <summary>
+            Vraca sve komisije
+            </summary>
+            <param name="nazivKomisije"></param>
+            <returns>Lista komisija</returns>
+            <response code="200">Vraća listu komisija</response>
+            <response code="404">Nije pronađeno ni jedna komisija</response>
+        </member>
+        <member name="M:LicnostService.Controllers.KomisijaController.GetKomisija(System.Guid)">
+            <summary>
+            Vraća jednu komisiju na osnovu ID-a
+            </summary>
+            <param name="komisijaId">ID komisije</param>
+            <returns>Komisija</returns>
+            <response code="200">Vraća traženu komisiju</response>
+            <response code="404">Nije pronađena komisija za uneti ID</response>
+        </member>
+        <member name="M:LicnostService.Controllers.KomisijaController.CreateKomisija(LicnostService.Models.Komisija.KomisijaCreateDTO)">
+            <summary>
+            Kreira novu komisiju
+            </summary>
+            <param name="komisija">Model komisije</param>
+            <returns>Potvrda o kreiranju komisije</returns>
+            <response code="201">Vraća kreiranu komisiju</response>
+            <response code="500">Desila se greška prilikom unosa nove komisije</response>
+        </member>
+        <member name="M:LicnostService.Controllers.KomisijaController.UpdateKomisija(LicnostService.Models.Komisija.KomisijaUpdateDTO)">
+            <summary>
+            Izmena komisije
+            </summary>
+            <param name="komisija">Model komisije</param>
+            <returns>Potvrda o izmeni komisije</returns>
+            <response code="200">Izmenjena komisija</response>
+            <response code="404">Nije pronađena komisija za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene komisije</response>
+        </member>
+        <member name="M:LicnostService.Controllers.KomisijaController.DeleteKomisija(System.Guid)">
+            <summary>
+            Brisanje komisije na osnovu ID-a
+            </summary>
+            <param name="komisijaId">ID komisije</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Komisija je uspešno obrisano</response>
+            <response code="404">Nije pronađena komisija za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja komisije</response>
+        </member>
+        <member name="M:LicnostService.Controllers.KomisijaController.GetKomisijaOptions">
+            <summary>
+            Vraća opcije za rad sa komisijama
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:LicnostService.Controllers.LicnostController">
+            <summary>
+            Kontroler za ličnost
+            </summary>
+        </member>
+        <member name="M:LicnostService.Controllers.LicnostController.GetAllLicnosti(System.String)">
+            <summary>
+            Vraća sve ličnosti
+            </summary>
+            <param name="imeLicnosti"></param>
+            <returns>Lista ličnosti</returns>
+            <response code="200">Vraća listu ličnosti</response>
+            <response code="404">Nije pronađena ni jedna ličnosti</response>
+        </member>
+        <member name="M:LicnostService.Controllers.LicnostController.GetLicnost(System.Guid)">
+            <summary>
+            Vraća jednu ličnost na osnovu ID-a
+            </summary>
+            <param name="licnostId">ID ličnosti</param>
+            <returns>Licnost</returns>
+            <response code="200">Vraća traženu ličnost</response>
+            <response code="404">Nije pronađena ličnost za uneti ID</response>
+        </member>
+        <member name="M:LicnostService.Controllers.LicnostController.CreateLicnost(LicnostService.Models.Licnost.LicnostCreateDTO)">
+            <summary>
+            Kreira novu ličnost
+            </summary>
+            <param name="licnost">Model licnost</param>
+            /// <returns>Potvrda o kreiranju ličnosti</returns>
+            <response code="201">Vraća kreiranu ličnost</response>
+            <response code="500">Desila se greška prilikom unosa nove ličnosti</response>
+        </member>
+        <member name="M:LicnostService.Controllers.LicnostController.UpdateLicnost(System.Guid,LicnostService.Models.Licnost.LicnostUpdateDTO)">
+            <summary>
+            Izmena ličnosti
+            </summary>
+            <param name="licnost">Model ličnost</param>
+            <returns>Potvrda o izmeni ličnosti</returns>
+            <response code="200">Izmenjena ličnost</response>
+            <response code="404">Nije pronađena ličnost za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene ličnosti</response>
+        </member>
+        <member name="M:LicnostService.Controllers.LicnostController.DeleteLicnost(System.Guid)">
+            <summary>
+            Brisanje ličnosti na osnovu ID-a
+            </summary>
+            <param name="licnostId">ID ličnosti</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Ličnost je uspešno obrisana</response>
+            <response code="404">Nije pronađena ličnost za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja ličnosti</response>
+        </member>
+        <member name="M:LicnostService.Controllers.LicnostController.GetLicnostOptions">
+            <summary>
+            Vraća opcije za rad sa licnostima
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:LicnostService.Models.Komisija.KomisijaConfirmationDTO">
+            <summary>
+            Model za potvrdu kreiranja komisije
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaConfirmationDTO.NazivKomisije">
+            <summary>
+            Naziv komisije
+            </summary>
+        </member>
+        <member name="T:LicnostService.Models.Komisija.KomisijaCreateDTO">
+            <summary>
+            Model za kreiranje komisije
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaCreateDTO.NazivKomisije">
+            <summary>
+            Naziv komisije
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaCreateDTO.PredsednikKomisijeId">
+            <summary>
+            ID predsednika komisije
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaCreateDTO.ClanoviKomisije">
+            <summary>
+            Lista članova komisije
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaCreateDTO.DokumentId">
+            <summary>
+            ID dokumenta u okviru komisije
+            </summary>
+        </member>
+        <member name="T:LicnostService.Models.Komisija.KomisijaDTO">
+            <summary>
+            Model za komisiju
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaDTO.KomisijaId">
+            <summary>
+            ID komisije
+            </summary>
+            
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaDTO.NazivKomisije">
+            <summary>
+            Naziv komisije
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaDTO.PredsednikKomisije">
+            <summary>
+            Predsednik komisije
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaDTO.ClanoviKomisije">
+            <summary>
+            Lista članova komisije
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaDTO.Dokument">
+            <summary>
+            Dokument u komisiji
+            </summary>
+        </member>
+        <member name="T:LicnostService.Models.Komisija.KomisijaUpdateDTO">
+            <summary>
+            Model za izmenu komisije
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaUpdateDTO.KomisijaId">
+            <summary>
+            ID komisije
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaUpdateDTO.PredsednikKomisijeId">
+            <summary>
+            ID predsednika komisije
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaUpdateDTO.ClanoviKomisije">
+            <summary>
+            Lista clanova komisije
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Komisija.KomisijaUpdateDTO.DokumentId">
+            <summary>
+            ID dokumenta
+            </summary>
+        </member>
+        <member name="T:LicnostService.Models.Licnost.LicnostCreateDTO">
+            <summary>
+            Model za kreiranje ličnosti
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Licnost.LicnostCreateDTO.Ime">
+            <summary>
+            Ime ličnosti
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Licnost.LicnostCreateDTO.Prezime">
+            <summary>
+            Prezime ličnosti
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Licnost.LicnostCreateDTO.Funkcija">
+            <summary>
+            Funkcija ličnosti
+            </summary>
+        </member>
+        <member name="T:LicnostService.Models.Licnost.LicnostDTO">
+            <summary>
+            Model za ličnost
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Licnost.LicnostDTO.LicnostId">
+            <summary>
+            ID ličnosti
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Licnost.LicnostDTO.Ime">
+            <summary>
+            Ime ličnosti
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Licnost.LicnostDTO.Prezime">
+            <summary>
+            Prezime ličnosti
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Licnost.LicnostDTO.Funkcija">
+            <summary>
+            Funkcija ličnosti
+            </summary>
+        </member>
+        <member name="T:LicnostService.Models.Licnost.LicnostUpdateDTO">
+            <summary>
+            Model za izmenu ličnosti
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.Licnost.LicnostUpdateDTO.LicnostId">
+            <summary>
+            ID Ličnosti
+            </summary>
+        </member>
+        <member name="T:LicnostService.Models.OtherModels.DokumentDTO">
+            <summary>
+            Model za etapu
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.OtherModels.DokumentDTO.ZavodniBroj">
+            <summary>
+            Zavodni broj dokumenta
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.OtherModels.DokumentDTO.DatumDonosenjaDokumenta">
+            <summary>
+            Datum donošenja dokumenta
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.OtherModels.DokumentDTO.TipDokumenta">
+            <summary>
+            Tip dokumenta
+            </summary>
+        </member>
+        <member name="T:LicnostService.Models.OtherModels.LoggerModel">
+            <summary>
+            Model za logger
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.OtherModels.LoggerModel.Level">
+            <summary>
+            Nivo HTTP status kod-a
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.OtherModels.LoggerModel.Servis">
+            <summary>
+            Servis sa kojeg se loguje poruka
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.OtherModels.LoggerModel.Metoda">
+            <summary>
+            Metoda koja se loguje
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.OtherModels.LoggerModel.Poruka">
+            <summary>
+            Dodatni opis poruke prilikom logovanja
+            </summary>
+        </member>
+        <member name="P:LicnostService.Models.OtherModels.LoggerModel.Greska">
+            <summary>
+            Greška prilikom logovanja
+            </summary>
+        </member>
+        <member name="M:LicnostService.Services.ServiceCall`1.#ctor(LicnostService.Services.ILoggerService)">
+            <summary>
+            Konstruktor klase service call
+            </summary>
+            <param name="loggerService"></param>
+        </member>
+        <member name="M:LicnostService.Services.ServiceCall`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva
+            </summary>
+            <param name="url">Url putanja ka drugom servisu</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
