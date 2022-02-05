@@ -89,13 +89,13 @@ namespace DokumentService.Controllers
         /// <summary>
         ///     Kreira novi tip dokumenta
         /// </summary>
-        /// <param name="tipDokumentaDto">Model tipa dokumenta</param>
+        /// <param name="tipDokumentaDto">Model tipa dokumenta za kreiranje</param>
         /// <returns>Tip dokumenta</returns>
         /// <response code="201">Vraća kreirani tip dokumenta</response>
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> CreateTipDokumenta([FromBody] TipDokumentaDto tipDokumentaDto)
+        public async Task<IActionResult> CreateTipDokumenta([FromBody] CreateTipDokumentaDto tipDokumentaDto)
         {
             try
             {
