@@ -61,7 +61,7 @@ namespace KupacService.Controllers
             return Ok(_mapper.Map<PrioritetDto>(prioritet));
         }
         [HttpPost]
-        public async Task<ActionResult<PrioritetDto>> CreatePrioritet([FromBody] PrioritetDto prioritet)
+        public async Task<ActionResult<PrioritetDto>> CreatePrioritet([FromBody] PrioritetCreateDto prioritet)
         {
             try
             {

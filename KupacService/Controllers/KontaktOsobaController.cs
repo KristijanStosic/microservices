@@ -59,7 +59,7 @@ namespace KupacService.Controllers
             return Ok(_mapper.Map<KontaktOsobaDto>(kontaktOsoba));
         }
         [HttpPost]
-        public async Task<ActionResult<KontaktOsobaDto>> CreateKontaktOsoba(KontaktOsobaDto kontaktOsoba)
+        public async Task<ActionResult<KontaktOsobaDto>> CreateKontaktOsoba(KontaktOsobaCreateDto kontaktOsoba)
         {
             try
             {
