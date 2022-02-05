@@ -9,7 +9,7 @@ namespace UplataService.ServiceCalls.Mocks
     /// <summary>
     /// Logger service mock
     /// </summary>
-    public class LoggerServiceMock
+    public class LoggerServiceMock : ILoggerService
     {
         /// <summary>
         /// Slanje post zahteva za upis novog log zapisa - mock
