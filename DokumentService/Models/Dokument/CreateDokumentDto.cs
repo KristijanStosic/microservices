@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DokumentService.Models.Dokument
 {
@@ -10,21 +11,23 @@ namespace DokumentService.Models.Dokument
         /// <summary>
         /// Zavodni broj dokumenta
         /// </summary>
+        [Required(ErrorMessage = "Obavezno je uneti zavodni broj.")]
         public string ZavodniBroj { get; set; }
 
         /// <summary>
-        /// Datum kreiranja dokumenta
+        /// Datum zavođenja dokumenta
         /// </summary>
         public DateTime Datum { get; set; }
 
         /// <summary>
         /// Datum donošenja dokumenta
         /// </summary>
-        public DateTime DatumDonosenjaDokumenta { get; set; }
+        public DateTime? DatumDonosenjaDokumenta { get; set; }
 
         /// <summary>
         /// Tip dokumenta
         /// </summary>
+        [Required(ErrorMessage = "Obavezno je id tipa dokumenta.")]
         public Guid TipDokumentaId { get; set; }
     }
 }

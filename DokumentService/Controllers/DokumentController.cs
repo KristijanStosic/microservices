@@ -88,23 +88,13 @@ namespace DokumentService.Controllers
         ///     Kreira novi dokument
         /// </summary>
         /// <param name="dokumentDto">Model dokumenta</param>
-        /// <remarks>
-        ///     Primer zahteva za kreiranje novog dokumenta \
-        ///     POST /api/Dokument \
-        ///     {
-        ///     "zavodniBroj": "PSPG-1/2022", \
-        ///     "datum": "2022-02-02T17:16:53.577Z", \
-        ///     "datumDonosenjaDokumenta": "2022-02-02T17:16:53.577Z", \
-        ///     "tipDokumentaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6" \
-        ///     }
-        /// </remarks>
         /// <returns>Dokument</returns>
         /// <response code="201">Vraća kreirani dokument</response>
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public async Task<IActionResult> CreateDokument([FromBody] CreateDokumentDto dokumentDto)
-        {
+        { 
             var document = _mapper.Map<Dokument>(dokumentDto);
 
             _unitOfWork.Dokument.CreateDokument(document);
@@ -127,7 +117,6 @@ namespace DokumentService.Controllers
         /// </summary>
         /// <param name="id">ID dokumenta</param>
         /// <param name="dokumentDto">Model dokumenta</param>
-        /// <returns>Status 204 (NoContent)</returns>
         /// <response code="204">Potvrda o izmeni dokumenta</response>
         /// <response code="404">Nije pronadjen dokument za uneti ID</response>
         /// <response code="400">ID nije isti kao onaj proledjen u modelu dokumenta</response>
@@ -168,7 +157,6 @@ namespace DokumentService.Controllers
         ///     Brisanje dokumenta na osnovu ID-a
         /// </summary>
         /// <param name="id">ID dokumenta</param>
-        /// <returns>Status 204 (NoContent)</returns>
         /// <response code="204">Dokument je uspešno obrisan</response>
         /// <response code="404">Nije pronadjen dokument za uneti ID</response>
         [HttpDelete("{id:guid}")]

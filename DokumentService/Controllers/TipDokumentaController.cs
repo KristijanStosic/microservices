@@ -90,13 +90,6 @@ namespace DokumentService.Controllers
         ///     Kreira novi tip dokumenta
         /// </summary>
         /// <param name="tipDokumentaDto">Model tipa dokumenta</param>
-        /// <remarks>
-        ///     Primer zahteva za kreiranje novog tipa dokumenta \
-        ///     POST /api/TipDokumenta \
-        ///     {
-        ///     "nazivTipa": "Izvod iz lista nepokretnosti"
-        ///     }
-        /// </remarks>
         /// <returns>Tip dokumenta</returns>
         /// <response code="201">Vraća kreirani tip dokumenta</response>
         [HttpPost]
@@ -124,7 +117,6 @@ namespace DokumentService.Controllers
         /// </summary>
         /// <param name="id">ID tipa dokumenta za izmenu</param>
         /// <param name="tipDokumentaDto">Model tipa dokumenta</param>
-        /// <returns>Status 204 (NoContent)</returns>
         /// <response code="204">Potvrda o izmeni tipa dokumenta</response>
         /// <response code="404">Nije pronadjen tip dokumenta za uneti ID</response>
         /// <response code="400">ID nije isti kao onaj proledjen u modelu tipa dokumenta</response>
@@ -165,7 +157,6 @@ namespace DokumentService.Controllers
         ///     Brisanje tipa dokumenta na osnovu ID-a
         /// </summary>
         /// <param name="id">ID tipa dokumenta</param>
-        /// <returns>Status 204 (NoContent)</returns>
         /// <response code="204">Tip dokumenta je uspešno obrisan</response>
         /// <response code="404">Nije pronadjen tip dokumenta za uneti ID</response>
         [HttpDelete("{id:guid}")]
