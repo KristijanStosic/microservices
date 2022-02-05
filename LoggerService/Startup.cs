@@ -45,7 +45,8 @@ namespace LoggerService
                         {
                             Name = "Stefan Bulaja",
                             Email = "stefan.bulaja99@uns.ac.rs",
-                            Url = new Uri("https://github.com/stefanbulaja")
+                            Url = new Uri(Configuration["Swagger:Github"])
+                            
                         }
                     });
                 //Korisitmo refleksiju za dobijanje XML fajla sa komentarima

@@ -28,20 +28,20 @@ namespace LoggerService.Controllers
         /// <returns></returns>
         [HttpPost]
         [Consumes("application/json")]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<IActionResult> PostLogMessage([FromBody] LogModel logModel)
+        public IActionResult PostLogMessage([FromBody] LogModel logModel)
         {
             try
             {
                 string poruka = logModel.Servis + " | " + logModel.Metoda + " | " + logModel.Poruka;
 
-                if(logModel.Level == LogLevel.Information)
+                if (logModel.Level == LogLevel.Information)
                 {
                     _logger.LogInfo(poruka);
                 }
 
-                else if(logModel.Level == LogLevel.Error)
+                else if (logModel.Level == LogLevel.Error)
                 {
                     _logger.LogError(logModel.Greska, poruka);
                 }
@@ -56,12 +56,13 @@ namespace LoggerService.Controllers
                     _logger.LogWarn(poruka);
                 }
 
-                return NoContent();
+                var povratnaPoruka = Task.FromResult("Poruka je uspesno upisana.");
+                return Ok(povratnaPoruka);
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex , "Desila se greska prilikom upisa u log fajl.");
-                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom upisa u log fajl");
+                _logger.LogError(ex, "Desila se greska prilikom upisa u log fajl.");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom upisa u log fajl.");
             }
         }
 
