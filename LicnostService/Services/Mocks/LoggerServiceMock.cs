@@ -23,7 +23,7 @@ namespace LicnostService.Services.Mocks
 
             System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(log));
 
-            return true;
+            return await Task.FromResult(true);
         }
 
     }

@@ -12,7 +12,7 @@ namespace LicnostService.Models.OtherModels
     public class LoggerModel
     {
         /// <summary>
-        /// Nivo HTTP status kod-a
+        /// Nivo Log levela - Info,Warning,Error,Debug
         /// </summary>
         public LogLevel Level { get; set; }
 

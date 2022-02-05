@@ -8,7 +8,7 @@ namespace LicnostService.Models.OtherModels
     /// <summary>
     /// Model za etapu
     /// </summary>
-    public class DokumentDTO
+    public class DokumentDto
     {
         /// <summary>
         /// Zavodni broj dokumenta

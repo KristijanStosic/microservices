@@ -14,8 +14,8 @@ namespace LicnostService.Profiles
 
         public KomisijaProfile()
         {
-            CreateMap<Komisija, KomisijaDTO>();
-            CreateMap<KomisijaCreateDTO, Komisija>()
+            CreateMap<Komisija, KomisijaDto>();
+            CreateMap<KomisijaCreateDto, Komisija>()
                 .ForMember(
                     dest => dest.ClanoviKomisije,
                     opt => opt.Ignore());
@@ -23,13 +23,13 @@ namespace LicnostService.Profiles
                 .ForMember(
                     dest => dest.LicnostId,
                     opt => opt.MapFrom(src => src));
-            CreateMap<KomisijaUpdateDTO, Komisija>()
+            CreateMap<KomisijaUpdateDto, Komisija>()
                 .ForMember(
                     dest => dest.ClanoviKomisije,
                     opt => opt.Ignore());
             CreateMap<Komisija, Komisija>();
-            CreateMap<KomisijaConfirmation, KomisijaConfirmationDTO>();
-            CreateMap<Komisija, KomisijaConfirmationDTO>();
+            CreateMap<KomisijaConfirmation, KomisijaConfirmationDto>();
+            CreateMap<Komisija, KomisijaConfirmationDto>();
             CreateMap<Komisija, KomisijaConfirmation>();
         }
 

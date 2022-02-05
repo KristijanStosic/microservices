@@ -9,7 +9,7 @@ namespace LicnostService.Models.Komisija
     /// <summary>
     /// Model za potvrdu kreiranja komisije
     /// </summary>
-    public class KomisijaConfirmationDTO
+    public class KomisijaConfirmationDto
     {
 
         /// <summary>

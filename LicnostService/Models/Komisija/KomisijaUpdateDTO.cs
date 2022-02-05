@@ -10,13 +10,14 @@ namespace LicnostService.Models.Komisija
     /// <summary>
     /// Model za izmenu komisije
     /// </summary>
-    public class KomisijaUpdateDTO
+    public class KomisijaUpdateDto
     {
         /// <summary>
         /// ID komisije
         /// </summary>
         public Guid KomisijaId { get; set; }
         [Required(ErrorMessage = "Obavezno je uneti naziv komisije.")]
+
 
         /// <summary>
         /// Naziv komisije
@@ -26,7 +27,6 @@ namespace LicnostService.Models.Komisija
         /// <summary>
         /// ID predsednika komisije
         /// </summary>
-
         public Guid PredsednikKomisijeId { get; set; }
 
         /// <summary>
@@ -45,4 +45,3 @@ namespace LicnostService.Models.Komisija
 
     }
 }
-

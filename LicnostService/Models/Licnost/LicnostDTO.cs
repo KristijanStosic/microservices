@@ -8,7 +8,7 @@ namespace LicnostService.Models.Licnost
     /// <summary>
     /// Model za ličnost
     /// </summary>
-    public class LicnostDTO
+    public class LicnostDto
     {
         /// <summary>
         /// ID ličnosti

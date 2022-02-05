@@ -10,7 +10,7 @@ namespace LicnostService.Services.Mocks
     {
         public async Task<T> SendGetRequestAsync(string url)
         {
-            var dokument = new DokumentDTO
+            var dokument = new DokumentDto
             {
                 ZavodniBroj = "235",
                 TipDokumenta = "Tip 2",

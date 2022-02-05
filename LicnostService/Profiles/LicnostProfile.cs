@@ -12,10 +12,10 @@ namespace LicnostService.Profiles
     {
         public LicnostProfile()
         {
-            CreateMap<Licnost, LicnostCreateDTO>().ReverseMap();
-            CreateMap<LicnostUpdateDTO, Licnost>();
+            CreateMap<Licnost, LicnostCreateDto>().ReverseMap();
+            CreateMap<LicnostUpdateDto, Licnost>();
             CreateMap<Licnost, Licnost>();
-            CreateMap<Licnost, LicnostDTO>().ReverseMap();
+            CreateMap<Licnost, LicnostDto>().ReverseMap();
         }
     }
 }

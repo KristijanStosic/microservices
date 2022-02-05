@@ -12,12 +12,12 @@ namespace LicnostService.Data
     public class LicnostRepository :ILicnostRepository
     {
         private readonly LicnostContext _context;
-        private readonly IMapper _mapper;
+        
 
-        public LicnostRepository(LicnostContext context, IMapper mapper)
+        public LicnostRepository(LicnostContext context)
         {
             _context = context;
-            _mapper = mapper;
+           
         }
 
         public async Task<List<Licnost>> GetAllLicnosti(string imeLicnosti = null)

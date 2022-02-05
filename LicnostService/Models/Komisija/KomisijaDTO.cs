@@ -10,13 +10,12 @@ namespace LicnostService.Models.Komisija
     /// <summary>
     /// Model za komisiju
     /// </summary>
-    public class KomisijaDTO
+    public class KomisijaDto
     {
 
         /// <summary>
         /// ID komisije
         /// </summary>
-        /// 
         public Guid KomisijaId { get; set; }
 
         /// <summary>
@@ -27,19 +26,19 @@ namespace LicnostService.Models.Komisija
         /// <summary>
         /// Predsednik komisije
         /// </summary>
-        public LicnostDTO PredsednikKomisije { get; set; }
+        public LicnostDto PredsednikKomisije { get; set; }
 
         /// <summary>
         /// Lista članova komisije
         /// </summary>
 
-        public List<LicnostDTO> ClanoviKomisije { get; set; }
+        public List<LicnostDto> ClanoviKomisije { get; set; }
 
         /// <summary>
         /// Dokument u komisiji
         /// </summary>
 
-        public DokumentDTO Dokument{ get; set; }
+        public DokumentDto Dokument{ get; set; }
 
 
 

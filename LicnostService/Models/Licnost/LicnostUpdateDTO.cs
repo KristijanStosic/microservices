@@ -9,7 +9,7 @@ namespace LicnostService.Models.Licnost
     /// <summary>
     /// Model za izmenu ličnosti
     /// </summary>
-    public class LicnostUpdateDTO
+    public class LicnostUpdateDto
     {
         /// <summary>
         /// ID Ličnosti

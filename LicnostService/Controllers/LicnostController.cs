@@ -47,7 +47,7 @@ namespace LicnostService.Controllers
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<List<LicnostDTO>>> GetAllLicnosti(string imeLicnosti)
+        public async Task<ActionResult<List<LicnostDto>>> GetAllLicnosti(string imeLicnosti)
         {
             var licnosti = await _licnostRepository.GetAllLicnosti(imeLicnosti);
 
@@ -59,7 +59,7 @@ namespace LicnostService.Controllers
 
             await _loggerService.Log(LogLevel.Information, "GetAllLicnosti", "Lista licnosti je uspešno vraćena.");
 
-            return Ok(_mapper.Map<IEnumerable<LicnostDTO>>(licnosti));
+            return Ok(_mapper.Map<IEnumerable<LicnostDto>>(licnosti));
         }
         /// <summary>
         /// Vraća jednu ličnost na osnovu ID-a
@@ -71,7 +71,7 @@ namespace LicnostService.Controllers
         [HttpGet("{licnostId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<LicnostDTO>> GetLicnost(Guid licnostId)
+        public async Task<ActionResult<LicnostDto>> GetLicnost(Guid licnostId)
         {
             var licnost = await _licnostRepository.GetLicnostById(licnostId);
 
@@ -84,7 +84,7 @@ namespace LicnostService.Controllers
 
             await _loggerService.Log(LogLevel.Information, "GetLicnost", $"Licnost sa id-em {licnostId} je uspešno vraćena.");
 
-            return Ok(_mapper.Map<LicnostDTO>(licnost));
+            return Ok(_mapper.Map<LicnostDto>(licnost));
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace LicnostService.Controllers
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<LicnostCreateDTO>> CreateLicnost([FromBody] LicnostCreateDTO licnost)
+        public async Task<ActionResult<LicnostCreateDto>> CreateLicnost([FromBody] LicnostCreateDto licnost)
         {
             try
             {
@@ -109,7 +109,7 @@ namespace LicnostService.Controllers
 
                 await _loggerService.Log(LogLevel.Information, "CreateLicnost", $"Licnost sa vrednostima: {JsonConvert.SerializeObject(licnost)} je uspešno kreirana.");
 
-                return Created(location, _mapper.Map<LicnostCreateDTO>(createdLicnost));
+                return Created(location, _mapper.Map<LicnostCreateDto>(createdLicnost));
             }
             catch (Exception ex)
             {
@@ -118,10 +118,12 @@ namespace LicnostService.Controllers
             }
         }
 
-        /// <summary>
+
+        ///<summary>
         /// Izmena ličnosti
         /// </summary>
         /// <param name="licnost">Model ličnost</param>
+        /// <param name="licnostId"></param>
         /// <returns>Potvrda o izmeni ličnosti</returns>
         /// <response code="200">Izmenjena ličnost</response>
         /// <response code="404">Nije pronađena ličnost za uneti ID</response>
@@ -130,7 +132,7 @@ namespace LicnostService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<LicnostUpdateDTO>> UpdateLicnost(Guid licnostId, [FromBody] LicnostUpdateDTO licnost)
+        public async Task<ActionResult<LicnostUpdateDto>> UpdateLicnost(Guid licnostId, [FromBody] LicnostUpdateDto licnost)
         {
             try
             {

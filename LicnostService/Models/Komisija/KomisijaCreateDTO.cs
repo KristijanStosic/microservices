@@ -10,7 +10,7 @@ namespace LicnostService.Models.Komisija
     /// <summary>
     /// Model za kreiranje komisije
     /// </summary>
-    public class KomisijaCreateDTO
+    public class KomisijaCreateDto
     {
         /// <summary>
         /// Naziv komisije

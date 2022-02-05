@@ -32,10 +32,10 @@ namespace LicnostService.Controllers
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
         private readonly ILoggerService _loggerService;
-        private readonly IServiceCall<DokumentDTO> _dokumentService;
+        private readonly IServiceCall<DokumentDto> _dokumentService;
         private readonly IConfiguration _configuration;
 
-        public KomisijaController(IKomisijaRepository komisijaRepository, ILicnostRepository licnostRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService, IServiceCall<DokumentDTO> dokumentService, IConfiguration configuration)
+        public KomisijaController(IKomisijaRepository komisijaRepository, ILicnostRepository licnostRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService, IServiceCall<DokumentDto> dokumentService, IConfiguration configuration)
         {
             _komisijaRepository = komisijaRepository;
             _linkGenerator = linkGenerator;
@@ -55,7 +55,7 @@ namespace LicnostService.Controllers
         /// <response code="404">Nije pronađeno ni jedna komisija</response>
         [HttpGet]
         [HttpHead]
-        public async Task<ActionResult<List<KomisijaDTO>>> GetAllKomisije(string nazivKomisije)
+        public async Task<ActionResult<List<KomisijaDto>>> GetAllKomisije(string nazivKomisije)
         {
             var komisije = await _komisijaRepository.GetAllKomisije(nazivKomisije);
 
@@ -66,23 +66,23 @@ namespace LicnostService.Controllers
 
             }
 
-            var komisijeDTO = new List<KomisijaDTO>();
+            var komisijeDto = new List<KomisijaDto>();
             string url = _configuration["Services:DokumentService"];
             foreach (var komisija in komisije)
             {
-                var komisijaDTO = _mapper.Map<KomisijaDTO>(komisija);
+                var komisijaDto = _mapper.Map<KomisijaDto>(komisija);
                 if (komisija.DokumentId is not null)
                 {
-                    var dokumentDTO = await _dokumentService.SendGetRequestAsync(url + komisija.DokumentId);
-                    if (dokumentDTO is not null)
-                        komisijaDTO.Dokument = dokumentDTO;
+                    var dokumentDto = await _dokumentService.SendGetRequestAsync(url + komisija.DokumentId);
+                    if (dokumentDto is not null)
+                        komisijaDto.Dokument = dokumentDto;
                 }
-                komisijeDTO.Add(komisijaDTO);
+                komisijeDto.Add(komisijaDto);
             }
 
             await _loggerService.Log(LogLevel.Information, "GetAllKomisije", "Lista komisija je uspešno vraćena.");
 
-            return Ok(komisijeDTO);
+            return Ok(komisijeDto);
         }
 
 
@@ -96,7 +96,7 @@ namespace LicnostService.Controllers
         [HttpGet("{komisijaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult<KomisijaDTO>> GetKomisija(Guid komisijaId)
+        public async Task<ActionResult<KomisijaDto>> GetKomisija(Guid komisijaId)
         {
             var komisija = await _komisijaRepository.GetKomisijeById(komisijaId);
 
@@ -107,17 +107,17 @@ namespace LicnostService.Controllers
             }
 
             string url = _configuration["Services:DokumentService"];
-            var komisijaDTO = _mapper.Map<KomisijaDTO>(komisija);
+            var komisijaDto = _mapper.Map<KomisijaDto>(komisija);
             if (komisija.DokumentId is not null)
             {
-                var dokumentDTO = await _dokumentService.SendGetRequestAsync(url + komisija.DokumentId);
-                if (dokumentDTO is not null)
-                    komisijaDTO.Dokument = dokumentDTO;
+                var dokumentDto = await _dokumentService.SendGetRequestAsync(url + komisija.DokumentId);
+                if (dokumentDto is not null)
+                    komisijaDto.Dokument = dokumentDto;
             }
 
             await _loggerService.Log(LogLevel.Information, "GetKomisija", $"Komisija sa id-em {komisijaId} je uspešno vraćena.");
 
-            return Ok(komisijaDTO);
+            return Ok(komisijaDto);
         }
         /// <summary>
         /// Kreira novu komisiju
@@ -130,7 +130,7 @@ namespace LicnostService.Controllers
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<KomisijaConfirmationDTO>> CreateKomisija([FromBody] KomisijaCreateDTO komisija)
+        public async Task<ActionResult<KomisijaConfirmationDto>> CreateKomisija([FromBody] KomisijaCreateDto komisija)
         {
             try
             {
@@ -154,7 +154,7 @@ namespace LicnostService.Controllers
 
                 await _loggerService.Log(LogLevel.Information, "CreateKomisija", $"Komisija sa vrednostima: {JsonConvert.SerializeObject(komisija)} je uspešno kreirana.");
 
-                return Created(lokacija, _mapper.Map<KomisijaConfirmationDTO>(novaKomisija));
+                return Created(lokacija, _mapper.Map<KomisijaConfirmationDto>(novaKomisija));
             }
             catch (Exception ex)
             {
@@ -175,7 +175,7 @@ namespace LicnostService.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<KomisijaConfirmationDTO>> UpdateKomisija(KomisijaUpdateDTO komisija)
+        public async Task<ActionResult<KomisijaConfirmationDto>> UpdateKomisija(KomisijaUpdateDto komisija)
         {
             try
             {
@@ -209,7 +209,7 @@ namespace LicnostService.Controllers
                 await _komisijaRepository.UpdateKomisija(novaKomisija);
                 await _loggerService.Log(LogLevel.Information, "UpdateKomisija", $"Komisija sa id-em {komisija.KomisijaId} je uspešno izmenjena. Stare vrednosti su: {stariNaziv}");
 
-                return Ok(_mapper.Map<KomisijaConfirmationDTO>(staraKomisija));
+                return Ok(_mapper.Map<KomisijaConfirmationDto>(staraKomisija));
             }
             catch (Exception ex)
             {

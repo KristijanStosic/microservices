@@ -9,7 +9,7 @@ namespace LicnostService.Models.Licnost
     /// <summary>
     /// Model za kreiranje ličnosti
     /// </summary>
-    public class LicnostCreateDTO
+    public class LicnostCreateDto
     {
         /// <summary>
         /// Ime ličnosti

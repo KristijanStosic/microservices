@@ -81,7 +81,7 @@ namespace LicnostService
             services.AddScoped<ILicnostRepository, LicnostRepository>();
             services.AddScoped<IKomisijaRepository, KomisijaRepository>();
             services.AddScoped<ILoggerService, LoggerServiceMock>();
-            services.AddScoped<IServiceCall<DokumentDTO>, ServiceCallDokumentMock<DokumentDTO>>();
+            services.AddScoped<IServiceCall<DokumentDto>, ServiceCallDokumentMock<DokumentDto>>();
 
             services.AddSwaggerGen(setup =>
             {
@@ -95,7 +95,8 @@ namespace LicnostService
                         {
                             Name = "Stefan Bulaja",
                             Email = "stefan.bulaja99@uns.ac.rs",
-                            Url = new Uri("https://github.com/stefanbulaja")
+                            Url = new Uri(Configuration["Swagger:Github"])
+                            
                         }
                     });
                 //Korisitmo refleksiju za dobijanje XML fajla za komentarima
