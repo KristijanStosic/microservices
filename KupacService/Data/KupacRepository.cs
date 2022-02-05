@@ -28,14 +28,12 @@ namespace KupacService.Data
         {
             List<Kupac> kupci = new List<Kupac>();
 
-            List<PravnoLice> pravnaLica = new List<PravnoLice>();
-            List<FizickoLice> fizickaLica = new List<FizickoLice>();
 
-            pravnaLica = await _pravnoLiceRepository.GetPravnoLice();
+            var pravnaLica = await _pravnoLiceRepository.GetPravnoLice();
             if (pravnaLica != null && pravnaLica.Count>0)
                 kupci.AddRange(pravnaLica);
 
-            fizickaLica = await _fizickoLiceRepository.GetFizickoLice();
+            var fizickaLica = await _fizickoLiceRepository.GetFizickoLice();
             if(fizickaLica != null && fizickaLica.Count>0)
                 kupci.AddRange(fizickaLica);
 

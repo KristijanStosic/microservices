@@ -24,18 +24,14 @@ namespace KupacService.Controllers
         private readonly IKupacRepository _kupacRepository;
  
         private readonly IMapper _mapper;
-        private readonly IConfiguration _configuration;
-        private readonly IServiceCall<AdresaDto> _adresaServiceCall;
         private readonly IKupacCalls _kupacCalls;
         private readonly ILoggerService _loggerService;
 
-        public KupcaController(IKupacRepository kupacRepository,IMapper mapper, IConfiguration configuration, IServiceCall<AdresaDto> adresaServiceCall,
+        public KupcaController(IKupacRepository kupacRepository,IMapper mapper,
             IKupacCalls kupacCalls,ILoggerService loggerService)
         {
             this._kupacRepository = kupacRepository;
             this._mapper = mapper;
-            this._configuration = configuration;
-            this._adresaServiceCall = adresaServiceCall;
             this._kupacCalls = kupacCalls;
             this._loggerService = loggerService;
         }
@@ -44,7 +40,7 @@ namespace KupacService.Controllers
         public async Task<ActionResult<List<KupacDto>>> GetKupci()
         {
             var kupci = await _kupacRepository.GetKupci();
-            if(kupci == null && kupci.Count == 0)
+            if(kupci == null || kupci.Count == 0)
             {
                 await _loggerService.Log(LogLevel.Warning, "GetKupci", "Lista kupaca je prazna ili null.");
                 return NoContent();
