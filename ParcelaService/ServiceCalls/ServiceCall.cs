@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,13 @@ namespace ParcelaService.ServiceCalls
 {
     public class ServiceCall<T> : IServiceCall<T>
     {
+        private readonly ILoggerService _loggerService;
+
+        public ServiceCall(ILoggerService loggerService)
+        {
+            _loggerService = loggerService;
+        }
+
         public async Task<T> SendGetRequestAsync(string url)
         {
             try
@@ -32,8 +40,9 @@ namespace ParcelaService.ServiceCalls
                 }
                 return default;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                await _loggerService.Log(LogLevel.Error, "SendGetRequestAsync", $"Greška prilikom komunikacije sa drugim servisom iz servisa Parcela. Ciljani url: {url}", e);
                 return default;
             }
         }

@@ -4,6 +4,80 @@
         <name>ParcelaService</name>
     </assembly>
     <members>
+        <member name="T:ParcelaService.Controllers.DeoParceleController">
+            <summary>
+            Kontroler za deo parcele
+            </summary>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.#ctor(ParcelaService.Data.Interfaces.IDeoParceleRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,ParcelaService.ServiceCalls.IServiceCall{ParcelaService.Models.OtherServices.KupacDto},Microsoft.Extensions.Configuration.IConfiguration,ParcelaService.ServiceCalls.ILoggerService)">
+            <summary>
+            Konstruktor kontrolera dela parcele
+            </summary>
+            <param name="deoParceleRepository">Repo deo parcele</param>
+            <param name="linkGenerator">Link generator za create zahtev</param>
+            <param name="mapper">AutoMapper</param>
+            <param name="kupacServiceCall">Servis kupac - dobijanje kupca</param>
+            <param name="configuration">Konfiguracija za pristup putanji ka servisu kupac</param>
+            <param name="loggerService">Logger servis</param>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.GetAllDeoParcele">
+            <summary>
+            Vraća sve delove parcela
+            </summary>
+            <returns>Lista delova parcela</returns>
+            <response code="200">Vraća listu delova parcela</response>
+            <response code="404">Nije pronađeno ni jedan deo parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.GetDeoParcele(System.Guid)">
+            <summary>
+            Vraća jedan deo parcele na osnovu ID-a
+            </summary>
+            <param name="deoParceleId">ID dela parcele</param>
+            <returns>Deo parcele</returns>
+            <response code="200">Vraća traženi deo parcele</response>
+            <response code="404">Nije pronađen deo parcele za uneti ID</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.CreateDeoParcele(ParcelaService.Models.DeoParcele.DeoParceleCreationDto)">
+             <summary>
+             Kreira novi deo parcele
+             </summary>
+             <param name="deoParcele">Model deo parcele</param>
+             <remarks>
+             Primer zahteva za kreiranje novog dela parcele \
+             POST /api/deoParcele \
+             {   
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju dela parcele</returns>
+             <response code="200">Vraća kreirani deo parcele</response>
+             <response code="500">Desila se greška prilikom unosa novog dela parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.UpdateDeoParcele(ParcelaService.Models.DeoParcele.DeoParceleUpdateDto)">
+            <summary>
+            Izmena dela parcele
+            </summary>
+            <param name="deoParcele">Model deo parcele</param>
+            <returns>Potvrda o izmeni dela parcele</returns>
+            <response code="200">Izmenjeni deo parcele</response>
+            <response code="404">Nije pronađen deo parcele za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene dela parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.DeleteDeoParcele(System.Guid)">
+            <summary>
+            Brisanje dela parcele na osnovu ID-a
+            </summary>
+            <param name="deoParceleId">ID dela parcele</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Deo parcele je uspešno obrisan</response>
+            <response code="404">Nije pronađeno deo parcele za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja dela parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.DeoParceleController.GetDeoParceleOptions">
+            <summary>
+            Vraća opcije za rad sa delom parcele
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:ParcelaService.Controllers.KatastarskaOpstinaController">
             <summary>
             Kontroler za katastarsku opstinu
@@ -394,6 +468,71 @@
             <summary>
             Kontroler za parcelu
             </summary>
+        </member>
+        <member name="M:ParcelaService.Controllers.ParcelaController.GetAllParcela">
+            <summary>
+            Vraća sve parcele
+            </summary>
+            <returns>Lista parcela</returns>
+            <response code="200">Vraća listu parcela</response>
+            <response code="404">Nije pronađena ni jedna parcela </response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ParcelaController.GetParcela(System.Guid)">
+            <summary>
+            Vraća jednu parcelu na osnovu ID-a
+            </summary>
+            <param name="parcelaId">ID parcele</param>
+            <returns>Parcela</returns>
+            <response code="200">Vraća traženu parcelu</response>
+            <response code="404">Nije pronađena parcela za uneti ID</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ParcelaController.CreateParcela(ParcelaService.Models.Parcela.ParcelaCreationDto)">
+            <summary>
+            Kreira novu parcelu
+            </summary>
+            <param name="parcela">Model parcele</param>
+            <remarks>
+            Primer zahteva za kreiranje nove parcele \
+            POST /api/parcela \
+            {
+              "brojParcele": "broj parcele",
+              "povrsinaParcele": "Površina parcele",
+              "brojListeNepokretnosti": "Broj liste nepokretnosti",
+              "zasticenaZonaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "oblikSvojineId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "odvodnjavanjeId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+              "katastarskaOpstinaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+            }
+            </remarks>
+            <returns>Potvrda o kreiranju parcele</returns>
+            <response code="201">Vraća kreiranu parcelu </response>
+            <response code="500">Desila se greška prilikom unosa nove parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ParcelaController.UpdateParcela(ParcelaService.Models.Parcela.ParcelaUpdateDto)">
+            <summary>
+            Izmena parcele
+            </summary>
+            <param name="parcela">Model parcele</param>
+            <returns>Potvrda o izmeni parcele</returns>
+            <response code="200">Izmenjena parcela</response>
+            <response code="404">Nije pronađena parcela za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ParcelaController.DeleteParcela(System.Guid)">
+            <summary>
+            Brisanje parcele na osnovu ID-a
+            </summary>
+            <param name="parcelaId">ID parcele</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Parcela je uspešno obrisan</response>
+            <response code="404">Nije pronađena parcela za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja parcele</response>
+        </member>
+        <member name="M:ParcelaService.Controllers.ParcelaController.GetParcelaOptions">
+            <summary>
+            Vraća opcije za rad sa parcelama
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:ParcelaService.Controllers.ZasticenaZonaController">
             <summary>
