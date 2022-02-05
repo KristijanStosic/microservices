@@ -1,8 +1,6 @@
 using System;
 using System.IO;
 using System.Reflection;
-using DokumentService.Data.Dokument;
-using DokumentService.Data.TipDokumenta;
 using DokumentService.Data.UnitOfWork;
 using DokumentService.DbContext;
 using DokumentService.Services.Logger;
@@ -24,8 +22,6 @@ namespace DokumentService
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<ITipDokumentaRepository, TipDokumentaRepository>();
-            services.AddScoped<IDokumentRepository, DokumentRepository>();
 
             services.AddScoped<ILoggerService, LoggerMockService>();
             // services.AddScoped<ILoggerService, LoggerService>();
