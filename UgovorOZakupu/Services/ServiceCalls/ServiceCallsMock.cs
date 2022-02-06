@@ -110,7 +110,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
                 {
                     new()
                     {
-                        OvlascenoLiceId = Guid.NewGuid(),
+                        OvlascenoLiceId = Guid.Parse("5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5"),
                         OvlascenoLice = "Petar Petrović",
                         BrojDokumenta = "0224989800025",
                         Stanovanje = "Bulevar Oslobodjenja 50, Novi Sad, Srbija",
@@ -118,7 +118,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
                     },
                     new()
                     {
-                        OvlascenoLiceId = Guid.NewGuid(),
+                        OvlascenoLiceId = Guid.Parse("5E1BFFFC-1AEE-4662-BC04-341C35B9EBDC"),
                         OvlascenoLice = "Milica Radivojević",
                         BrojDokumenta = "0263989802415",
                         Stanovanje = "Bulevar Cara Lazara 11, Novi Sad, Srbija",
@@ -188,7 +188,73 @@ namespace UgovorOZakupu.Services.ServiceCalls
 
         private KupacDto GetKupac()
         {
-            throw new NotImplementedException();
+            return new KupacDto
+            {
+                KupacId = Guid.Parse("febd1c29-90e7-40c2-97f3-1e88495fe98d"),
+                Naziv = "Filip Ivanic",
+                Faks = null,
+                OstvarenaPovrsina = 500,
+                ImaZabranu = false,
+                DatumPocetkaZabrane = default,
+                DuzinaTrajanjaZabraneGod = 0,
+                BrojTelefona = "069453432543",
+                BrojTelefona2 = null,
+                Email = "filip@gmailcom",
+                BrojRacuna = "908 ‑ 10501 ‑ 97",
+                KontaktOsoba = new KontaktOsobaDto
+                {
+                    KontaktOsobaId = Guid.Parse("244fb7c4-aab8-4ec4-8960-e48e017bad37"),
+                    Ime = "Milan",
+                    Prezime = "Drazic",
+                    Telefon="0693432534",
+                    Funkcija = "Funkcija1"
+                },
+                Prioriteti = new List<PrioritetDto>
+                {
+                    new()
+                    {
+                        PrioritetId = Guid.Parse("2578e81b-3f01-479a-b790-f52106f639f7"),
+                        Opis = "Vlasnik sistema za navodnjavanje"
+                    }
+                },
+                Adresa = new AdresaDto
+                {
+                    AdresaId = Guid.Parse("1c989ee3-13b2-4d3b-abeb-c4e6343eace7"),
+                    Ulica = "Branka Ilica",
+                    Broj = "1",
+                    Mesto = "Novi Sad",
+                    PostanskiBroj = "21000",
+                    Drzava = "Srbija"
+                },
+                OvlascenaLica = new List<OvlascenoLiceDto>
+                {
+                    new()
+                    {
+                        OvlascenoLice = "Petar Petrović",
+                        BrojDokumenta = "0224989800025",
+                        Stanovanje = "Bulevar Oslobodjenja 50 Novi Sad, Srbija",
+                    }
+                },
+                Uplate = new List<UplataDto>
+                {
+                    new()
+                    {
+                        BrojRacuna = "100-4777487000005-66",
+                        PozivNaBroj = "90-555258-552-559",
+                        Iznos = 1999.99,
+                        SvrhaUplate = "Uplata na racun",
+                        Datum = DateTime.Parse("2020-05-25")
+                    },
+                    new()
+                    {
+                        BrojRacuna = "150-2541485965214-99",
+                        PozivNaBroj = "90-555258-552-559",
+                        Iznos = 2052.47,
+                        SvrhaUplate = "Uplata na racun",
+                        Datum = DateTime.Parse("2020-05-25")
+                    }
+                }
+            };
         }
 
         private LicnostDto GetLicnost()

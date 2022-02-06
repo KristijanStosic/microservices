@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.DbContext;
+using UgovorOZakupu.Services;
 using UgovorOZakupu.Services.ServiceCalls;
 
 namespace UgovorOZakupu
@@ -23,8 +24,10 @@ namespace UgovorOZakupu
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped<IServiceCalls, ServiceCalls>();
-            // services.AddScoped<IServiceCalls, ServiceCallsMock>();
+            services.AddScoped<IServices, Services.Services>();
+
+            // services.AddScoped<IServiceCalls, ServiceCalls>();
+            services.AddScoped<IServiceCalls, ServiceCallsMock>();
 
             services.AddControllers();
 
