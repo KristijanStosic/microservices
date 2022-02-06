@@ -6,7 +6,7 @@ using UgovorOZakupu.DbContext;
 
 namespace UgovorOZakupu.Data
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private UgovorOZakupuDbContext _db;
 
@@ -15,28 +15,28 @@ namespace UgovorOZakupu.Data
             _db = db;
         }
         
-        public Task<List<T>> GetAll()
+        public Task<List<TEntity>> GetAll()
         {
-            return _db.Set<T>()
+            return _db.Set<TEntity>()
                 .AsNoTracking()
                 .ToListAsync();
         }
 
-        public Task<T> GetById(Guid id)
+        public Task<TEntity> GetById(Guid id)
         {
-            return _db.Set<T>()
+            return _db.Set<TEntity>()
                 .FindAsync(id)
                 .AsTask();
         }
 
-        public void Create(T entity)
+        public void Create(TEntity entity)
         {
-            _db.Set<T>().Add(entity);
+            _db.Set<TEntity>().Add(entity);
         }
 
-        public void Delete(T entity)
+        public void Delete(TEntity entity)
         {
-            _db.Set<T>().Remove(entity);
+            _db.Set<TEntity>().Remove(entity);
         }
     }
 }

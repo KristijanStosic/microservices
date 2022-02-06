@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.Entities;
 using UgovorOZakupu.Models.TipGarancije;
-using UgovorOZakupu.Services.Logger;
+using UgovorOZakupu.Services.ServiceCalls;
 
 namespace UgovorOZakupu.Controllers
 {
@@ -21,15 +21,15 @@ namespace UgovorOZakupu.Controllers
     [Produces("application/json")]
     public class TipGarancijeController : ControllerBase
     {
-        private readonly ILoggerService _loggerService;
+        private readonly IServiceCalls _serviceCalls;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public TipGarancijeController(IUnitOfWork unitOfWork, IMapper mapper, ILoggerService loggerService)
+        public TipGarancijeController(IUnitOfWork unitOfWork, IMapper mapper, IServiceCalls serviceCalls)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _loggerService = loggerService;
+            _serviceCalls = serviceCalls;
         }
 
         /// <summary>
@@ -47,12 +47,12 @@ namespace UgovorOZakupu.Controllers
 
             if (tipoviGarancije == null || tipoviGarancije.Count == 0)
             {
-                await _loggerService.Log(LogLevel.Warning, "GetAllTipGarancije",
+                await _serviceCalls.Log(LogLevel.Warning, "GetAllTipGarancije",
                     "Lista tipova garancije je prazna ili null.");
                 return NoContent();
             }
 
-            await _loggerService.Log(LogLevel.Information, "GetAllTipGarancije",
+            await _serviceCalls.Log(LogLevel.Information, "GetAllTipGarancije",
                 "Lista tipova garancije je uspešno vraćena.");
 
             return Ok(_mapper.Map<List<TipGarancijeDto>>(tipoviGarancije));
@@ -74,12 +74,12 @@ namespace UgovorOZakupu.Controllers
 
             if (tipGarancije == null)
             {
-                await _loggerService.Log(LogLevel.Warning, "GetTipGarancijeById",
+                await _serviceCalls.Log(LogLevel.Warning, "GetTipGarancijeById",
                     $"Tip garancije sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
 
-            await _loggerService.Log(LogLevel.Information, "GetTipGarancijeById",
+            await _serviceCalls.Log(LogLevel.Information, "GetTipGarancijeById",
                 $"Tip garancije sa id-jem {id} je uspešno vraćen.");
 
             return Ok(_mapper.Map<TipGarancijeDto>(tipGarancije));
@@ -101,7 +101,7 @@ namespace UgovorOZakupu.Controllers
             _unitOfWork.TipoviGarancije.Create(tipGarancije);
             await _unitOfWork.CompleteAsync();
 
-            await _loggerService.Log(LogLevel.Information, "CreateTipGarancije",
+            await _serviceCalls.Log(LogLevel.Information, "CreateTipGarancije",
                 $"Tip garancije sa vrednostima: {JsonConvert.SerializeObject(tipGarancije)} je uspešno kreiran.");
 
             return CreatedAtAction(
@@ -129,7 +129,7 @@ namespace UgovorOZakupu.Controllers
         {
             if (id != tipGarancijeDto.Id)
             {
-                await _loggerService.Log(LogLevel.Warning, "UpdateTipGarancije",
+                await _serviceCalls.Log(LogLevel.Warning, "UpdateTipGarancije",
                     "ID tipa garancije prosledjen kroz url nije isti kao onaj u telu zahteva.");
                 return BadRequest();
             }
@@ -138,7 +138,7 @@ namespace UgovorOZakupu.Controllers
 
             if (tipGarancije == null)
             {
-                await _loggerService.Log(LogLevel.Warning, "UpdateTipGarancije",
+                await _serviceCalls.Log(LogLevel.Warning, "UpdateTipGarancije",
                     $"Tip garancije sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
@@ -148,7 +148,7 @@ namespace UgovorOZakupu.Controllers
             _mapper.Map(tipGarancijeDto, tipGarancije, typeof(UpdateTipGarancijeDto), typeof(TipGarancije));
             await _unitOfWork.CompleteAsync();
 
-            await _loggerService.Log(LogLevel.Information, "UpdateTipGarancije",
+            await _serviceCalls.Log(LogLevel.Information, "UpdateTipGarancije",
                 $"Tip garancije sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
 
             return NoContent();
@@ -169,7 +169,7 @@ namespace UgovorOZakupu.Controllers
 
             if (tipGarancije == null)
             {
-                await _loggerService.Log(LogLevel.Warning, "DeleteTipGarancije",
+                await _serviceCalls.Log(LogLevel.Warning, "DeleteTipGarancije",
                     $"Tip garancije sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
@@ -177,7 +177,7 @@ namespace UgovorOZakupu.Controllers
             _unitOfWork.TipoviGarancije.Delete(tipGarancije);
             await _unitOfWork.CompleteAsync();
 
-            await _loggerService.Log(LogLevel.Information, "DeleteTipGarancije",
+            await _serviceCalls.Log(LogLevel.Information, "DeleteTipGarancije",
                 $"Tip garancije sa id-em {id} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(tipGarancije)}");
 
             return NoContent();

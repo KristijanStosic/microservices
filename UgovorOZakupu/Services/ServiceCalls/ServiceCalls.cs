@@ -2,68 +2,47 @@
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Configuration;
-using UgovorOZakupu.Models.Dokument;
-using UgovorOZakupu.Models.JavnoNadmetanje;
-using UgovorOZakupu.Models.Kupac;
-using UgovorOZakupu.Models.Licnost;
+using Microsoft.Extensions.Logging;
+using UgovorOZakupu.Models.LogModel;
 using UgovorOZakupu.Models.UgovorOZakupu;
 
 namespace UgovorOZakupu.Services.ServiceCalls
 {
     public class ServiceCalls : IServiceCalls
     {
-        private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
-        
-        private readonly IService<DokumentDto> _dokumentService;
-        private readonly IService<JavnoNadmetanjeDto> _javnoNadmetanjeService;
-        private readonly IService<KupacDto> _kupacService;
-        private readonly IService<LicnostDto> _licnostService;
+        private readonly IServices _services;
 
-        public ServiceCalls(IConfiguration configuration, IMapper mapper)
+        public ServiceCalls(IMapper mapper, IConfiguration configuration)
         {
-            _configuration = configuration;
             _mapper = mapper;
-            _dokumentService = new Service<DokumentDto>();
-            _javnoNadmetanjeService = new Service<JavnoNadmetanjeDto>();
-            _kupacService = new Service<KupacDto>();
-            _licnostService = new Service<LicnostDto>();
+            _services = new Services(configuration);
+        }
+
+        public async Task Log(LogLevel level, string method, string message, Exception exception = null)
+        {
+            var log = new LogModel
+            {
+                Servis = "Ugovor o zakupu API",
+                Level = level,
+                Metoda = method,
+                Poruka = message,
+                Greska = exception
+            };
+
+            await _services.Logger.SendPostRequest(log);
         }
 
         public async Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(Entities.UgovorOZakupu ugovor)
         {
             var ugovorDto = _mapper.Map<UgovorOZakupuDto>(ugovor);
 
-            ugovorDto.Odluka = await GetDokumentById(ugovor.DokumentId);
-            ugovorDto.JavnoNadmetanje = await GetJavnoNadmentanjeById(ugovor.JavnoNadmetanjeId);
-            ugovorDto.Lice = await GetKupacById(ugovor.KupacId);
-            ugovorDto.Ministar = await GetLicnostById(ugovor.LicnostId);
+            ugovorDto.Odluka = await _services.Dokument.SendGetRequest(ugovor.DokumentId.ToString());
+            ugovorDto.JavnoNadmetanje = await _services.JavnoNadmetanje.SendGetRequest(ugovor.JavnoNadmetanjeId.ToString());
+            ugovorDto.Lice = await _services.Kupac.SendGetRequest(ugovor.KupacId.ToString());
+            ugovorDto.Ministar = await _services.Licnost.SendGetRequest(ugovor.LicnostId.ToString());
 
             return ugovorDto;
-        }
-
-        private Task<DokumentDto> GetDokumentById(Guid id)
-        {
-            var baseUrl = _configuration.GetValue<string>("Services:Dokument");
-            return _dokumentService.SendGetRequest($"{baseUrl}/{id}");
-        }
-
-        private Task<JavnoNadmetanjeDto> GetJavnoNadmentanjeById(Guid id)
-        {
-            var baseUrl = _configuration.GetValue<string>("Services:JavnoNadmetanje");
-            return _javnoNadmetanjeService.SendGetRequest($"{baseUrl}/{id}");
-        }
-
-        private Task<KupacDto> GetKupacById(Guid id)
-        {
-            var baseUrl = _configuration.GetValue<string>("Services:Kupac");
-            return _kupacService.SendGetRequest($"{baseUrl}/{id}");
-        }
-
-        private Task<LicnostDto> GetLicnostById(Guid id)
-        {
-            var baseUrl = _configuration.GetValue<string>("Services:Licnost");
-            return _licnostService.SendGetRequest($"{baseUrl}/{id}");
         }
     }
 }

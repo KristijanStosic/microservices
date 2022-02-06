@@ -1,25 +1,24 @@
 ﻿using System.Threading.Tasks;
 using UgovorOZakupu.Data.UgovorOZakupu;
 using UgovorOZakupu.DbContext;
+using UgovorOZakupu.Entities;
 
 namespace UgovorOZakupu.Data.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly UgovorOZakupuDbContext _context;
-        
+
         public UnitOfWork(UgovorOZakupuDbContext context)
         {
             _context = context;
-            TipoviGarancije = new Repository<Entities.TipGarancije>(context);
-            RokoviDospeca = new Repository<Entities.RokDospeca>(context);
+            TipoviGarancije = new Repository<TipGarancije>(context);
+            RokoviDospeca = new Repository<RokDospeca>(context);
             UgovoriOZakupu = new UgovorOZakupuRepository(context);
         }
 
-        public IRepository<Entities.TipGarancije> TipoviGarancije { get; }
-        
-        public IRepository<Entities.RokDospeca> RokoviDospeca { get; }
-        
+        public IRepository<TipGarancije> TipoviGarancije { get; }
+        public IRepository<RokDospeca> RokoviDospeca { get; }
         public IRepository<Entities.UgovorOZakupu> UgovoriOZakupu { get; }
 
         public async Task CompleteAsync()
@@ -29,7 +28,7 @@ namespace UgovorOZakupu.Data.UnitOfWork
 
         public void Dispose()
         {
-            _context?.Dispose();
+            _context.Dispose();
         }
     }
 }

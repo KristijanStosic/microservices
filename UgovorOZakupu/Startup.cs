@@ -6,15 +6,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using UgovorOZakupu.Data.UgovorOZakupu;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.DbContext;
-using UgovorOZakupu.Models.Dokument;
-using UgovorOZakupu.Models.JavnoNadmetanje;
-using UgovorOZakupu.Models.Kupac;
-using UgovorOZakupu.Models.Licnost;
-using UgovorOZakupu.Services;
-using UgovorOZakupu.Services.Logger;
 using UgovorOZakupu.Services.ServiceCalls;
 
 namespace UgovorOZakupu
@@ -30,11 +23,8 @@ namespace UgovorOZakupu
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            // services.AddScoped<ILoggerService, LoggerService>();
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
-
-            // services.AddScoped<IServiceCalls, ServiceCalls>();
-            services.AddScoped<IServiceCalls, ServiceCallsMock>();
+            services.AddScoped<IServiceCalls, ServiceCalls>();
+            // services.AddScoped<IServiceCalls, ServiceCallsMock>();
             
             services.AddControllers();
 

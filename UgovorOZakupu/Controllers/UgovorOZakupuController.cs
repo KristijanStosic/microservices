@@ -9,7 +9,6 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.Models.UgovorOZakupu;
-using UgovorOZakupu.Services.Logger;
 using UgovorOZakupu.Services.ServiceCalls;
 
 namespace UgovorOZakupu.Controllers
@@ -22,18 +21,15 @@ namespace UgovorOZakupu.Controllers
     [Produces("application/json")]
     public class UgovorOZakupuController : ControllerBase
     {
-        private readonly ILoggerService _loggerService;
         private readonly IMapper _mapper;
         private readonly IServiceCalls _serviceCalls;
 
         private readonly IUnitOfWork _unitOfWork;
 
-        public UgovorOZakupuController(IUnitOfWork unitOfWork,
-            IMapper mapper, ILoggerService loggerService, IServiceCalls serviceCalls)
+        public UgovorOZakupuController(IUnitOfWork unitOfWork, IMapper mapper, IServiceCalls serviceCalls)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _loggerService = loggerService;
             _serviceCalls = serviceCalls;
         }
 
@@ -52,7 +48,7 @@ namespace UgovorOZakupu.Controllers
 
             if (ugovori == null || ugovori.Count == 0)
             {
-                await _loggerService.Log(LogLevel.Warning, "GetAllUgovorOZakupu",
+                await _serviceCalls.Log(LogLevel.Warning, "GetAllUgovorOZakupu",
                     "Lista ugovora o zakupu je prazna ili null.");
                 return NoContent();
             }
@@ -63,7 +59,7 @@ namespace UgovorOZakupu.Controllers
                 .Result
                 .ToList();
 
-            await _loggerService.Log(LogLevel.Information, "GetAllUgovorOZakupu",
+            await _serviceCalls.Log(LogLevel.Information, "GetAllUgovorOZakupu",
                 "Lista ugovora o zakupu je uspešno vraćena.");
 
             return Ok(ugovoriDto);
@@ -85,14 +81,14 @@ namespace UgovorOZakupu.Controllers
 
             if (ugovor == null)
             {
-                await _loggerService.Log(LogLevel.Warning, "GetUgovorOZakupuById",
+                await _serviceCalls.Log(LogLevel.Warning, "GetUgovorOZakupuById",
                     $"Ugovor o zakupu sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
 
             var ugovorDto = await _serviceCalls.GetUgovorOZakupuInfo(ugovor);
 
-            await _loggerService.Log(LogLevel.Information, "GetUgovorOZakupuById",
+            await _serviceCalls.Log(LogLevel.Information, "GetUgovorOZakupuById",
                 $"Ugovor o zakupu sa id-jem {id} je uspešno vraćen.");
 
             return Ok(ugovorDto);
@@ -122,7 +118,7 @@ namespace UgovorOZakupu.Controllers
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore
             });
 
-            await _loggerService.Log(LogLevel.Information, "CreateUgovorOZakupu",
+            await _serviceCalls.Log(LogLevel.Information, "CreateUgovorOZakupu",
                 $"Ugovor o zakupu sa vrednostima: {serialized} je uspešno kreiran.");
 
             return CreatedAtAction(
@@ -151,7 +147,7 @@ namespace UgovorOZakupu.Controllers
         {
             if (id != ugovorOZakupuDto.Id)
             {
-                await _loggerService.Log(LogLevel.Warning, "UpdateUgovorOZakupu",
+                await _serviceCalls.Log(LogLevel.Warning, "UpdateUgovorOZakupu",
                     "ID ugovora o zakupua prosledjen kroz url nije isti kao onaj u telu zahteva.");
                 return BadRequest();
             }
@@ -160,7 +156,7 @@ namespace UgovorOZakupu.Controllers
 
             if (ugovor == null)
             {
-                await _loggerService.Log(LogLevel.Warning, "UpdateUgovorOZakupu",
+                await _serviceCalls.Log(LogLevel.Warning, "UpdateUgovorOZakupu",
                     $"Ugovor o zakupu sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
@@ -173,7 +169,7 @@ namespace UgovorOZakupu.Controllers
             _mapper.Map(ugovorOZakupuDto, ugovor, typeof(UpdateUgovorOZakupuDto), typeof(Entities.UgovorOZakupu));
             await _unitOfWork.CompleteAsync();
 
-            await _loggerService.Log(LogLevel.Information, "UpdateUgovorOZakupu",
+            await _serviceCalls.Log(LogLevel.Information, "UpdateUgovorOZakupu",
                 $"Ugovor o zakupu sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
 
             return NoContent();
@@ -194,7 +190,7 @@ namespace UgovorOZakupu.Controllers
 
             if (ugovor == null)
             {
-                await _loggerService.Log(LogLevel.Warning, "DeleteUgovorOZakupu",
+                await _serviceCalls.Log(LogLevel.Warning, "DeleteUgovorOZakupu",
                     $"Ugovor o zakupu sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
@@ -202,7 +198,7 @@ namespace UgovorOZakupu.Controllers
             _unitOfWork.UgovoriOZakupu.Delete(ugovor);
             await _unitOfWork.CompleteAsync();
 
-            await _loggerService.Log(LogLevel.Information, "DeleteUgovorOZakupu",
+            await _serviceCalls.Log(LogLevel.Information, "DeleteUgovorOZakupu",
                 $"Ugovor o zakupu sa id-em {id} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(ugovor)}");
 
             return NoContent();

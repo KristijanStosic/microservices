@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.Entities;
 using UgovorOZakupu.Models.RokDospeca;
-using UgovorOZakupu.Services.Logger;
+using UgovorOZakupu.Services.ServiceCalls;
 
 namespace UgovorOZakupu.Controllers
 {
@@ -21,16 +21,15 @@ namespace UgovorOZakupu.Controllers
     [Produces("application/json")]
     public class RokDospecaController : ControllerBase
     {
-        private readonly ILoggerService _loggerService;
+        private readonly IServiceCalls _serviceCalls;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RokDospecaController(IUnitOfWork unitOfWork, IMapper mapper,
-            ILoggerService loggerService)
+        public RokDospecaController(IUnitOfWork unitOfWork, IMapper mapper, IServiceCalls serviceCalls)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _loggerService = loggerService;
+            _serviceCalls = serviceCalls;
         }
 
         /// <summary>
@@ -48,12 +47,12 @@ namespace UgovorOZakupu.Controllers
 
             if (rokoviDospeca == null || rokoviDospeca.Count == 0)
             {
-                await _loggerService.Log(LogLevel.Warning, "GetAllRokDospeca",
+                await _serviceCalls.Log(LogLevel.Warning, "GetAllRokDospeca",
                     "Lista rokova dospeca je prazna ili null.");
                 return NoContent();
             }
 
-            await _loggerService.Log(LogLevel.Information, "GetAllRokDospeca",
+            await _serviceCalls.Log(LogLevel.Information, "GetAllRokDospeca",
                 "Lista rokova dospeca je uspešno vraćena.");
 
             return _mapper.Map<List<RokDospecaDto>>(rokoviDospeca);
@@ -75,12 +74,12 @@ namespace UgovorOZakupu.Controllers
 
             if (rokDospeca == null)
             {
-                await _loggerService.Log(LogLevel.Warning, "GetRokDospecaById",
+                await _serviceCalls.Log(LogLevel.Warning, "GetRokDospecaById",
                     $"Rok dospeca sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
 
-            await _loggerService.Log(LogLevel.Information, "GetRokDospecaById",
+            await _serviceCalls.Log(LogLevel.Information, "GetRokDospecaById",
                 $"Rok dospeca sa id-jem {id} je uspešno vraćen.");
 
             return _mapper.Map<RokDospecaDto>(rokDospeca);
@@ -102,7 +101,7 @@ namespace UgovorOZakupu.Controllers
             _unitOfWork.RokoviDospeca.Create(rokDospeca);
             await _unitOfWork.CompleteAsync();
 
-            await _loggerService.Log(LogLevel.Information, "CreateRokDospeca",
+            await _serviceCalls.Log(LogLevel.Information, "CreateRokDospeca",
                 $"Rok dospeca sa vrednostima: {JsonConvert.SerializeObject(rokDospeca)} je uspešno kreiran.");
 
             return CreatedAtAction(
@@ -129,7 +128,7 @@ namespace UgovorOZakupu.Controllers
         {
             if (id != rokDospecaDto.Id)
             {
-                await _loggerService.Log(LogLevel.Warning, "UpdateRokDospeca",
+                await _serviceCalls.Log(LogLevel.Warning, "UpdateRokDospeca",
                     "ID roka dospeca prosledjen kroz url nije isti kao onaj u telu zahteva.");
                 return BadRequest();
             }
@@ -138,7 +137,7 @@ namespace UgovorOZakupu.Controllers
 
             if (rokDospeca == null)
             {
-                await _loggerService.Log(LogLevel.Warning, "UpdateRokDospeca",
+                await _serviceCalls.Log(LogLevel.Warning, "UpdateRokDospeca",
                     $"Rok dospeca sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
@@ -148,7 +147,7 @@ namespace UgovorOZakupu.Controllers
             _mapper.Map(rokDospecaDto, rokDospeca, typeof(UpdateRokDospecaDto), typeof(RokDospeca));
             await _unitOfWork.CompleteAsync();
 
-            await _loggerService.Log(LogLevel.Information, "UpdateRokDospeca",
+            await _serviceCalls.Log(LogLevel.Information, "UpdateRokDospeca",
                 $"Rok dospeca sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
 
             return NoContent();
@@ -169,7 +168,7 @@ namespace UgovorOZakupu.Controllers
 
             if (rokDospeca == null)
             {
-                await _loggerService.Log(LogLevel.Warning, "DeleteRokDospeca",
+                await _serviceCalls.Log(LogLevel.Warning, "DeleteRokDospeca",
                     $"Rok dospeca sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
@@ -177,7 +176,7 @@ namespace UgovorOZakupu.Controllers
             _unitOfWork.RokoviDospeca.Delete(rokDospeca);
             await _unitOfWork.CompleteAsync();
 
-            await _loggerService.Log(LogLevel.Information, "DeleteRokDospeca",
+            await _serviceCalls.Log(LogLevel.Information, "DeleteRokDospeca",
                 $"Rok dospeca sa id-em {id} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(rokDospeca)}");
 
             return NoContent();

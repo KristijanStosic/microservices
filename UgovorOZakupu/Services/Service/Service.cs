@@ -8,16 +8,18 @@ namespace UgovorOZakupu.Services
     public class Service<T> : IService<T>
     {
         private HttpClient _http;
+        private string _url;
 
-        public Service()
+        public Service(string url)
         {
+            _url = url;
             _http = new HttpClient();
         }
 
-        public async Task<T> SendGetRequest(string uri)
+        public async Task<T> SendGetRequest(string uri = "")
         {
-            var response = await _http.GetAsync(uri);
-
+            var response = await _http.GetAsync(uri == string.Empty ? _url : $"{_url}/{uri}");
+            
             if (response.IsSuccessStatusCode)
             {
                 var content = await response.Content.ReadAsStringAsync();
@@ -33,9 +35,9 @@ namespace UgovorOZakupu.Services
             return default;
         }
 
-        public async Task<T> SendPostRequest<TPayload>(string uri, TPayload payload)
+        public async Task<T> SendPostRequest<TPayload>(TPayload payload, string uri = "")
         {
-            var response = await _http.PostAsJsonAsync(uri, payload);
+            var response = await _http.PostAsJsonAsync(uri == string.Empty ? _url : $"{_url}/{uri}", payload);
             
             if (response.IsSuccessStatusCode)
             {
