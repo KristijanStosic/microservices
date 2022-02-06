@@ -15,8 +15,7 @@ namespace LicnostService.Entities
         public string NazivKomisije { get; set; }
 
         public Guid PredsednikKomisijeId { get; set; }
-
-
+        
         public Licnost PredsednikKomisije { get; set; }
 
         public List<Licnost> ClanoviKomisije { get; set; }

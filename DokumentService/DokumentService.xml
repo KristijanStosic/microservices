@@ -6,12 +6,12 @@
     <members>
         <member name="T:DokumentService.Controllers.DokumentController">
             <summary>
-            Kontroler za dokument
+                Kontroler za dokument
             </summary>
         </member>
         <member name="M:DokumentService.Controllers.DokumentController.GetAllDokument">
             <summary>
-            Vraća sve dokumente
+                Vraća sve dokumente
             </summary>
             <returns>Lista dokumenata</returns>
             <response code="200">Vraća listu dokumenata</response>
@@ -19,7 +19,7 @@
         </member>
         <member name="M:DokumentService.Controllers.DokumentController.GetDokumentById(System.Guid)">
             <summary>
-            Vraća jedan dokument na osnovu ID-a
+                Vraća jedan dokument na osnovu ID-a
             </summary>
             <param name="id">ID dokumenta</param>
             <returns>Dokument</returns>
@@ -28,56 +28,44 @@
         </member>
         <member name="M:DokumentService.Controllers.DokumentController.CreateDokument(DokumentService.Models.Dokument.CreateDokumentDto)">
             <summary>
-            Kreira novi dokument
+                Kreira novi dokument
             </summary>
             <param name="dokumentDto">Model dokumenta</param>
-            <remarks>
-            Primer zahteva za kreiranje novog dokumenta \
-            POST /api/Dokument \
-            {
-                "zavodniBroj": "PSPG-1/2022", \
-                "datum": "2022-02-02T17:16:53.577Z", \
-                "datumDonosenjaDokumenta": "2022-02-02T17:16:53.577Z", \
-                "tipDokumentaId": "3fa85f64-5717-4562-b3fc-2c963f66afa6" \
-            }
-            </remarks>
             <returns>Dokument</returns>
             <response code="201">Vraća kreirani dokument</response>
         </member>
         <member name="M:DokumentService.Controllers.DokumentController.UpdateDokument(System.Guid,DokumentService.Models.Dokument.UpdateDokumentDto)">
             <summary>
-            Izmena dokumenta
+                Izmena dokumenta
             </summary>
             <param name="id">ID dokumenta</param>
             <param name="dokumentDto">Model dokumenta</param>
-            <returns>Status 204 (NoContent)</returns>
             <response code="204">Potvrda o izmeni dokumenta</response>
             <response code="404">Nije pronadjen dokument za uneti ID</response>
             <response code="400">ID nije isti kao onaj proledjen u modelu dokumenta</response>
         </member>
         <member name="M:DokumentService.Controllers.DokumentController.DeleteDokument(System.Guid)">
             <summary>
-            Brisanje dokumenta na osnovu ID-a
+                Brisanje dokumenta na osnovu ID-a
             </summary>
             <param name="id">ID dokumenta</param>
-            <returns>Status 204 (NoContent)</returns>
             <response code="204">Dokument je uspešno obrisan</response>
             <response code="404">Nije pronadjen dokument za uneti ID</response>
         </member>
         <member name="M:DokumentService.Controllers.DokumentController.GetDokumentOptions">
             <summary>
-            Vraća opcije za rad sa dokumentima
+                Vraća opcije za rad sa dokumentima
             </summary>
             <response code="200">Vraća listu opcija u header-u</response>
         </member>
         <member name="T:DokumentService.Controllers.TipDokumentaController">
             <summary>
-            Kontroler za tip dokumenta
+                Kontroler za tip dokumenta
             </summary>
         </member>
         <member name="M:DokumentService.Controllers.TipDokumentaController.GetAllTipDokumenta">
             <summary>
-            Vraća sve tipove dokumenta
+                Vraća sve tipove dokumenta
             </summary>
             <returns>Lista tipova dokumenta</returns>
             <response code="200">Vraća listu tipova dokumenta</response>
@@ -85,51 +73,42 @@
         </member>
         <member name="M:DokumentService.Controllers.TipDokumentaController.GetTipDokumentaById(System.Guid)">
             <summary>
-            Vraća jedan tip dokumenta na osnovu ID-a
+                Vraća jedan tip dokumenta na osnovu ID-a
             </summary>
             <param name="id">ID dokumenta</param>
             <returns>Tip dokumenta</returns>
             <response code="200">Vraća traženi tip dokumenta</response>
             <response code="404">Nije pronadjen tip dokumenta za uneti ID</response>
         </member>
-        <member name="M:DokumentService.Controllers.TipDokumentaController.CreateTipDokumenta(DokumentService.Models.TipDokumenta.TipDokumentaDto)">
+        <member name="M:DokumentService.Controllers.TipDokumentaController.CreateTipDokumenta(DokumentService.Models.TipDokumenta.CreateTipDokumentaDto)">
             <summary>
-            Kreira novi tip dokumenta
+                Kreira novi tip dokumenta
             </summary>
-            <param name="tipDokumentaDto">Model tipa dokumenta</param>
-            <remarks>
-            Primer zahteva za kreiranje novog tipa dokumenta \
-            POST /api/TipDokumenta \
-            {
-                "nazivTipa": "Izvod iz lista nepokretnosti"
-            }
-            </remarks>
+            <param name="tipDokumentaDto">Model tipa dokumenta za kreiranje</param>
             <returns>Tip dokumenta</returns>
             <response code="201">Vraća kreirani tip dokumenta</response>
         </member>
         <member name="M:DokumentService.Controllers.TipDokumentaController.UpdateTipDokumenta(System.Guid,DokumentService.Models.TipDokumenta.UpdateTipDokumentaDto)">
             <summary>
-            Izmena tipa dokumenta
+                Izmena tipa dokumenta
             </summary>
             <param name="id">ID tipa dokumenta za izmenu</param>
             <param name="tipDokumentaDto">Model tipa dokumenta</param>
-            <returns>Status 204 (NoContent)</returns>
             <response code="204">Potvrda o izmeni tipa dokumenta</response>
             <response code="404">Nije pronadjen tip dokumenta za uneti ID</response>
             <response code="400">ID nije isti kao onaj proledjen u modelu tipa dokumenta</response>
         </member>
         <member name="M:DokumentService.Controllers.TipDokumentaController.DeleteTipDokumenta(System.Guid)">
             <summary>
-            Brisanje tipa dokumenta na osnovu ID-a
+                Brisanje tipa dokumenta na osnovu ID-a
             </summary>
             <param name="id">ID tipa dokumenta</param>
-            <returns>Status 204 (NoContent)</returns>
             <response code="204">Tip dokumenta je uspešno obrisan</response>
             <response code="404">Nije pronadjen tip dokumenta za uneti ID</response>
         </member>
         <member name="M:DokumentService.Controllers.TipDokumentaController.GetTipDokumentaOptions">
             <summary>
-            Vraća opcije za rad sa tipovima dokumenta
+                Vraća opcije za rad sa tipovima dokumenta
             </summary>
             <response code="200">Vraća listu opcija u header-u</response>
         </member>
@@ -145,7 +124,7 @@
         </member>
         <member name="P:DokumentService.Models.Dokument.CreateDokumentDto.Datum">
             <summary>
-            Datum kreiranja dokumenta
+            Datum zavođenja dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.CreateDokumentDto.DatumDonosenjaDokumenta">
@@ -200,7 +179,7 @@
         </member>
         <member name="P:DokumentService.Models.Dokument.UpdateDokumentDto.Datum">
             <summary>
-            Datum kreiranja dokumenta
+            Datum zavođenja dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.UpdateDokumentDto.DatumDonosenjaDokumenta">
@@ -211,6 +190,46 @@
         <member name="P:DokumentService.Models.Dokument.UpdateDokumentDto.TipDokumentaId">
             <summary>
             Id tipa dokumenta
+            </summary>
+        </member>
+        <member name="T:DokumentService.Models.LogModel.LogModel">
+            <summary>
+            Model za logger
+            </summary>
+        </member>
+        <member name="P:DokumentService.Models.LogModel.LogModel.Level">
+            <summary>
+            Nivo Log levela - Info,Warning,Error,Debug
+            </summary>
+        </member>
+        <member name="P:DokumentService.Models.LogModel.LogModel.Servis">
+            <summary>
+            Servis sa kojeg se loguje poruka
+            </summary>
+        </member>
+        <member name="P:DokumentService.Models.LogModel.LogModel.Metoda">
+            <summary>
+            Metoda koja se loguje
+            </summary>
+        </member>
+        <member name="P:DokumentService.Models.LogModel.LogModel.Poruka">
+            <summary>
+            Dodatni opis poruke prilikom logovanja
+            </summary>
+        </member>
+        <member name="P:DokumentService.Models.LogModel.LogModel.Greska">
+            <summary>
+            Greška prilikom logovanja
+            </summary>
+        </member>
+        <member name="T:DokumentService.Models.TipDokumenta.CreateTipDokumentaDto">
+            <summary>
+            Model za kreiranje tipa dokumenta
+            </summary>
+        </member>
+        <member name="P:DokumentService.Models.TipDokumenta.CreateTipDokumentaDto.NazivTipa">
+            <summary>
+            Naziv tipa dokumenta
             </summary>
         </member>
         <member name="T:DokumentService.Models.TipDokumenta.TipDokumentaDto">
