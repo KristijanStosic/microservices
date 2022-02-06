@@ -106,7 +106,7 @@ namespace UgovorOZakupu.DbContext
                     Rok = 10,
                     UgovorOZakupuId = Guid.Parse("42988239-b116-4100-bd15-06869c0d6fba")
                 }
-                );
+            );
         }
     }
 }

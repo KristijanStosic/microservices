@@ -6,39 +6,34 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using UgovorOZakupu.Data.RokDospeca;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.Entities;
 using UgovorOZakupu.Models.RokDospeca;
-using UgovorOZakupu.Services.Logger;
+using UgovorOZakupu.Services.ServiceCalls;
 
 namespace UgovorOZakupu.Controllers
 {
     /// <summary>
-    /// Kontroler za rok dospeca
+    ///     Kontroler za rok dospeca
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
     public class RokDospecaController : ControllerBase
     {
-        private readonly IMapper _mapper;
-        private readonly IRokDospecaRepository _rokDospecaRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IServiceCalls _serviceCalls;
+        private readonly IMapper _mapper;
 
-        private readonly ILoggerService _loggerService;
-
-        public RokDospecaController(IRokDospecaRepository rokDospecaRepository, IUnitOfWork unitOfWork, IMapper mapper,
-            ILoggerService loggerService)
+        public RokDospecaController(IUnitOfWork unitOfWork, IServiceCalls serviceCalls, IMapper mapper)
         {
-            _rokDospecaRepository = rokDospecaRepository;
             _unitOfWork = unitOfWork;
+            _serviceCalls = serviceCalls;
             _mapper = mapper;
-            _loggerService = loggerService;
         }
 
         /// <summary>
-        /// Vraća sve rokove dospeca
+        ///     Vraća sve rokove dospeca
         /// </summary>
         /// <returns>Lista rokova dospeca</returns>
         /// <response code="200">Vraća listu rokova dospeca</response>
@@ -48,23 +43,23 @@ namespace UgovorOZakupu.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<RokDospecaDto>>> GetAllRokDospeca()
         {
-            var rokoviDospeca = await _rokDospecaRepository.GetAllRokDospeca();
+            var rokoviDospeca = await _unitOfWork.RokoviDospeca.GetAll();
 
             if (rokoviDospeca == null || rokoviDospeca.Count == 0)
             {
-                await _loggerService.Log(LogLevel.Warning, "GetAllRokDospeca",
+                await _serviceCalls.Log(LogLevel.Warning, "GetAllRokDospeca",
                     "Lista rokova dospeca je prazna ili null.");
                 return NoContent();
             }
 
-            await _loggerService.Log(LogLevel.Information, "GetAllRokDospeca",
+            await _serviceCalls.Log(LogLevel.Information, "GetAllRokDospeca",
                 "Lista rokova dospeca je uspešno vraćena.");
 
             return _mapper.Map<List<RokDospecaDto>>(rokoviDospeca);
         }
 
         /// <summary>
-        /// Vraća jedan rok garancije na osnovu ID-a
+        ///     Vraća jedan rok garancije na osnovu ID-a
         /// </summary>
         /// <param name="id">ID roka garancije</param>
         /// <returns>Rok garancije</returns>
@@ -75,23 +70,23 @@ namespace UgovorOZakupu.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<RokDospecaDto>> GetRokDospecaById(Guid id)
         {
-            var rokDospeca = await _rokDospecaRepository.GetRokDospecaById(id);
+            var rokDospeca = await _unitOfWork.RokoviDospeca.GetById(id);
 
             if (rokDospeca == null)
             {
-                await _loggerService.Log(LogLevel.Warning, "GetRokDospecaById",
+                await _serviceCalls.Log(LogLevel.Warning, "GetRokDospecaById",
                     $"Rok dospeca sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
 
-            await _loggerService.Log(LogLevel.Information, "GetRokDospecaById",
+            await _serviceCalls.Log(LogLevel.Information, "GetRokDospecaById",
                 $"Rok dospeca sa id-jem {id} je uspešno vraćen.");
 
             return _mapper.Map<RokDospecaDto>(rokDospeca);
         }
 
         /// <summary>
-        /// Kreira novi rok dospeca
+        ///     Kreira novi rok dospeca
         /// </summary>
         /// <param name="rokDospecaDto">Model roka dospeca za kreiranje</param>
         /// <returns>Rok dospeca</returns>
@@ -103,10 +98,10 @@ namespace UgovorOZakupu.Controllers
         {
             var rokDospeca = _mapper.Map<RokDospeca>(rokDospecaDto);
 
-            _rokDospecaRepository.CreateRokDospeca(rokDospeca);
+            _unitOfWork.RokoviDospeca.Create(rokDospeca);
             await _unitOfWork.CompleteAsync();
 
-            await _loggerService.Log(LogLevel.Information, "CreateRokDospeca",
+            await _serviceCalls.Log(LogLevel.Information, "CreateRokDospeca",
                 $"Rok dospeca sa vrednostima: {JsonConvert.SerializeObject(rokDospeca)} je uspešno kreiran.");
 
             return CreatedAtAction(
@@ -117,7 +112,7 @@ namespace UgovorOZakupu.Controllers
         }
 
         /// <summary>
-        /// Izmena roka dospeca
+        ///     Izmena roka dospeca
         /// </summary>
         /// <param name="id">ID roka dospeca</param>
         /// <param name="rokDospecaDto">Model roka dospeca za izmenu</param>
@@ -133,16 +128,16 @@ namespace UgovorOZakupu.Controllers
         {
             if (id != rokDospecaDto.Id)
             {
-                await _loggerService.Log(LogLevel.Warning, "UpdateRokDospeca",
+                await _serviceCalls.Log(LogLevel.Warning, "UpdateRokDospeca",
                     "ID roka dospeca prosledjen kroz url nije isti kao onaj u telu zahteva.");
                 return BadRequest();
             }
 
-            var rokDospeca = await _rokDospecaRepository.GetRokDospecaById(id);
+            var rokDospeca = await _unitOfWork.RokoviDospeca.GetById(id);
 
             if (rokDospeca == null)
             {
-                await _loggerService.Log(LogLevel.Warning, "UpdateRokDospeca",
+                await _serviceCalls.Log(LogLevel.Warning, "UpdateRokDospeca",
                     $"Rok dospeca sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
@@ -152,14 +147,14 @@ namespace UgovorOZakupu.Controllers
             _mapper.Map(rokDospecaDto, rokDospeca, typeof(UpdateRokDospecaDto), typeof(RokDospeca));
             await _unitOfWork.CompleteAsync();
 
-            await _loggerService.Log(LogLevel.Information, "UpdateRokDospeca",
+            await _serviceCalls.Log(LogLevel.Information, "UpdateRokDospeca",
                 $"Rok dospeca sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
 
             return NoContent();
         }
 
         /// <summary>
-        /// Brisanje roka dospeca na osnovu ID-a
+        ///     Brisanje roka dospeca na osnovu ID-a
         /// </summary>
         /// <param name="id">ID roka dospeca</param>
         /// <response code="204">Rok dospeca je uspešno obrisan</response>
@@ -169,26 +164,26 @@ namespace UgovorOZakupu.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteRokDospeca(Guid id)
         {
-            var rokDospeca = await _rokDospecaRepository.GetRokDospecaById(id);
+            var rokDospeca = await _unitOfWork.RokoviDospeca.GetById(id);
 
             if (rokDospeca == null)
             {
-                await _loggerService.Log(LogLevel.Warning, "DeleteRokDospeca",
+                await _serviceCalls.Log(LogLevel.Warning, "DeleteRokDospeca",
                     $"Rok dospeca sa id-jem {id} nije pronadjen.");
                 return NotFound();
             }
 
-            _rokDospecaRepository.DeleteRokDospeca(rokDospeca);
+            _unitOfWork.RokoviDospeca.Delete(rokDospeca);
             await _unitOfWork.CompleteAsync();
 
-            await _loggerService.Log(LogLevel.Information, "DeleteRokDospeca",
+            await _serviceCalls.Log(LogLevel.Information, "DeleteRokDospeca",
                 $"Rok dospeca sa id-em {id} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(rokDospeca)}");
 
             return NoContent();
         }
-        
+
         /// <summary>
-        /// Vraća opcije za rad sa rokovima dospeca
+        ///     Vraća opcije za rad sa rokovima dospeca
         /// </summary>
         /// <response code="200">Vraća listu opcija u header-u</response>
         [HttpOptions]
