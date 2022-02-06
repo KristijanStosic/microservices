@@ -7,10 +7,8 @@ namespace DokumentService.Entities
     [Table("TipDokumenta")]
     public class TipDokumenta
     {
-        [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        [Key] public Guid Id { get; set; } = Guid.NewGuid();
 
-        [Required]
-        public string NazivTipa { get; set; }
+        [Required] public string NazivTipa { get; set; }
     }
 }

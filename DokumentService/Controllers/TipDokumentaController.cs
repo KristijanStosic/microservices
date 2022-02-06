@@ -38,24 +38,36 @@ namespace DokumentService.Controllers
         /// <returns>Lista tipova dokumenta</returns>
         /// <response code="200">Vraća listu tipova dokumenta</response>
         /// <response code="204">Nije pronadjen nijedan tip</response>
+        /// <response code="204">Greška prilikom vraćanja liste tipova dokumenta</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<List<TipDokumentaDto>>> GetAllTipDokumenta()
         {
-            var tipoviDokumenta = await _unitOfWork.TipDokumenta.GetAllTipDokumenta();
-
-            if (tipoviDokumenta == null || tipoviDokumenta.Count == 0)
+            try
             {
-                await _loggerService.Log(LogLevel.Warning, "GetAllTipDokumenta",
-                    "Lista tipova dokumenta je prazna ili null.");
-                return NoContent();
+                var tipoviDokumenta = await _unitOfWork.TipDokumenta.GetAllTipDokumenta();
+
+                if (tipoviDokumenta == null || tipoviDokumenta.Count == 0)
+                {
+                    await _loggerService.Log(LogLevel.Warning, "GetAllTipDokumenta",
+                        "Lista tipova dokumenta je prazna ili null.");
+                    return NoContent();
+                }
+
+                await _loggerService.Log(LogLevel.Information, "GetAllTipDokumenta",
+                    "Lista tipova dokumenta je uspešno vraćena.");
+
+                return Ok(_mapper.Map<List<TipDokumentaDto>>(tipoviDokumenta));
             }
-
-            await _loggerService.Log(LogLevel.Information, "GetAllTipDokumenta",
-                "Lista tipova dokumenta je uspešno vraćena.");
-
-            return Ok(_mapper.Map<List<TipDokumentaDto>>(tipoviDokumenta));
+            catch (Exception ex)
+            {
+                await _loggerService.Log(LogLevel.Error, "GetAllTipDokumenta",
+                    "Greška prilikom vraćanja liste tipova dokumenta.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Greška prilikom vraćanja liste tipova dokumenta.");
+            }
         }
 
         /// <summary>
@@ -65,24 +77,36 @@ namespace DokumentService.Controllers
         /// <returns>Tip dokumenta</returns>
         /// <response code="200">Vraća traženi tip dokumenta</response>
         /// <response code="404">Nije pronadjen tip dokumenta za uneti ID</response>
+        /// <response code="500">Greška prilikom vraćanja tipa dokumenta</response>
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<TipDokumentaDto>> GetTipDokumentaById(Guid id)
         {
-            var tipDokumenta = await _unitOfWork.TipDokumenta.GetTipDokumentaById(id);
-
-            if (tipDokumenta == null)
+            try
             {
-                await _loggerService.Log(LogLevel.Warning, "GetTipDokumentaById",
-                    $"Tip dokumenta sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                var tipDokumenta = await _unitOfWork.TipDokumenta.GetTipDokumentaById(id);
+
+                if (tipDokumenta == null)
+                {
+                    await _loggerService.Log(LogLevel.Warning, "GetTipDokumentaById",
+                        $"Tip dokumenta sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                await _loggerService.Log(LogLevel.Information, "GetTipDokumentaById",
+                    $"Tip dokumenta sa id-jem {id} je uspešno vraćen.");
+
+                return Ok(_mapper.Map<TipDokumentaDto>(tipDokumenta));
             }
-
-            await _loggerService.Log(LogLevel.Information, "GetTipDokumentaById",
-                $"Tip dokumenta sa id-jem {id} je uspešno vraćen.");
-
-            return Ok(_mapper.Map<TipDokumentaDto>(tipDokumenta));
+            catch (Exception ex)
+            {
+                await _loggerService.Log(LogLevel.Error, "GetTipDokumentaById",
+                    $"Greška prilikom vraćanja tipa dokumenta sa id-jem {id}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Greška prilikom vraćanja tipa dokumenta sa id-jem {id}.");
+            }
         }
 
         /// <summary>
@@ -91,9 +115,11 @@ namespace DokumentService.Controllers
         /// <param name="tipDokumentaDto">Model tipa dokumenta za kreiranje</param>
         /// <returns>Tip dokumenta</returns>
         /// <response code="201">Vraća kreirani tip dokumenta</response>
+        /// <response code="500">Greška prilikom kreiranja tipa dokumenta</response>
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateTipDokumenta([FromBody] CreateTipDokumentaDto tipDokumentaDto)
         {
             try
@@ -130,11 +156,13 @@ namespace DokumentService.Controllers
         /// <response code="204">Potvrda o izmeni tipa dokumenta</response>
         /// <response code="404">Nije pronadjen tip dokumenta za uneti ID</response>
         /// <response code="400">ID nije isti kao onaj proledjen u modelu tipa dokumenta</response>
+        /// <response code="500">Greška prilikom izmene tipa dokumenta</response>
         [HttpPut("{id:guid}")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateTipDokumenta(Guid id, [FromBody] UpdateTipDokumentaDto tipDokumentaDto)
         {
             try
@@ -179,27 +207,39 @@ namespace DokumentService.Controllers
         /// <param name="id">ID tipa dokumenta</param>
         /// <response code="204">Tip dokumenta je uspešno obrisan</response>
         /// <response code="404">Nije pronadjen tip dokumenta za uneti ID</response>
+        /// <response code="500">Greška prilikom brisanja tipa dokumenta</response>
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteTipDokumenta(Guid id)
         {
-            var tipDokumenta = await _unitOfWork.TipDokumenta.GetTipDokumentaById(id);
-
-            if (tipDokumenta == null)
+            try
             {
-                await _loggerService.Log(LogLevel.Warning, "DeleteTipDokumenta",
-                    $"Tip dokumenta sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                var tipDokumenta = await _unitOfWork.TipDokumenta.GetTipDokumentaById(id);
+
+                if (tipDokumenta == null)
+                {
+                    await _loggerService.Log(LogLevel.Warning, "DeleteTipDokumenta",
+                        $"Tip dokumenta sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                _unitOfWork.TipDokumenta.DeleteTipDokumenta(tipDokumenta);
+                await _unitOfWork.CompleteAsync();
+
+                await _loggerService.Log(LogLevel.Information, "DeleteTipDokumenta",
+                    $"Tip dokumenta sa id-em {id} je uspešno obrisana. Obrisane vrednosti: {JsonConvert.SerializeObject(tipDokumenta)}");
+
+                return NoContent();
             }
-
-            _unitOfWork.TipDokumenta.DeleteTipDokumenta(tipDokumenta);
-            await _unitOfWork.CompleteAsync();
-
-            await _loggerService.Log(LogLevel.Information, "DeleteTipDokumenta",
-                $"Tip dokumenta sa id-em {id} je uspešno obrisana. Obrisane vrednosti: {JsonConvert.SerializeObject(tipDokumenta)}");
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                await _loggerService.Log(LogLevel.Error, "DeleteTipDokumenta",
+                    $"Greška prilikom brisanja tipa dokumenta sa id-jem {id}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Greška prilikom brisanja tipa dokumenta sa id-jem {id}.");
+            }
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using AutoMapper;
 using UgovorOZakupu.Entities;
+using UgovorOZakupu.Models.Confirmations;
 using UgovorOZakupu.Models.UgovorOZakupu;
 
 namespace UgovorOZakupu.Profiles
@@ -28,6 +29,8 @@ namespace UgovorOZakupu.Profiles
                         )
                     )
                 );
+
+            CreateMap<Entities.UgovorOZakupu, UgovorOZakupuConfirmation>();
 
             CreateMap<UpdateUgovorOZakupuDto, Entities.UgovorOZakupu>();
         }

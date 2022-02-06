@@ -8,13 +8,13 @@ namespace UgovorOZakupu.Data
 {
     public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
-        private UgovorOZakupuDbContext _db;
+        private readonly UgovorOZakupuDbContext _db;
 
         public Repository(UgovorOZakupuDbContext db)
         {
             _db = db;
         }
-        
+
         public Task<List<TEntity>> GetAll()
         {
             return _db.Set<TEntity>()

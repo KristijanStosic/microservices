@@ -7,18 +7,16 @@ namespace DokumentService.Entities
     [Table("Dokument")]
     public class Dokument
     {
-        [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        [Key] public Guid Id { get; set; } = Guid.NewGuid();
 
-        [Required]
-        public string ZavodniBroj { get; set; }
+        [Required] public string ZavodniBroj { get; set; }
 
         public DateTime Datum { get; set; } = DateTime.Now;
 
         public DateTime DatumDonosenjaDokumenta { get; set; }
 
-        [Required]
-        public Guid TipDokumentaId { get; set; }
+        [Required] public Guid TipDokumentaId { get; set; }
+
         public TipDokumenta TipDokumenta { get; set; }
     }
 }
