@@ -84,7 +84,7 @@
             <summary>
                 Kreira novi tip dokumenta
             </summary>
-            <param name="tipDokumentaDto">Model tipa dokumenta</param>
+            <param name="tipDokumentaDto">Model tipa dokumenta za kreiranje</param>
             <returns>Tip dokumenta</returns>
             <response code="201">Vraća kreirani tip dokumenta</response>
         </member>

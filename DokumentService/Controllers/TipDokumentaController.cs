@@ -25,12 +25,11 @@ namespace DokumentService.Controllers
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public TipDokumentaController(IUnitOfWork unitOfWork,
-            IMapper mapper, ILoggerService loggerService)
+        public TipDokumentaController(IUnitOfWork unitOfWork, ILoggerService loggerService, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _loggerService = loggerService;
+            _mapper = mapper;
         }
 
         /// <summary>

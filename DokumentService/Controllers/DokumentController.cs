@@ -21,16 +21,15 @@ namespace DokumentService.Controllers
     [Produces("application/json")]
     public class DokumentController : ControllerBase
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly ILoggerService _loggerService;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public DokumentController(IUnitOfWork unitOfWork, IMapper mapper,
-            ILoggerService loggerService)
+        public DokumentController(IUnitOfWork unitOfWork, ILoggerService loggerService, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _loggerService = loggerService;
+            _mapper = mapper;
         }
 
         /// <summary>
