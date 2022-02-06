@@ -18,14 +18,14 @@ namespace UgovorOZakupu
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<UgovorOZakupuDbContext>();
-         
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IServiceCalls, ServiceCalls>();
             // services.AddScoped<IServiceCalls, ServiceCallsMock>();
-            
+
             services.AddControllers();
 
             services.AddSwaggerGen(c =>
@@ -34,9 +34,10 @@ namespace UgovorOZakupu
                     "v1",
                     new OpenApiInfo
                     {
-                        Title = "Ugovor o zakupu API", 
+                        Title = "Ugovor o zakupu API",
                         Version = "v1",
-                        Description = "API Ugovor o zakupu omogućava unos, izmenu i pregled podataka o ugovorima o zakupu, tipovima garancije i rokovima dospeca.",
+                        Description =
+                            "API Ugovor o zakupu omogućava unos, izmenu i pregled podataka o ugovorima o zakupu, tipovima garancije i rokovima dospeca.",
                         Contact = new OpenApiContact
                         {
                             Name = "Vuk Pekez",
@@ -44,7 +45,7 @@ namespace UgovorOZakupu
                             Url = new Uri("https://github.com/vukpekez")
                         }
                     });
-                
+
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
@@ -54,16 +55,10 @@ namespace UgovorOZakupu
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-            }
+            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
-            app.UseSwagger(c =>
-            {
-                c.SerializeAsV2 = true;
-            });
-            
+            app.UseSwagger(c => { c.SerializeAsV2 = true; });
+
             app.UseSwaggerUI(options =>
             {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Ugovor o zakupu API");

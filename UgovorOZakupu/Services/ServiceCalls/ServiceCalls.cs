@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using AutoMapper;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using UgovorOZakupu.Models.LogModel;
 using UgovorOZakupu.Models.UgovorOZakupu;
@@ -10,13 +9,13 @@ namespace UgovorOZakupu.Services.ServiceCalls
 {
     public class ServiceCalls : IServiceCalls
     {
-        private readonly IMapper _mapper;
         private readonly IServices _services;
+        private readonly IMapper _mapper;
 
-        public ServiceCalls(IMapper mapper, IConfiguration configuration)
+        public ServiceCalls(IServices services, IMapper mapper)
         {
+            _services = services;
             _mapper = mapper;
-            _services = new Services(configuration);
         }
 
         public async Task Log(LogLevel level, string method, string message, Exception exception = null)

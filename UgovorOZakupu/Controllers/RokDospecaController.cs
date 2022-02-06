@@ -21,15 +21,15 @@ namespace UgovorOZakupu.Controllers
     [Produces("application/json")]
     public class RokDospecaController : ControllerBase
     {
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IServiceCalls _serviceCalls;
         private readonly IMapper _mapper;
-        private readonly IUnitOfWork _unitOfWork;
 
-        public RokDospecaController(IUnitOfWork unitOfWork, IMapper mapper, IServiceCalls serviceCalls)
+        public RokDospecaController(IUnitOfWork unitOfWork, IServiceCalls serviceCalls, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _serviceCalls = serviceCalls;
+            _mapper = mapper;
         }
 
         /// <summary>

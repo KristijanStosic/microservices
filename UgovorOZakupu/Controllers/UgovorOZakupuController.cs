@@ -21,16 +21,15 @@ namespace UgovorOZakupu.Controllers
     [Produces("application/json")]
     public class UgovorOZakupuController : ControllerBase
     {
-        private readonly IMapper _mapper;
-        private readonly IServiceCalls _serviceCalls;
-
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IServiceCalls _serviceCalls;
+        private readonly IMapper _mapper;
 
-        public UgovorOZakupuController(IUnitOfWork unitOfWork, IMapper mapper, IServiceCalls serviceCalls)
+        public UgovorOZakupuController(IUnitOfWork unitOfWork, IServiceCalls serviceCalls, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _serviceCalls = serviceCalls;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -50,6 +49,7 @@ namespace UgovorOZakupu.Controllers
             {
                 await _serviceCalls.Log(LogLevel.Warning, "GetAllUgovorOZakupu",
                     "Lista ugovora o zakupu je prazna ili null.");
+
                 return NoContent();
             }
 
