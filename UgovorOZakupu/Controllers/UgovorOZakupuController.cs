@@ -139,16 +139,8 @@ namespace UgovorOZakupu.Controllers
                 _unitOfWork.UgovoriOZakupu.Create(ugovor);
                 await _unitOfWork.CompleteAsync();
 
-                ugovor.TipGarancije =
-                    await _unitOfWork.TipoviGarancije.GetById(ugovor.TipGarancijeId);
-
-                var serialized = JsonConvert.SerializeObject(ugovor, Formatting.Indented, new JsonSerializerSettings
-                {
-                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-                });
-
                 await _serviceCalls.Log(LogLevel.Information, "CreateUgovorOZakupu",
-                    $"Ugovor o zakupu sa vrednostima: {serialized} je uspešno kreiran.");
+                    $"Ugovor o zakupu sa vrednostima: {ugovorOZakupuDto} je uspešno kreiran.");
 
                 return CreatedAtAction(
                     "GetUgovorOZakupuById",

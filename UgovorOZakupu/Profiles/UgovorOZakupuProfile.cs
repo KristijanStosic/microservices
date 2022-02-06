@@ -31,7 +31,7 @@ namespace UgovorOZakupu.Profiles
                 );
 
             CreateMap<Entities.UgovorOZakupu, UgovorOZakupuConfirmation>();
-            
+
             CreateMap<UpdateUgovorOZakupuDto, Entities.UgovorOZakupu>();
         }
     }
