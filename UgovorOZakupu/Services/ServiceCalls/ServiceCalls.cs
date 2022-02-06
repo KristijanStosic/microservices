@@ -9,8 +9,8 @@ namespace UgovorOZakupu.Services.ServiceCalls
 {
     public class ServiceCalls : IServiceCalls
     {
-        private readonly IServices _services;
         private readonly IMapper _mapper;
+        private readonly IServices _services;
 
         public ServiceCalls(IServices services, IMapper mapper)
         {
@@ -37,7 +37,8 @@ namespace UgovorOZakupu.Services.ServiceCalls
             var ugovorDto = _mapper.Map<UgovorOZakupuDto>(ugovor);
 
             ugovorDto.Odluka = await _services.Dokument.SendGetRequest(ugovor.DokumentId.ToString());
-            ugovorDto.JavnoNadmetanje = await _services.JavnoNadmetanje.SendGetRequest(ugovor.JavnoNadmetanjeId.ToString());
+            ugovorDto.JavnoNadmetanje =
+                await _services.JavnoNadmetanje.SendGetRequest(ugovor.JavnoNadmetanjeId.ToString());
             ugovorDto.Lice = await _services.Kupac.SendGetRequest(ugovor.KupacId.ToString());
             ugovorDto.Ministar = await _services.Licnost.SendGetRequest(ugovor.LicnostId.ToString());
 

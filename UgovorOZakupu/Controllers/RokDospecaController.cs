@@ -21,9 +21,9 @@ namespace UgovorOZakupu.Controllers
     [Produces("application/json")]
     public class RokDospecaController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IServiceCalls _serviceCalls;
         private readonly IMapper _mapper;
+        private readonly IServiceCalls _serviceCalls;
+        private readonly IUnitOfWork _unitOfWork;
 
         public RokDospecaController(IUnitOfWork unitOfWork, IServiceCalls serviceCalls, IMapper mapper)
         {
@@ -38,24 +38,36 @@ namespace UgovorOZakupu.Controllers
         /// <returns>Lista rokova dospeca</returns>
         /// <response code="200">Vraća listu rokova dospeca</response>
         /// <response code="204">Nije pronadjen nijedan rok dospeca</response>
+        /// <response code="500">Greška prilikom vraćanja liste rokova dospeća</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<List<RokDospecaDto>>> GetAllRokDospeca()
         {
-            var rokoviDospeca = await _unitOfWork.RokoviDospeca.GetAll();
-
-            if (rokoviDospeca == null || rokoviDospeca.Count == 0)
+            try
             {
-                await _serviceCalls.Log(LogLevel.Warning, "GetAllRokDospeca",
-                    "Lista rokova dospeca je prazna ili null.");
-                return NoContent();
+                var rokoviDospeca = await _unitOfWork.RokoviDospeca.GetAll();
+
+                if (rokoviDospeca == null || rokoviDospeca.Count == 0)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "GetAllRokDospeca",
+                        "Lista rokova dospeca je prazna ili null.");
+                    return NoContent();
+                }
+
+                await _serviceCalls.Log(LogLevel.Information, "GetAllRokDospeca",
+                    "Lista rokova dospeca je uspešno vraćena.");
+
+                return _mapper.Map<List<RokDospecaDto>>(rokoviDospeca);
             }
-
-            await _serviceCalls.Log(LogLevel.Information, "GetAllRokDospeca",
-                "Lista rokova dospeca je uspešno vraćena.");
-
-            return _mapper.Map<List<RokDospecaDto>>(rokoviDospeca);
+            catch (Exception ex)
+            {
+                await _serviceCalls.Log(LogLevel.Error, "GetAllRokDospeca",
+                    "Greška prilikom vraćanja liste rokova dospeća.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Greška prilikom vraćanja liste rokova dospeća.");
+            }
         }
 
         /// <summary>
@@ -65,24 +77,36 @@ namespace UgovorOZakupu.Controllers
         /// <returns>Rok garancije</returns>
         /// <response code="200">Vraća traženi rok garancije</response>
         /// <response code="404">Nije pronadjen rok garancije za uneti ID</response>
+        /// <response code="500">Greška prilikom vraćanja roka dospeća</response>
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<RokDospecaDto>> GetRokDospecaById(Guid id)
         {
-            var rokDospeca = await _unitOfWork.RokoviDospeca.GetById(id);
-
-            if (rokDospeca == null)
+            try
             {
-                await _serviceCalls.Log(LogLevel.Warning, "GetRokDospecaById",
-                    $"Rok dospeca sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                var rokDospeca = await _unitOfWork.RokoviDospeca.GetById(id);
+
+                if (rokDospeca == null)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "GetRokDospecaById",
+                        $"Rok dospeca sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                await _serviceCalls.Log(LogLevel.Information, "GetRokDospecaById",
+                    $"Rok dospeca sa id-jem {id} je uspešno vraćen.");
+
+                return _mapper.Map<RokDospecaDto>(rokDospeca);
             }
-
-            await _serviceCalls.Log(LogLevel.Information, "GetRokDospecaById",
-                $"Rok dospeca sa id-jem {id} je uspešno vraćen.");
-
-            return _mapper.Map<RokDospecaDto>(rokDospeca);
+            catch (Exception ex)
+            {
+                await _serviceCalls.Log(LogLevel.Error, "GetRokDospecaById",
+                    $"Greška prilikom vraćanja roka dospeća sa id-jem {id}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Greška prilikom vraćanja roka dospeća sa id-jem {id}.");
+            }
         }
 
         /// <summary>
@@ -91,24 +115,36 @@ namespace UgovorOZakupu.Controllers
         /// <param name="rokDospecaDto">Model roka dospeca za kreiranje</param>
         /// <returns>Rok dospeca</returns>
         /// <response code="201">Vraća kreirani rok dospeca</response>
+        /// <response code="500">Greška prilikom kreiranja roka dospeća</response>
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateRokDospeca([FromBody] CreateRokDospecaDto rokDospecaDto)
         {
-            var rokDospeca = _mapper.Map<RokDospeca>(rokDospecaDto);
+            try
+            {
+                var rokDospeca = _mapper.Map<RokDospeca>(rokDospecaDto);
 
-            _unitOfWork.RokoviDospeca.Create(rokDospeca);
-            await _unitOfWork.CompleteAsync();
+                _unitOfWork.RokoviDospeca.Create(rokDospeca);
+                await _unitOfWork.CompleteAsync();
 
-            await _serviceCalls.Log(LogLevel.Information, "CreateRokDospeca",
-                $"Rok dospeca sa vrednostima: {JsonConvert.SerializeObject(rokDospeca)} je uspešno kreiran.");
+                await _serviceCalls.Log(LogLevel.Information, "CreateRokDospeca",
+                    $"Rok dospeca sa vrednostima: {JsonConvert.SerializeObject(rokDospeca)} je uspešno kreiran.");
 
-            return CreatedAtAction(
-                "GetRokDospecaById",
-                new {id = rokDospeca.Id},
-                _mapper.Map<RokDospecaDto>(rokDospeca)
-            );
+                return CreatedAtAction(
+                    "GetRokDospecaById",
+                    new {id = rokDospeca.Id},
+                    _mapper.Map<RokDospecaDto>(rokDospeca)
+                );
+            }
+            catch (Exception ex)
+            {
+                await _serviceCalls.Log(LogLevel.Error, "CreateRokDospeca",
+                    $"Greška prilikom kreiranja roka dospeća sa vrednostima: {JsonConvert.SerializeObject(rokDospecaDto)}.",
+                    ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom kreiranja roka dospeća.");
+            }
         }
 
         /// <summary>
@@ -119,38 +155,50 @@ namespace UgovorOZakupu.Controllers
         /// <response code="204">Potvrda o izmeni roka dospeca</response>
         /// <response code="404">Nije pronadjen rok dospeca za uneti ID</response>
         /// <response code="400">ID nije isti kao onaj proledjen u modelu roka dospeca</response>
+        /// <response code="500">Greška prilikom izmene roka dospeća</response>
         [HttpPut("{id:guid}")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateRokDospeca(Guid id, [FromBody] UpdateRokDospecaDto rokDospecaDto)
         {
-            if (id != rokDospecaDto.Id)
+            try
             {
-                await _serviceCalls.Log(LogLevel.Warning, "UpdateRokDospeca",
-                    "ID roka dospeca prosledjen kroz url nije isti kao onaj u telu zahteva.");
-                return BadRequest();
+                if (id != rokDospecaDto.Id)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "UpdateRokDospeca",
+                        "ID roka dospeca prosledjen kroz url nije isti kao onaj u telu zahteva.");
+                    return BadRequest();
+                }
+
+                var rokDospeca = await _unitOfWork.RokoviDospeca.GetById(id);
+
+                if (rokDospeca == null)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "UpdateRokDospeca",
+                        $"Rok dospeca sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                var oldValue = JsonConvert.SerializeObject(rokDospeca);
+
+                _mapper.Map(rokDospecaDto, rokDospeca, typeof(UpdateRokDospecaDto), typeof(RokDospeca));
+                await _unitOfWork.CompleteAsync();
+
+                await _serviceCalls.Log(LogLevel.Information, "UpdateRokDospeca",
+                    $"Rok dospeca sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
+
+                return NoContent();
             }
-
-            var rokDospeca = await _unitOfWork.RokoviDospeca.GetById(id);
-
-            if (rokDospeca == null)
+            catch (Exception ex)
             {
-                await _serviceCalls.Log(LogLevel.Warning, "UpdateRokDospeca",
-                    $"Rok dospeca sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                await _serviceCalls.Log(LogLevel.Error, "UpdateRokDospeca",
+                    $"Greška prilikom izmene roka dospeća sa vrednostima: {JsonConvert.SerializeObject(rokDospecaDto)}.",
+                    ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom izmene roka dospeća.");
             }
-
-            var oldValue = JsonConvert.SerializeObject(rokDospeca);
-
-            _mapper.Map(rokDospecaDto, rokDospeca, typeof(UpdateRokDospecaDto), typeof(RokDospeca));
-            await _unitOfWork.CompleteAsync();
-
-            await _serviceCalls.Log(LogLevel.Information, "UpdateRokDospeca",
-                $"Rok dospeca sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
-
-            return NoContent();
         }
 
         /// <summary>
@@ -159,27 +207,39 @@ namespace UgovorOZakupu.Controllers
         /// <param name="id">ID roka dospeca</param>
         /// <response code="204">Rok dospeca je uspešno obrisan</response>
         /// <response code="404">Nije pronadjen rok dospeca za uneti ID</response>
+        /// <response code="500">Greška prilikom brisanja roka dospeća</response>
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteRokDospeca(Guid id)
         {
-            var rokDospeca = await _unitOfWork.RokoviDospeca.GetById(id);
-
-            if (rokDospeca == null)
+            try
             {
-                await _serviceCalls.Log(LogLevel.Warning, "DeleteRokDospeca",
-                    $"Rok dospeca sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                var rokDospeca = await _unitOfWork.RokoviDospeca.GetById(id);
+
+                if (rokDospeca == null)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "DeleteRokDospeca",
+                        $"Rok dospeca sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                _unitOfWork.RokoviDospeca.Delete(rokDospeca);
+                await _unitOfWork.CompleteAsync();
+
+                await _serviceCalls.Log(LogLevel.Information, "DeleteRokDospeca",
+                    $"Rok dospeca sa id-em {id} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(rokDospeca)}");
+
+                return NoContent();
             }
-
-            _unitOfWork.RokoviDospeca.Delete(rokDospeca);
-            await _unitOfWork.CompleteAsync();
-
-            await _serviceCalls.Log(LogLevel.Information, "DeleteRokDospeca",
-                $"Rok dospeca sa id-em {id} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(rokDospeca)}");
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                await _serviceCalls.Log(LogLevel.Error, "DeleteRokDospeca",
+                    $"Greška prilikom brisanja roka dospeća sa id-jem {id}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Greška prilikom brisanja roka dospeća sa id-jem {id}.");
+            }
         }
 
         /// <summary>

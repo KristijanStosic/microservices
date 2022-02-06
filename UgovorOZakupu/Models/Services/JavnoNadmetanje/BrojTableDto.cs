@@ -3,22 +3,22 @@
 namespace UgovorOZakupu.Models.JavnoNadmetanje
 {
     /// <summary>
-    /// Model za broj table
+    ///     Model za broj table
     /// </summary>
     public class BrojTableDto
     {
         /// <summary>
-        /// ID broja table
+        ///     ID broja table
         /// </summary>
         public Guid BrojTableId { get; set; }
 
         /// <summary>
-        /// Redni broj table
+        ///     Redni broj table
         /// </summary>
         public int RbTable { get; set; }
 
         /// <summary>
-        /// Oznaka table
+        ///     Oznaka table
         /// </summary>
         public string OznakaTable { get; set; }
     }

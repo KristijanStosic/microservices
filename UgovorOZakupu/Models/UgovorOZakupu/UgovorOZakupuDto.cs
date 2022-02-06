@@ -8,62 +8,62 @@ using UgovorOZakupu.Models.Licnost;
 namespace UgovorOZakupu.Models.UgovorOZakupu
 {
     /// <summary>
-    /// Model ugovora o zakupu
+    ///     Model ugovora o zakupu
     /// </summary>
     public class UgovorOZakupuDto
     {
         /// <summary>
-        /// Zavodni broj ugovora o zakupu
+        ///     Zavodni broj ugovora o zakupu
         /// </summary>
         public string ZavodniBroj { get; set; }
 
         /// <summary>
-        /// Datum zavođenja ugovora
+        ///     Datum zavođenja ugovora
         /// </summary>
         public DateTime DatumZavodjenja { get; set; }
 
         /// <summary>
-        /// Rok za vraćanje ugovora
+        ///     Rok za vraćanje ugovora
         /// </summary>
         public DateTime RokZaVracanje { get; set; }
 
         /// <summary>
-        /// Mesto potpisivanja ugovora
+        ///     Mesto potpisivanja ugovora
         /// </summary>
         public string MestoPotpisivanja { get; set; }
 
         /// <summary>
-        /// Datum potpisavanja ugovora
+        ///     Datum potpisavanja ugovora
         /// </summary>
         public DateTime DatumPotpisivanja { get; set; }
 
         /// <summary>
-        /// Tip garancije
+        ///     Tip garancije
         /// </summary>
         public string TipGarancije { get; set; }
 
         /// <summary>
-        /// Rokovi dospeća
+        ///     Rokovi dospeća
         /// </summary>
         public IEnumerable<int> RokoviDospeca { get; set; }
-        
+
         /// <summary>
-        /// Konačna odluka (Dokument)
+        ///     Konačna odluka (Dokument)
         /// </summary>
         public DokumentDto Odluka { get; set; }
-        
+
         /// <summary>
-        /// Javno nadmentanje
+        ///     Javno nadmentanje
         /// </summary>
         public JavnoNadmetanjeDto JavnoNadmetanje { get; set; }
 
         /// <summary>
-        /// Lice
+        ///     Lice
         /// </summary>
         public KupacDto Lice { get; set; }
 
         /// <summary>
-        /// Ministar
+        ///     Ministar
         /// </summary>
         public LicnostDto Ministar { get; set; }
     }

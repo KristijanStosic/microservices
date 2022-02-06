@@ -21,9 +21,9 @@ namespace UgovorOZakupu.Controllers
     [Produces("application/json")]
     public class TipGarancijeController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IServiceCalls _serviceCalls;
         private readonly IMapper _mapper;
+        private readonly IServiceCalls _serviceCalls;
+        private readonly IUnitOfWork _unitOfWork;
 
         public TipGarancijeController(IUnitOfWork unitOfWork, IServiceCalls serviceCalls, IMapper mapper)
         {
@@ -38,24 +38,36 @@ namespace UgovorOZakupu.Controllers
         /// <returns>Lista tipova garancije</returns>
         /// <response code="200">Vraća listu tipove garancije</response>
         /// <response code="204">Nije pronadjen nijedan tip garancije</response>
+        /// <response code="500">Greška prilikom vraćanja liste tipova garancije</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<List<TipGarancijeDto>>> GetAllTipGarancije()
         {
-            var tipoviGarancije = await _unitOfWork.TipoviGarancije.GetAll();
-
-            if (tipoviGarancije == null || tipoviGarancije.Count == 0)
+            try
             {
-                await _serviceCalls.Log(LogLevel.Warning, "GetAllTipGarancije",
-                    "Lista tipova garancije je prazna ili null.");
-                return NoContent();
+                var tipoviGarancije = await _unitOfWork.TipoviGarancije.GetAll();
+
+                if (tipoviGarancije == null || tipoviGarancije.Count == 0)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "GetAllTipGarancije",
+                        "Lista tipova garancije je prazna ili null.");
+                    return NoContent();
+                }
+
+                await _serviceCalls.Log(LogLevel.Information, "GetAllTipGarancije",
+                    "Lista tipova garancije je uspešno vraćena.");
+
+                return Ok(_mapper.Map<List<TipGarancijeDto>>(tipoviGarancije));
             }
-
-            await _serviceCalls.Log(LogLevel.Information, "GetAllTipGarancije",
-                "Lista tipova garancije je uspešno vraćena.");
-
-            return Ok(_mapper.Map<List<TipGarancijeDto>>(tipoviGarancije));
+            catch (Exception ex)
+            {
+                await _serviceCalls.Log(LogLevel.Error, "GetAllTipGarancije",
+                    "Greška prilikom vraćanja liste tipova garancije.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Greška prilikom vraćanja liste tipova garancije.");
+            }
         }
 
         /// <summary>
@@ -65,24 +77,36 @@ namespace UgovorOZakupu.Controllers
         /// <returns>Tip grancije</returns>
         /// <response code="200">Vraća traženi tip grancije o zakupu</response>
         /// <response code="404">Nije pronadjen tip grancije za uneti ID</response>
+        /// <response code="500">Greška prilikom vraćanja tipa garancije</response>
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<TipGarancijeDto>> GetTipGarancijeById(Guid id)
         {
-            var tipGarancije = await _unitOfWork.TipoviGarancije.GetById(id);
-
-            if (tipGarancije == null)
+            try
             {
-                await _serviceCalls.Log(LogLevel.Warning, "GetTipGarancijeById",
-                    $"Tip garancije sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                var tipGarancije = await _unitOfWork.TipoviGarancije.GetById(id);
+
+                if (tipGarancije == null)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "GetTipGarancijeById",
+                        $"Tip garancije sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                await _serviceCalls.Log(LogLevel.Information, "GetTipGarancijeById",
+                    $"Tip garancije sa id-jem {id} je uspešno vraćen.");
+
+                return Ok(_mapper.Map<TipGarancijeDto>(tipGarancije));
             }
-
-            await _serviceCalls.Log(LogLevel.Information, "GetTipGarancijeById",
-                $"Tip garancije sa id-jem {id} je uspešno vraćen.");
-
-            return Ok(_mapper.Map<TipGarancijeDto>(tipGarancije));
+            catch (Exception ex)
+            {
+                await _serviceCalls.Log(LogLevel.Error, "GetTipGarancijeById",
+                    $"Greška prilikom vraćanja tipa garancije sa id-jem {id}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Greška prilikom vraćanja tipa garancije sa id-jem {id}.");
+            }
         }
 
         /// <summary>
@@ -91,24 +115,37 @@ namespace UgovorOZakupu.Controllers
         /// <param name="tipGarancijeDto">Model tipa garancije</param>
         /// <returns>Tip garancije</returns>
         /// <response code="201">Vraća kreirani tip garancije</response>
+        /// <response code="500">Greška prilikom kreiranja tipa garancije.</response>
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateTipGarancije([FromBody] TipGarancijeDto tipGarancijeDto)
         {
-            var tipGarancije = _mapper.Map<TipGarancije>(tipGarancijeDto);
+            try
+            {
+                var tipGarancije = _mapper.Map<TipGarancije>(tipGarancijeDto);
 
-            _unitOfWork.TipoviGarancije.Create(tipGarancije);
-            await _unitOfWork.CompleteAsync();
+                _unitOfWork.TipoviGarancije.Create(tipGarancije);
+                await _unitOfWork.CompleteAsync();
 
-            await _serviceCalls.Log(LogLevel.Information, "CreateTipGarancije",
-                $"Tip garancije sa vrednostima: {JsonConvert.SerializeObject(tipGarancije)} je uspešno kreiran.");
+                await _serviceCalls.Log(LogLevel.Information, "CreateTipGarancije",
+                    $"Tip garancije sa vrednostima: {JsonConvert.SerializeObject(tipGarancije)} je uspešno kreiran.");
 
-            return CreatedAtAction(
-                "GetTipGarancijeById",
-                new {id = tipGarancije.Id},
-                _mapper.Map<TipGarancijeDto>(tipGarancije)
-            );
+                return CreatedAtAction(
+                    "GetTipGarancijeById",
+                    new {id = tipGarancije.Id},
+                    _mapper.Map<TipGarancijeDto>(tipGarancije)
+                );
+            }
+            catch (Exception ex)
+            {
+                await _serviceCalls.Log(LogLevel.Error, "CreateTipGarancije",
+                    $"Greška prilikom kreiranja tipa garancije sa vrednostima: {JsonConvert.SerializeObject(tipGarancijeDto)}.",
+                    ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Greška prilikom kreiranja tipa garancije.");
+            }
         }
 
         /// <summary>
@@ -120,38 +157,50 @@ namespace UgovorOZakupu.Controllers
         /// <response code="204">Potvrda o izmeni tipa garancije</response>
         /// <response code="404">Nije pronadjen tip garancije za uneti ID</response>
         /// <response code="400">ID nije isti kao onaj proledjen u modelu tipa garancije</response>
+        /// <response code="500">Greška prilikom izmene tipa garancije.</response>
         [HttpPut("{id:guid}")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateTipGarancije(Guid id, [FromBody] UpdateTipGarancijeDto tipGarancijeDto)
         {
-            if (id != tipGarancijeDto.Id)
+            try
             {
-                await _serviceCalls.Log(LogLevel.Warning, "UpdateTipGarancije",
-                    "ID tipa garancije prosledjen kroz url nije isti kao onaj u telu zahteva.");
-                return BadRequest();
+                if (id != tipGarancijeDto.Id)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "UpdateTipGarancije",
+                        "ID tipa garancije prosledjen kroz url nije isti kao onaj u telu zahteva.");
+                    return BadRequest();
+                }
+
+                var tipGarancije = await _unitOfWork.TipoviGarancije.GetById(id);
+
+                if (tipGarancije == null)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "UpdateTipGarancije",
+                        $"Tip garancije sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                var oldValue = JsonConvert.SerializeObject(tipGarancije);
+
+                _mapper.Map(tipGarancijeDto, tipGarancije, typeof(UpdateTipGarancijeDto), typeof(TipGarancije));
+                await _unitOfWork.CompleteAsync();
+
+                await _serviceCalls.Log(LogLevel.Information, "UpdateTipGarancije",
+                    $"Tip garancije sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
+
+                return NoContent();
             }
-
-            var tipGarancije = await _unitOfWork.TipoviGarancije.GetById(id);
-
-            if (tipGarancije == null)
+            catch (Exception ex)
             {
-                await _serviceCalls.Log(LogLevel.Warning, "UpdateTipGarancije",
-                    $"Tip garancije sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                await _serviceCalls.Log(LogLevel.Error, "UpdateTipGarancije",
+                    $"Greška prilikom izmene tipa garancije sa vrednostima: {JsonConvert.SerializeObject(tipGarancijeDto)}.",
+                    ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom izmene tipa garancije.");
             }
-
-            var oldValue = JsonConvert.SerializeObject(tipGarancije);
-
-            _mapper.Map(tipGarancijeDto, tipGarancije, typeof(UpdateTipGarancijeDto), typeof(TipGarancije));
-            await _unitOfWork.CompleteAsync();
-
-            await _serviceCalls.Log(LogLevel.Information, "UpdateTipGarancije",
-                $"Tip garancije sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
-
-            return NoContent();
         }
 
         /// <summary>
@@ -160,27 +209,39 @@ namespace UgovorOZakupu.Controllers
         /// <param name="id">ID tipa garancije</param>
         /// <response code="204">Tip garancije je uspešno obrisan</response>
         /// <response code="404">Nije pronadjen tip garancije za uneti ID</response>
+        /// <response code="500">Greška prilikom brisanja tipa garancije</response>
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteTipGarancije(Guid id)
         {
-            var tipGarancije = await _unitOfWork.TipoviGarancije.GetById(id);
-
-            if (tipGarancije == null)
+            try
             {
-                await _serviceCalls.Log(LogLevel.Warning, "DeleteTipGarancije",
-                    $"Tip garancije sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                var tipGarancije = await _unitOfWork.TipoviGarancije.GetById(id);
+
+                if (tipGarancije == null)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "DeleteTipGarancije",
+                        $"Tip garancije sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                _unitOfWork.TipoviGarancije.Delete(tipGarancije);
+                await _unitOfWork.CompleteAsync();
+
+                await _serviceCalls.Log(LogLevel.Information, "DeleteTipGarancije",
+                    $"Tip garancije sa id-em {id} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(tipGarancije)}");
+
+                return NoContent();
             }
-
-            _unitOfWork.TipoviGarancije.Delete(tipGarancije);
-            await _unitOfWork.CompleteAsync();
-
-            await _serviceCalls.Log(LogLevel.Information, "DeleteTipGarancije",
-                $"Tip garancije sa id-em {id} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(tipGarancije)}");
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                await _serviceCalls.Log(LogLevel.Error, "DeleteTipGarancije",
+                    $"Greška prilikom brisanja tipa garancije sa id-jem {id}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Greška prilikom brisanja tipa garancije sa id-jem {id}.");
+            }
         }
 
         /// <summary>
