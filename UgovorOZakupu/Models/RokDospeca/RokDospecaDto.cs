@@ -1,12 +1,12 @@
 ﻿namespace UgovorOZakupu.Models.RokDospeca
 {
     /// <summary>
-    /// Model roka dospeća
+    ///     Model roka dospeća
     /// </summary>
     public class RokDospecaDto
     {
         /// <summary>
-        /// Rok dospeća
+        ///     Rok dospeća
         /// </summary>
         public int Rok { get; set; }
     }

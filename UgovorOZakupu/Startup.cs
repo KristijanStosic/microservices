@@ -3,6 +3,10 @@ using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
@@ -29,7 +33,45 @@ namespace UgovorOZakupu
             // services.AddScoped<IServiceCalls, ServiceCalls>();
             services.AddScoped<IServiceCalls, ServiceCallsMock>();
 
-            services.AddControllers();
+            services.AddControllers(options => { options.ReturnHttpNotAcceptable = true; })
+                .ConfigureApiBehaviorOptions(setupAction =>
+                {
+                    setupAction.InvalidModelStateResponseFactory = context =>
+                    {
+                        var problemDetailsFactory = context.HttpContext.RequestServices
+                            .GetRequiredService<ProblemDetailsFactory>();
+
+                        //Prevodi validacione greške iz ModelState-a u RFC format
+                        var problemDetails =
+                            problemDetailsFactory.CreateValidationProblemDetails(context.HttpContext,
+                                context.ModelState);
+                        problemDetails.Detail = "Pogledajte Error polje za detaljnije informacije.";
+                        problemDetails.Instance = context.HttpContext.Request.Path;
+
+                        //Definisemo da za validacione greske ne zelimo status kod 400 nego 422 - UnprocessibleEntity
+                        var actionExecutiongContext = context as ActionExecutingContext;
+                        if (context.ModelState.ErrorCount > 0 && actionExecutiongContext?.ActionArguments.Count ==
+                            context.ActionDescriptor.Parameters.Count)
+                        {
+                            problemDetails.Status = StatusCodes.Status422UnprocessableEntity;
+                            problemDetails.Title = "Desila se greška prilikom validacije.";
+
+                            //Sve se vraca kao UnprocessibleEntity objekat
+                            return new UnprocessableEntityObjectResult(problemDetails)
+                            {
+                                ContentTypes = {"application/problem+json"}
+                            };
+                        }
+
+                        //Ako nesto ne moze da se parsira vraca se status kod 400 - Bad Request
+                        problemDetails.Status = StatusCodes.Status400BadRequest;
+                        problemDetails.Title = "Desila se greška prilikom parsiranja.";
+                        return new BadRequestObjectResult(problemDetails)
+                        {
+                            ContentTypes = {"application/problem+json"}
+                        };
+                    };
+                });
 
             services.AddSwaggerGen(c =>
             {

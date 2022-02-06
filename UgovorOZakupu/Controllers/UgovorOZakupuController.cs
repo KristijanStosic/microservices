@@ -21,9 +21,9 @@ namespace UgovorOZakupu.Controllers
     [Produces("application/json")]
     public class UgovorOZakupuController : ControllerBase
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IServiceCalls _serviceCalls;
         private readonly IMapper _mapper;
+        private readonly IServiceCalls _serviceCalls;
+        private readonly IUnitOfWork _unitOfWork;
 
         public UgovorOZakupuController(IUnitOfWork unitOfWork, IServiceCalls serviceCalls, IMapper mapper)
         {
@@ -38,31 +38,43 @@ namespace UgovorOZakupu.Controllers
         /// <returns>Lista ugovora o zakupu</returns>
         /// <response code="200">Vraća listu ugovora o zakupu</response>
         /// <response code="204">Nije pronadjen nijedan ugovor o zakupu</response>
+        /// <response code="500">Greška prilikom vraćanja liste ugovora o zakupu.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<List<UgovorOZakupuDto>>> GetAllUgovorOZakupu()
         {
-            var ugovori = await _unitOfWork.UgovoriOZakupu.GetAll();
-
-            if (ugovori == null || ugovori.Count == 0)
+            try
             {
-                await _serviceCalls.Log(LogLevel.Warning, "GetAllUgovorOZakupu",
-                    "Lista ugovora o zakupu je prazna ili null.");
+                var ugovori = await _unitOfWork.UgovoriOZakupu.GetAll();
 
-                return NoContent();
+                if (ugovori == null || ugovori.Count == 0)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "GetAllUgovorOZakupu",
+                        "Lista ugovora o zakupu je prazna ili null.");
+
+                    return NoContent();
+                }
+
+                var ugovoriDto = Task.WhenAll(
+                        ugovori.Select(u => _serviceCalls.GetUgovorOZakupuInfo(u))
+                    )
+                    .Result
+                    .ToList();
+
+                await _serviceCalls.Log(LogLevel.Information, "GetAllUgovorOZakupu",
+                    "Lista ugovora o zakupu je uspešno vraćena.");
+
+                return Ok(ugovoriDto);
             }
-
-            var ugovoriDto = Task.WhenAll(
-                    ugovori.Select(u => _serviceCalls.GetUgovorOZakupuInfo(u))
-                )
-                .Result
-                .ToList();
-
-            await _serviceCalls.Log(LogLevel.Information, "GetAllUgovorOZakupu",
-                "Lista ugovora o zakupu je uspešno vraćena.");
-
-            return Ok(ugovoriDto);
+            catch (Exception ex)
+            {
+                await _serviceCalls.Log(LogLevel.Error, "GetAllUgovorOZakupu",
+                    "Greška prilikom vraćanja liste ugovora o zakupu.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Greška prilikom vraćanja liste ugovora o zakupu.");
+            }
         }
 
         /// <summary>
@@ -72,26 +84,38 @@ namespace UgovorOZakupu.Controllers
         /// <returns>Ugovor o zakupu</returns>
         /// <response code="200">Vraća traženi ugovor o zakupu</response>
         /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
+        /// <response code="500">Greška prilikom vraćanja ugovora o zakupu</response>
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<UgovorOZakupuDto>> GetUgovorOZakupuById(Guid id)
         {
-            var ugovor = await _unitOfWork.UgovoriOZakupu.GetById(id);
-
-            if (ugovor == null)
+            try
             {
-                await _serviceCalls.Log(LogLevel.Warning, "GetUgovorOZakupuById",
-                    $"Ugovor o zakupu sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                var ugovor = await _unitOfWork.UgovoriOZakupu.GetById(id);
+
+                if (ugovor == null)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "GetUgovorOZakupuById",
+                        $"Ugovor o zakupu sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                var ugovorDto = await _serviceCalls.GetUgovorOZakupuInfo(ugovor);
+
+                await _serviceCalls.Log(LogLevel.Information, "GetUgovorOZakupuById",
+                    $"Ugovor o zakupu sa id-jem {id} je uspešno vraćen.");
+
+                return Ok(ugovorDto);
             }
-
-            var ugovorDto = await _serviceCalls.GetUgovorOZakupuInfo(ugovor);
-
-            await _serviceCalls.Log(LogLevel.Information, "GetUgovorOZakupuById",
-                $"Ugovor o zakupu sa id-jem {id} je uspešno vraćen.");
-
-            return Ok(ugovorDto);
+            catch (Exception ex)
+            {
+                await _serviceCalls.Log(LogLevel.Error, "GetUgovorOZakupuById",
+                    $"Greška prilikom vraćanja ugovora o zakupu sa id-jem {id}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Greška prilikom vraćanja ugovora o zakupu sa id-jem {id}.");
+            }
         }
 
         /// <summary>
@@ -100,32 +124,45 @@ namespace UgovorOZakupu.Controllers
         /// <param name="ugovorOZakupuDto">Model ugovora o zakupu za kreiranje</param>
         /// <returns>Ugovor o zakupu</returns>
         /// <response code="201">Vraća kreirani ugovor o zakupu</response>
+        /// <response code="500">Greška prilikom kreiranja ugovora o zakupu</response>
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateUgovorOZakupu([FromBody] CreateUgovorOZakupuDto ugovorOZakupuDto)
         {
-            var ugovor = _mapper.Map<Entities.UgovorOZakupu>(ugovorOZakupuDto);
-
-            _unitOfWork.UgovoriOZakupu.Create(ugovor);
-            await _unitOfWork.CompleteAsync();
-
-            ugovor.TipGarancije =
-                await _unitOfWork.TipoviGarancije.GetById(ugovor.TipGarancijeId);
-
-            var serialized = JsonConvert.SerializeObject(ugovor, Formatting.Indented, new JsonSerializerSettings
+            try
             {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
+                var ugovor = _mapper.Map<Entities.UgovorOZakupu>(ugovorOZakupuDto);
 
-            await _serviceCalls.Log(LogLevel.Information, "CreateUgovorOZakupu",
-                $"Ugovor o zakupu sa vrednostima: {serialized} je uspešno kreiran.");
+                _unitOfWork.UgovoriOZakupu.Create(ugovor);
+                await _unitOfWork.CompleteAsync();
 
-            return CreatedAtAction(
-                "GetUgovorOZakupuById",
-                new {id = ugovor.Id},
-                _mapper.Map<UgovorOZakupuDto>(ugovor)
-            );
+                ugovor.TipGarancije =
+                    await _unitOfWork.TipoviGarancije.GetById(ugovor.TipGarancijeId);
+
+                var serialized = JsonConvert.SerializeObject(ugovor, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+
+                await _serviceCalls.Log(LogLevel.Information, "CreateUgovorOZakupu",
+                    $"Ugovor o zakupu sa vrednostima: {serialized} je uspešno kreiran.");
+
+                return CreatedAtAction(
+                    "GetUgovorOZakupuById",
+                    new {id = ugovor.Id},
+                    _mapper.Map<UgovorOZakupuDto>(ugovor)
+                );
+            }
+            catch (Exception ex)
+            {
+                await _serviceCalls.Log(LogLevel.Error, "CreateUgovorOZakupu",
+                    $"Greška prilikom kreiranja ugovora o zakupu sa vrednostima: {JsonConvert.SerializeObject(ugovorOZakupuDto)}.",
+                    ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "Greška prilikom kreiranja ugovora o zakupu.");
+            }
         }
 
         /// <summary>
@@ -137,42 +174,54 @@ namespace UgovorOZakupu.Controllers
         /// <response code="204">Potvrda o izmeni ugovora o zakupu</response>
         /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
         /// <response code="400">ID nije isti kao onaj proledjen u modelu ugovora o zakupu</response>
+        /// <response code="500">Greška prilikom izmene ugovora o zakupu</response>
         [HttpPut("{id:guid}")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> UpdateUgovorOZakupu(Guid id,
             [FromBody] UpdateUgovorOZakupuDto ugovorOZakupuDto)
         {
-            if (id != ugovorOZakupuDto.Id)
+            try
             {
-                await _serviceCalls.Log(LogLevel.Warning, "UpdateUgovorOZakupu",
-                    "ID ugovora o zakupua prosledjen kroz url nije isti kao onaj u telu zahteva.");
-                return BadRequest();
+                if (id != ugovorOZakupuDto.Id)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "UpdateUgovorOZakupu",
+                        "ID ugovora o zakupua prosledjen kroz url nije isti kao onaj u telu zahteva.");
+                    return BadRequest();
+                }
+
+                var ugovor = await _unitOfWork.UgovoriOZakupu.GetById(id);
+
+                if (ugovor == null)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "UpdateUgovorOZakupu",
+                        $"Ugovor o zakupu sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                var oldValue = JsonConvert.SerializeObject(ugovor, Formatting.Indented, new JsonSerializerSettings
+                {
+                    ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                });
+
+                _mapper.Map(ugovorOZakupuDto, ugovor, typeof(UpdateUgovorOZakupuDto), typeof(Entities.UgovorOZakupu));
+                await _unitOfWork.CompleteAsync();
+
+                await _serviceCalls.Log(LogLevel.Information, "UpdateUgovorOZakupu",
+                    $"Ugovor o zakupu sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
+
+                return NoContent();
             }
-
-            var ugovor = await _unitOfWork.UgovoriOZakupu.GetById(id);
-
-            if (ugovor == null)
+            catch (Exception ex)
             {
-                await _serviceCalls.Log(LogLevel.Warning, "UpdateUgovorOZakupu",
-                    $"Ugovor o zakupu sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                await _serviceCalls.Log(LogLevel.Error, "UpdateUgovorOZakupu",
+                    $"Greška prilikom izmene ugovora o zakupu sa vrednostima: {JsonConvert.SerializeObject(ugovorOZakupuDto)}.",
+                    ex);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom izmene ugovora o zakupu.");
             }
-
-            var oldValue = JsonConvert.SerializeObject(ugovor, Formatting.Indented, new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-
-            _mapper.Map(ugovorOZakupuDto, ugovor, typeof(UpdateUgovorOZakupuDto), typeof(Entities.UgovorOZakupu));
-            await _unitOfWork.CompleteAsync();
-
-            await _serviceCalls.Log(LogLevel.Information, "UpdateUgovorOZakupu",
-                $"Ugovor o zakupu sa id-em {id} je uspešno izmenjen. Stare vrednosti su: {oldValue}");
-
-            return NoContent();
         }
 
         /// <summary>
@@ -181,27 +230,39 @@ namespace UgovorOZakupu.Controllers
         /// <param name="id">ID ugovora o zakupu</param>
         /// <response code="204">Ugovor o zakupu je uspešno obrisan</response>
         /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
+        /// <response code="500">Greška prilikom brisanja ugovora o zakupu</response>
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteUgovorOZakupu(Guid id)
         {
-            var ugovor = await _unitOfWork.UgovoriOZakupu.GetById(id);
-
-            if (ugovor == null)
+            try
             {
-                await _serviceCalls.Log(LogLevel.Warning, "DeleteUgovorOZakupu",
-                    $"Ugovor o zakupu sa id-jem {id} nije pronadjen.");
-                return NotFound();
+                var ugovor = await _unitOfWork.UgovoriOZakupu.GetById(id);
+
+                if (ugovor == null)
+                {
+                    await _serviceCalls.Log(LogLevel.Warning, "DeleteUgovorOZakupu",
+                        $"Ugovor o zakupu sa id-jem {id} nije pronadjen.");
+                    return NotFound();
+                }
+
+                _unitOfWork.UgovoriOZakupu.Delete(ugovor);
+                await _unitOfWork.CompleteAsync();
+
+                await _serviceCalls.Log(LogLevel.Information, "DeleteUgovorOZakupu",
+                    $"Ugovor o zakupu sa id-em {id} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(ugovor)}");
+
+                return NoContent();
             }
-
-            _unitOfWork.UgovoriOZakupu.Delete(ugovor);
-            await _unitOfWork.CompleteAsync();
-
-            await _serviceCalls.Log(LogLevel.Information, "DeleteUgovorOZakupu",
-                $"Ugovor o zakupu sa id-em {id} je uspešno obrisan. Obrisane vrednosti: {JsonConvert.SerializeObject(ugovor)}");
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                await _serviceCalls.Log(LogLevel.Error, "DeleteUgovorOZakupu",
+                    $"Greška prilikom brisanja ugovora o zakupu sa id-jem {id}.", ex);
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Greška prilikom brisanja ugovora o zakupu sa id-jem {id}.");
+            }
         }
 
         /// <summary>

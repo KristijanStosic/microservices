@@ -3,27 +3,27 @@
 namespace UgovorOZakupu.Models.Licnost
 {
     /// <summary>
-    /// Model za ličnost
+    ///     Model za ličnost
     /// </summary>
     public class LicnostDto
     {
         /// <summary>
-        /// ID ličnosti
+        ///     ID ličnosti
         /// </summary>
         public Guid LicnostId { get; set; }
 
         /// <summary>
-        /// Ime ličnosti
+        ///     Ime ličnosti
         /// </summary>
         public string Ime { get; set; }
 
         /// <summary>
-        /// Prezime ličnosti
+        ///     Prezime ličnosti
         /// </summary>
         public string Prezime { get; set; }
 
         /// <summary>
-        /// Funkcija ličnosti
+        ///     Funkcija ličnosti
         /// </summary>
         public string Funkcija { get; set; }
     }

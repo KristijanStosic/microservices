@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
@@ -15,7 +16,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
 {
     public class ServiceCallsMock : IServiceCalls
     {
-        private IMapper _mapper;
+        private readonly IMapper _mapper;
 
         public ServiceCallsMock(IMapper mapper)
         {
@@ -33,7 +34,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
                 Greska = exception
             };
 
-            System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(log));
+            Debug.WriteLine(JsonConvert.SerializeObject(log));
 
             return Task.CompletedTask;
         }
@@ -41,12 +42,12 @@ namespace UgovorOZakupu.Services.ServiceCalls
         public Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(Entities.UgovorOZakupu ugovor)
         {
             var ugovorDto = _mapper.Map<UgovorOZakupuDto>(ugovor);
-            
+
             ugovorDto.Odluka = GetDokument();
             ugovorDto.JavnoNadmetanje = GetJavnoNadmetanje();
             ugovorDto.Lice = GetKupac();
             ugovorDto.Ministar = GetLicnost();
-            
+
             return Task.FromResult(ugovorDto);
         }
 
@@ -95,7 +96,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
                         VremePocetka = DateTime.Now.ToString("HH:mm"),
                         VremeKraja = DateTime.Now.AddHours(4)
                             .ToString("HH:mm"),
-                        ZavrsenaUspesno = true,
+                        ZavrsenaUspesno = true
                     }
                 },
                 Adresa = "Bulevar Oslobodjenja 50, 21000 Novi Sad, Srbija",
@@ -206,7 +207,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
                     KontaktOsobaId = Guid.Parse("244fb7c4-aab8-4ec4-8960-e48e017bad37"),
                     Ime = "Milan",
                     Prezime = "Drazic",
-                    Telefon="0693432534",
+                    Telefon = "0693432534",
                     Funkcija = "Funkcija1"
                 },
                 Prioriteti = new List<PrioritetDto>
@@ -232,7 +233,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
                     {
                         OvlascenoLice = "Petar Petrović",
                         BrojDokumenta = "0224989800025",
-                        Stanovanje = "Bulevar Oslobodjenja 50 Novi Sad, Srbija",
+                        Stanovanje = "Bulevar Oslobodjenja 50 Novi Sad, Srbija"
                     }
                 },
                 Uplate = new List<UplataDto>
