@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace KorisnikSistemaService.Entities
@@ -27,5 +28,10 @@ namespace KorisnikSistemaService.Entities
 
         public Guid TipKorisnikaId { get; set; }
         public TipKorisnika TipKorisnika { get; set; }
+
+        public static implicit operator KorisnikSistema(List<KorisnikSistema> v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

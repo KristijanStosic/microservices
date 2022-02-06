@@ -1,47 +1,59 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using KorisnikSistemaService.Auth;
+using KorisnikSistemaService.Data.Interfaces;
+using KorisnikSistemaService.Entities;
+using KorisnikSistemaService.Models.Auth;
+using KorisnikSistemaService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace KorisnikSistemaService.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/Auth")]
     [ApiController]
+    [Produces("application/json", "application/xml")]
     public class AuthController : ControllerBase
     {
-        // GET: api/<AuthControler>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly IKorisnikSistemaRepository _korisnikSistemaRepository;
+        private readonly ILoggerService _loggerService;
+        private readonly IJwtAuthManager _jwtAuthManager;
+        public AuthController(IKorisnikSistemaRepository korisnikSistemaRepository, ILoggerService loggerService, IJwtAuthManager jwtAuthManager)
         {
-            return new string[] { "value1", "value2" };
+            _korisnikSistemaRepository = korisnikSistemaRepository;
+            _loggerService = loggerService;
+            _jwtAuthManager = jwtAuthManager;
         }
 
-        // GET api/<AuthControler>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
 
-        // POST api/<AuthControler>
+        [AllowAnonymous]
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Authenticate([FromBody] AuthCreds authCreds)
         {
+            KorisnikSistema korisnikSistema = await _korisnikSistemaRepository.GetKorisnikSistemaByKorisnickoIme(authCreds.KorisnickoIme);
+
+            if (korisnikSistema == null)
+            {
+                await _loggerService.Log(LogLevel.Warning, "Authenticate", "Korisnik sa ovim korisnickim imenom ne postoji");
+                return NotFound();
+            }else if (!BCrypt.Net.BCrypt.Verify(authCreds.Lozinka, korisnikSistema.Lozinka))
+            {
+                await _loggerService.Log(LogLevel.Warning, "Authenticate", "Unesena naispravna lozinka");
+                return Unauthorized();
+            }
+            string nazivTipaKorisnika = korisnikSistema.TipKorisnika.NazivTipaKorisnika;
+
+            JwtToken token = _jwtAuthManager.Authenticate(korisnikSistema.KorisnickoIme, korisnikSistema.Lozinka, nazivTipaKorisnika);
+            if(token == null)
+            {
+                await _loggerService.Log(LogLevel.Warning, "Authenticate", "Token nije generisan!");
+                return Unauthorized();
+            }
+            
+            return Ok(token);
         }
 
-        // PUT api/<AuthControler>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/<AuthControler>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

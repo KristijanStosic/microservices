@@ -3,6 +3,7 @@ using KorisnikSistemaService.Data.Interfaces;
 using KorisnikSistemaService.Entities;
 using KorisnikSistemaService.Models.TipKorisnika;
 using KorisnikSistemaService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -20,6 +21,7 @@ namespace KorisnikSistemaService.Controllers
     /// <summary>
     /// Kontroler za tip korisnika
     /// </summary>
+    [Authorize(Roles ="Administrator")]
     [Route("api/TipKorisnika")]
     [ApiController]
     [Produces("application/json", "application/xml")]
@@ -187,7 +189,7 @@ namespace KorisnikSistemaService.Controllers
             {
                 var tipKorisnika = await _tipKorisnikaRepository.GetTipKorisnikaById(tipKorisnikaId);
 
-                if(tipKorisnikaId == null)
+                if(tipKorisnika == null)
                 {
                     await _loggerService.Log(LogLevel.Warning, "DeleteTipKorisnika", $"Tip korisnika sistema sa id-em {tipKorisnikaId} nije pronađen.");
                     return NotFound();
