@@ -1,0 +1,115 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KupacService</name>
+    </assembly>
+    <members>
+        <member name="M:KupacService.Entities.DataContext.KupacContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Popunjava bazu sa nekim inicijalnim podacima
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.KontaktOsoba.KontaktOsobaDto">
+            <summary>
+            Dto za kontakt osobu
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.AdresaDto.Ulica">
+            <summary>
+            Naziv ulice
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.AdresaDto.Broj">
+            <summary>
+            Kucni broj
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.AdresaDto.Mesto">
+            <summary>
+            Mesto stanovanja ovlascenog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.AdresaDto.PostanskiBroj">
+            <summary>
+            Postanski broj mesta
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.AdresaDto.Drzava">
+            <summary>
+            Naziv Drzave adrese
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.LogModel.Level">
+            <summary>
+            Log level - info, warn, error, debug
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.LogModel.Servis">
+            <summary>
+            Naziv servisa
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.LogModel.Metoda">
+            <summary>
+            Naziv metode
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.LogModel.Poruka">
+            <summary>
+            Tekst poruke
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.LogModel.Greska">
+            <summary>
+            Greska
+            </summary>
+        </member>
+        <member name="T:KupacService.ServiceCalls.IServiceCall`1">
+            <summary>
+            Interfejs za komunikaciju sa drugim servisima
+            </summary>
+            <typeparam name="T">Generic</typeparam>
+        </member>
+        <member name="M:KupacService.ServiceCalls.IServiceCall`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva
+            </summary>
+            <param name="url"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KupacService.ServiceCalls.LoggerService">
+            <summary>
+            Loger servis
+            </summary>
+        </member>
+        <member name="M:KupacService.ServiceCalls.LoggerService.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Konstruktor loger servisa
+            </summary>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:KupacService.ServiceCalls.LoggerService.Log(Microsoft.Extensions.Logging.LogLevel,System.String,System.String,System.Exception)">
+            <summary>
+            Slanje post zahteva za upis novog log zapisa
+            </summary>
+            <param name="level">INFO/DEBUG/WARN/ERROR</param>
+            <param name="metoda">Naziv metode</param>
+            <param name="poruka">Tekst poruke</param>
+            <param name="greska">Exception</param>
+            <returns></returns>
+        </member>
+        <member name="M:KupacService.ServiceCalls.ServiceCall`1.#ctor(KupacService.ServiceCalls.ILoggerService)">
+            <summary>
+            Konstruktor klase service call
+            </summary>
+            <param name="loggerService"></param>
+        </member>
+        <member name="M:KupacService.ServiceCalls.ServiceCall`1.SendGetRequestAsync(System.String)">
+            <summary>
+            Metoda za slanje get zahteva
+            </summary>
+            <param name="url">Url putanja ka drugom servisu</param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

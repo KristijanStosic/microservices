@@ -15,15 +15,25 @@ using System.Threading.Tasks;
 
 namespace KupacService.Controllers
 {
+    /// <summary>
+    /// Kontroler za priorite
+    /// </summary>
     [ApiController]
     [Route("api/prioritet")]
+    [Produces("application/json", "application/xml")]
     public class PrioritetController : ControllerBase
     {
         private readonly IPrioritetRepository _prioritetRepository;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
         private readonly ILoggerService _loggerService;
-
+        /// <summary>
+        /// Konstruktor za kontroler
+        /// </summary>
+        /// <param name="prioritetRepository"></param>
+        /// <param name="linkGenerator"></param>
+        /// <param name="mapper"></param>
+        /// <param name="loggerService"></param>
         public PrioritetController(IPrioritetRepository prioritetRepository,LinkGenerator linkGenerator,IMapper mapper,ILoggerService loggerService)
         {
             this._prioritetRepository = prioritetRepository;
@@ -32,8 +42,17 @@ namespace KupacService.Controllers
             this._loggerService = loggerService;
         }
 
-
+        /// <summary>
+        /// Vraća listu priorteta na osnovu unetih filtera
+        /// </summary>
+        /// <param name="opis">Opis prioriteta</param>
+        /// <returns>Lista prioriteta koja odgovara zadatom filteru</returns>
+        /// <response code="200">Uspešno vraćena lista prioriteta</response>
+        /// <response code="204">Nije pronađeno nijedan prioritet</response>
         [HttpGet]
+        [HttpHead]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<PrioritetDto>>> GetPrioritete(string opis)
         {
             var prioriteti = await _prioritetRepository.GetPrioritet(opis);
@@ -47,7 +66,16 @@ namespace KupacService.Controllers
             return Ok(_mapper.Map<List<PrioritetDto>>(prioriteti));
 
         }
+        /// <summary>
+        /// Vraća prioritet na osnovu unetog id-a
+        /// </summary>
+        /// <param name="prioritetId">Id prioriteta</param>
+        /// <returns>Prioritet</returns>
+        /// <response code="200">Uspešno vraćen prioritet</response>
+        /// <response code="404">Nije pronađen prioritet sa zadatim id-em</response>
         [HttpGet("{prioritetId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<PrioritetDto>> GetPrioritetById(Guid prioritetId)
         {
             var prioritet = await _prioritetRepository.GetPrioritetById(prioritetId);
@@ -60,7 +88,24 @@ namespace KupacService.Controllers
             await _loggerService.Log(LogLevel.Information, "GetPrioritetById", $"Prioritet  sa id-em {prioritetId} je uspešno vraćen.");
             return Ok(_mapper.Map<PrioritetDto>(prioritet));
         }
+        /// <summary>
+        /// Kreira novi prioritet
+        /// </summary>
+        /// <param name="prioritet">Prioritet</param>
+        /// <returns>Potvrdu o kreiranom prioritetu</returns>
+        /// <remarks>
+        /// Primer kreiranja prioritet\
+        /// POST api/prioritet\
+        /// {\
+        /// "opis": "opis prioriteta"\
+        ///}\
+        /// </remarks>
+        /// <response code="201">Uspešno kreiran prioritet</response>
+        /// <response code="500">Desila se greška prilikom kreiranja novog prioriteta</response>
         [HttpPost]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PrioritetDto>> CreatePrioritet([FromBody] PrioritetCreateDto prioritet)
         {
             try
@@ -83,8 +128,27 @@ namespace KupacService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
             }
         }
-
+        /// <summary>
+        /// Vrši ažuriranje prioriteta
+        /// </summary>
+        /// <param name="prioritetUpdate">Prioritet</param>
+        /// <returns>Prioritet</returns>
+        /// <remarks>
+        /// Primer kreiranja prioritet\
+        /// POST api/prioritet\
+        /// {\
+        /// "prioritetId":"2578e81b-3f01-479a-b790-f52106f639f7",
+        /// "opis": "opis prioriteta"\
+        ///}\
+        /// </remarks>
+        /// <response code="200">Uspešno ažuriran prioritet</response>
+        /// <response code="404">Nije pronađen prioritet na osnovu prosleđenog id-a</response>
+        /// <response code="500">Desila se greška prilikom ažuriranja prioritet</response>
         [HttpPut]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PrioritetDto>> UpdatePrioritet(PrioritetUpdateDto prioritetUpdate) 
         {
             try
@@ -114,7 +178,18 @@ namespace KupacService.Controllers
 
 
         }
+        /// <summary>
+        /// Vrši brisanje prioriteta 
+        /// </summary>
+        /// <param name="prioritetId"></param>
+        /// <returns></returns>
+        /// <response code="200">Uspešno obrisano fizičko lice</response>
+        /// <response code="404">Nije pronađeno fizičko lice na osnovu unetog id-a</response>
+        /// <response code="500">Desila se greška prilikom brisanja fizičkog lica</response>
         [HttpDelete("{prioritetId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeletePrioritet(Guid prioritetId) 
         {
             try
@@ -144,7 +219,10 @@ namespace KupacService.Controllers
 
         }
 
-
+        /// <summary>
+        /// Vraća opcije za rad sa prioritetima
+        /// </summary>
+        /// <returns></returns>
         [HttpOptions]
         public IActionResult GetPrioritetOptions()
         {

@@ -6,6 +6,7 @@ using KupacService.Model.Kupac;
 using KupacService.Model.ManyToMany;
 using KupacService.Model.OtherServices;
 using KupacService.ServiceCalls;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +18,11 @@ using System.Threading.Tasks;
 
 namespace KupacService.Controllers
 {
+    /// <summary>
+    /// Kontroler za kupce
+    /// </summary>
     [ApiController]
+    [Produces("application/json", "application/xml")]
     [Route("api/kupac")]
     public class KupcaController : ControllerBase
     {
@@ -35,8 +40,16 @@ namespace KupacService.Controllers
             this._kupacCalls = kupacCalls;
             this._loggerService = loggerService;
         }
-
+        /// <summary>
+        /// Vraća listu kupaca
+        /// </summary>
+        /// <returns>Lista kupaca</returns>
+        /// <response code="200">Uspešno vraćena lista kupaca</response>
+        /// <response code="204">Nije pronađen nijedan kupac</response>
         [HttpGet]
+        [HttpHead]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<KupacDto>>> GetKupci()
         {
             var kupci = await _kupacRepository.GetKupci();
@@ -59,8 +72,16 @@ namespace KupacService.Controllers
             await _loggerService.Log(LogLevel.Information, "GetKupci", "Lista kupaca je uspešno vraćena.");
             return Ok(kupciDto);
         }
-
+        /// <summary>
+        /// Vraća kupca na osnovu unetog id-a
+        /// </summary>
+        /// <param name="kupacId">Id kupca</param>
+        /// <returns>Kupca</returns>
+        ///  <response code="200">Uspešno vraćen kupac</response>
+        /// <response code="404">Nije pronađen kupac sa zadatim id-em</response>
         [HttpGet("{kupacId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<KupacDto>> GetKupacById(Guid kupacId)
         {
             var kupac = await _kupacRepository.GetKupacById(kupacId);
@@ -79,21 +100,17 @@ namespace KupacService.Controllers
             await _loggerService.Log(LogLevel.Information, "GetKupacById", $"Kupac sa id-em {kupacId} je uspešno vraćen.");
             return Ok(kupacDto);
         }
-        [HttpGet("uplata/{uplataId}")]
-        public async Task<ActionResult<List<KupacManyToManyDto>>> GetKupceByUplataId(Guid uplataId)
-        {
-            var kupci = await _kupacRepository.GetKupceByUplataId(uplataId);
 
-            if(kupci == null || kupci.Count == 0)
-            {
-                await _loggerService.Log(LogLevel.Warning, "GetKupceByUplataId", $"Nisu pronađeni kupci koji pripadaju uplati {uplataId}.");
-                return NoContent();
-            }
-
-            return Ok(_mapper.Map<List<KupacManyToManyDto>>(kupci));
-        }
-
+        /// <summary>
+        /// Vraća listu kupaca za koje ovlašćeno lice vrši licitacije
+        /// </summary>
+        /// <param name="ovlascenoLiceId">Id ovlašćenog lica</param>
+        /// <returns>Lista kupaca</returns>
+        /// <response code="200">Uspešno vraćena lista kupaca za koje prosleđeno ovlašćeno lice vrši licitacije</response>
+        /// <response code="204">Nije pronađen nijedan kupac za dato ovlašćeno lice</response>
         [HttpGet("ovlascenoLice/{ovlascenoLiceId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<KupacManyToManyDto>>> GetKupceByOvlascenoLiceId(Guid ovlascenoLiceId)
         {
             var kupci = await _kupacRepository.GetKupceByOvlascenoLiceId(ovlascenoLiceId);
@@ -108,7 +125,10 @@ namespace KupacService.Controllers
         }
 
 
-
+        /// <summary>
+        /// Vraća opcije za rad sa kupcima
+        /// </summary>
+        /// <returns></returns>
         [HttpOptions]
         public IActionResult GetKontaktOsobaOptions()
         {
