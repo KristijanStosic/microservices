@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using DokumentService.Entities;
+using DokumentService.Models.Confirmations;
 using DokumentService.Models.Dokument;
 
 namespace DokumentService.Profiles
@@ -14,6 +15,8 @@ namespace DokumentService.Profiles
                 );
 
             CreateMap<CreateDokumentDto, Dokument>();
+
+            CreateMap<Dokument, DokumentConfirmation>();
 
             CreateMap<UpdateDokumentDto, Dokument>();
         }

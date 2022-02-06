@@ -1,12 +1,12 @@
 ﻿namespace DokumentService.Models.TipDokumenta
 {
     /// <summary>
-    /// Model za tip dokumenta
+    ///     Model za tip dokumenta
     /// </summary>
     public class TipDokumentaDto
     {
         /// <summary>
-        /// Naziv tipa dokumenta
+        ///     Naziv tipa dokumenta
         /// </summary>
         public string NazivTipa { get; set; }
     }
