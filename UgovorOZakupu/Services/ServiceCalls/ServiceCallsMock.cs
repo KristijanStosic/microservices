@@ -231,6 +231,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
                 {
                     new()
                     {
+                        OvlascenoLiceId = Guid.Parse("5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5"),
                         OvlascenoLice = "Petar Petrović",
                         BrojDokumenta = "0224989800025",
                         Stanovanje = "Bulevar Oslobodjenja 50 Novi Sad, Srbija"

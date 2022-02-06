@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using UgovorOZakupu.Data.UnitOfWork;
+using UgovorOZakupu.Models.Confirmations;
 using UgovorOZakupu.Models.UgovorOZakupu;
 using UgovorOZakupu.Services.ServiceCalls;
 
@@ -152,7 +153,7 @@ namespace UgovorOZakupu.Controllers
                 return CreatedAtAction(
                     "GetUgovorOZakupuById",
                     new {id = ugovor.Id},
-                    _mapper.Map<UgovorOZakupuDto>(ugovor)
+                    _mapper.Map<UgovorOZakupuConfirmation>(ugovor)
                 );
             }
             catch (Exception ex)
