@@ -20,6 +20,8 @@ namespace PrijavaService.Entities
         public List<DokFizickaLica> DokFizickaLica { get; set; }
         public List<DokPravnaLica> DokPravnaLica { get; set; }
 
+        public Guid? KupacId { get; set; }
+
         [NotMapped]
         public List<Guid> JavnoNadmetanje { get; set; }
 

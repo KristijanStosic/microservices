@@ -1,5 +1,9 @@
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,6 +16,8 @@ using PrijavaService.Models.Other;
 using PrijavaService.ServiceCalls;
 using PrijavaService.ServiceCalls.Mocks;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 namespace PrijavaService
@@ -31,10 +37,60 @@ namespace PrijavaService
 
             services.AddControllers(setup =>
             {
-            });
-            services.AddSwaggerGen(c =>
+                setup.ReturnHttpNotAcceptable = false;
+            }
+            ).AddXmlDataContractSerializerFormatters()
+            .ConfigureApiBehaviorOptions(setupAction =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PrijavaService", Version = "v1" });
+                setupAction.InvalidModelStateResponseFactory = context =>
+                {
+                    ProblemDetailsFactory problemDetailsFactory = context.HttpContext.RequestServices
+                        .GetRequiredService<ProblemDetailsFactory>();
+
+                    ValidationProblemDetails problemDetails = problemDetailsFactory.CreateValidationProblemDetails(context.HttpContext, context.ModelState);
+                    problemDetails.Detail = "Pogledajte Error polje za detaljnije informacije.";
+                    problemDetails.Instance = context.HttpContext.Request.Path;
+
+                    var actionExecutiongContext = context as ActionExecutingContext;
+                    if ((context.ModelState.ErrorCount > 0) && (actionExecutiongContext?.ActionArguments.Count == context.ActionDescriptor.Parameters.Count))
+                    {
+                        problemDetails.Status = StatusCodes.Status422UnprocessableEntity;
+                        problemDetails.Title = "Desila se greška prilikom validacije.";
+
+                        
+                        return new UnprocessableEntityObjectResult(problemDetails)
+                        {
+                            ContentTypes = { "application/problem+json" }
+                        };
+                    }
+
+                    problemDetails.Status = StatusCodes.Status400BadRequest;
+                    problemDetails.Title = "Desila se greška prilikom parsiranja.";
+                    return new BadRequestObjectResult(problemDetails)
+                    {
+                        ContentTypes = { "application/problem+json" }
+                    };
+                };
+            });
+            services.AddSwaggerGen(setup =>
+            {
+                setup.SwaggerDoc("v1",
+                    new OpenApiInfo()
+                    {
+                        Title = "Prijava API",
+                        Version = "v1",
+                        Description = "Prijava API omogućava unos dokumenata pravnih i fizickih lica kao i same prijave.",
+                        Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                        {
+                            Name = "Mladen Bajić",
+                            Email = "bajicmladen@uns.ac.rs",
+                            Url = new Uri(Configuration["Swagger:Github"])
+                        }
+                    });
+                //Korisitmo refleksiju za dobijanje XML fajla sa komentarima
+                var xmlComments = $"{ Assembly.GetExecutingAssembly().GetName().Name }.xml";
+                var xmlCommentsPath = Path.Combine(AppContext.BaseDirectory, xmlComments);
+                setup.IncludeXmlComments(xmlCommentsPath);
             });
 
             services.AddControllers().AddJsonOptions(x =>
@@ -47,9 +103,10 @@ namespace PrijavaService
             services.AddScoped<IPrijavaRepository, PrijavaRepository>();
 
             services.AddScoped<IServiceCall<JavnoNadmetanjeDto>, ServiceCallJavnoNadmetanjeMock<JavnoNadmetanjeDto>>();
-
+            services.AddScoped<IServiceCall<KupacDto>, ServiceCallKupacMock<KupacDto>>();
 
             services.AddScoped<IPrijavaCalls, PrijavaCalls>();
+            services.AddScoped<ILoggerService, LoggerServiceMock>();
 
             services.AddDbContext<PrijavaContext>();
         }
@@ -60,11 +117,28 @@ namespace PrijavaService
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PrijavaService v1"));
+            }
+            else
+            {
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Run(async context =>
+                    {
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsync("Desila se greška!");
+                    });
+                });
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(setupAction =>
+            {
+                setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Prijava API");
+            });
+
 
             app.UseRouting();
 

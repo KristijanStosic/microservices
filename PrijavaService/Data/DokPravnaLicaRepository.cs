@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using PrijavaService.Entities.DataContext;
-using System.Linq;
 using PrijavaService.Entities.Confirmations;
 
 namespace PrijavaService.Data

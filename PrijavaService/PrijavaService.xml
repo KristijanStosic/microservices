@@ -1,0 +1,337 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PrijavaService</name>
+    </assembly>
+    <members>
+        <member name="M:PrijavaService.Controllers.DokFizickaLicaController.GetAllDokFizickaLica">
+            <summary>
+            Vraća listu svih dokumenata fizickih lica
+            </summary>
+            <returns>Lista dokumenata fizickih lica</returns>
+            <response code="200">Vraća listu dokumenata fizickih lica</response>
+            <response code="404">Nije pronađena ni jedn dokument fizickih lica</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.DokFizickaLicaController.GetDokFizickaLica(System.Guid)">
+            <summary>
+            Vraća jedan dokument fizickog lica na osnovu ID-a
+            </summary>
+            <param name="dokFizickaLicaId">ID fokuemta fizickog lica</param>
+            <returns>Dokument fizickog lica</returns>
+            <response code="200">Vraća traženi dokument fizickog lica</response>
+            <response code="404">Nije pronađen dokument fizickog lica za uneti ID</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.DokFizickaLicaController.CreateDokFizickaLica(PrijavaService.Models.DokFizickoLice.DokFizickaLicaCreateDto)">
+             <summary>
+             Kreira novi dokument fizickog lica
+             </summary>
+             <param name="dokFizickoLice">Model dokumenta fizickog lica</param>
+             <remarks>
+             Primer zahteva za kreiranje nove etape \
+             POST /api/dokFizickaLica \
+             {
+                 "nazivDokumenta": "Dokument FL 1", \
+                 "prijavaId": "A370BC58-2CB2-4D8D-9CFB-B444841AEB80" \
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju fokumenta fizickog lica</returns>
+             <response code="200">Vraća kreiran dokument fizickog lica</response>
+             <response code="500">Desila se greška prilikom unosa novog dokumenta fizickog lica</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.DokFizickaLicaController.UpdateDokFizickoLice(PrijavaService.Models.DokFizickoLice.DokFizickaLicaUpdateDto)">
+            <summary>
+            Izmena dokumenta fizickog lica
+            </summary>
+            <param name="dokFizickoLice">Model dokumenta fizickog lica</param>
+            <returns>Potvrda o izmeni dokumenta fizickog lica</returns>
+            <response code="200">Izmenjen dokument fizickog lica</response>
+            <response code="404">Nije pronađen dokument fizickog lica za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene dokumenta fizickog lica</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.DokFizickaLicaController.DeleteDokFizickaLica(System.Guid)">
+            <summary>
+            Brisanje dokumenta fizickog lica na osnovu ID-a
+            </summary>
+            <param name="dokFizickaLicaId">ID dokumenta fizickog lica</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Dokument fizickog lica je uspešno obrisan</response>
+            <response code="404">Nije pronađen dokument fizickog lica za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja dokumenta fizickog lica</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.DokFizickaLicaController.GetDokFizickaLicaOptions">
+            <summary>
+            Vraća opcije za rad sa dokumentima fizickog lica
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PrijavaService.Controllers.DokPravnaLicaController.GetAllDocPravnaLica">
+            <summary>
+            Vraća listu svih dokumenata pravnih lica
+            </summary>
+            <returns>Lista dokumenata pravnih lica</returns>
+            <response code="200">Vraća listu dokumenata pravnih lica</response>
+            <response code="404">Nije pronađena ni jedn dokument pravnih lica</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.DokPravnaLicaController.GetDokPravnaLica(System.Guid)">
+            <summary>
+            Vraća jedan dokument pravnih lica na osnovu ID-a
+            </summary>
+            <param name="dokPravnaLicaId">ID dokumenta pravnog lica</param>
+            <returns>Dokument pravnih lica</returns>
+            <response code="200">Vraća traženi dokument pravnih lica</response>
+            <response code="404">Nije pronađen dokument pravnih lica za uneti ID</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.DokPravnaLicaController.CreateDokPravnaLica(PrijavaService.Models.DokPravnoLice.DokPravnaLicaCreateDto)">
+             <summary>
+             Kreira novi dokument pravnog lica
+             </summary>
+             <param name="dokPravnoLice">Model dokumenta pravnog lica</param>
+             <remarks>
+             Primer zahteva za kreiranje nove etape \
+             POST /api/dokPravnaLica \
+             {
+                 "nazivDokumenta": "Dokument PL 1", \
+                 "prijavaId": "A370BC58-2CB2-4D8D-9CFB-B444841AEB80" \
+            }
+             </remarks>
+             <returns>Potvrda o kreiranju fokumenta pravnog lica</returns>
+             <response code="200">Vraća kreiran dokument pravnog lica</response>
+             <response code="500">Desila se greška prilikom unosa novog dokumenta pravnih lica</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.DokPravnaLicaController.UpdateDokPravnoLice(PrijavaService.Models.DokPravnoLice.DokPravnaLicaUpdateDto)">
+            <summary>
+            Izmena dokumenta pravnih lica
+            </summary>
+            <param name="dokFizickoLice">Model dokumenta pravnih lica</param>
+            <returns>Potvrda o izmeni dokumenta pravnih lica</returns>
+            <response code="200">Izmenjen dokument pravnih lica</response>
+            <response code="404">Nije pronađen dokument pravnih lica za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene dokumenta pravnih lica</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.DokPravnaLicaController.DeleteDokPravnaLica(System.Guid)">
+            <summary>
+            Brisanje dokumenta pravnog lica na osnovu ID-a
+            </summary>
+            <param name="dokPravnaLicaId">ID dokumenta pravnog lica</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Dokument pravnog lica je uspešno obrisan</response>
+            <response code="404">Nije pronađen dokument pravnog lica za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja dokumenta pravnog lica</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.DokPravnaLicaController.GetDokPravnaLicaOptions">
+            <summary>
+            Vraća opcije za rad sa dokumentima pravnog lica
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:PrijavaService.Controllers.PrijavaController">
+            <summary>
+            Kontroler za prijavu
+            </summary>
+        </member>
+        <member name="M:PrijavaService.Controllers.PrijavaController.GetAllPrijava">
+            <summary>
+            Vraća sve prijave
+            </summary>
+            <returns>Lista prijava</returns>
+            <response code="200">Vraća listu prijava</response>
+            <response code="404">Nije pronađena ni jedna prijava</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.PrijavaController.GetPrijava(System.Guid)">
+            <summary>
+            Vraća jednu prijavu na osnovu ID-a
+            </summary>
+            <param name="prijavaId">ID prijave</param>
+            <returns>Prijava</returns>
+            <response code="200">Vraća traženu prijavu</response>
+            <response code="404">Nije pronađena prijava za uneti ID</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.PrijavaController.CreatePrijava(PrijavaService.Models.Prijava.PrijavaCreationDto)">
+            <summary>
+            Kreira novu prijavu
+            </summary>
+            <param name="prijava">Model prijava</param>
+            <remarks>
+            Primer zahteva za kreiranje nove prijvau \
+            POST /api/prijava \
+              {
+                   "brojPrijave": "B255", \
+                   "datumPrijave": "2022-02-06T19:35:46.806Z", \
+                   "mestoPrijave": "Trebinje", \
+                   "satPrijema": "22", \
+                   "zatvorenaPonuda": false, \
+                   "kupacId": "FEBD1C29-90E7-40C2-97F3-1E88495FE98D", \
+                   "javnoNadmetanje": [ \
+                     "5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5", \
+                     "E22F999D-5C61-4DCE-965B-9C6667EFC74D" \
+                    ] \
+               }
+            </remarks>
+            <returns>Potvrda o kreiranju prijave</returns>
+            <response code="200">Vraća kreiranu prijavu</response>
+            <response code="500">Desila se greška prilikom unosa nove prijave</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.PrijavaController.UpdatePrijava(PrijavaService.Models.Prijava.PrijavaUpdateDto)">
+            <summary>
+            Izmena prijave
+            </summary>
+            <param name="prijava">Model prijava</param>
+            <returns>Potvrda o izmeni prijave</returns>
+            <response code="200">Izmenjena prijava</response>
+            <response code="404">Nije pronađena prijava za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene prijave</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.PrijavaController.DeletePrijava(System.Guid)">
+            <summary>
+            Brisanje prijave na osnovu ID-a
+            </summary>
+            <param name="prijavaId">ID prijave</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Prijava je uspešno obrisana</response>
+            <response code="404">Nije pronađena prijava za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja prijave</response>
+        </member>
+        <member name="M:PrijavaService.Controllers.PrijavaController.GetPrijavaOptions">
+            <summary>
+            Vraća opcije za rad sa prijavama
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:PrijavaService.Entities.DataContext.PrijavaContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Unos inicijalnih podataka u bazu i definisanje kljuceva
+            </summary>
+            <param name="modelBuilder">Omogucava podesavanja/unos podataka pri kreiranju modela</param>
+        </member>
+        <member name="T:PrijavaService.Models.Prijava.PrijavaCreationDto">
+            <summary>
+            Model za potvrdu kreiranja prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaCreationDto.BrojPrijave">
+            <summary>
+            Registarski broj prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaCreationDto.DatumPrijave">
+            <summary>
+            Datum kada je prijava podnijeta
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaCreationDto.MestoPrijave">
+            <summary>
+            Mjesto u kojem je podnijeta prijava
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaCreationDto.SatPrijema">
+            <summary>
+            Sat u kojem je primljena prijava
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaCreationDto.ZatvorenaPonuda">
+            <summary>
+            True ili False vrijedno da li je priva zavrsena
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaCreationDto.KupacId">
+            <summary>
+            ID kupca koji podnisi prijavu
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaCreationDto.JavnoNadmetanje">
+            <summary>
+            Lista javnih nadmenjaa za koje je podnesena prijava
+            </summary>
+        </member>
+        <member name="T:PrijavaService.Models.Prijava.PrijavaDto">
+            <summary>
+            Model prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaDto.BrojPrijave">
+            <summary>
+            Registarski broj prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaDto.DatumPrijave">
+            <summary>
+            Datum podnosenja prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaDto.MestoPrijave">
+            <summary>
+            Mjesto na kojem je podnjeta prijava
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaDto.SatPrijema">
+            <summary>
+            Sat prijema prijve
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaDto.ZatvorenaPonuda">
+            <summary>
+            Oznaka da li je prijava zatvorena
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaDto.Kupac">
+            <summary>
+            Kupac koji je vlasnik prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaDto.DokFizickaLica">
+            <summary>
+            Lista dokumenata fizickih lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaDto.DokPravnaLica">
+            <summary>
+            Lista dokumenta pravnih lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaDto.JavnoNadmetanje">
+            <summary>
+            Lista javnih nadmetanja za prijavu
+            </summary>
+        </member>
+        <member name="T:PrijavaService.Models.Prijava.PrijavaUpdateDto">
+            <summary>
+            Model izmjene prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaUpdateDto.PrijavaId">
+            <summary>
+            ID prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaUpdateDto.BrojPrijave">
+            <summary>
+            Broj prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaUpdateDto.DatumPrijave">
+            <summary>
+            Datum podnosenja prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaUpdateDto.MestoPrijave">
+            <summary>
+            Mjesto prijema prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaUpdateDto.SatPrijema">
+            <summary>
+            Tacan sat prijema prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaUpdateDto.ZatvorenaPonuda">
+            <summary>
+            Oznaka da li je prijava zatvorena
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaUpdateDto.Kupac">
+            <summary>
+            Kupac u prijavi
+            </summary>
+        </member>
+    </members>
+</doc>

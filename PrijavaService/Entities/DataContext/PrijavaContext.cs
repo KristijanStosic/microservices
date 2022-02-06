@@ -26,7 +26,10 @@ namespace PrijavaService.Entities.DataContext
             optionsBuilder.UseSqlServer(_configuration.GetConnectionString("PrijavaDB"));
         }
 
-
+        /// <summary>
+        /// Unos inicijalnih podataka u bazu i definisanje kljuceva
+        /// </summary>
+        /// <param name="modelBuilder">Omogucava podesavanja/unos podataka pri kreiranju modela</param>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
@@ -80,7 +83,8 @@ namespace PrijavaService.Entities.DataContext
                    DatumPrijave = DateTime.Now,
                    MestoPrijave = "Mesto 1",
                    SatPrijave = DateTime.Now.ToString("HH:mm"),
-                   ZatvorenaPonuda =  true
+                   ZatvorenaPonuda =  true,
+                   KupacId = Guid.Parse("febd1c29-90e7-40c2-97f3-1e88495fe98d")
                },
                new
                {
@@ -89,7 +93,8 @@ namespace PrijavaService.Entities.DataContext
                    DatumPrijave = DateTime.Now,
                    MestoPrijave = "Mesto 2",
                    SatPrijave = DateTime.Now.ToString("HH:mm"),
-                   ZatvorenaPonuda = false
+                   ZatvorenaPonuda = false,
+                   KupacId = Guid.Parse("febd1c29-90e7-40c2-97f3-1e88495fe98d")
                });
 
                modelBuilder.Entity<PrijavaJavnoNadmetanje>()
