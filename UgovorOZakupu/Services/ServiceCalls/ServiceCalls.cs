@@ -13,23 +13,21 @@ namespace UgovorOZakupu.Services.ServiceCalls
     public class ServiceCalls : IServiceCalls
     {
         private readonly IConfiguration _configuration;
-
+        private readonly IMapper _mapper;
+        
         private readonly IService<DokumentDto> _dokumentService;
         private readonly IService<JavnoNadmetanjeDto> _javnoNadmetanjeService;
         private readonly IService<KupacDto> _kupacService;
         private readonly IService<LicnostDto> _licnostService;
-        private readonly IMapper _mapper;
 
-        public ServiceCalls(IConfiguration configuration, IMapper mapper, IService<DokumentDto> dokumentService,
-            IService<JavnoNadmetanjeDto> javnoNadmetanjeService, IService<KupacDto> kupacService,
-            IService<LicnostDto> licnostService)
+        public ServiceCalls(IConfiguration configuration, IMapper mapper)
         {
             _configuration = configuration;
             _mapper = mapper;
-            _dokumentService = dokumentService;
-            _javnoNadmetanjeService = javnoNadmetanjeService;
-            _kupacService = kupacService;
-            _licnostService = licnostService;
+            _dokumentService = new Service<DokumentDto>();
+            _javnoNadmetanjeService = new Service<JavnoNadmetanjeDto>();
+            _kupacService = new Service<KupacDto>();
+            _licnostService = new Service<LicnostDto>();
         }
 
         public async Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(Entities.UgovorOZakupu ugovor)

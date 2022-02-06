@@ -6,7 +6,7 @@ using UgovorOZakupu.DbContext;
 
 namespace UgovorOZakupu.Data.UgovorOZakupu
 {
-    public class UgovorOZakupuRepository : IUgovorOZakupuRepository
+    public class UgovorOZakupuRepository : IRepository<Entities.UgovorOZakupu>
     {
         private readonly UgovorOZakupuDbContext _db;
 
@@ -15,7 +15,7 @@ namespace UgovorOZakupu.Data.UgovorOZakupu
             _db = db;
         }
 
-        public Task<List<Entities.UgovorOZakupu>> GetAllUgovorOZakupu()
+        public Task<List<Entities.UgovorOZakupu>> GetAll()
         {
             return _db.UgovoriOZakupu
                 .AsNoTracking()
@@ -24,7 +24,7 @@ namespace UgovorOZakupu.Data.UgovorOZakupu
                 .ToListAsync();
         }
 
-        public Task<Entities.UgovorOZakupu> GetUgovorOZakupuById(Guid id)
+        public Task<Entities.UgovorOZakupu> GetById(Guid id)
         {
             return _db.UgovoriOZakupu
                 .Include(u => u.TipGarancije)
@@ -32,14 +32,14 @@ namespace UgovorOZakupu.Data.UgovorOZakupu
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public void CreateUgovorOZakupu(Entities.UgovorOZakupu ugovorOZakupu)
+        public void Create(Entities.UgovorOZakupu entity)
         {
-            _db.Add(ugovorOZakupu);
+            _db.Add(entity);
         }
 
-        public void DeleteUgovorOZakupu(Entities.UgovorOZakupu ugovorOZakupu)
+        public void Delete(Entities.UgovorOZakupu entity)
         {
-            _db.Remove(ugovorOZakupu);
+            _db.Remove(entity);
         }
     }
 }

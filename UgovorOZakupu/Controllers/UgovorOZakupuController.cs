@@ -7,8 +7,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using UgovorOZakupu.Data.TipGarancije;
-using UgovorOZakupu.Data.UgovorOZakupu;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.Models.UgovorOZakupu;
 using UgovorOZakupu.Services.Logger;
@@ -17,7 +15,7 @@ using UgovorOZakupu.Services.ServiceCalls;
 namespace UgovorOZakupu.Controllers
 {
     /// <summary>
-    /// Kontroler za ugovor o zakupu
+    ///     Kontroler za ugovor o zakupu
     /// </summary>
     [ApiController]
     [Route("api/[controller]")]
@@ -27,16 +25,12 @@ namespace UgovorOZakupu.Controllers
         private readonly ILoggerService _loggerService;
         private readonly IMapper _mapper;
         private readonly IServiceCalls _serviceCalls;
-        private readonly ITipGaranceijeRepository _tipGaranceijeRepository;
-        private readonly IUgovorOZakupuRepository _ugovorOZakupuRepository;
+
         private readonly IUnitOfWork _unitOfWork;
 
-        public UgovorOZakupuController(IUgovorOZakupuRepository ugovorOZakupuRepository,
-            ITipGaranceijeRepository tipGaranceijeRepository, IUnitOfWork unitOfWork,
+        public UgovorOZakupuController(IUnitOfWork unitOfWork,
             IMapper mapper, ILoggerService loggerService, IServiceCalls serviceCalls)
         {
-            _ugovorOZakupuRepository = ugovorOZakupuRepository;
-            _tipGaranceijeRepository = tipGaranceijeRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _loggerService = loggerService;
@@ -44,7 +38,7 @@ namespace UgovorOZakupu.Controllers
         }
 
         /// <summary>
-        /// Vraća sve ugovore o zakupu
+        ///     Vraća sve ugovore o zakupu
         /// </summary>
         /// <returns>Lista ugovora o zakupu</returns>
         /// <response code="200">Vraća listu ugovora o zakupu</response>
@@ -54,7 +48,7 @@ namespace UgovorOZakupu.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<UgovorOZakupuDto>>> GetAllUgovorOZakupu()
         {
-            var ugovori = await _ugovorOZakupuRepository.GetAllUgovorOZakupu();
+            var ugovori = await _unitOfWork.UgovoriOZakupu.GetAll();
 
             if (ugovori == null || ugovori.Count == 0)
             {
@@ -65,7 +59,7 @@ namespace UgovorOZakupu.Controllers
 
             var ugovoriDto = Task.WhenAll(
                     ugovori.Select(u => _serviceCalls.GetUgovorOZakupuInfo(u))
-            )
+                )
                 .Result
                 .ToList();
 
@@ -76,7 +70,7 @@ namespace UgovorOZakupu.Controllers
         }
 
         /// <summary>
-        /// Vraća jedan ugovor o zakupu na osnovu ID-a
+        ///     Vraća jedan ugovor o zakupu na osnovu ID-a
         /// </summary>
         /// <param name="id">ID ugovora o zakupu</param>
         /// <returns>Ugovor o zakupu</returns>
@@ -87,7 +81,7 @@ namespace UgovorOZakupu.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<UgovorOZakupuDto>> GetUgovorOZakupuById(Guid id)
         {
-            var ugovor = await _ugovorOZakupuRepository.GetUgovorOZakupuById(id);
+            var ugovor = await _unitOfWork.UgovoriOZakupu.GetById(id);
 
             if (ugovor == null)
             {
@@ -105,7 +99,7 @@ namespace UgovorOZakupu.Controllers
         }
 
         /// <summary>
-        /// Kreira novi ugovor o zakupu
+        ///     Kreira novi ugovor o zakupu
         /// </summary>
         /// <param name="ugovorOZakupuDto">Model ugovora o zakupu za kreiranje</param>
         /// <returns>Ugovor o zakupu</returns>
@@ -117,11 +111,11 @@ namespace UgovorOZakupu.Controllers
         {
             var ugovor = _mapper.Map<Entities.UgovorOZakupu>(ugovorOZakupuDto);
 
-            _ugovorOZakupuRepository.CreateUgovorOZakupu(ugovor);
+            _unitOfWork.UgovoriOZakupu.Create(ugovor);
             await _unitOfWork.CompleteAsync();
 
             ugovor.TipGarancije =
-                await _tipGaranceijeRepository.GetTipGarancijeById(ugovor.TipGarancijeId);
+                await _unitOfWork.TipoviGarancije.GetById(ugovor.TipGarancijeId);
 
             var serialized = JsonConvert.SerializeObject(ugovor, Formatting.Indented, new JsonSerializerSettings
             {
@@ -139,7 +133,7 @@ namespace UgovorOZakupu.Controllers
         }
 
         /// <summary>
-        /// Izmena ugovor o zakupu
+        ///     Izmena ugovor o zakupu
         /// </summary>
         /// <param name="id">ID ugovora o zakupu</param>
         /// <param name="ugovorOZakupuDto">Model ugovora o zakupu za izmenu</param>
@@ -162,7 +156,7 @@ namespace UgovorOZakupu.Controllers
                 return BadRequest();
             }
 
-            var ugovor = await _ugovorOZakupuRepository.GetUgovorOZakupuById(id);
+            var ugovor = await _unitOfWork.UgovoriOZakupu.GetById(id);
 
             if (ugovor == null)
             {
@@ -186,7 +180,7 @@ namespace UgovorOZakupu.Controllers
         }
 
         /// <summary>
-        /// Brisanje ugovora o zakupu na osnovu ID-a
+        ///     Brisanje ugovora o zakupu na osnovu ID-a
         /// </summary>
         /// <param name="id">ID ugovora o zakupu</param>
         /// <response code="204">Ugovor o zakupu je uspešno obrisan</response>
@@ -196,7 +190,7 @@ namespace UgovorOZakupu.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> DeleteUgovorOZakupu(Guid id)
         {
-            var ugovor = await _ugovorOZakupuRepository.GetUgovorOZakupuById(id);
+            var ugovor = await _unitOfWork.UgovoriOZakupu.GetById(id);
 
             if (ugovor == null)
             {
@@ -205,7 +199,7 @@ namespace UgovorOZakupu.Controllers
                 return NotFound();
             }
 
-            _ugovorOZakupuRepository.DeleteUgovorOZakupu(ugovor);
+            _unitOfWork.UgovoriOZakupu.Delete(ugovor);
             await _unitOfWork.CompleteAsync();
 
             await _loggerService.Log(LogLevel.Information, "DeleteUgovorOZakupu",
@@ -213,9 +207,9 @@ namespace UgovorOZakupu.Controllers
 
             return NoContent();
         }
-        
+
         /// <summary>
-        /// Vraća opcije za rad sa ugovorima o zakupu
+        ///     Vraća opcije za rad sa ugovorima o zakupu
         /// </summary>
         /// <response code="200">Vraća listu opcija u header-u</response>
         [HttpOptions]
