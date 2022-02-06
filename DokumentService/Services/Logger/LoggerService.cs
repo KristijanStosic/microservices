@@ -10,8 +10,8 @@ namespace DokumentService.Services.Logger
 {
     public class LoggerService : ILoggerService
     {
-        private IConfiguration _configuration;
-        private HttpClient _http;
+        private readonly IConfiguration _configuration;
+        private readonly HttpClient _http;
 
         public LoggerService(IConfiguration configuration)
         {

@@ -9,9 +9,9 @@ namespace DokumentService.Profiles
         public TipDokumentaProfile()
         {
             CreateMap<TipDokumenta, TipDokumentaDto>();
-            
+
             CreateMap<CreateTipDokumentaDto, TipDokumenta>();
-            
+
             CreateMap<UpdateTipDokumentaDto, TipDokumenta>();
         }
     }

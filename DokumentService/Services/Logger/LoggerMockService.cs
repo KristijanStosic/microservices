@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using DokumentService.Models.LogModel;
 using Microsoft.Extensions.Logging;
@@ -18,9 +19,9 @@ namespace DokumentService.Services.Logger
                 Poruka = message,
                 Greska = exception
             };
-            
-            System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(log));
-            
+
+            Debug.WriteLine(JsonConvert.SerializeObject(log));
+
             return Task.CompletedTask;
         }
     }

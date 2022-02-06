@@ -114,147 +114,147 @@
         </member>
         <member name="T:DokumentService.Models.Dokument.CreateDokumentDto">
             <summary>
-            Model za kreiranje dokumenta
+                Model za kreiranje dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.CreateDokumentDto.ZavodniBroj">
             <summary>
-            Zavodni broj dokumenta
+                Zavodni broj dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.CreateDokumentDto.Datum">
             <summary>
-            Datum zavođenja dokumenta
+                Datum zavođenja dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.CreateDokumentDto.DatumDonosenjaDokumenta">
             <summary>
-            Datum donošenja dokumenta
+                Datum donošenja dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.CreateDokumentDto.TipDokumentaId">
             <summary>
-            Tip dokumenta
+                Tip dokumenta
             </summary>
         </member>
         <member name="T:DokumentService.Models.Dokument.DokumentDto">
             <summary>
-            Model dokumenta
+                Model dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.DokumentDto.ZavodniBroj">
             <summary>
-            Zavodni broj dokumenta
+                Zavodni broj dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.DokumentDto.Datum">
             <summary>
-            Datum kreiranja dokumenta
+                Datum kreiranja dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.DokumentDto.DatumDonosenjaDokumenta">
             <summary>
-            Datum donošenja dokumenta
+                Datum donošenja dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.DokumentDto.TipDokumenta">
             <summary>
-            Tip dokumenta
+                Tip dokumenta
             </summary>
         </member>
         <member name="T:DokumentService.Models.Dokument.UpdateDokumentDto">
             <summary>
-            Model za izmenu dokumenta
+                Model za izmenu dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.UpdateDokumentDto.Id">
             <summary>
-            Id dokumenta
+                Id dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.UpdateDokumentDto.ZavodniBroj">
             <summary>
-            Zavodni broj dokumenta
+                Zavodni broj dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.UpdateDokumentDto.Datum">
             <summary>
-            Datum zavođenja dokumenta
+                Datum zavođenja dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.UpdateDokumentDto.DatumDonosenjaDokumenta">
             <summary>
-            Datum donošenja dokumenta
+                Datum donošenja dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.Dokument.UpdateDokumentDto.TipDokumentaId">
             <summary>
-            Id tipa dokumenta
+                Id tipa dokumenta
             </summary>
         </member>
         <member name="T:DokumentService.Models.LogModel.LogModel">
             <summary>
-            Model za logger
+                Model za logger
             </summary>
         </member>
         <member name="P:DokumentService.Models.LogModel.LogModel.Level">
             <summary>
-            Nivo Log levela - Info,Warning,Error,Debug
+                Nivo Log levela - Info,Warning,Error,Debug
             </summary>
         </member>
         <member name="P:DokumentService.Models.LogModel.LogModel.Servis">
             <summary>
-            Servis sa kojeg se loguje poruka
+                Servis sa kojeg se loguje poruka
             </summary>
         </member>
         <member name="P:DokumentService.Models.LogModel.LogModel.Metoda">
             <summary>
-            Metoda koja se loguje
+                Metoda koja se loguje
             </summary>
         </member>
         <member name="P:DokumentService.Models.LogModel.LogModel.Poruka">
             <summary>
-            Dodatni opis poruke prilikom logovanja
+                Dodatni opis poruke prilikom logovanja
             </summary>
         </member>
         <member name="P:DokumentService.Models.LogModel.LogModel.Greska">
             <summary>
-            Greška prilikom logovanja
+                Greška prilikom logovanja
             </summary>
         </member>
         <member name="T:DokumentService.Models.TipDokumenta.CreateTipDokumentaDto">
             <summary>
-            Model za kreiranje tipa dokumenta
+                Model za kreiranje tipa dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.TipDokumenta.CreateTipDokumentaDto.NazivTipa">
             <summary>
-            Naziv tipa dokumenta
+                Naziv tipa dokumenta
             </summary>
         </member>
         <member name="T:DokumentService.Models.TipDokumenta.TipDokumentaDto">
             <summary>
-            Model za tip dokumenta
+                Model za tip dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.TipDokumenta.TipDokumentaDto.NazivTipa">
             <summary>
-            Naziv tipa dokumenta
+                Naziv tipa dokumenta
             </summary>
         </member>
         <member name="T:DokumentService.Models.TipDokumenta.UpdateTipDokumentaDto">
             <summary>
-            Model za izmenu tipa dokumenta
+                Model za izmenu tipa dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.TipDokumenta.UpdateTipDokumentaDto.Id">
             <summary>
-            Id tipa dokumenta
+                Id tipa dokumenta
             </summary>
         </member>
         <member name="P:DokumentService.Models.TipDokumenta.UpdateTipDokumentaDto.NazivTipa">
             <summary>
-            Naziv tipa dokumenta
+                Naziv tipa dokumenta
             </summary>
         </member>
     </members>
