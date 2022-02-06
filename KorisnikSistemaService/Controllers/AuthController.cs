@@ -10,7 +10,7 @@ namespace KorisnikSistemaService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AuthControler : ControllerBase
+    public class AuthController : ControllerBase
     {
         // GET: api/<AuthControler>
         [HttpGet]

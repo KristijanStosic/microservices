@@ -1,4 +1,7 @@
+using KorisnikSistemaService.Data;
+using KorisnikSistemaService.Data.Interfaces;
 using KorisnikSistemaService.Entities.DataContext;
+using KorisnikSistemaService.ServiceCalls;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -33,6 +36,13 @@ namespace KorisnikSistemaService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "KorisnikSistemaService", Version = "v1" });
             });
+
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<ITipKorisnikaRepository, TipKorisnikaRepository>();
+            services.AddScoped<IKorisnikSistemaRepository, KorisnikSistemaRepository>();
+
+            services.AddScoped<ILoggerService, LoggerServiceMock>();
+
             services.AddDbContext<KorisnikSistemaContext>();
 
         }
