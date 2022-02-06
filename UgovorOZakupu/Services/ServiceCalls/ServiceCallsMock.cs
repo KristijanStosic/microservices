@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using UgovorOZakupu.Models.Dokument;
 using UgovorOZakupu.Models.JavnoNadmetanje;
 using UgovorOZakupu.Models.Kupac;
 using UgovorOZakupu.Models.Licnost;
+using UgovorOZakupu.Models.LogModel;
 using UgovorOZakupu.Models.UgovorOZakupu;
 
 namespace UgovorOZakupu.Services.ServiceCalls
@@ -19,13 +22,29 @@ namespace UgovorOZakupu.Services.ServiceCalls
             _mapper = mapper;
         }
 
+        public Task Log(LogLevel level, string method, string message, Exception exception = null)
+        {
+            var log = new LogModel
+            {
+                Servis = "Ugovor o zakupu API",
+                Level = level,
+                Metoda = method,
+                Poruka = message,
+                Greska = exception
+            };
+
+            System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(log));
+
+            return Task.CompletedTask;
+        }
+
         public Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(Entities.UgovorOZakupu ugovor)
         {
             var ugovorDto = _mapper.Map<UgovorOZakupuDto>(ugovor);
             
             ugovorDto.Odluka = GetDokument();
             ugovorDto.JavnoNadmetanje = GetJavnoNadmetanje();
-            // ugovorDto.Lice = GetKupac();
+            ugovorDto.Lice = GetKupac();
             ugovorDto.Ministar = GetLicnost();
             
             return Task.FromResult(ugovorDto);
