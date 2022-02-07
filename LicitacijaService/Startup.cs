@@ -145,7 +145,7 @@ namespace LicitacijaService
                         {
                             Name = "Đorđe Atanackov",
                             Email = "djordje_atanackov@uns.ac.rs",
-                            Url = new Uri(Configuration"[Swagget:Github]")
+                            Url = new Uri(Configuration["Swagger:Github"])
                         }
                     });
 
