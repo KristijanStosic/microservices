@@ -155,9 +155,11 @@ namespace KupacService.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PravnoLiceConfirmDto>> CreatePravnoLice([FromBody]PravnoLiceCreateDto pravnoLice)
         {
-           
+            try
+            {
+
                 PravnoLice newPravnoLice = _mapper.Map<PravnoLice>(pravnoLice);
-                
+
                 await _pravnoLiceRepository.CreatePravnoLice(newPravnoLice);
                 await _pravnoLiceRepository.SaveChangesAsync();
 
@@ -165,6 +167,11 @@ namespace KupacService.Controllers
 
                 await _loggerService.Log(LogLevel.Information, "CreatePravnoLice", $"Pravno lice  sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<PravnoLiceDto>(newPravnoLice))} je uspešno kreirano.");
                 return Created(link, _mapper.Map<PravnoLiceDto>(newPravnoLice));
+            }catch(Exception e)
+            {
+                await _loggerService.Log(LogLevel.Error, "CreatePravnoLice", $"Greška prilikom unosa pravnog lica sa vrednostima: {JsonConvert.SerializeObject(pravnoLice)}.", e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom unosa pravnog lica");
+            }
             
         }
 
@@ -229,7 +236,7 @@ namespace KupacService.Controllers
             }catch(Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "UpdatePravnoLice", $"Greška prilikom izmene pravnog lica sa id-em {pravnoLiceUpdate.KupacId}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Update Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom ažuriranja pravnog lica");
             }
         }
 
@@ -266,7 +273,7 @@ namespace KupacService.Controllers
             }catch(Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "DeletePravnoLice", $"Greška prilikom brisanja pravnog lica sa id-em {kupacId}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Delete Error "+e.Message+"\n iinner "+e.InnerException );
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom brisanja pravnog lica" );
             }
         }
 

@@ -9,7 +9,7 @@ namespace KupacService.Model.Kupac.FizickoLice
     /// <summary>
     /// Dto za ažuriranje fizičkog lica
     /// </summary>
-    public class FizickoLiceUpdateDto
+    public class FizickoLiceUpdateDto : IValidatableObject
     {
         /// <summary>
         /// Id fizičkog lica
@@ -78,5 +78,15 @@ namespace KupacService.Model.Kupac.FizickoLice
         /// Uplate fizičkog lica
         /// </summary>
         public List<Guid> Uplate { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (OstvarenaPovrsina < 0)
+            {
+                yield return new ValidationResult(
+                     "Ostvarena površina ne može biti manja od 0",
+                     new[] { "FizičkoLiceCreationDto" });
+            }
+        }
     }
 }
