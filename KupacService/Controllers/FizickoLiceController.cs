@@ -172,7 +172,7 @@ namespace KupacService.Controllers
             catch (Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "GetFizickoLiceById", $"Greška prilikom unosa fizičkog lica sa vrednostima: {JsonConvert.SerializeObject(fizickoLice)}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom unosa fizičkog lica");
             }
         }
 
@@ -235,7 +235,7 @@ namespace KupacService.Controllers
             }catch(Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "UpdateFizickoLice", $"Greška prilikom izmene fizičkog lica sa id-em {fizickoLiceUpdate.KupacId}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Update error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom ažuriranja fizičkog lica");
             }
 
 
@@ -276,7 +276,7 @@ namespace KupacService.Controllers
             catch (Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "DeleteFizickoLice", $"Greška prilikom brisanja fizičkog lica sa id-em {kupacId}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Delete Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom brisanja fizičkog lica");
             }
         }
 

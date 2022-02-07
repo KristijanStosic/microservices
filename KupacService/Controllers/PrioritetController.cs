@@ -130,7 +130,7 @@ namespace KupacService.Controllers
             catch (Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "CreatePrioritet", $"Greška prilikom unosa prioriteta  sa vrednostima: {JsonConvert.SerializeObject(prioritet)}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom unosa prioriteta");
             }
         }
 
@@ -180,7 +180,7 @@ namespace KupacService.Controllers
             catch (Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "UpdatePrioritet", $"Greška prilikom izmene prioriteta sa id-em {prioritetUpdate.PrioritetId}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Update Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom ažuriranja prioriteta");
             }
         }
 
@@ -220,7 +220,7 @@ namespace KupacService.Controllers
             catch (Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "DeletePrioritet", $"Greška prilikom brisanja prioriteta sa id-em {prioritetId}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Delete Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom brisanja prioriteta");
             }
 
 
