@@ -13,7 +13,7 @@ namespace ZalbaService.Models.Services
         /// <summary>
         /// Naziv kupca
         /// </summary>
-        public string Kupac { get; set; }
+        public string Naziv { get; set; }
         /// <summary>
         /// Email
         /// </summary>
@@ -25,7 +25,7 @@ namespace ZalbaService.Models.Services
         /// <summary>
         /// Broj telefona 1
         /// </summary>
-        public string BrojTelefona1 { get; set; }
+        public string BrojTelefona { get; set; }
 
     }
 }

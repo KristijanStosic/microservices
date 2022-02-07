@@ -50,7 +50,7 @@ namespace JavnoNadmetanjeService.Helpers
                     var email = new MailInfo
                     {
                         Email = kupacDto.Email,
-                        Kupac = kupacDto.Kupac,
+                        Kupac = kupacDto.Naziv,
                         Adresa = adresa,
                         DatumOdrzavanja = etapa.Datum,
                         VremePocetka = etapa.VremePocetka,

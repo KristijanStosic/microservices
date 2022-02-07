@@ -102,10 +102,10 @@ namespace UgovorOZakupu.Services.ServiceCalls
                 Adresa = "Bulevar Oslobodjenja 50, 21000 Novi Sad, Srbija",
                 Kupac = new JavnoNadmetanjeKupacDto
                 {
-                    Kupac = "Milana Milanovic",
+                    Naziv = "Milana Milanovic",
                     Email = "milana@gmail.com",
                     BrojRacuna = "23212345",
-                    BrojTelefona1 = "065145125"
+                    BrojTelefona = "065145125"
                 },
                 OvlascenaLica = new List<OvlascenoLiceDto>
                 {
@@ -144,17 +144,17 @@ namespace UgovorOZakupu.Services.ServiceCalls
                 {
                     new()
                     {
-                        Kupac = "Milana Milanovic",
+                        Naziv = "Milana Milanovic",
                         Email = "milana@gmail.com",
                         BrojRacuna = "23212345",
-                        BrojTelefona1 = "065145125"
+                        BrojTelefona = "065145125"
                     },
                     new()
                     {
-                        Kupac = "Marko Markovic",
+                        Naziv = "Marko Markovic",
                         Email = "markomarkovic@gmail.com",
                         BrojRacuna = "16142232",
-                        BrojTelefona1 = "063212174"
+                        BrojTelefona = "063212174"
                     }
                 },
                 DeloviParcele = new List<DeoParceleDto>

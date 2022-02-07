@@ -11,13 +11,13 @@ namespace JavnoNadmetanjeService.ServiceCalls.Mocks
             var deoParcele = new DeoParceleDto
             {
                 BrojParcele = "2345",
-                RbDela = 1,
+                RedniBrojDela = "2",
                 KatastarskaOpstina = "Palic",
                 Klasa = "I",
                 Kultura = "Njive",
                 Obradivost = "Obradivo",
                 Odvodnjavanje = "I",
-                PovrsinaDela = 25,
+                PovrsinaDela = "250",
                 ZasticenaZona = "2"
             };
 

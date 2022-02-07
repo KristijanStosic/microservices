@@ -48,13 +48,16 @@ namespace JavnoNadmetanjeService.Data
                 .Include(e => e.Etape)
                 .FirstOrDefaultAsync(jn => jn.JavnoNadmetanjeId == javnoNadmetanjeId);
 
-            javnoNadmetanje.OvlascenaLica = new List<Guid>();
-            javnoNadmetanje.Kupci = new List<Guid>();
-            javnoNadmetanje.DeloviParcele = new List<Guid>();
+            if(javnoNadmetanje is not null)
+            {
+                javnoNadmetanje.OvlascenaLica = new List<Guid>();
+                javnoNadmetanje.Kupci = new List<Guid>();
+                javnoNadmetanje.DeloviParcele = new List<Guid>();
 
-            javnoNadmetanje.OvlascenaLica = await _context.JavnoNadmetanjeOvlascenoLice.Where(jo => jo.JavnoNadmetanjeId == javnoNadmetanjeId).Select(o => o.OvlascenoLiceId).ToListAsync();
-            javnoNadmetanje.Kupci = await _context.JavnoNadmetanjeKupac.Where(jo => jo.JavnoNadmetanjeId == javnoNadmetanje.JavnoNadmetanjeId).Select(o => o.KupacId).ToListAsync();
-            javnoNadmetanje.DeloviParcele = await _context.JavnoNadmetanjeDeoParcele.Where(jo => jo.JavnoNadmetanjeId == javnoNadmetanje.JavnoNadmetanjeId).Select(o => o.DeoParceleId).ToListAsync();
+                javnoNadmetanje.OvlascenaLica = await _context.JavnoNadmetanjeOvlascenoLice.Where(jo => jo.JavnoNadmetanjeId == javnoNadmetanjeId).Select(o => o.OvlascenoLiceId).ToListAsync();
+                javnoNadmetanje.Kupci = await _context.JavnoNadmetanjeKupac.Where(jo => jo.JavnoNadmetanjeId == javnoNadmetanje.JavnoNadmetanjeId).Select(o => o.KupacId).ToListAsync();
+                javnoNadmetanje.DeloviParcele = await _context.JavnoNadmetanjeDeoParcele.Where(jo => jo.JavnoNadmetanjeId == javnoNadmetanje.JavnoNadmetanjeId).Select(o => o.DeoParceleId).ToListAsync();
+            }
 
             return javnoNadmetanje;
         }
