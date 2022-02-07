@@ -17,7 +17,7 @@ namespace AdresaService.Profiles
             CreateMap<DrzavaDto, Drzava>();
             CreateMap<DrzavaUpdateDto, Drzava>();
             CreateMap<Drzava, Drzava>();
-
+            CreateMap<DrzavaCreateDto, Drzava>();
         }
     }
 }

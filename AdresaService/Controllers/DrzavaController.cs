@@ -102,7 +102,7 @@ namespace AdresaService.Controllers
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<DrzavaDto>> CreateDrzava([FromBody] DrzavaDto drzava)
+        public async Task<ActionResult<DrzavaDto>> CreateDrzava([FromBody] DrzavaCreateDto drzava)
         {
             try
             {
@@ -180,7 +180,7 @@ namespace AdresaService.Controllers
         /// </remarks>
         /// <response code="200">Uspešno ažurirana država</response>
         /// <response code="404">Nije pronađena država sa datim id-em</response>
-        /// <response code="500">Desila se greška prilikom ažuriranja</response>
+        /// <response code="500">Desila se greška prilikom ažuriranja države</response>
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
