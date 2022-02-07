@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using UgovorOZakupu.Data.UnitOfWork;
 using UgovorOZakupu.Models.Confirmations;
@@ -40,11 +41,14 @@ namespace UgovorOZakupu.Controllers
         /// <returns>Lista ugovora o zakupu</returns>
         /// <response code="200">Vraća listu ugovora o zakupu</response>
         /// <response code="204">Nije pronadjen nijedan ugovor o zakupu</response>
-        /// <response code="500">Greška prilikom vraćanja liste ugovora o zakupu.</response>
+        /// <response code="500">Greška prilikom vraćanja liste ugovora o zakupu</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, Menadzer")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<UgovorOZakupuDto>>> GetAllUgovorOZakupu()
         {
             try
@@ -59,8 +63,9 @@ namespace UgovorOZakupu.Controllers
                     return NoContent();
                 }
 
+                var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
                 var ugovoriDto = Task.WhenAll(
-                        ugovori.Select(u => _serviceCalls.GetUgovorOZakupuInfo(u))
+                        ugovori.Select(u => _serviceCalls.GetUgovorOZakupuInfo(u, token))
                     )
                     .Result
                     .ToList();
@@ -83,16 +88,18 @@ namespace UgovorOZakupu.Controllers
         ///     Vraća jedan ugovor o zakupu na osnovu ID-a
         /// </summary>
         /// <param name="id">ID ugovora o zakupu</param>
+        /// <param name="token"></param>
         /// <returns>Ugovor o zakupu</returns>
         /// <response code="200">Vraća traženi ugovor o zakupu</response>
         /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
         /// <response code="500">Greška prilikom vraćanja ugovora o zakupu</response>
-        /// 
+        /// <response code="401">Greška prilikom autentifikacije</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, Menadzer")]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<UgovorOZakupuDto>> GetUgovorOZakupuById(Guid id)
         {
             try
@@ -106,7 +113,8 @@ namespace UgovorOZakupu.Controllers
                     return NotFound();
                 }
 
-                var ugovorDto = await _serviceCalls.GetUgovorOZakupuInfo(ugovor);
+                var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+                var ugovorDto = await _serviceCalls.GetUgovorOZakupuInfo(ugovor, token);
 
                 await _serviceCalls.Log(LogLevel.Information, "GetUgovorOZakupuById",
                     $"Ugovor o zakupu sa id-jem {id} je uspešno vraćen.");
@@ -129,12 +137,13 @@ namespace UgovorOZakupu.Controllers
         /// <returns>Ugovor o zakupu</returns>
         /// <response code="201">Vraća kreirani ugovor o zakupu</response>
         /// <response code="500">Greška prilikom kreiranja ugovora o zakupu</response>
-        /// 
+        /// <response code="401">Greška prilikom autentifikacije</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateUgovorOZakupu([FromBody] CreateUgovorOZakupuDto ugovorOZakupuDto)
         {
             try
@@ -172,8 +181,8 @@ namespace UgovorOZakupu.Controllers
         /// <response code="204">Potvrda o izmeni ugovora o zakupu</response>
         /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
         /// <response code="400">ID nije isti kao onaj proledjen u modelu ugovora o zakupu</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
         /// <response code="500">Greška prilikom izmene ugovora o zakupu</response>
-        /// 
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPut("{id:guid}")]
         [Consumes("application/json")]
@@ -181,6 +190,7 @@ namespace UgovorOZakupu.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateUgovorOZakupu(Guid id,
             [FromBody] UpdateUgovorOZakupuDto ugovorOZakupuDto)
         {
@@ -230,13 +240,14 @@ namespace UgovorOZakupu.Controllers
         /// <param name="id">ID ugovora o zakupu</param>
         /// <response code="204">Ugovor o zakupu je uspešno obrisan</response>
         /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
         /// <response code="500">Greška prilikom brisanja ugovora o zakupu</response>
-        /// 
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteUgovorOZakupu(Guid id)
         {
             try
@@ -271,10 +282,11 @@ namespace UgovorOZakupu.Controllers
         ///     Vraća opcije za rad sa ugovorima o zakupu
         /// </summary>
         /// <response code="200">Vraća listu opcija u header-u</response>
-        /// 
+        /// <response code="401">Greška prilikom autentifikacije</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, Menadzer")]
         [HttpOptions]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult GetUgovorOZakupuOptions()
         {
             Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");

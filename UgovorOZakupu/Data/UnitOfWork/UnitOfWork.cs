@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using UgovorOZakupu.Data.UgovorOZakupu;
 using UgovorOZakupu.DbContext;
 using UgovorOZakupu.Entities;
@@ -8,6 +9,7 @@ namespace UgovorOZakupu.Data.UnitOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly UgovorOZakupuDbContext _context;
+        private bool _disposed;
 
         public UnitOfWork(UgovorOZakupuDbContext context)
         {
@@ -28,7 +30,14 @@ namespace UgovorOZakupu.Data.UnitOfWork
 
         public void Dispose()
         {
-            _context.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposed && disposing) _context.Dispose();
+            _disposed = true;
         }
     }
 }
