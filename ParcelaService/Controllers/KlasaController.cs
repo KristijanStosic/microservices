@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -42,6 +43,7 @@ namespace ParcelaService.Controllers
         /// <returns>Lista klasa</returns>
         /// <response code="200">Vraća listu klasa</response>
         /// <response code="404">Nije pronađena ni jedna klasa</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -68,6 +70,7 @@ namespace ParcelaService.Controllers
         /// <returns>Klasa</returns>
         /// <response code="200">Vraća traženu klasu</response>
         /// <response code="404">Nije pronađena klasa za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet("{klasaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -101,6 +104,7 @@ namespace ParcelaService.Controllers
         /// <returns>Potvrda o kreiranju klase</returns>
         /// <response code="201">Vraća kreiranu klasu</response>
         /// <response code="500">Desila se greška prilikom unosa nove klase</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -135,6 +139,7 @@ namespace ParcelaService.Controllers
         /// <response code="200">Izmenjena klasa</response>
         /// <response code="404">Nije pronađena klasa za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene klase</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -177,6 +182,7 @@ namespace ParcelaService.Controllers
         /// <response code="204">Klasa je uspešno obrisana</response>
         /// <response code="404">Nije pronađena klasa za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja klasa</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpDelete("{klasaId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -212,6 +218,7 @@ namespace ParcelaService.Controllers
         /// Vraća opcije za rad sa klasama
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetKlasaOptions()
         {
