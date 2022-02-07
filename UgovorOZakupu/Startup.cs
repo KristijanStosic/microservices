@@ -23,13 +23,12 @@ namespace UgovorOZakupu
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
+
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
-
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -84,7 +83,7 @@ namespace UgovorOZakupu
                     };
                 });
 
-            var secret = Configuration["ApplicationSettings:JWT_Secret"];
+            var secret = _configuration.GetValue<string>("ApplicationSettings:JWT_Secret");
             var key = Encoding.ASCII.GetBytes(secret);
 
             services.AddAuthentication(option =>
@@ -142,7 +141,7 @@ namespace UgovorOZakupu
                         {
                             Name = "Vuk Pekez",
                             Email = "vukpekez@uns.ac.rs",
-                            Url = new Uri(Configuration.GetValue<string>("Swagger:Github"))
+                            Url = new Uri(_configuration.GetValue<string>("Swagger:Github"))
                         }
                     });
 
