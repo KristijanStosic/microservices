@@ -936,7 +936,7 @@
             Dto Kupac - Entitet iz drugog agregata
             </summary>
         </member>
-        <member name="P:ZalbaService.Models.Services.KupacDto.Kupac">
+        <member name="P:ZalbaService.Models.Services.KupacDto.Naziv">
             <summary>
             Naziv kupca
             </summary>
@@ -951,7 +951,7 @@
             Broj racuna
             </summary>
         </member>
-        <member name="P:ZalbaService.Models.Services.KupacDto.BrojTelefona1">
+        <member name="P:ZalbaService.Models.Services.KupacDto.BrojTelefona">
             <summary>
             Broj telefona 1
             </summary>

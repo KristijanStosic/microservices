@@ -22,10 +22,10 @@ namespace ZalbaService.ServicesCalls
         {
             var kupac = new KupacDto
             {
-                Kupac = "Bambi DOO",
+                Naziv = "Bambi DOO",
                 Email = "john@email.com",
                 BrojRacuna = "155-6984741254580-00",
-                BrojTelefona1 = "0609698577"
+                BrojTelefona = "0609698577"
             };
 
             return await Task.FromResult((T)Convert.ChangeType(kupac, typeof(T)));

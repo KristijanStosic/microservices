@@ -12,10 +12,10 @@ namespace ParcelaService.ServiceCalls.Mocks
         {
             var kupac = new KupacDto
             {
-                Kupac = "Milana Milanovic",
+                Naziv = "Milana Milanovic",
                 Email = "milana@gmail.com",
                 BrojRacuna = "23212345",
-                BrojTelefona1 = "065145125"
+                BrojTelefona = "065145125"
             };
 
             return await Task.FromResult((T)Convert.ChangeType(kupac, typeof(T)));
