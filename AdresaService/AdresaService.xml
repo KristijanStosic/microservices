@@ -70,7 +70,7 @@
              </remarks>
              <response code="200">Uspešno ažurirana adresa</response>
              <response code="404">Nije pronađena adresa na osnovu prosleđenog id-a</response>
-             <response code="500">Desila se greška prilikom brisanja adrese</response>
+             <response code="500">Desila se greška prilikom ažuriranja adrese</response>
         </member>
         <member name="M:AdresaService.Controllers.AdresaController.GetAdresaOptions">
             <summary>
@@ -101,7 +101,7 @@
             <response code="200">Vraća traženu državu</response>
             <response code="404">Nije pronađena država za uneti ID</response>
         </member>
-        <member name="M:AdresaService.Controllers.DrzavaController.CreateDrzava(AdresaService.Model.Drzava.DrzavaDto)">
+        <member name="M:AdresaService.Controllers.DrzavaController.CreateDrzava(AdresaService.Model.Drzava.DrzavaCreateDto)">
              <summary>
              Kreira novu državu
              </summary>
@@ -144,7 +144,7 @@
             </remarks>
             <response code="200">Uspešno ažurirana država</response>
             <response code="404">Nije pronađena država sa datim id-em</response>
-            <response code="500">Desila se greška prilikom ažuriranja</response>
+            <response code="500">Desila se greška prilikom ažuriranja države</response>
         </member>
         <member name="M:AdresaService.Controllers.DrzavaController.GetDrzavaOptions">
             <summary>
@@ -330,6 +330,16 @@
         <member name="P:AdresaService.Model.Adresa.AdresaUpdateDto.DrzavaId">
             <summary>
             Id države - strani ključ
+            </summary>
+        </member>
+        <member name="T:AdresaService.Model.Drzava.DrzavaCreateDto">
+            <summary>
+            Dto za kreiranje države
+            </summary>
+        </member>
+        <member name="P:AdresaService.Model.Drzava.DrzavaCreateDto.NazivDrzave">
+            <summary>
+            Naziv Države
             </summary>
         </member>
         <member name="T:AdresaService.Model.Drzava.DrzavaDto">
