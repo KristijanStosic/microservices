@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using UgovorOZakupu.Entities;
-using UgovorOZakupu.Models.UgovorOZakupu;
 
 namespace UgovorOZakupu.DbContext
 {

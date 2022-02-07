@@ -40,11 +40,13 @@ namespace UgovorOZakupu.Controllers
         /// <response code="200">Vraća listu tipove garancije</response>
         /// <response code="204">Nije pronadjen nijedan tip garancije</response>
         /// <response code="500">Greška prilikom vraćanja liste tipova garancije</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, Menadzer")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<TipGarancijeDto>>> GetAllTipGarancije()
         {
             try
@@ -80,11 +82,13 @@ namespace UgovorOZakupu.Controllers
         /// <response code="200">Vraća traženi tip grancije o zakupu</response>
         /// <response code="404">Nije pronadjen tip grancije za uneti ID</response>
         /// <response code="500">Greška prilikom vraćanja tipa garancije</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, Menadzer")]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<TipGarancijeDto>> GetTipGarancijeById(Guid id)
         {
             try
@@ -119,11 +123,13 @@ namespace UgovorOZakupu.Controllers
         /// <returns>Tip garancije</returns>
         /// <response code="201">Vraća kreirani tip garancije</response>
         /// <response code="500">Greška prilikom kreiranja tipa garancije.</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateTipGarancije([FromBody] TipGarancijeDto tipGarancijeDto)
         {
             try
@@ -162,6 +168,7 @@ namespace UgovorOZakupu.Controllers
         /// <response code="404">Nije pronadjen tip garancije za uneti ID</response>
         /// <response code="400">ID nije isti kao onaj proledjen u modelu tipa garancije</response>
         /// <response code="500">Greška prilikom izmene tipa garancije.</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPut("{id:guid}")]
         [Consumes("application/json")]
@@ -169,6 +176,7 @@ namespace UgovorOZakupu.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateTipGarancije(Guid id, [FromBody] UpdateTipGarancijeDto tipGarancijeDto)
         {
             try
@@ -215,11 +223,13 @@ namespace UgovorOZakupu.Controllers
         /// <response code="204">Tip garancije je uspešno obrisan</response>
         /// <response code="404">Nije pronadjen tip garancije za uneti ID</response>
         /// <response code="500">Greška prilikom brisanja tipa garancije</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteTipGarancije(Guid id)
         {
             try
@@ -254,9 +264,11 @@ namespace UgovorOZakupu.Controllers
         ///     Vraća opcije za rad sa tipovima garancije
         /// </summary>
         /// <response code="200">Vraća listu opcija u header-u</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, Menadzer")]
         [HttpOptions]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult GetTipGarancijeOptions()
         {
             Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
