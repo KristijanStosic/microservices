@@ -67,7 +67,7 @@ namespace LicitacijaService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetAllLicitacija", "Lista licitacija je prazna ili null.");
                 return NoContent();
             }
-            string urlJavnoNadmetanje = _configuration["Services:JavnoNadmetanje"]; 
+            string urlJavnoNadmetanje = _configuration["Services:JavnoNadmetanjeService"]; 
             var licitacijeDto = new List<LicitacijaDto>();
             var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             foreach (var lic in licitacije)
@@ -113,7 +113,7 @@ namespace LicitacijaService.Controllers
 
             var licitacijaDto = _mapper.Map<LicitacijaDto>(licitacija);
             licitacijaDto.JavnaNadmetanja = new List<JavnoNadmetanjeDto>();
-            string urlJavnoNadmetanje = _configuration["Services:JavnoNadmetanje"];
+            string urlJavnoNadmetanje = _configuration["Services:JavnoNadmetanjeService"];
 
             foreach (var jn in licitacija.JavnaNadmetanja)
             {
