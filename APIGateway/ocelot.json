@@ -173,10 +173,6 @@
       ],
       "UpstreamPathTemplate": "/korisnikSistema/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      },
       "FileCacheOptions": { "TtlSeconds": 30 },
       "SwaggerKey": "korisnikSistema"
     },
@@ -245,10 +241,6 @@
       ],
       "UpstreamPathTemplate": "/logger/{everything}",
       "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete", "Options", "Head" ],
-      "AuthenticationOptions": {
-        "AuthenticationProviderKey": "Bearer",
-        "AllowedScopes": []
-      },
       "FileCacheOptions": { "TtlSeconds": 30 },
       "SwaggerKey": "logger"
     }
