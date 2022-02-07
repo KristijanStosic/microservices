@@ -9,7 +9,7 @@ namespace KupacService.Model.Kupac.PravnoLice
     /// <summary>
     /// Dto za kreiranje pravnog lica
     /// </summary>
-    public class PravnoLiceCreateDto
+    public class PravnoLiceCreateDto : IValidatableObject
     {
         /// <summary>
         /// Naziv pravnog lica
@@ -77,5 +77,15 @@ namespace KupacService.Model.Kupac.PravnoLice
         /// Izvršene uplate pravnog lica
         /// </summary>
         public List<Guid> Uplate { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (OstvarenaPovrsina < 0)
+            {
+                yield return new ValidationResult(
+                     "Ostvarena površina ne može biti manja od 0",
+                     new[] { "PravnoLiceCreationDto" });
+            }
+        }
     }
 }
