@@ -29,14 +29,14 @@ namespace JavnoNadmetanjeService.Helpers
             _parcelaService = parcelaService;
         }
 
-        public async Task<JavnoNadmetanjeDto> GetJavnoNadmetanjeDtoWithOtherServicesInfo(JavnoNadmetanje javnoNadmetanje)
+        public async Task<JavnoNadmetanjeDto> GetJavnoNadmetanjeDtoWithOtherServicesInfo(JavnoNadmetanje javnoNadmetanje, string token)
         {
             //Adresa mikroservis komunikacija 
             string urlAdresa = _configuration["Services:AdresaService"];
             var javnoNadmetanjeDto = _mapper.Map<JavnoNadmetanjeDto>(javnoNadmetanje);
             if (javnoNadmetanje.AdresaId is not null)
             {
-                var adresaDto = await _adresaService.SendGetRequestAsync(urlAdresa + javnoNadmetanje.AdresaId);
+                var adresaDto = await _adresaService.SendGetRequestAsync(urlAdresa + javnoNadmetanje.AdresaId, token);
                 if (adresaDto is not null)
                     javnoNadmetanjeDto.Adresa = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
             }
@@ -46,7 +46,7 @@ namespace JavnoNadmetanjeService.Helpers
             string urlKupac = _configuration["Services:KupacService"];
             if (javnoNadmetanje.KupacId is not null)
             {
-                var kupacDto = await _kupacService.SendGetRequestAsync(urlKupac + javnoNadmetanje.KupacId);
+                var kupacDto = await _kupacService.SendGetRequestAsync(urlKupac + javnoNadmetanje.KupacId, token);
                 if (kupacDto is not null)
                     javnoNadmetanjeDto.Kupac = kupacDto;
             }
@@ -55,7 +55,7 @@ namespace JavnoNadmetanjeService.Helpers
             javnoNadmetanjeDto.Kupci = new List<KupacDto>();
             foreach (var kupac in javnoNadmetanje.Kupci)
             {
-                var kupacDto = await _kupacService.SendGetRequestAsync(urlKupac + kupac);
+                var kupacDto = await _kupacService.SendGetRequestAsync(urlKupac + kupac, token);
                 if (kupacDto is not null)
                     javnoNadmetanjeDto.Kupci.Add(kupacDto);
             }
@@ -65,7 +65,7 @@ namespace JavnoNadmetanjeService.Helpers
             javnoNadmetanjeDto.OvlascenaLica = new List<OvlascenoLiceDto>();
             foreach (var ovlascenoLice in javnoNadmetanje.OvlascenaLica)
             {
-                var ovlascenoLiceDto = await _ovlascenoLiceService.SendGetRequestAsync(urlOvlascenoLice + ovlascenoLice);
+                var ovlascenoLiceDto = await _ovlascenoLiceService.SendGetRequestAsync(urlOvlascenoLice + ovlascenoLice, token);
                 if (ovlascenoLiceDto is not null)
                     javnoNadmetanjeDto.OvlascenaLica.Add(ovlascenoLiceDto);
             }
@@ -75,7 +75,7 @@ namespace JavnoNadmetanjeService.Helpers
             javnoNadmetanjeDto.DeloviParcele = new List<DeoParceleDto>();
             foreach (var deoParcele in javnoNadmetanje.DeloviParcele)
             {
-                var deoParceleDto = await _parcelaService.SendGetRequestAsync(urlParcela + deoParcele);
+                var deoParceleDto = await _parcelaService.SendGetRequestAsync(urlParcela + deoParcele, token);
                 if (deoParceleDto is not null)
                     javnoNadmetanjeDto.DeloviParcele.Add(deoParceleDto);
             }

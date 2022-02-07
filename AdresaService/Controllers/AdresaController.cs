@@ -3,6 +3,7 @@ using AdresaService.Entities;
 using AdresaService.Model.Adresa;
 using AdresaService.ServiceCalls;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -44,6 +45,7 @@ namespace AdresaService.Controllers
         /// <returns>Listu adresa koje zadovoljavaju zadate filtere</returns>
         /// <response code="200">Uspešno vraćena lista državi</response>
         /// <response code="204">Nije pronađena nijedna država</response>
+        [Authorize]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -67,6 +69,7 @@ namespace AdresaService.Controllers
         /// <returns>Adresu</returns>
         /// <response code="200">Uspešno vraćena adresa</response>
         /// <response code="404">Nije pronađena adresa sa zadatim id-em</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar")]
         [HttpGet("{adresaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -100,6 +103,7 @@ namespace AdresaService.Controllers
         /// </remarks>
         /// <response code="201">Uspešno kreirana adresa</response>
         /// <response code="500">Desila se greška prilikom kreiranja nove adrese</response>
+        [Authorize]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -130,6 +134,7 @@ namespace AdresaService.Controllers
         /// <response code="200">Uspešno obrisana adresa</response>
         /// <response code="404">Nije pronađena adresa na osnovu unetog id-a</response>
         /// <response code="" 500>Desila se greška prilikom brisanja adrese</response>
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpDelete("{adresaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -178,6 +183,7 @@ namespace AdresaService.Controllers
         /// <response code="200">Uspešno ažurirana adresa</response>
         /// <response code="404">Nije pronađena adresa na osnovu prosleđenog id-a</response>
         /// <response code="500">Desila se greška prilikom brisanja adrese</response>
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -221,6 +227,7 @@ namespace AdresaService.Controllers
         /// Vraća opcije za rad sa adresama
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Manager, Superuser, TehnickiSekretar")]
         [HttpOptions]
         public IActionResult GetAdresaOptions()
         {

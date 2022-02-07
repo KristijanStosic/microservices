@@ -3,6 +3,7 @@ using JavnoNadmetanjeService.Data.Interfaces;
 using JavnoNadmetanjeService.Entities;
 using JavnoNadmetanjeService.Models.Status;
 using JavnoNadmetanjeService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -42,6 +43,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Lista statusa</returns>
         /// <response code="200">Vraća listu statusa</response>
         /// <response code="404">Nije pronađen ni jedan status</response>
+        [Authorize(Roles = "Administrator, Superuser, Manager, OperaterNadmetanje")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -68,6 +70,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Status javnog nadmetanja</returns>
         /// <response code="200">Vraća traženi status</response>
         /// <response code="404">Nije pronađen status za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Manager, OperaterNadmetanje")]
         [HttpGet("{statusId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -100,6 +103,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Potvrda o kreiranju statusa</returns>
         /// <response code="201">Vraća kreiran status</response>
         /// <response code="500">Desila se greška prilikom unosa novog statusa</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -132,6 +136,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <response code="200">Izmenjen status</response>
         /// <response code="404">Nije pronađen status za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene statusa</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -174,6 +179,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <response code="204">Status je uspešno obrisan</response>
         /// <response code="404">Nije pronađen status za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja statusa</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpDelete("{statusId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -209,6 +215,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// Vraća opcije za rad sa statusima javnog nadmetanja
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Manager, OperaterNadmetanje")]
         [HttpOptions]
         public IActionResult GetStatusOptions()
         {

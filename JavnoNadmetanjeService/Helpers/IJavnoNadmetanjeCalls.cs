@@ -6,6 +6,6 @@ namespace JavnoNadmetanjeService.Helpers
 {
     public interface IJavnoNadmetanjeCalls
     {
-        Task<JavnoNadmetanjeDto> GetJavnoNadmetanjeDtoWithOtherServicesInfo(JavnoNadmetanje javnoNadmetanje);
+        Task<JavnoNadmetanjeDto> GetJavnoNadmetanjeDtoWithOtherServicesInfo(JavnoNadmetanje javnoNadmetanje, string token);
     }
 }

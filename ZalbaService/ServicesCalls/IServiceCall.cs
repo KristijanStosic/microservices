@@ -16,6 +16,6 @@ namespace ZalbaService.ServicesCalls
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        Task<T> SendGetRequestAsync(string url);
+        Task<T> SendGetRequestAsync(string url, string token);
     }
 }

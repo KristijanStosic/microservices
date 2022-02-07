@@ -8,7 +8,7 @@ namespace LicnostService.Services.Mocks
 {
     public class ServiceCallDokumentMock<T> : IServiceCall<T>
     {
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             var dokument = new DokumentDto
             {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -42,6 +43,8 @@ namespace ParcelaService.Controllers
         /// <returns>Lista parcela</returns>
         /// <response code="200">Vraća listu parcela</response>
         /// <response code="404">Nije pronađena ni jedna parcela </response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -69,6 +72,8 @@ namespace ParcelaService.Controllers
         /// <returns>Parcela</returns>
         /// <response code="200">Vraća traženu parcelu</response>
         /// <response code="404">Nije pronađena parcela za uneti ID</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet("parcelaId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -107,6 +112,8 @@ namespace ParcelaService.Controllers
         /// <returns>Potvrda o kreiranju parcele</returns>
         /// <response code="201">Vraća kreiranu parcelu </response>
         /// <response code="500">Desila se greška prilikom unosa nove parcele</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -139,6 +146,8 @@ namespace ParcelaService.Controllers
         /// <response code="200">Izmenjena parcela</response>
         /// <response code="404">Nije pronađena parcela za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene parcele</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -182,6 +191,7 @@ namespace ParcelaService.Controllers
         /// <response code="204">Parcela je uspešno obrisan</response>
         /// <response code="404">Nije pronađena parcela za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja parcele</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpDelete("{parcelaId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -216,6 +226,8 @@ namespace ParcelaService.Controllers
         /// Vraća opcije za rad sa parcelama
         /// </summary>
         /// <returns></returns>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser,Menadzer, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetParcelaOptions()
         {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -43,6 +44,7 @@ namespace ParcelaService.Controllers
         /// <returns>Lista kultura</returns>
         /// <response code="200">Vraća listu kultura</response>
         /// <response code="404">Nije pronađena ni jedna kultura</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -68,6 +70,7 @@ namespace ParcelaService.Controllers
         /// <returns>Kultura parcele</returns>
         /// <response code="200">Vraća traženu kulturu</response>
         /// <response code="404">Nije pronađena kultura za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet("kulturaId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -100,6 +103,7 @@ namespace ParcelaService.Controllers
         /// <returns>Potvrda o kreiranju kulture</returns>
         /// <response code="201">Vraća kreiranu kulturu</response>
         /// <response code="500">Desila se greška prilikom unosa nove kulture</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -134,6 +138,7 @@ namespace ParcelaService.Controllers
         /// <response code="200">Izmenjena kultura</response>
         /// <response code="404">Nije pronađena kultura za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene kulture</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -176,6 +181,7 @@ namespace ParcelaService.Controllers
         /// <response code="204">Kultura je uspešno obrisana</response>
         /// <response code="404">Nije pronađena kultura za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja kulture</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpDelete("{kulturaId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -211,6 +217,7 @@ namespace ParcelaService.Controllers
         /// Vraća opcije za rad sa kulturama parcele
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer,OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetKulturaOptions()
         {

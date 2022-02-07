@@ -3,6 +3,7 @@ using KupacService.Data.Interfaces;
 using KupacService.Entities;
 using KupacService.Model.Prioritet;
 using KupacService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -32,7 +33,7 @@ namespace KupacService.Controllers
             this._loggerService = loggerService;
         }
 
-
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet]
         public async Task<ActionResult<List<PrioritetDto>>> GetPrioritete(string opis)
         {
@@ -47,6 +48,7 @@ namespace KupacService.Controllers
             return Ok(_mapper.Map<List<PrioritetDto>>(prioriteti));
 
         }
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet("{prioritetId}")]
         public async Task<ActionResult<PrioritetDto>> GetPrioritetById(Guid prioritetId)
         {
@@ -60,6 +62,7 @@ namespace KupacService.Controllers
             await _loggerService.Log(LogLevel.Information, "GetPrioritetById", $"Prioritet  sa id-em {prioritetId} je uspešno vraćen.");
             return Ok(_mapper.Map<PrioritetDto>(prioritet));
         }
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPost]
         public async Task<ActionResult<PrioritetDto>> CreatePrioritet([FromBody] PrioritetDto prioritet)
         {
@@ -83,7 +86,7 @@ namespace KupacService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
             }
         }
-
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPut]
         public async Task<ActionResult<PrioritetDto>> UpdatePrioritet(PrioritetUpdateDto prioritetUpdate) 
         {
@@ -114,6 +117,7 @@ namespace KupacService.Controllers
 
 
         }
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpDelete("{prioritetId}")]
         public async Task<IActionResult> DeletePrioritet(Guid prioritetId) 
         {
@@ -144,7 +148,7 @@ namespace KupacService.Controllers
 
         }
 
-
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetPrioritetOptions()
         {

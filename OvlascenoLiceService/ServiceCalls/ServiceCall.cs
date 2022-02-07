@@ -28,7 +28,7 @@ namespace OvlascenoLiceService.ServiceCalls
         /// </summary>
         /// <param name="url">Url putanja ka drugom servisu</param>
         /// <returns></returns>
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             try
             {

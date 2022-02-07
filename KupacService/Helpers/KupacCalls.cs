@@ -26,14 +26,14 @@ namespace KupacService.Helpers
             this._uplataServiceCall = uplataServiceCall;
             this._configuration = configuration;
         }
-        public async Task<KupacOtherServicesDto> GetKupacDtoWithOtherServicesInfo(Kupac kupac)
+        public async Task<KupacOtherServicesDto> GetKupacDtoWithOtherServicesInfo(Kupac kupac, string token)
         {
             KupacOtherServicesDto otherServicesDto = new KupacOtherServicesDto();
 
             if (kupac.AdresaId != null)
             {
                 string adresaUrl = _configuration["Services:AdresaService"];
-                var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaUrl + kupac.AdresaId);
+                var adresaDto = await _adresaServiceCall.SendGetRequestAsync(adresaUrl + kupac.AdresaId, token);
                 if (adresaDto != null)
                     otherServicesDto.Adresa = adresaDto;
             }
@@ -44,7 +44,7 @@ namespace KupacService.Helpers
                 otherServicesDto.OvlascenaLica = new List<OvlascenoLiceDto>();
                 foreach (Guid ovlascenoLiceId in kupac.OvlascenaLica)
                 {
-                    var ovlascenoLiceDto = await _ovlascenoLiceServiceCall.SendGetRequestAsync(ovlascenoLiceUrl + ovlascenoLiceId);
+                    var ovlascenoLiceDto = await _ovlascenoLiceServiceCall.SendGetRequestAsync(ovlascenoLiceUrl + ovlascenoLiceId, token);
                     if (ovlascenoLiceDto != null)
                         otherServicesDto.OvlascenaLica.Add(ovlascenoLiceDto);
                 }
@@ -56,7 +56,7 @@ namespace KupacService.Helpers
                 otherServicesDto.Uplate = new List<UplataDto>();
                 foreach(Guid uplataId in kupac.Uplate)
                 {
-                    var uplataDto = await _uplataServiceCall.SendGetRequestAsync(uplataUrl + uplataId);
+                    var uplataDto = await _uplataServiceCall.SendGetRequestAsync(uplataUrl + uplataId, token);
                     if (uplataDto != null)
                         otherServicesDto.Uplate.Add(uplataDto);
                 }

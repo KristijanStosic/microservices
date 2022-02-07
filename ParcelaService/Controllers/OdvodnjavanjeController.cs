@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -42,6 +43,7 @@ namespace ParcelaService.Controllers
         /// <returns>Lista odvodnjavanja</returns>
         /// <response code="200">Vraća listu odvodnjavanja</response>
         /// <response code="404">Nije pronađeno ni jedno odvodnjavanje</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -68,6 +70,7 @@ namespace ParcelaService.Controllers
         /// <returns>Odvodnjavanje</returns>
         /// <response code="200">Vraća traženo odvodnjavanje</response>
         /// <response code="404">Nije pronađeno odvodnjavanje za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet("odvodnjavanjeId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -98,6 +101,7 @@ namespace ParcelaService.Controllers
         /// <returns>Potvrda o kreiranju odvodnjavanja</returns>
         /// <response code="201">Vraća kreirano odvodnjavanje</response>
         /// <response code="500">Desila se greška prilikom unosa novog odvodnjavanja</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -131,6 +135,7 @@ namespace ParcelaService.Controllers
         /// <response code="200">Izmenjena odvodnjavanja</response>
         /// <response code="404">Nije pronađeno odvodnjavanje za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene odvodnjavanja</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -173,6 +178,7 @@ namespace ParcelaService.Controllers
         /// <response code="204">Odvodnjavanje je uspešno obrisano</response>
         /// <response code="404">Nije pronađeno odvodnjavanje za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja odvodnjavanja</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpDelete("{odvodnjavanjeId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -206,6 +212,7 @@ namespace ParcelaService.Controllers
         /// Vraća opcije za rad sa odvodnjavanjem
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetOdvodnjavanjeOptions()
         {
