@@ -101,7 +101,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// }
         /// </remarks>
         /// <returns>Potvrda o kreiranju tipa</returns>
-        /// <response code="200">Vraća kreiran tip</response>
+        /// <response code="201">Vraća kreiran tip</response>
         /// <response code="500">Desila se greška prilikom unosa novog tipa</response>
         [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpPost]

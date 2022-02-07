@@ -20,7 +20,7 @@ namespace ParcelaService.Controllers
     /// <summary>
     /// Kontroler za parcelu
     /// </summary>
-    [Route("api/ovlascenoLice")]
+    [Route("api/parcela")]
     [ApiController]
     [Produces("application/json", "application/xml")]
     public class ParcelaController : ControllerBase

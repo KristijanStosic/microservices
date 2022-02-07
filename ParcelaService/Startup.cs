@@ -152,7 +152,7 @@ namespace ParcelaService
                     {
                         Name = "Đorđe Atanackov",
                         Email = "djordje_atanackov@uns.ac.rs",
-                        Url = new Uri("https://github.com/AtanackovDjordje")
+                        Url = new Uri(Configuration["Swagger:Github"])
                     }
                 });
 
