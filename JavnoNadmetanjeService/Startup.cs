@@ -86,6 +86,7 @@ namespace JavnoNadmetanjeService
             services.AddScoped<IServiceCall<DeoParceleDto>, ServiceCallDeoParceleMock<DeoParceleDto>>();
 
             services.AddScoped<IJavnoNadmetanjeCalls, JavnoNadmetanjeCalls>();
+            services.AddScoped<IRabbitMQProducer, RabbitMQProducer>();
             services.AddScoped<ILoggerService, LoggerServiceMock>();
 
             services.AddSwaggerGen(setup =>

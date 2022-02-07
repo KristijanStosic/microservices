@@ -2,11 +2,14 @@
 using JavnoNadmetanjeService.Data.Interfaces;
 using JavnoNadmetanjeService.Entities;
 using JavnoNadmetanjeService.Entities.Confirmations;
+using JavnoNadmetanjeService.Helpers;
 using JavnoNadmetanjeService.Models.Etapa;
+using JavnoNadmetanjeService.Models.Other;
 using JavnoNadmetanjeService.ServiceCalls;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
@@ -24,16 +27,26 @@ namespace JavnoNadmetanjeService.Controllers
     public class EtapaController : ControllerBase
     {
         private readonly IEtapaRepository _etapaRepository;
+        private readonly IJavnoNadmetanjeRepository _javnoNadmetanjeRepository;
+        private readonly IServiceCall<KupacDto> _kupacService;
+        private readonly IServiceCall<AdresaDto> _adresaService;
+        private readonly IRabbitMQProducer _rabbitMQProducer;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
         private readonly ILoggerService _loggerService;
+        private readonly IConfiguration _configuration;
 
-        public EtapaController(IEtapaRepository etapaRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
+        public EtapaController(IEtapaRepository etapaRepository, IJavnoNadmetanjeRepository javnoNadmetanjeRepository, IServiceCall<KupacDto> kupacService, IServiceCall<AdresaDto> adresaService, IRabbitMQProducer rabbitMQProducer, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService, IConfiguration configuration)
         {
             _etapaRepository = etapaRepository;
+            _javnoNadmetanjeRepository = javnoNadmetanjeRepository;
+            _kupacService = kupacService;
+            _adresaService = adresaService;
+            _rabbitMQProducer = rabbitMQProducer;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
             _loggerService = loggerService;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -127,6 +140,35 @@ namespace JavnoNadmetanjeService.Controllers
                 string lokacija = _linkGenerator.GetPathByAction("GetEtapa", "Etapa", new { etapaId = novaEtapa.EtapaId });
 
                 await _loggerService.Log(LogLevel.Information, "CreateEtapa", $"Etapa sa vrednostima: {JsonConvert.SerializeObject(etapa)} je uspešno kreirana.");
+
+                //RabbitMQ - slanje mejlova kupcima o vremenu kada se etapa odrzava
+                var javnoNadmetanje = await _javnoNadmetanjeRepository.GetJavnoNadmetanjeById(etapa.JavnoNadmetanjeId);
+                string adresa = "";
+                if (javnoNadmetanje.AdresaId is not null)
+                {
+                    var adresaDto = await _adresaService.SendGetRequestAsync(_configuration["Services:AdresaService"] + javnoNadmetanje.AdresaId);
+                    if (adresaDto is not null)
+                        adresa = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
+                }
+
+                foreach (var kupac in javnoNadmetanje.Kupci)
+                {
+                    var kupacDto = await _kupacService.SendGetRequestAsync(_configuration["Services:KupacService"] + kupac);
+                    if (kupacDto is not null)
+                    {
+                        var email = new MailInfo
+                        {
+                            Email = kupacDto.Email,
+                            Kupac = kupacDto.Kupac,
+                            Adresa = adresa,
+                            DatumOdrzavanja = etapa.Datum,
+                            VremePocetka = etapa.VremePocetka,
+                            VremeKraja = etapa.VremeKraja
+                        };
+                        await _rabbitMQProducer.SendEmailToQueue(email);
+                    }
+                }
+
 
                 return Created(lokacija, _mapper.Map<EtapaConfirmationDto>(novaEtapa));
             }
