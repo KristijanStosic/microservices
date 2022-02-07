@@ -8,7 +8,7 @@ namespace LicitacijaService.ServiceCalls.Mocks
 {
     public class ServiceCallJavnoNadmetanjeMock<T> : IServiceCall<T>
     {
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             var javnoNadmetanje = new JavnoNadmetanjeDto
             {
