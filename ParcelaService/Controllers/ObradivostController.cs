@@ -158,7 +158,7 @@ namespace ParcelaService.Controllers
                 _mapper.Map(staraObradivost, novaObradivost);
                 await _obradivostRepository.SaveChangesAsync();
 
-                await _loggerService.Log(LogLevel.Information, "UpdateObradivost", $"Obradivost parcele sa id-em {obradivost.ObradivostId} je uspešno izmenjena. Stare vrednosti su: {staraObradivost}");
+                await _loggerService.Log(LogLevel.Information, "UpdateObradivost", $"Obradivost parcele sa id-em {obradivost.ObradivostId} je uspešno izmenjena. Stare vrednosti su: {stareVrednosti}");
 
                 return Ok(_mapper.Map<ObradivostDto>(staraObradivost));
             }

@@ -12,7 +12,7 @@ namespace ParcelaService.ServiceCalls
 {
     public class LoggerService : ILoggerService
     {
-        private IConfiguration _configuration;
+        private readonly IConfiguration _configuration;
 
         public LoggerService(IConfiguration configuration)
         {
@@ -33,7 +33,6 @@ namespace ParcelaService.ServiceCalls
                     Greska = greska
                 };
 
-                //var content = new StringContent(JsonConvert.SerializeObject(log));
                 HttpContent content = new StringContent(JsonConvert.SerializeObject(log));
                 content.Headers.ContentType.MediaType = "application/json";
 

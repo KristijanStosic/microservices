@@ -195,7 +195,79 @@ namespace ParcelaService.Entities.DataContext
                    NazivKatastarskeOpstine = "Palić"
 
                });
-            
+
+            modelBuilder.Entity<Parcela>()
+               .HasData(new
+               {
+                   ParcelaId = Guid.Parse("5d99fd91fcf44975891ba7ae3053ff52"),
+                   BrojParcele = "178",
+                   PovrsinaParcele = "250",
+                   BrojListeNepokretnosti = "8",
+                   ZasticenaZonaId = Guid.Parse("7663ebd7-8ad6-4e1a-9ed0-f0b3c07caa30"),
+                   OblikSvojineId = Guid.Parse("f5133187-104c-4849-9d53-995e17e51094"),
+                   OdvodnjavanjeId = Guid.Parse("b2f93ba3-ec00-41af-824e-fcd1f0c60c5c"),
+                   KatastarskaOpstinaId = Guid.Parse("9ef61f9a-a078-423c-96f3-c83bd2d1806f"),
+ 
+               },
+               new
+               {
+                   ParcelaId = Guid.Parse("985eacdabe534506a7b2339fc6acf3d6"),
+                   BrojParcele = "289",
+                   PovrsinaParcele = "100",
+                   BrojListeNepokretnosti = "7",
+                   ZasticenaZonaId = Guid.Parse("7663ebd7-8ad6-4e1a-9ed0-f0b3c07caa30"),
+                   OblikSvojineId = Guid.Parse("f5133187-104c-4849-9d53-995e17e51094"),
+                   OdvodnjavanjeId = Guid.Parse("b2f93ba3-ec00-41af-824e-fcd1f0c60c5c"),
+                   KatastarskaOpstinaId = Guid.Parse("9ef61f9a-a078-423c-96f3-c83bd2d1806f"),
+               },
+               new
+               {
+                   ParcelaId = Guid.Parse("73e47b70c8fb43e3beb95f1b627a59bf"),
+                   BrojParcele = "158",
+                   PovrsinaParcele = "150",
+                   BrojListeNepokretnosti = "6",
+                   ZasticenaZonaId = Guid.Parse("875fc830-5370-4d21-82bc-ceb8ce77e5d2"),
+                   OblikSvojineId = Guid.Parse("f5133187-104c-4849-9d53-995e17e51094"),
+                   OdvodnjavanjeId = Guid.Parse("b2f93ba3-ec00-41af-824e-fcd1f0c60c5c"),
+                   KatastarskaOpstinaId = Guid.Parse("9ef61f9a-a078-423c-96f3-c83bd2d1806f"),
+               });
+
+            modelBuilder.Entity<DeoParcele>()
+               .HasData(new
+               {
+                   DeoParceleId = Guid.Parse("17894615-CA22-4943-87C8-16C246A35879"),
+                   RedniBrojDela = "12",
+                   PovrsinaDela = "40",
+                   KulturaId = Guid.Parse("f32bf0e6-cb02-49b0-a035-79e350255742"),
+                   KlasaId = Guid.Parse("f39c9623-c6b6-48cb-b4dd-0340c7431870"),
+                   ObradivostId = Guid.Parse("1c48c1d4-122b-4bd2-a8fe-188e54c5a88a"),
+                   ParcelaId = Guid.Parse("73e47b70c8fb43e3beb95f1b627a59bf"),
+                   KupacId = Guid.Parse("febd1c29-90e7-40c2-97f3-1e88495fe98d")
+
+               }, new
+               {
+                   DeoParceleId = Guid.Parse("44302280-3611-4667-BCFC-08B4E272BB28"),
+                   RedniBrojDela = "14",
+                   PovrsinaDela = "15",
+                   KulturaId = Guid.Parse("dcfc0f60-1683-4f16-919f-b6fbdf361fac"),
+                   KlasaId = Guid.Parse("0ec59e12-b271-471f-9a13-5c9c8ed0eda7"),
+                   ObradivostId = Guid.Parse("ec9e3d3e-193d-4de8-bdc4-acc3e4bf834d"),
+                   ParcelaId = Guid.Parse("5d99fd91fcf44975891ba7ae3053ff52"),
+                   KupacId = Guid.Parse("4ba95c01-aa89-4d36-a467-c72b0fcc5b80")
+
+               }, new
+               {
+                   DeoParceleId = Guid.Parse("C5BFE49C-518E-4216-A379-A5EC94B9EFE2"),
+                   RedniBrojDela = "20",
+                   PovrsinaDela = "25",
+                   KulturaId = Guid.Parse("d89d9175-bdf0-4066-850a-4232318f80bb"),
+                   KlasaId = Guid.Parse("e496b563-abb9-48a9-8972-800f41a4a3a1"),
+                   ObradivostId = Guid.Parse("0d62386e-e188-49a9-a8e6-492fa14baeb4"),
+                   ParcelaId = Guid.Parse("5d99fd91fcf44975891ba7ae3053ff52"),
+                   KupacId = Guid.Parse("4ba95c01-aa89-4d36-a467-c72b0fcc5b80")
+
+               });
+
         }
     }
 }
