@@ -8,7 +8,7 @@
             <summary>
                 Kontroler za rok dospeca
             </summary>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.RokDospecaController.GetAllRokDospeca">
             <summary>
@@ -18,7 +18,7 @@
             <response code="200">Vraća listu rokova dospeca</response>
             <response code="204">Nije pronadjen nijedan rok dospeca</response>
             <response code="500">Greška prilikom vraćanja liste rokova dospeća</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.RokDospecaController.GetRokDospecaById(System.Guid)">
             <summary>
@@ -29,7 +29,7 @@
             <response code="200">Vraća traženi rok garancije</response>
             <response code="404">Nije pronadjen rok garancije za uneti ID</response>
             <response code="500">Greška prilikom vraćanja roka dospeća</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.RokDospecaController.CreateRokDospeca(UgovorOZakupu.Models.RokDospeca.CreateRokDospecaDto)">
             <summary>
@@ -39,7 +39,7 @@
             <returns>Rok dospeca</returns>
             <response code="201">Vraća kreirani rok dospeca</response>
             <response code="500">Greška prilikom kreiranja roka dospeća</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.RokDospecaController.UpdateRokDospeca(System.Guid,UgovorOZakupu.Models.RokDospeca.UpdateRokDospecaDto)">
             <summary>
@@ -51,7 +51,7 @@
             <response code="404">Nije pronadjen rok dospeca za uneti ID</response>
             <response code="400">ID nije isti kao onaj proledjen u modelu roka dospeca</response>
             <response code="500">Greška prilikom izmene roka dospeća</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.RokDospecaController.DeleteRokDospeca(System.Guid)">
             <summary>
@@ -61,14 +61,14 @@
             <response code="204">Rok dospeca je uspešno obrisan</response>
             <response code="404">Nije pronadjen rok dospeca za uneti ID</response>
             <response code="500">Greška prilikom brisanja roka dospeća</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.RokDospecaController.GetRokDospecaOptions">
             <summary>
                 Vraća opcije za rad sa rokovima dospeca
             </summary>
             <response code="200">Vraća listu opcija u header-u</response>
-            
+
         </member>
         <member name="T:UgovorOZakupu.Controllers.TipGarancijeController">
             <summary>
@@ -83,7 +83,7 @@
             <response code="200">Vraća listu tipove garancije</response>
             <response code="204">Nije pronadjen nijedan tip garancije</response>
             <response code="500">Greška prilikom vraćanja liste tipova garancije</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.TipGarancijeController.GetTipGarancijeById(System.Guid)">
             <summary>
@@ -94,7 +94,7 @@
             <response code="200">Vraća traženi tip grancije o zakupu</response>
             <response code="404">Nije pronadjen tip grancije za uneti ID</response>
             <response code="500">Greška prilikom vraćanja tipa garancije</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.TipGarancijeController.CreateTipGarancije(UgovorOZakupu.Models.TipGarancije.TipGarancijeDto)">
             <summary>
@@ -104,7 +104,7 @@
             <returns>Tip garancije</returns>
             <response code="201">Vraća kreirani tip garancije</response>
             <response code="500">Greška prilikom kreiranja tipa garancije.</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.TipGarancijeController.UpdateTipGarancije(System.Guid,UgovorOZakupu.Models.TipGarancije.UpdateTipGarancijeDto)">
             <summary>
@@ -117,7 +117,7 @@
             <response code="404">Nije pronadjen tip garancije za uneti ID</response>
             <response code="400">ID nije isti kao onaj proledjen u modelu tipa garancije</response>
             <response code="500">Greška prilikom izmene tipa garancije.</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.TipGarancijeController.DeleteTipGarancije(System.Guid)">
             <summary>
@@ -127,14 +127,14 @@
             <response code="204">Tip garancije je uspešno obrisan</response>
             <response code="404">Nije pronadjen tip garancije za uneti ID</response>
             <response code="500">Greška prilikom brisanja tipa garancije</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.TipGarancijeController.GetTipGarancijeOptions">
             <summary>
                 Vraća opcije za rad sa tipovima garancije
             </summary>
             <response code="200">Vraća listu opcija u header-u</response>
-            
+
         </member>
         <member name="T:UgovorOZakupu.Controllers.UgovorOZakupuController">
             <summary>
@@ -159,7 +159,7 @@
             <response code="200">Vraća traženi ugovor o zakupu</response>
             <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
             <response code="500">Greška prilikom vraćanja ugovora o zakupu</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.UgovorOZakupuController.CreateUgovorOZakupu(UgovorOZakupu.Models.UgovorOZakupu.CreateUgovorOZakupuDto)">
             <summary>
@@ -169,7 +169,7 @@
             <returns>Ugovor o zakupu</returns>
             <response code="201">Vraća kreirani ugovor o zakupu</response>
             <response code="500">Greška prilikom kreiranja ugovora o zakupu</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.UgovorOZakupuController.UpdateUgovorOZakupu(System.Guid,UgovorOZakupu.Models.UgovorOZakupu.UpdateUgovorOZakupuDto)">
             <summary>
@@ -182,7 +182,7 @@
             <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
             <response code="400">ID nije isti kao onaj proledjen u modelu ugovora o zakupu</response>
             <response code="500">Greška prilikom izmene ugovora o zakupu</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.UgovorOZakupuController.DeleteUgovorOZakupu(System.Guid)">
             <summary>
@@ -192,14 +192,14 @@
             <response code="204">Ugovor o zakupu je uspešno obrisan</response>
             <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
             <response code="500">Greška prilikom brisanja ugovora o zakupu</response>
-            
+
         </member>
         <member name="M:UgovorOZakupu.Controllers.UgovorOZakupuController.GetUgovorOZakupuOptions">
             <summary>
                 Vraća opcije za rad sa ugovorima o zakupu
             </summary>
             <response code="200">Vraća listu opcija u header-u</response>
-            
+
         </member>
         <member name="T:UgovorOZakupu.Models.Confirmations.UgovorOZakupuConfirmation">
             <summary>

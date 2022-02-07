@@ -17,7 +17,6 @@ namespace UgovorOZakupu.Controllers
     /// <summary>
     ///     Kontroler za rok dospeca
     /// </summary>
-    /// 
     [ApiController]
     [Route("api/[controller]")]
     [Produces("application/json")]
@@ -41,7 +40,6 @@ namespace UgovorOZakupu.Controllers
         /// <response code="200">Vraća listu rokova dospeca</response>
         /// <response code="204">Nije pronadjen nijedan rok dospeca</response>
         /// <response code="500">Greška prilikom vraćanja liste rokova dospeća</response>
-        /// 
         [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -82,7 +80,6 @@ namespace UgovorOZakupu.Controllers
         /// <response code="200">Vraća traženi rok garancije</response>
         /// <response code="404">Nije pronadjen rok garancije za uneti ID</response>
         /// <response code="500">Greška prilikom vraćanja roka dospeća</response>
-        /// 
         [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar")]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -122,7 +119,6 @@ namespace UgovorOZakupu.Controllers
         /// <returns>Rok dospeca</returns>
         /// <response code="201">Vraća kreirani rok dospeca</response>
         /// <response code="500">Greška prilikom kreiranja roka dospeća</response>
-        /// 
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPost]
         [Consumes("application/json")]
@@ -164,7 +160,6 @@ namespace UgovorOZakupu.Controllers
         /// <response code="404">Nije pronadjen rok dospeca za uneti ID</response>
         /// <response code="400">ID nije isti kao onaj proledjen u modelu roka dospeca</response>
         /// <response code="500">Greška prilikom izmene roka dospeća</response>
-        /// 
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPut("{id:guid}")]
         [Consumes("application/json")]
@@ -218,7 +213,6 @@ namespace UgovorOZakupu.Controllers
         /// <response code="204">Rok dospeca je uspešno obrisan</response>
         /// <response code="404">Nije pronadjen rok dospeca za uneti ID</response>
         /// <response code="500">Greška prilikom brisanja roka dospeća</response>
-        /// 
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -258,7 +252,6 @@ namespace UgovorOZakupu.Controllers
         ///     Vraća opcije za rad sa rokovima dospeca
         /// </summary>
         /// <response code="200">Vraća listu opcija u header-u</response>
-        /// 
         [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar")]
         [HttpOptions]
         [ProducesResponseType(StatusCodes.Status200OK)]

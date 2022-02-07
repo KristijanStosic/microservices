@@ -28,10 +28,10 @@ namespace UgovorOZakupu.DbContext
         {
             modelBuilder.Entity<UgovorOZakupuDto>()
                 .HasIndex(u => u.ZavodniBroj).IsUnique();
-            
+
             modelBuilder.Entity<TipGarancije>()
                 .HasIndex(tg => tg.NazivTipa).IsUnique();
-            
+
             modelBuilder.Entity<TipGarancije>()
                 .HasData(
                     new TipGarancije

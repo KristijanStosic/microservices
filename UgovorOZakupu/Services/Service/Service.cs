@@ -1,51 +1,76 @@
-﻿using System.Net.Http;
-using System.Net.Http.Json;
+﻿using System;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Mime;
+using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Newtonsoft.Json;
 
-namespace UgovorOZakupu.Services
+namespace UgovorOZakupu.Services.Service
 {
     public class Service<T> : IService<T>
     {
         private readonly HttpClient _http;
-        private readonly string _url;
 
-        public Service(string url)
+        public Service(string path)
         {
-            _url = url;
-            _http = new HttpClient();
+            _http = new HttpClient
+            {
+                BaseAddress = new Uri(path)
+            };
         }
 
-        public async Task<T> SendGetRequest(string uri = "")
+        public async Task<T> SendGetRequest(string relativePath = "", string token = "")
         {
-            var response = await _http.GetAsync(uri == string.Empty ? _url : $"{_url}/{uri}");
-
-            if (response.IsSuccessStatusCode)
+            var requestMessage = new HttpRequestMessage
             {
-                var content = await response.Content.ReadAsStringAsync();
+                Method = HttpMethod.Get,
+                RequestUri = relativePath != string.Empty
+                    ? new Uri(_http.BaseAddress!, relativePath)
+                    : _http.BaseAddress,
+                Headers =
+                {
+                    Authorization = token != string.Empty
+                        ? new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token)
+                        : null
+                }
+            };
 
-                if (string.IsNullOrEmpty(content)) return default;
+            var response = await _http.SendAsync(requestMessage);
 
-                return JsonConvert.DeserializeObject<T>(content);
-            }
+            if (!response.IsSuccessStatusCode) return default;
 
-            return default;
+            var content = await response.Content.ReadAsStringAsync();
+
+            return string.IsNullOrEmpty(content) ? default : JsonConvert.DeserializeObject<T>(content);
         }
 
-        public async Task<T> SendPostRequest<TPayload>(TPayload payload, string uri = "")
+        public async Task<T> SendPostRequest<TPayload>(TPayload payload, string relativePath = "", string token = "")
         {
-            var response = await _http.PostAsJsonAsync(uri == string.Empty ? _url : $"{_url}/{uri}", payload);
-
-            if (response.IsSuccessStatusCode)
+            var requestMessage = new HttpRequestMessage
             {
-                var content = await response.Content.ReadAsStringAsync();
+                Method = HttpMethod.Post,
+                RequestUri = relativePath != string.Empty
+                    ? new Uri(_http.BaseAddress!, relativePath)
+                    : _http.BaseAddress,
+                Headers =
+                {
+                    Authorization = token != string.Empty
+                        ? new AuthenticationHeaderValue(JwtBearerDefaults.AuthenticationScheme, token)
+                        : null
+                },
+                Content = new StringContent(JsonConvert.SerializeObject(payload), Encoding.UTF8,
+                    MediaTypeNames.Application.Json)
+            };
 
-                if (string.IsNullOrEmpty(content)) return default;
+            var response = await _http.SendAsync(requestMessage);
 
-                return JsonConvert.DeserializeObject<T>(content);
-            }
+            if (!response.IsSuccessStatusCode) return default;
 
-            return default;
+            var content = await response.Content.ReadAsStringAsync();
+
+            return string.IsNullOrEmpty(content) ? default : JsonConvert.DeserializeObject<T>(content);
         }
     }
 }

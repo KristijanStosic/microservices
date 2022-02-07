@@ -3,6 +3,7 @@ using UgovorOZakupu.Models.JavnoNadmetanje;
 using UgovorOZakupu.Models.Kupac;
 using UgovorOZakupu.Models.Licnost;
 using UgovorOZakupu.Models.LogModel;
+using UgovorOZakupu.Services.Service;
 
 namespace UgovorOZakupu.Services
 {

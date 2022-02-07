@@ -42,8 +42,7 @@ namespace UgovorOZakupu
 
             services.AddScoped<IServices, Services.Services>();
 
-            // services.AddScoped<IServiceCalls, ServiceCalls>();
-            services.AddScoped<IServiceCalls, ServiceCallsMock>();
+            services.AddScoped<IServiceCalls, ServiceCalls>();
 
             services.AddControllers(options => { options.ReturnHttpNotAcceptable = true; })
                 .ConfigureApiBehaviorOptions(setupAction =>
@@ -85,7 +84,7 @@ namespace UgovorOZakupu
                     };
                 });
 
-            var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();
+            var secret = Configuration["ApplicationSettings:JWT_Secret"];
             var key = Encoding.ASCII.GetBytes(secret);
 
             services.AddAuthentication(option =>
@@ -109,7 +108,8 @@ namespace UgovorOZakupu
             {
                 var securitySchema = new OpenApiSecurityScheme
                 {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.Http,
@@ -125,7 +125,7 @@ namespace UgovorOZakupu
 
                 var securityRequirement = new OpenApiSecurityRequirement
                 {
-                    { securitySchema, new[] { "Bearer" } }
+                    {securitySchema, new[] {"Bearer"}}
                 };
 
                 c.AddSecurityRequirement(securityRequirement);
@@ -142,7 +142,7 @@ namespace UgovorOZakupu
                         {
                             Name = "Vuk Pekez",
                             Email = "vukpekez@uns.ac.rs",
-                            Url = new Uri("https://github.com/vukpekez")
+                            Url = new Uri(Configuration.GetValue<string>("Swagger:Github"))
                         }
                     });
 
