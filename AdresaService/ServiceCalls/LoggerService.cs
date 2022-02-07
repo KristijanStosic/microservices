@@ -26,7 +26,7 @@ namespace AdresaService.ServiceCalls
                 string url = _configuration["Services:LoggerService"];
                 var log = new LogModel
                 {
-                    Servis = "Javno Nadmetanje API",
+                    Servis = "Adresa Api",
                     Level = level,
                     Metoda = metoda,
                     Poruka = poruka,
