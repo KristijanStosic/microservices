@@ -322,7 +322,7 @@
             </summary>
             <param name="loggerService"></param>
         </member>
-        <member name="M:LicnostService.Services.ServiceCall`1.SendGetRequestAsync(System.String)">
+        <member name="M:LicnostService.Services.ServiceCall`1.SendGetRequestAsync(System.String,System.String)">
             <summary>
             Metoda za slanje get zahteva
             </summary>

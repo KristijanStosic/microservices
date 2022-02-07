@@ -7,6 +7,7 @@ using LicnostService.Data;
 using LicnostService.Entities;
 using LicnostService.Models.Licnost;
 using LicnostService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -43,6 +44,7 @@ namespace LicnostService.Controllers
         /// <returns>Lista ličnosti</returns>
         /// <response code="200">Vraća listu ličnosti</response>
         /// <response code="404">Nije pronađena ni jedna ličnosti</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -68,6 +70,7 @@ namespace LicnostService.Controllers
         /// <returns>Licnost</returns>
         /// <response code="200">Vraća traženu ličnost</response>
         /// <response code="404">Nije pronađena ličnost za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar")]
         [HttpGet("{licnostId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -94,7 +97,7 @@ namespace LicnostService.Controllers
         /// /// <returns>Potvrda o kreiranju ličnosti</returns>
         /// <response code="201">Vraća kreiranu ličnost</response>
         /// <response code="500">Desila se greška prilikom unosa nove ličnosti</response>
-
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -128,6 +131,7 @@ namespace LicnostService.Controllers
         /// <response code="200">Izmenjena ličnost</response>
         /// <response code="404">Nije pronađena ličnost za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene ličnosti</response>
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPut("{licnostId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -164,6 +168,7 @@ namespace LicnostService.Controllers
         /// <response code="204">Ličnost je uspešno obrisana</response>
         /// <response code="404">Nije pronađena ličnost za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja ličnosti</response>
+        [Authorize(Roles = "Administrator, Superuser,TehnickiSekretar")]
         [HttpDelete("{licnostId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -195,6 +200,7 @@ namespace LicnostService.Controllers
         /// Vraća opcije za rad sa licnostima
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar")]
         [HttpOptions]
         public IActionResult GetLicnostOptions()
         {
