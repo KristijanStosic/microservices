@@ -25,7 +25,7 @@ namespace PrijavaService.Helpers
             _kupacService = kupacService;
         }
 
-        public async Task<PrijavaDto> GetPrijvaDtoWithOtherServicesInfo(Prijava prijava)
+        public async Task<PrijavaDto> GetPrijvaDtoWithOtherServicesInfo(Prijava prijava, string token)
         {
             var prijavaDto = _mapper.Map<PrijavaDto>(prijava);
 
@@ -33,7 +33,7 @@ namespace PrijavaService.Helpers
             string urlKupac = _configuration["Services:KupacService"];
             if (prijava.KupacId is not null)
             {
-                var kupacDto = await _kupacService.SendGetRequestAsync(urlKupac + prijava.KupacId);
+                var kupacDto = await _kupacService.SendGetRequestAsync(urlKupac + prijava.KupacId, token);
                 if (kupacDto is not null)
                     prijavaDto.Kupac = kupacDto;
             }
@@ -43,7 +43,7 @@ namespace PrijavaService.Helpers
             prijavaDto.JavnoNadmetanje = new List<JavnoNadmetanjeDto>();
             foreach(var javnoNadmetanje in prijava.JavnoNadmetanje)
             {
-                var javnoNadmetanjeDto = await _javnoNadmetanjeService.SendGetRequestAsync(urlJavnoNadmetanje + javnoNadmetanje);
+                var javnoNadmetanjeDto = await _javnoNadmetanjeService.SendGetRequestAsync(urlJavnoNadmetanje + javnoNadmetanje, token);
                 if(javnoNadmetanjeDto is not null)
                 {
                     prijavaDto.JavnoNadmetanje.Add(javnoNadmetanjeDto);

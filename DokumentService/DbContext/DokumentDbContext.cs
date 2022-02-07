@@ -27,11 +27,11 @@ namespace DokumentService.DbContext
             modelBuilder.Entity<Dokument>()
                 .HasIndex(td => td.ZavodniBroj)
                 .IsUnique();
-            
+
             modelBuilder.Entity<TipDokumenta>()
                 .HasIndex(td => td.NazivTipa)
                 .IsUnique();
-            
+
             modelBuilder.Entity<TipDokumenta>()
                 .HasData(
                     new TipDokumenta

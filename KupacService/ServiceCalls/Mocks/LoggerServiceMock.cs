@@ -14,7 +14,7 @@ namespace KupacService.ServiceCalls.Mocks
         {
             var log = new LogModel
             {
-                Servis = "Ovlasceno lice API",
+                Servis = "Kupac api",
                 Level = level,
                 Metoda = metoda,
                 Poruka = poruka,

@@ -14,8 +14,9 @@ namespace OvlascenoLiceService.ServiceCalls.Mocks
         /// Metoda za slanje get zahteva za drzavu - mock
         /// </summary>
         /// <param name="url"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             var drzava = new DrzavaDto
             {

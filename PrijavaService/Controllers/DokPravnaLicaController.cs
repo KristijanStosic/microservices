@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using PrijavaService.Data.Interfaces;
 using PrijavaService.Entities;
@@ -43,6 +45,7 @@ namespace PrijavaService.Controllers
         /// <returns>Lista dokumenata pravnih lica</returns>
         /// <response code="200">Vraća listu dokumenata pravnih lica</response>
         /// <response code="404">Nije pronađena ni jedn dokument pravnih lica</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -67,6 +70,7 @@ namespace PrijavaService.Controllers
         /// <returns>Dokument pravnih lica</returns>
         /// <response code="200">Vraća traženi dokument pravnih lica</response>
         /// <response code="404">Nije pronađen dokument pravnih lica za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer")]
         [HttpGet("{dokPravnaLicaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -96,8 +100,9 @@ namespace PrijavaService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju fokumenta pravnog lica</returns>
-        /// <response code="200">Vraća kreiran dokument pravnog lica</response>
+        /// <response code="201">Vraća kreiran dokument pravnog lica</response>
         /// <response code="500">Desila se greška prilikom unosa novog dokumenta pravnih lica</response>
+        [Authorize(Roles = "Administrator, Superuser, Operater")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -128,11 +133,12 @@ namespace PrijavaService.Controllers
         /// <summary>
         /// Izmena dokumenta pravnih lica
         /// </summary>
-        /// <param name="dokFizickoLice">Model dokumenta pravnih lica</param>
+        /// <param name="dokPravnoLice">Model dokumenta pravnih lica</param>
         /// <returns>Potvrda o izmeni dokumenta pravnih lica</returns>
         /// <response code="200">Izmenjen dokument pravnih lica</response>
         /// <response code="404">Nije pronađen dokument pravnih lica za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene dokumenta pravnih lica</response>
+        [Authorize(Roles = "Administrator, Superuser")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -175,6 +181,7 @@ namespace PrijavaService.Controllers
         /// <response code="204">Dokument pravnog lica je uspešno obrisan</response>
         /// <response code="404">Nije pronađen dokument pravnog lica za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja dokumenta pravnog lica</response>
+        [Authorize(Roles = "Administrator, Superuser")]
         [HttpDelete("{dokPravnaLicaId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -208,6 +215,7 @@ namespace PrijavaService.Controllers
         /// Vraća opcije za rad sa dokumentima pravnog lica
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser")]
         [HttpOptions]
         public IActionResult GetDokPravnaLicaOptions()
         {

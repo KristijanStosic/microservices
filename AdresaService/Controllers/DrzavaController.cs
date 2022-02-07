@@ -3,6 +3,7 @@ using AdresaService.Entities;
 using AdresaService.Model.Drzava;
 using AdresaService.ServiceCalls;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -42,6 +43,7 @@ namespace AdresaService.Controllers
         /// <returns>Lista država</returns>
         /// <response code="200">Vraća listu država</response>
         /// <response code="404">Nije pronađena ni jedna jedina država</response>
+        [Authorize]
         [HttpGet]
         [HttpHead] //Podržavamo i HTTP head zahtev koji nam vraća samo zaglavlja u odgovoru    
         [ProducesResponseType(StatusCodes.Status200OK)] //Eksplicitno definišemo šta sve može ova akcija da vrati
@@ -66,6 +68,7 @@ namespace AdresaService.Controllers
         /// <returns>Državu</returns>
         /// <response code="200">Vraća traženu državu</response>
         /// <response code="404">Nije pronađena država za uneti ID</response>
+        [Authorize]
         [HttpGet("{drzavaId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -96,8 +99,9 @@ namespace AdresaService.Controllers
         /// }
         /// </remarks>
         /// <returns>Potvrda o kreiranju države</returns>
-        /// <response code="200">Vraća kreiranu državu</response>
+        /// <response code="201">Vraća kreiranu državu</response>
         /// <response code="500">Desila se greška prilikom unosa nove države</response>
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -134,6 +138,7 @@ namespace AdresaService.Controllers
         /// <response code="200">Uspešno obrisana država</response>
         /// <response code="404">Nije pronađena država sa zadatim id-em</response>
         /// <response code="500">Desila se greška prilikom brisanja</response>
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpDelete("{drzavaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -181,6 +186,7 @@ namespace AdresaService.Controllers
         /// <response code="200">Uspešno ažurirana država</response>
         /// <response code="404">Nije pronađena država sa datim id-em</response>
         /// <response code="500">Desila se greška prilikom ažuriranja</response>
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -218,6 +224,7 @@ namespace AdresaService.Controllers
         /// Vraća opcije za rad sa državama
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Manager, Superuser, TehnickiSekretar")]
         [HttpOptions]
         public IActionResult GetDrzavaOptions()
         {

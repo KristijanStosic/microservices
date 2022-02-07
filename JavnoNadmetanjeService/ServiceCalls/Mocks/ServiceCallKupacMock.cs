@@ -6,12 +6,12 @@ namespace JavnoNadmetanjeService.ServiceCalls.Mocks
 {
     public class ServiceCallKupacMock<T> : IServiceCall<T>
     {
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             var kupac = new KupacDto
             {
                 Kupac = "Milana Milanovic",
-                Email = "milana@gmail.com",
+                Email = "majkickac99@gmail.com",
                 BrojRacuna = "23212345",
                 BrojTelefona1 = "065145125"
             };

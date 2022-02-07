@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace KupacService.Model.OtherServices
 {
+    /// <summary>
+    /// Dto za logModel
+    /// </summary>
     public class LogModel
     {
         /// <summary>

@@ -3,6 +3,7 @@ using JavnoNadmetanjeService.Data.Interfaces;
 using JavnoNadmetanjeService.Entities;
 using JavnoNadmetanjeService.Models.Tip;
 using JavnoNadmetanjeService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -42,6 +43,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Lista tipova</returns>
         /// <response code="200">Vraća listu tipova</response>
         /// <response code="404">Nije pronađen ni jedan tip</response>
+        [Authorize(Roles = "Administrator, Superuser, Manager, OperaterNadmetanje")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -68,6 +70,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Tip javnog nadmetanja</returns>
         /// <response code="200">Vraća traženi tip</response>
         /// <response code="404">Nije pronađen tip za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Manager, OperaterNadmetanje")]
         [HttpGet("{tipId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -98,8 +101,9 @@ namespace JavnoNadmetanjeService.Controllers
         /// }
         /// </remarks>
         /// <returns>Potvrda o kreiranju tipa</returns>
-        /// <response code="200">Vraća kreiran tip</response>
+        /// <response code="201">Vraća kreiran tip</response>
         /// <response code="500">Desila se greška prilikom unosa novog tipa</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -132,6 +136,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <response code="200">Izmenjen tip</response>
         /// <response code="404">Nije pronađen tip za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene tipa</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -174,6 +179,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <response code="204">Tip je uspešno obrisan</response>
         /// <response code="404">Nije pronađen tip za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja tipa</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpDelete("{tipId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -209,6 +215,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// Vraća opcije za rad sa tipovima javnog nadmetanja
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser,Manager,  OperaterNadmetanje")]
         [HttpOptions]
         public IActionResult GetTipOptions()
         {

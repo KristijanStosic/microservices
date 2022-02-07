@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KorisnikSistemaService.Migrations
 {
     [DbContext(typeof(KorisnikSistemaContext))]
-    [Migration("20220205223914_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20220207153408_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -68,7 +68,7 @@ namespace KorisnikSistemaService.Migrations
                             Email = "Operater@gmail.com",
                             Ime = "Operater",
                             KorisnickoIme = "Operater",
-                            Lozinka = "$2a$11$3NIhdUQv6ewaS9rW2a7XlO3VrMVxoFBNocqWpoQdlkz8UowqAYJyq",
+                            Lozinka = "$2a$11$3yEazS9ipOrUw8bkAjykTu2S76ixA8ONbm6XUYnJBQqyfnJtB5d9O",
                             Prezime = "Operater",
                             TipKorisnikaId = new Guid("e98b3a1c-eb0c-4e16-8866-a811115cac7c")
                         },
@@ -78,7 +78,7 @@ namespace KorisnikSistemaService.Migrations
                             Email = "TehnickiSekretar@gmail.com",
                             Ime = "TehnickiSekretar",
                             KorisnickoIme = "TehnickiSekretar",
-                            Lozinka = "$2a$11$45SYcXVkf.aamMEanPi1jO8YgLIh6qLH6PkNd3CEILF0EKASpWJw.",
+                            Lozinka = "$2a$11$QSQ8ynEzPzB8zXxx2kx7wOnb1DQMGDKNFBH7iJU5bGo4S0V4MZc/y",
                             Prezime = "TehnickiSekretar",
                             TipKorisnikaId = new Guid("74e09d41-9b18-493b-9569-7069ea26beef")
                         },
@@ -88,7 +88,7 @@ namespace KorisnikSistemaService.Migrations
                             Email = "PrvaKomisija@gmail.com",
                             Ime = "PrvaKomisija",
                             KorisnickoIme = "PrvaKomisija",
-                            Lozinka = "$2a$11$hgmns3gILyZEMJXgbWXWCeB5eJmYXeOeQ87kJsLRcn7UboAZM5hRC",
+                            Lozinka = "$2a$11$sA240A1NWd./XOGERzgIaemdmfc3mTMpzY3fENEeCTxRkXt2mwHj.",
                             Prezime = "PrvaKomisija",
                             TipKorisnikaId = new Guid("64591a2c-1aa9-4bb2-aded-deb0956e3e82")
                         },
@@ -98,7 +98,7 @@ namespace KorisnikSistemaService.Migrations
                             Email = "Superuser@gmail.com",
                             Ime = "Superuser",
                             KorisnickoIme = "Superuser",
-                            Lozinka = "$2a$11$TmfDnRZlNQRKiWqY4c95euVks0m8qmgYipRJFypWfgopDFgP9arlS",
+                            Lozinka = "$2a$11$JLNRe/erSEY1/KzoLPR2I.Pt9C7ghkKj412LqHkhGDesSo2e31JLe",
                             Prezime = "Superuser",
                             TipKorisnikaId = new Guid("f368886e-c58b-48fb-82b3-b1caf54275ba")
                         },
@@ -108,7 +108,7 @@ namespace KorisnikSistemaService.Migrations
                             Email = "OperaterNadmetanja@gmail.com",
                             Ime = "OperaterNadmetanja",
                             KorisnickoIme = "OperaterNadmetanja",
-                            Lozinka = "$2a$11$xL1MywlaXWfYlgxpSkQg.u9gtU6CyY1mSDkupPqJgkCLDt6kQN28S",
+                            Lozinka = "$2a$11$.FVNptUs.TU0CfLpVAkGZux/T1eXglctk9cOaMhQ1UVNB0dmObsES",
                             Prezime = "OperaterNadmetanja",
                             TipKorisnikaId = new Guid("1e9a8348-c519-405d-b080-cbfdc60db8b6")
                         },
@@ -118,7 +118,7 @@ namespace KorisnikSistemaService.Migrations
                             Email = "Licitant@gmail.com",
                             Ime = "Licitant",
                             KorisnickoIme = "Licitant",
-                            Lozinka = "$2a$11$Rjg941vbfCitfLJFxODHbuE/fakt8mq.F8SMNLw1Xm66/mEywHpNC",
+                            Lozinka = "$2a$11$TjKnLKjz3jeGAYO4/6gr8uLmlYtWviOrR7x0blKH2aw2bCLYEo5S6",
                             Prezime = "Licitant",
                             TipKorisnikaId = new Guid("213cbfd7-821e-4496-86aa-a370f7804bb7")
                         },
@@ -128,7 +128,7 @@ namespace KorisnikSistemaService.Migrations
                             Email = "Menadzer@gmail.com",
                             Ime = "Menadzer",
                             KorisnickoIme = "Menadzer",
-                            Lozinka = "$2a$11$tyWYw2xbwgEN7KiSu3ieA.0cgmgyakhi8spEZCbX2OytvBiwWNtna",
+                            Lozinka = "$2a$11$qpgSQlGR/5pjS5aQi25GWe6D02fWY1kRq/OntvbmK02OfnybbXsY.",
                             Prezime = "Menadzer",
                             TipKorisnikaId = new Guid("909987de-f2fc-4bb8-bd99-3944434ff4cd")
                         },
@@ -138,7 +138,7 @@ namespace KorisnikSistemaService.Migrations
                             Email = "Administrator@gmail.com",
                             Ime = "Administrator",
                             KorisnickoIme = "Administrator",
-                            Lozinka = "$2a$11$bQufEg333hR1HgL5iQHBQ.NeL8aTzhVbZl8ezca3zkNCFf50bunEm",
+                            Lozinka = "$2a$11$e6ctOJTcIpfLKUVit/KOo.KS5NV.xKVxj49aCc/OOxVNf1mNW1/Te",
                             Prezime = "Administrator",
                             TipKorisnikaId = new Guid("f76ffdb2-32d6-4e36-84a1-431c5158c028")
                         });

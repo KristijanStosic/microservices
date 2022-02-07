@@ -13,13 +13,11 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
-/// <summary>
-/// Kontroler za korisnika sistema
-/// </summary>
 namespace KorisnikSistemaService.Controllers
-{   [Authorize(Roles ="Administrator")]
+{
+    /// <summary>
+    /// Kontroler za korisnika sistema
+    /// </summary>[Authorize(Roles ="Administrator")]
     [Route("api/KorisnikSistema")]
     [ApiController]
     [Produces("application/json", "application/xml")]
@@ -31,7 +29,7 @@ namespace KorisnikSistemaService.Controllers
         private readonly IMapper _mapper;
         private readonly ILoggerService _loggerService;
 
-        public KorisnikSistemaController(IKorisnikSistemaRepository korisnikSistemaRepository, LinkGenerator linkGenerator,IMapper mapper, ILoggerService loggerService)
+        public KorisnikSistemaController(IKorisnikSistemaRepository korisnikSistemaRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
         {
             this._korisnikSistemaRepository = korisnikSistemaRepository;
             this._linkGenerator = linkGenerator;
@@ -53,7 +51,7 @@ namespace KorisnikSistemaService.Controllers
         {
             var korisniciSistema = await _korisnikSistemaRepository.GetAllKorisnikSistema();
 
-            if(korisniciSistema == null || korisniciSistema.Count == 0)
+            if (korisniciSistema == null || korisniciSistema.Count == 0)
             {
                 await _loggerService.Log(LogLevel.Warning, "GetAllKorisnikSistema", "Lista korisnika sistema je prazna.");
                 return NoContent();
@@ -67,7 +65,7 @@ namespace KorisnikSistemaService.Controllers
         /// Vraća jednog korisnika sistema na osnovu ID-a
         /// </summary>
         /// <param name="korisnikSistemaId">ID korisnikaSistema</param>
-        /// <returns>Javno nadmetanje</returns>
+        /// <returns>Korisnik sistema</returns>
         /// <response code="200">Vraća traženog korisnika sistema</response>
         /// <response code="404">Nije pronađen korisnik sistema za uneti ID</response>
         [HttpGet("{korisnikSistemaId}")]
@@ -77,14 +75,14 @@ namespace KorisnikSistemaService.Controllers
         {
             var korisnikSistema = await _korisnikSistemaRepository.GetKorisnikSistemaById(korisnikSistemaId);
 
-            if(korisnikSistema == null)
+            if (korisnikSistema == null)
             {
                 await _loggerService.Log(LogLevel.Warning, "GetKorisnikSitema", $"Korisnik sistema sa id-em {korisnikSistemaId} nije pronađen.");
                 return NotFound();
             }
 
-            await _loggerService.Log(LogLevel.Information, "GetJavnoNadmetanje", $"Korisnik sistema sa id-em {korisnikSistemaId} je uspešno vraćen.");
-            
+            await _loggerService.Log(LogLevel.Information, "GetKorisnikSitema", $"Korisnik sistema sa id-em {korisnikSistemaId} je uspešno vraćen.");
+
             return Ok(_mapper.Map<KorisnikSistemaDto>(korisnikSistema));
         }
 
@@ -117,8 +115,8 @@ namespace KorisnikSistemaService.Controllers
             {
                 KorisnikSistemaCreationDto korisnik = korisnikSistema;
                 korisnik.Lozinka = BCrypt.Net.BCrypt.HashPassword(korisnikSistema.Lozinka);
-                
-                
+
+
                 KorisnikSistema noviKorisnikSistma = await _korisnikSistemaRepository.CreateKorisnikSistema(_mapper.Map<KorisnikSistema>(korisnik));
                 await _korisnikSistemaRepository.SaveChangesAsync();
 
@@ -127,7 +125,7 @@ namespace KorisnikSistemaService.Controllers
 
                 return Created(lokacija, _mapper.Map<KorisnikSistemaConformationDto>(noviKorisnikSistma));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await _loggerService.Log(LogLevel.Error, "CreateKorisnikSistema", $"Greška prilikom unosa korisnika sistema sa vrednostima: {JsonConvert.SerializeObject(korisnikSistema)}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
@@ -155,7 +153,7 @@ namespace KorisnikSistemaService.Controllers
             {
                 var stariKorisnikSistema = await _korisnikSistemaRepository.GetKorisnikSistemaById(korisnikSistema.KorisnikSistemaId);
 
-                if(stariKorisnikSistema == null)
+                if (stariKorisnikSistema == null)
                 {
                     await _loggerService.Log(LogLevel.Warning, "UpdateKorisnikSistema", $"KorisnikSistema sa id-em {korisnikSistema.KorisnikSistemaId} nije pronađen.");
                     return NotFound();
@@ -179,7 +177,7 @@ namespace KorisnikSistemaService.Controllers
                 return Ok(_mapper.Map<KorisnikSistemaDto>(noviKorisnik));
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await _loggerService.Log(LogLevel.Error, "UpdateKorisnikSistema", $"Greška prilikom izmene korisnika sistema sa id-em {korisnikSistema}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Update error");
@@ -193,7 +191,7 @@ namespace KorisnikSistemaService.Controllers
         /// <returns></returns>
         /// <response code="200">Uspešno obrisan korisnik sistema</response>
         /// <response code="404">Nije pronađen korisnik sistema na osnovu unetog id-a</response>
-        /// <response code="" 500>Desila se greška prilikom brisanja korisnika sistema</response>
+        /// <response code="500">Desila se greška prilikom brisanja korisnika sistema</response>
         [HttpDelete("{korisnikSistemaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -204,7 +202,7 @@ namespace KorisnikSistemaService.Controllers
             {
                 var korisnikSistema = await _korisnikSistemaRepository.GetKorisnikSistemaById(korisnikSistemaId);
 
-                if(korisnikSistema == null)
+                if (korisnikSistema == null)
                 {
                     await _loggerService.Log(LogLevel.Warning, "DeleteKorisnikSistema", $"KorisnikSistema sa id-em {korisnikSistemaId} nije pronađen.");
                     return NotFound();
@@ -216,7 +214,7 @@ namespace KorisnikSistemaService.Controllers
 
                 return Ok();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 await _loggerService.Log(LogLevel.Error, "DeleteKorisnikSistema", $"Greška prilikom brisanja korisnika sistema sa id-em {korisnikSistemaId}.", ex);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Delete error");
@@ -228,7 +226,7 @@ namespace KorisnikSistemaService.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpOptions]
-        public IActionResult GetJavnoNadmetanjeOptions()
+        public IActionResult GetKorisnikSistemaOptions()
         {
             Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
             return Ok();

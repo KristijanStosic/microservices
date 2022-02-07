@@ -39,7 +39,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
             return Task.CompletedTask;
         }
 
-        public Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(Entities.UgovorOZakupu ugovor)
+        public Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(string token, Entities.UgovorOZakupu ugovor)
         {
             var ugovorDto = _mapper.Map<UgovorOZakupuDto>(ugovor);
 
@@ -51,7 +51,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
             return Task.FromResult(ugovorDto);
         }
 
-        private DokumentDto GetDokument()
+        private static DokumentDto GetDokument()
         {
             return new DokumentDto
             {
@@ -62,7 +62,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
             };
         }
 
-        private JavnoNadmetanjeDto GetJavnoNadmetanje()
+        private static JavnoNadmetanjeDto GetJavnoNadmetanje()
         {
             return new JavnoNadmetanjeDto
             {
@@ -187,7 +187,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
             };
         }
 
-        private KupacDto GetKupac()
+        private static KupacDto GetKupac()
         {
             return new KupacDto
             {
@@ -259,7 +259,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
             };
         }
 
-        private LicnostDto GetLicnost()
+        private static LicnostDto GetLicnost()
         {
             return new LicnostDto
             {

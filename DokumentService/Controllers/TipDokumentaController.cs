@@ -6,6 +6,7 @@ using DokumentService.Data.UnitOfWork;
 using DokumentService.Entities;
 using DokumentService.Models.TipDokumenta;
 using DokumentService.Services.Logger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -39,10 +40,13 @@ namespace DokumentService.Controllers
         /// <response code="200">Vraća listu tipova dokumenta</response>
         /// <response code="204">Nije pronadjen nijedan tip</response>
         /// <response code="204">Greška prilikom vraćanja liste tipova dokumenta</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<TipDokumentaDto>>> GetAllTipDokumenta()
         {
             try
@@ -78,10 +82,13 @@ namespace DokumentService.Controllers
         /// <response code="200">Vraća traženi tip dokumenta</response>
         /// <response code="404">Nije pronadjen tip dokumenta za uneti ID</response>
         /// <response code="500">Greška prilikom vraćanja tipa dokumenta</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija")]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<TipDokumentaDto>> GetTipDokumentaById(Guid id)
         {
             try
@@ -116,10 +123,13 @@ namespace DokumentService.Controllers
         /// <returns>Tip dokumenta</returns>
         /// <response code="201">Vraća kreirani tip dokumenta</response>
         /// <response code="500">Greška prilikom kreiranja tipa dokumenta</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateTipDokumenta([FromBody] CreateTipDokumentaDto tipDokumentaDto)
         {
             try
@@ -157,12 +167,15 @@ namespace DokumentService.Controllers
         /// <response code="404">Nije pronadjen tip dokumenta za uneti ID</response>
         /// <response code="400">ID nije isti kao onaj proledjen u modelu tipa dokumenta</response>
         /// <response code="500">Greška prilikom izmene tipa dokumenta</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija")]
         [HttpPut("{id:guid}")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateTipDokumenta(Guid id, [FromBody] UpdateTipDokumentaDto tipDokumentaDto)
         {
             try
@@ -208,10 +221,13 @@ namespace DokumentService.Controllers
         /// <response code="204">Tip dokumenta je uspešno obrisan</response>
         /// <response code="404">Nije pronadjen tip dokumenta za uneti ID</response>
         /// <response code="500">Greška prilikom brisanja tipa dokumenta</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija")]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteTipDokumenta(Guid id)
         {
             try
@@ -246,8 +262,11 @@ namespace DokumentService.Controllers
         ///     Vraća opcije za rad sa tipovima dokumenta
         /// </summary>
         /// <response code="200">Vraća listu opcija u header-u</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija")]
         [HttpOptions]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult GetTipDokumentaOptions()
         {
             Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");

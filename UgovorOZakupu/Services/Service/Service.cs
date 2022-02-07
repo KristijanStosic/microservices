@@ -1,7 +1,9 @@
 ﻿using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using UgovorOZakupu.Services.Service;
 
 namespace UgovorOZakupu.Services
 {
@@ -16,8 +18,10 @@ namespace UgovorOZakupu.Services
             _http = new HttpClient();
         }
 
-        public async Task<T> SendGetRequest(string uri = "")
+        public async Task<T> SendGetRequest(string token, string uri = "")
         {
+            _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+
             var response = await _http.GetAsync(uri == string.Empty ? _url : $"{_url}/{uri}");
 
             if (response.IsSuccessStatusCode)

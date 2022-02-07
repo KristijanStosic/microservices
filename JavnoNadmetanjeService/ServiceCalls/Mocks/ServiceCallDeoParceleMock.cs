@@ -6,7 +6,7 @@ namespace JavnoNadmetanjeService.ServiceCalls.Mocks
 {
     public class ServiceCallDeoParceleMock<T> : IServiceCall<T>
     {
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             var deoParcele = new DeoParceleDto
             {

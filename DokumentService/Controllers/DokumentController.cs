@@ -7,6 +7,7 @@ using DokumentService.Entities;
 using DokumentService.Models.Confirmations;
 using DokumentService.Models.Dokument;
 using DokumentService.Services.Logger;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -40,10 +41,13 @@ namespace DokumentService.Controllers
         /// <response code="200">Vraća listu dokumenata</response>
         /// <response code="204">Nije pronadjen nijedan dokument</response>
         /// <response code="500">Greška prilikom vraćanja liste dokumenata</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<List<DokumentDto>>> GetAllDokument()
         {
             try
@@ -79,10 +83,13 @@ namespace DokumentService.Controllers
         /// <response code="200">Vraća traženi dokument</response>
         /// <response code="404">Nije pronadjen dokument za uneti ID</response>
         /// <response code="500">Greška prilikom vraćanja dokumenta</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija")]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<DokumentDto>> GetDokumentById(Guid id)
         {
             try
@@ -117,10 +124,13 @@ namespace DokumentService.Controllers
         /// <returns>Dokument</returns>
         /// <response code="201">Vraća kreirani dokument</response>
         /// <response code="500">Greška prilikom kreiranja dokumenta</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> CreateDokument([FromBody] CreateDokumentDto dokumentDto)
         {
             try
@@ -157,11 +167,14 @@ namespace DokumentService.Controllers
         /// <response code="404">Nije pronadjen dokument za uneti ID</response>
         /// <response code="400">ID nije isti kao onaj proledjen u modelu dokumenta</response>
         /// <response code="500">Greška prilikom izmene dokumenta</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija")]
         [HttpPut("{id:guid}")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> UpdateDokument(Guid id, [FromBody] UpdateDokumentDto dokumentDto)
         {
             try
@@ -207,10 +220,13 @@ namespace DokumentService.Controllers
         /// <response code="204">Dokument je uspešno obrisan</response>
         /// <response code="404">Nije pronadjen dokument za uneti ID</response>
         /// <response code="500">Greška prilikom brisanja dokumenta</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija")]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> DeleteDokument(Guid id)
         {
             try
@@ -245,8 +261,11 @@ namespace DokumentService.Controllers
         ///     Vraća opcije za rad sa dokumentima
         /// </summary>
         /// <response code="200">Vraća listu opcija u header-u</response>
+        /// <response code="401">Greška prilikom autentifikacije</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija")]
         [HttpOptions]
         [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public IActionResult GetDokumentOptions()
         {
             Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");

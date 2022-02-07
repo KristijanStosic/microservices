@@ -13,7 +13,8 @@ namespace OvlascenoLiceService.ServiceCalls
         /// Metoda za slanje get zahteva
         /// </summary>
         /// <param name="url"></param>
+        /// <param name="token"></param>
         /// <returns></returns>
-        Task<T> SendGetRequestAsync(string url);
+        Task<T> SendGetRequestAsync(string url, string token);
     }
 }

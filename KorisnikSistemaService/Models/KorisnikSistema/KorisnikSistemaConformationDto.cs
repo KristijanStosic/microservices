@@ -18,8 +18,5 @@
         /// Korisnicko ime korisnika sistema
         /// </summary>
         public string KorisnickoIme { get; set; }
-        /// <summary>
-        /// Tip korisnika sistema // drugi entitet
-        /// </summary>
     }
 }

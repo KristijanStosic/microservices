@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -49,6 +50,8 @@ namespace ZalbaService.Controllers
         /// <returns>Lista tipova zalbi</returns>
         /// <response code="200">Vraća listu tipova zalbi</response>
         /// <response code="204">Nije pronađen ni jedan tip zalbe</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpGet]
@@ -73,6 +76,8 @@ namespace ZalbaService.Controllers
         /// <returns>Tip zalbe</returns>
         /// <response code="200">Vraća traženi tip zalbe</response>
         /// <response code="404">Nije pronađen tip zalbe za uneti ID</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{tipZalbeId}")]
@@ -106,6 +111,8 @@ namespace ZalbaService.Controllers
         /// <response code="201">Vraća kreiran tip zalbe</response>
         /// <response code="400">Desila se greška prilikom unosa istih podataka za tip žalbe</response>
         /// <response code="500">Desila se greška prilikom unosa novog tipa zalbe</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -154,6 +161,8 @@ namespace ZalbaService.Controllers
         /// <response code="400">Desila se greška prilikom unosa istih podataka za tip žalbe</response>
         /// <response code="404">Nije pronađen tip zalbe za uneti ID</response>
         /// <response code="500">Serverska greška tokom modifikacije tipa zalbe</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -207,6 +216,8 @@ namespace ZalbaService.Controllers
         /// <response code="204">Tip žalbe je uspešno obrisan</response>
         /// <response code="404">Nije pronađen tip žalbe za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja tipa žalbe</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -240,6 +251,8 @@ namespace ZalbaService.Controllers
         /// Vraća opcije za rad sa tipovima zalbi
         /// </summary>
         /// <returns></returns>
+        ///         
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetTipZalbeOptions()
         {

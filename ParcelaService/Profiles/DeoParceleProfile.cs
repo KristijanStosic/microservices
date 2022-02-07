@@ -27,16 +27,16 @@ namespace ParcelaService.Profiles
                     opt => opt.MapFrom(src => $"{src.Parcela.BrojParcele}"))
               .ForMember(
                     dest => dest.KatastarskaOpstina,
-                    opt => opt.MapFrom(src => $"{src.Parcela.KatastarskaOpstina}"))
+                    opt => opt.MapFrom(src => $"{src.Parcela.KatastarskaOpstina.NazivKatastarskeOpstine}"))
                .ForMember(
                     dest => dest.ZasticenaZona,
-                    opt => opt.MapFrom(src => $"{src.Parcela.ZasticenaZona}"))
+                    opt => opt.MapFrom(src => $"{src.Parcela.ZasticenaZona.BrojZasticeneZone}"))
                .ForMember(
                     dest => dest.OblikSvojine,
-                    opt => opt.MapFrom(src => $"{src.Parcela.OblikSvojine}"))
+                    opt => opt.MapFrom(src => $"{src.Parcela.OblikSvojine.OpisOblikaSvojine}"))
                .ForMember(
                     dest => dest.Odvodnjavanje,
-                    opt => opt.MapFrom(src => $"{src.Parcela.Odvodnjavanje}"));
+                    opt => opt.MapFrom(src => $"{src.Parcela.Odvodnjavanje.OpisOdvodnjavanja}"));
 
 
             CreateMap<DeoParceleUpdateDto, DeoParcele>();

@@ -1,4 +1,4 @@
-using KorisnikSistemaService.Auth;
+﻿using KorisnikSistemaService.Auth;
 using KorisnikSistemaService.Data;
 using KorisnikSistemaService.Data.Interfaces;
 using KorisnikSistemaService.Entities.DataContext;
@@ -6,12 +6,18 @@ using KorisnikSistemaService.ServiceCalls;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.IO;
+using System.Reflection;
 using System.Text;
 
 
@@ -30,10 +36,61 @@ namespace KorisnikSistemaService
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddControllers(setup =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "KorisnikSistemaService", Version = "v1" });
+                setup.ReturnHttpNotAcceptable = false;
+            }).AddXmlDataContractSerializerFormatters()
+            .ConfigureApiBehaviorOptions(setupAction =>
+            {
+                setupAction.InvalidModelStateResponseFactory = context =>
+                {
+                    ProblemDetailsFactory problemDetailsFactory = context.HttpContext.RequestServices
+                        .GetRequiredService<ProblemDetailsFactory>();
+
+                    ValidationProblemDetails problemDetails = problemDetailsFactory.CreateValidationProblemDetails(context.HttpContext, context.ModelState);
+                    problemDetails.Detail = "Pogledajte Error polje za detaljnije informacije.";
+                    problemDetails.Instance = context.HttpContext.Request.Path;
+
+                    var actionExecutiongContext = context as ActionExecutingContext;
+                    if ((context.ModelState.ErrorCount > 0) && (actionExecutiongContext?.ActionArguments.Count == context.ActionDescriptor.Parameters.Count))
+                    {
+                        problemDetails.Status = StatusCodes.Status422UnprocessableEntity;
+                        problemDetails.Title = "Desila se greška prilikom validacije.";
+
+
+                        return new UnprocessableEntityObjectResult(problemDetails)
+                        {
+                            ContentTypes = { "application/problem+json" }
+                        };
+                    }
+
+                    problemDetails.Status = StatusCodes.Status400BadRequest;
+                    problemDetails.Title = "Desila se greška prilikom parsiranja.";
+                    return new BadRequestObjectResult(problemDetails)
+                    {
+                        ContentTypes = { "application/problem+json" }
+                    };
+                };
+            });
+            services.AddSwaggerGen(setup =>
+            {
+                setup.SwaggerDoc("v1",
+                  new OpenApiInfo()
+                  {
+                       Title = "Korisnik sistema API",
+                       Version = "v1",
+                       Description = "Korisnik sistema API omogućava administratoru da rukuje sa korisnicima u sistemu.",
+                       Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                       {
+                           Name = "Mladen Bajić",
+                           Email = "bajicmladen@uns.ac.rs",
+                           Url = new Uri(Configuration["Swagger:Github"])
+                       }
+                  });
+
+                var xmlComments = $"{ Assembly.GetExecutingAssembly().GetName().Name }.xml";
+                var xmlCommentsPath = Path.Combine(AppContext.BaseDirectory, xmlComments);
+                setup.IncludeXmlComments(xmlCommentsPath);
             });
 
             var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();
@@ -62,7 +119,7 @@ namespace KorisnikSistemaService
             services.AddScoped<ITipKorisnikaRepository, TipKorisnikaRepository>();
             services.AddScoped<IKorisnikSistemaRepository, KorisnikSistemaRepository>();
 
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
+            services.AddScoped<ILoggerService, LoggerService>();
 
             services.AddDbContext<KorisnikSistemaContext>();
 
@@ -74,9 +131,25 @@ namespace KorisnikSistemaService
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "KorisnikSistemaService v1"));
             }
+            else
+            {
+                app.UseExceptionHandler(appBuilder =>
+                {
+                    appBuilder.Run(async context =>
+                    {
+                        context.Response.StatusCode = 500;
+                        await context.Response.WriteAsync("Desila se greška!");
+                    });
+                });
+            }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(setupAction =>
+            {
+                setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Korisnik Sistema API");
+                setupAction.RoutePrefix = "";
+            });
 
             app.UseHttpsRedirection();
 

@@ -2,12 +2,17 @@
 using JavnoNadmetanjeService.Data.Interfaces;
 using JavnoNadmetanjeService.Entities;
 using JavnoNadmetanjeService.Entities.Confirmations;
+using JavnoNadmetanjeService.Helpers;
 using JavnoNadmetanjeService.Models.Etapa;
+using JavnoNadmetanjeService.Models.Other;
 using JavnoNadmetanjeService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -24,13 +29,17 @@ namespace JavnoNadmetanjeService.Controllers
     public class EtapaController : ControllerBase
     {
         private readonly IEtapaRepository _etapaRepository;
+        private readonly IJavnoNadmetanjeRepository _javnoNadmetanjeRepository;
+        private readonly IJavnoNadmetanjeCalls _javnoNadmetanjeCalls;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
         private readonly ILoggerService _loggerService;
 
-        public EtapaController(IEtapaRepository etapaRepository, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
+        public EtapaController(IEtapaRepository etapaRepository, IJavnoNadmetanjeRepository javnoNadmetanjeRepository, IJavnoNadmetanjeCalls javnoNadmetanjeCalls, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
         {
             _etapaRepository = etapaRepository;
+            _javnoNadmetanjeRepository = javnoNadmetanjeRepository;
+            _javnoNadmetanjeCalls = javnoNadmetanjeCalls;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
             _loggerService = loggerService;
@@ -42,6 +51,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Lista etapa</returns>
         /// <response code="200">Vraća listu etapa</response>
         /// <response code="404">Nije pronađena ni jedna etapa</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanje")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -68,6 +78,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Etapa</returns>
         /// <response code="200">Vraća traženu etapu</response>
         /// <response code="404">Nije pronađena etapa za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanje")]
         [HttpGet("{etapaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -103,8 +114,9 @@ namespace JavnoNadmetanjeService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju etape</returns>
-        /// <response code="200">Vraća kreiranu etapu</response>
+        /// <response code="201">Vraća kreiranu etapu</response>
         /// <response code="500">Desila se greška prilikom unosa nove etape</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -128,6 +140,11 @@ namespace JavnoNadmetanjeService.Controllers
 
                 await _loggerService.Log(LogLevel.Information, "CreateEtapa", $"Etapa sa vrednostima: {JsonConvert.SerializeObject(etapa)} je uspešno kreirana.");
 
+                //RabbitMQ - slanje mejlova kupcima o vremenu kada se etapa odrzava
+                var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+                var javnoNadmetanje = await _javnoNadmetanjeRepository.GetJavnoNadmetanjeById(etapa.JavnoNadmetanjeId);
+                await _javnoNadmetanjeCalls.EtapaToOcelotQueue(javnoNadmetanje, etapa, token);
+
                 return Created(lokacija, _mapper.Map<EtapaConfirmationDto>(novaEtapa));
             }
             catch (Exception ex)
@@ -145,6 +162,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <response code="200">Izmenjena etapa</response>
         /// <response code="404">Nije pronađena etapa za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene etape</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -187,6 +205,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <response code="204">Etapa je uspešno obrisana</response>
         /// <response code="404">Nije pronađena etapa za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja etape</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpDelete("{etapaId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -222,6 +241,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// Vraća opcije za rad sa etapama
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanje")]
         [HttpOptions]
         public IActionResult GetEtapaOptions()
         {

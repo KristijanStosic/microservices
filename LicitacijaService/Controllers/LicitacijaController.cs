@@ -5,11 +5,13 @@ using LicitacijaService.Entities.Confirmations;
 using LicitacijaService.Models;
 using LicitacijaService.Models.OtherServices;
 using LicitacijaService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -50,6 +52,7 @@ namespace LicitacijaService.Controllers
         /// <returns>Lista licitacija</returns>
         /// <response code="200">Vraća listu licitacija</response>
         /// <response code="404">Nije pronađena ni jedna licitacija</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -64,16 +67,17 @@ namespace LicitacijaService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetAllLicitacija", "Lista licitacija je prazna ili null.");
                 return NoContent();
             }
-            string urlJavnoNadmetanje = _configuration["Service:JavnoNadmetanje"]; 
+            string urlJavnoNadmetanje = _configuration["Services:JavnoNadmetanje"]; 
             var licitacijeDto = new List<LicitacijaDto>();
-            foreach(var lic in licitacije)
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+            foreach (var lic in licitacije)
             {
                 var licitacijaDto = _mapper.Map<LicitacijaDto>(lic);
                 licitacijaDto.JavnaNadmetanja = new List<JavnoNadmetanjeDto>();
 
                 foreach(var jn in lic.JavnaNadmetanja)
                 {
-                    var javnoNadmetanje = await _javnoNadmetanjeServiceCall.SendGetRequestAsync(urlJavnoNadmetanje + jn);
+                    var javnoNadmetanje = await _javnoNadmetanjeServiceCall.SendGetRequestAsync(urlJavnoNadmetanje + jn, token);
                     licitacijaDto.JavnaNadmetanja.Add(javnoNadmetanje);
 
                 }
@@ -91,6 +95,7 @@ namespace LicitacijaService.Controllers
         /// <returns>Licitacija</returns>
         /// <response code="200">Vraća traženu licitaciju</response>
         /// <response code="404">Nije pronađena licitacija za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija, OperaterNadmetanja")]
         [HttpGet("{licitacijaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -104,14 +109,15 @@ namespace LicitacijaService.Controllers
                 return NotFound();
             }
             await _loggerService.Log(LogLevel.Information, "GetLicitacija", $"Licitacija sa id-em {licitacijaId} je uspešno vraćena.");
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
             var licitacijaDto = _mapper.Map<LicitacijaDto>(licitacija);
             licitacijaDto.JavnaNadmetanja = new List<JavnoNadmetanjeDto>();
-            string urlJavnoNadmetanje = _configuration["Service:JavnoNadmetanje"];
+            string urlJavnoNadmetanje = _configuration["Services:JavnoNadmetanje"];
 
             foreach (var jn in licitacija.JavnaNadmetanja)
             {
-                var javnoNadmetanje = await _javnoNadmetanjeServiceCall.SendGetRequestAsync(urlJavnoNadmetanje + jn);
+                var javnoNadmetanje = await _javnoNadmetanjeServiceCall.SendGetRequestAsync(urlJavnoNadmetanje + jn, token);
                 if (javnoNadmetanje == null)
                 {
                     return NotFound(); 
@@ -139,8 +145,9 @@ namespace LicitacijaService.Controllers
         ///   "korakCeneLicitacije": 2
         /// </remarks>
         /// <returns>Potvrda o kreiranju licitacije</returns>
-        /// <response code="200">Vraća kreiranu licitaciju</response>
+        /// <response code="201">Vraća kreiranu licitaciju</response>
         /// <response code="500">Desila se greška prilikom unosa nove licitacije</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -174,6 +181,7 @@ namespace LicitacijaService.Controllers
         /// <response code="200">Izmenjena licitacija</response>
         /// <response code="404">Nije pronađena licitacija za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene licitacije</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija, OperaterNadmetanja")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -218,6 +226,7 @@ namespace LicitacijaService.Controllers
         /// <response code="204">Licitacija je uspešno obrisana</response>
         /// <response code="404">Nije pronađena licitacija za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja licitacije</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija, OperaterNadmetanja")]
         [HttpDelete("{licitacijaId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -251,6 +260,7 @@ namespace LicitacijaService.Controllers
         /// Vraća opcije za rad sa licitacijama
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetLicitacijaOptions()
         {

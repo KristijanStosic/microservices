@@ -42,7 +42,12 @@ namespace ParcelaService.Data
                 .Include(k => k.Kultura)
                 .Include(kl => kl.Klasa)
                 .Include(o => o.Obradivost)
-                .Include(p => p.Parcela).ToListAsync();
+                .Include(p => p.Parcela)
+                .Include(p => p.Parcela).ThenInclude(zs => zs.ZasticenaZona)
+                .Include(p => p.Parcela).ThenInclude(ko => ko.KatastarskaOpstina)
+                .Include(p => p.Parcela).ThenInclude(os => os.OblikSvojine)
+                .Include(p => p.Parcela).ThenInclude(od => od.Odvodnjavanje)
+                .ToListAsync();
         }
 
         public async Task<DeoParcele> GetDeoParceleById(Guid deoParceleId)
@@ -51,7 +56,11 @@ namespace ParcelaService.Data
                 .Include(k => k.Kultura)
                 .Include(kl => kl.Klasa)
                 .Include(o => o.Obradivost)
-                .Include(p => p.Parcela).FirstOrDefaultAsync(dp => dp.DeoParceleId == deoParceleId);
+                .Include(p => p.Parcela)
+                .Include(p => p.Parcela).ThenInclude(zs => zs.ZasticenaZona)
+                .Include(p => p.Parcela).ThenInclude(ko => ko.KatastarskaOpstina)
+                .Include(p => p.Parcela).ThenInclude(os => os.OblikSvojine)
+                .Include(p => p.Parcela).ThenInclude(od => od.Odvodnjavanje).FirstOrDefaultAsync(dp => dp.DeoParceleId == deoParceleId);
         }
 
         public async Task SaveChangesAsync()

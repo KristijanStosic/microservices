@@ -5,6 +5,9 @@ using System.Threading.Tasks;
 
 namespace KupacService.Model.OtherServices
 {
+    /// <summary>
+    /// Dto za adresu
+    /// </summary>
     public class AdresaDto
     {
         /// <summary>

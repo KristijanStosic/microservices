@@ -8,7 +8,7 @@ namespace KupacService.ServiceCalls.Mocks
 {
     public class ServiceCallOvlascenoLiceMock<T> : IServiceCall<T>
     {
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             var ovlascenolice = new OvlascenoLiceDto
             {

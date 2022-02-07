@@ -322,11 +322,12 @@
             </summary>
             <param name="loggerService"></param>
         </member>
-        <member name="M:LicnostService.Services.ServiceCall`1.SendGetRequestAsync(System.String)">
+        <member name="M:LicnostService.Services.ServiceCall`1.SendGetRequestAsync(System.String,System.String)">
             <summary>
             Metoda za slanje get zahteva
             </summary>
             <param name="url">Url putanja ka drugom servisu</param>
+            <param name="token"></param>
             <returns></returns>
         </member>
     </members>

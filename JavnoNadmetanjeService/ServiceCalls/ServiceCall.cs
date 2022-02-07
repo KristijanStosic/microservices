@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace JavnoNadmetanjeService.ServiceCalls
@@ -16,7 +17,7 @@ namespace JavnoNadmetanjeService.ServiceCalls
             _loggerService = loggerService;
         }
 
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             try
             {
@@ -24,6 +25,7 @@ namespace JavnoNadmetanjeService.ServiceCalls
 
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Add("Accept", "application/json");
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var response = await httpClient.SendAsync(request);
 

@@ -8,7 +8,7 @@ namespace KupacService.ServiceCalls.Mocks
 {
     public class ServiceCallUplataMock<T> : IServiceCall<T>
     {
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             var uplata = new UplataDto
             {

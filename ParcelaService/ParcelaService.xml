@@ -49,7 +49,7 @@
             }
              </remarks>
              <returns>Potvrda o kreiranju dela parcele</returns>
-             <response code="200">Vraća kreirani deo parcele</response>
+             <response code="201">Vraća kreirani deo parcele</response>
              <response code="500">Desila se greška prilikom unosa novog dela parcele</response>
         </member>
         <member name="M:ParcelaService.Controllers.DeoParceleController.UpdateDeoParcele(ParcelaService.Models.DeoParcele.DeoParceleUpdateDto)">
@@ -476,6 +476,7 @@
             <returns>Lista parcela</returns>
             <response code="200">Vraća listu parcela</response>
             <response code="404">Nije pronađena ni jedna parcela </response>
+            
         </member>
         <member name="M:ParcelaService.Controllers.ParcelaController.GetParcela(System.Guid)">
             <summary>
@@ -485,6 +486,7 @@
             <returns>Parcela</returns>
             <response code="200">Vraća traženu parcelu</response>
             <response code="404">Nije pronađena parcela za uneti ID</response>
+            
         </member>
         <member name="M:ParcelaService.Controllers.ParcelaController.CreateParcela(ParcelaService.Models.Parcela.ParcelaCreationDto)">
             <summary>
@@ -507,6 +509,7 @@
             <returns>Potvrda o kreiranju parcele</returns>
             <response code="201">Vraća kreiranu parcelu </response>
             <response code="500">Desila se greška prilikom unosa nove parcele</response>
+            
         </member>
         <member name="M:ParcelaService.Controllers.ParcelaController.UpdateParcela(ParcelaService.Models.Parcela.ParcelaUpdateDto)">
             <summary>
@@ -517,6 +520,7 @@
             <response code="200">Izmenjena parcela</response>
             <response code="404">Nije pronađena parcela za uneti ID</response>
             <response code="500">Serverska greška tokom izmene parcele</response>
+            
         </member>
         <member name="M:ParcelaService.Controllers.ParcelaController.DeleteParcela(System.Guid)">
             <summary>
@@ -533,6 +537,7 @@
             Vraća opcije za rad sa parcelama
             </summary>
             <returns></returns>
+            
         </member>
         <member name="T:ParcelaService.Controllers.ZasticenaZonaController">
             <summary>
@@ -546,6 +551,7 @@
             <returns>Lista zaštićenih zona</returns>
             <response code="200">Vraća listu zaštićenih zona</response>
             <response code="404">Nije pronađena ni jedna zaštićena zona</response>
+            
         </member>
         <member name="M:ParcelaService.Controllers.ZasticenaZonaController.GetZasticenaZona(System.Guid)">
             <summary>
@@ -581,6 +587,7 @@
             <response code="200">Izmenjena zaštićena zona</response>
             <response code="404">Nije pronađena zaštićena zona za uneti ID</response>
             <response code="500">Serverska greška tokom izmene zaštićene zone</response>
+            
         </member>
         <member name="M:ParcelaService.Controllers.ZasticenaZonaController.DeleteZasticenaZona(System.Guid)">
             <summary>
@@ -591,12 +598,14 @@
             <response code="204">Zaštićena zona je uspešno obrisana</response>
             <response code="404">Nije pronađena zaštićena zona za uneti ID</response>
             <response code="500">Serverska greška tokom brisanja zaštićene zone</response>
+            
         </member>
         <member name="M:ParcelaService.Controllers.ZasticenaZonaController.GetKulturaOptions">
             <summary>
             Vraća opcije za rad sa zaštićenim zonama
             </summary>
             <returns></returns>
+            
         </member>
         <member name="P:ParcelaService.Models.DeoParcele.DeoParceleConfirmationDto.RedniBrojDela">
             <summary>
@@ -1071,11 +1080,6 @@
         <member name="P:ParcelaService.Models.Parcela.ParcelaDto.Odvodnjavanje">
             <summary>
             Odvodnjavanje
-            </summary>
-        </member>
-        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.DeloviParcele">
-            <summary>
-            Lista delova parcela
             </summary>
         </member>
         <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.ParcelaId">

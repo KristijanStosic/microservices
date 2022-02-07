@@ -5,11 +5,13 @@ using LicnostService.Entities.Confirmations;
 using LicnostService.Models.Komisija;
 using LicnostService.Models.OtherModels;
 using LicnostService.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -53,6 +55,7 @@ namespace LicnostService.Controllers
         /// <returns>Lista komisija</returns>
         /// <response code="200">Vraća listu komisija</response>
         /// <response code="404">Nije pronađeno ni jedna komisija</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar")]
         [HttpGet]
         [HttpHead]
         public async Task<ActionResult<List<KomisijaDto>>> GetAllKomisije(string nazivKomisije)
@@ -65,6 +68,7 @@ namespace LicnostService.Controllers
                 return NoContent();
 
             }
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
             var komisijeDto = new List<KomisijaDto>();
             string url = _configuration["Services:DokumentService"];
@@ -73,7 +77,7 @@ namespace LicnostService.Controllers
                 var komisijaDto = _mapper.Map<KomisijaDto>(komisija);
                 if (komisija.DokumentId is not null)
                 {
-                    var dokumentDto = await _dokumentService.SendGetRequestAsync(url + komisija.DokumentId);
+                    var dokumentDto = await _dokumentService.SendGetRequestAsync(url + komisija.DokumentId, token);
                     if (dokumentDto is not null)
                         komisijaDto.Dokument = dokumentDto;
                 }
@@ -93,6 +97,7 @@ namespace LicnostService.Controllers
         /// <returns>Komisija</returns>
         /// <response code="200">Vraća traženu komisiju</response>
         /// <response code="404">Nije pronađena komisija za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar")]
         [HttpGet("{komisijaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -105,12 +110,13 @@ namespace LicnostService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetKomisija", $"Komisija sa id-em {komisijaId} nije pronađena.");
                 return NotFound();
             }
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
             string url = _configuration["Services:DokumentService"];
             var komisijaDto = _mapper.Map<KomisijaDto>(komisija);
             if (komisija.DokumentId is not null)
             {
-                var dokumentDto = await _dokumentService.SendGetRequestAsync(url + komisija.DokumentId);
+                var dokumentDto = await _dokumentService.SendGetRequestAsync(url + komisija.DokumentId, token);
                 if (dokumentDto is not null)
                     komisijaDto.Dokument = dokumentDto;
             }
@@ -126,6 +132,7 @@ namespace LicnostService.Controllers
         /// <returns>Potvrda o kreiranju komisije</returns>
         /// <response code="201">Vraća kreiranu komisiju</response>
         /// <response code="500">Desila se greška prilikom unosa nove komisije</response>
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -170,6 +177,7 @@ namespace LicnostService.Controllers
         /// <response code="200">Izmenjena komisija</response>
         /// <response code="404">Nije pronađena komisija za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene komisije</response>
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -226,6 +234,7 @@ namespace LicnostService.Controllers
         /// <response code="204">Komisija je uspešno obrisano</response>
         /// <response code="404">Nije pronađena komisija za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja komisije</response>
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpDelete("{komisijaId}")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -258,6 +267,7 @@ namespace LicnostService.Controllers
         /// Vraća opcije za rad sa komisijama
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar")]
         [HttpOptions]
         public IActionResult GetKomisijaOptions()
         {

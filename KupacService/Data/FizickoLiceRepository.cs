@@ -109,7 +109,7 @@ namespace KupacService.Data
             var fizickaLica = await   _kupacContext.FizickaLica.Where(f => (ime == null || f.Ime == ime) && 
             (prezime == null || f.Prezime == prezime) && 
             (brojRacuna == null || f.BrojRacuna == brojRacuna)).Include(p => p.Prioriteti).ToListAsync<FizickoLice>();
-
+            
             foreach(var fizickoLice in fizickaLica)
             {
                 fizickoLice.OvlascenaLica = await _kupacContext.kupacOvlascenoLice.Where(ko => ko.KupacId == fizickoLice.KupacId).Select(o => o.OvlascenoLiceId).ToListAsync();
@@ -122,7 +122,8 @@ namespace KupacService.Data
         public async Task<FizickoLice> GetFizickoLiceById(Guid kupacId)
         {
             var fizickoLice = await _kupacContext.FizickaLica.Include(p => p.Prioriteti).FirstOrDefaultAsync(f => f.KupacId == kupacId);
-
+            if (fizickoLice == null)
+                return null;
             fizickoLice.OvlascenaLica = await _kupacContext.kupacOvlascenoLice.Where(ko => ko.KupacId == fizickoLice.KupacId).Select(o => o.OvlascenoLiceId).ToListAsync();
             fizickoLice.Uplate = await _kupacContext.kupacUplata.Where(ku => ku.KupacId == fizickoLice.KupacId).Select(u => u.UplataId).ToListAsync();
             return fizickoLice;

@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using PrijavaService.ServiceCalls;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 /// <summary>
 /// Kontroler za dokumenta fizickih lica
@@ -42,7 +43,11 @@ namespace PrijavaService.Controllers
         /// <returns>Lista dokumenata fizickih lica</returns>
         /// <response code="200">Vraća listu dokumenata fizickih lica</response>
         /// <response code="404">Nije pronađena ni jedn dokument fizickih lica</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer")]
         [HttpGet]
+        [HttpHead]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<DokFizickaLicaDto>>> GetAllDokFizickaLica()
         {
             var dokFizickaLica = await _dokFizickaLicaRepository.GetAllDokFizickaLica();
@@ -63,6 +68,9 @@ namespace PrijavaService.Controllers
         /// <returns>Dokument fizickog lica</returns>
         /// <response code="200">Vraća traženi dokument fizickog lica</response>
         /// <response code="404">Nije pronađen dokument fizickog lica za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{dokFizickaLicaId}")]
         public async Task<ActionResult<DokFizickaLicaDto>> GetDokFizickaLica(Guid dokFizickaLicaId)
         {
@@ -90,9 +98,12 @@ namespace PrijavaService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju fokumenta fizickog lica</returns>
-        /// <response code="200">Vraća kreiran dokument fizickog lica</response>
+        /// <response code="201">Vraća kreiran dokument fizickog lica</response>
         /// <response code="500">Desila se greška prilikom unosa novog dokumenta fizickog lica</response>
+        [Authorize(Roles = "Administrator, Superuser, Operater")]
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DokFizickaLicaConfirmationDto>> CreateDokFizickaLica([FromBody] DokFizickaLicaCreateDto dokFizickoLice)
         {
             try
@@ -123,7 +134,12 @@ namespace PrijavaService.Controllers
         /// <response code="200">Izmenjen dokument fizickog lica</response>
         /// <response code="404">Nije pronađen dokument fizickog lica za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene dokumenta fizickog lica</response>
+        [Authorize(Roles = "Administrator, Superuser")]
         [HttpPut]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<DokFizickaLicaDto>> UpdateDokFizickoLice(DokFizickaLicaUpdateDto dokFizickoLice)
         {
             try
@@ -163,7 +179,11 @@ namespace PrijavaService.Controllers
         /// <response code="204">Dokument fizickog lica je uspešno obrisan</response>
         /// <response code="404">Nije pronađen dokument fizickog lica za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja dokumenta fizickog lica</response>
+        [Authorize(Roles = "Administrator, Superuser")]
         [HttpDelete("{dokFizickaLicaId}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteDokFizickaLica(Guid dokFizickaLicaId)
         {
             try
@@ -193,6 +213,7 @@ namespace PrijavaService.Controllers
         /// Vraća opcije za rad sa dokumentima fizickog lica
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser")]
         [HttpOptions]
         public IActionResult GetDokFizickaLicaOptions()
         {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -43,6 +44,7 @@ namespace ParcelaService.Controllers
         /// <returns>Lista katastarskih opština</returns>
         /// <response code="200">Vraća listu katastarskih opština</response>
         /// <response code="404">Nije pronađena ni jedna katastarska opština</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -71,6 +73,7 @@ namespace ParcelaService.Controllers
         /// <returns>Katastarska opština</returns>
         /// <response code="200">Vraća traženu katastarsku opštinu</response>
         /// <response code="404">Nije pronađena katastarska opština za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet("katastarskaOpstinaId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -104,6 +107,7 @@ namespace ParcelaService.Controllers
         /// <returns>Potvrda o kreiranju katastarske opštine</returns>
         /// <response code="201">Vraća kreiranu katastarsku opštinu</response>
         /// <responese code="500">Desila se greška prilikom unosa nove katastarske opštine</responese>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -137,6 +141,7 @@ namespace ParcelaService.Controllers
         /// <response code="200">Izmena katastarske opštine</response>
         /// <response code="404">Nije pronađena katastarska opština za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene katastarske opštine</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -179,6 +184,7 @@ namespace ParcelaService.Controllers
         /// <response code="204">Katastarska opština je uspešno obrisana</response>
         /// <response code="404">Nije pronađena katastarska opština za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja katastarske opštine</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpDelete("{katastarskaOpstinaId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -214,6 +220,7 @@ namespace ParcelaService.Controllers
         /// Vraća opcije za rad sa katastarskim opštinama
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetKatastarskaOpstinaOptions()
         {

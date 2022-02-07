@@ -3,6 +3,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System;
 using Microsoft.Extensions.Logging;
+using System.Net.Http.Headers;
 
 namespace LicnostService.Services
 {
@@ -23,8 +24,9 @@ namespace LicnostService.Services
         /// Metoda za slanje get zahteva
         /// </summary>
         /// <param name="url">Url putanja ka drugom servisu</param>
+        /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             try
             {
@@ -32,6 +34,7 @@ namespace LicnostService.Services
 
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Add("Accept", "application/json");
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var response = await httpClient.SendAsync(request);
 

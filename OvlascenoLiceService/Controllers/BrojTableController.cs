@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -50,6 +51,7 @@ namespace OvlascenoLiceService.Controllers
         /// <returns>Lista brojeva tabli</returns>
         /// <response code="200">Vraća listu brojeva tabli</response>
         /// <response code="404">Nije pronađen ni jedan broj table</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -76,6 +78,7 @@ namespace OvlascenoLiceService.Controllers
         /// <returns>Broj table</returns>
         /// <response code="200">Vraća tražen broj table</response>
         /// <response code="404">Nije pronađen broj table za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija, OperaterNadmetanja")]
         [HttpGet("{brojTableId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -100,6 +103,7 @@ namespace OvlascenoLiceService.Controllers
         /// <returns>Lista brojeva tabli</returns>
         /// <response code="200">Vraća listu brojeva tabli</response>
         /// <response code="404">Nije pronađen ni jedan broj table</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija, OperaterNadmetanja")]
         [HttpGet("oznaka")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -131,8 +135,9 @@ namespace OvlascenoLiceService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju broja table</returns>
-        /// <response code="200">Vraća kreiran broj table</response>
+        /// <response code="201">Vraća kreiran broj table</response>
         /// <response code="500">Desila se greška prilikom unosa novog broja table</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -166,6 +171,7 @@ namespace OvlascenoLiceService.Controllers
         /// <response code="200">Izmenjen broj table</response>
         /// <response code="404">Nije pronađen broj table za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene broja table</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija, OperaterNadmetanja")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -209,6 +215,7 @@ namespace OvlascenoLiceService.Controllers
         /// <response code="204">Broj table je uspešno obrisan</response>
         /// <response code="404">Nije pronađen broj table za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja broja table</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija, OperaterNadmetanja")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -243,6 +250,7 @@ namespace OvlascenoLiceService.Controllers
         /// Vraća opcije za rad sa brojevima tabli
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetBrojTableOptions()
         {

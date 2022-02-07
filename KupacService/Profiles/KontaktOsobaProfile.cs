@@ -16,6 +16,7 @@ namespace KupacService.Profiles
             CreateMap<KontaktOsobaDto, KontaktOsoba>();
             CreateMap<KontaktOsobaUpdateDto, KontaktOsoba>();
             CreateMap<KontaktOsoba, KontaktOsoba>();
+            CreateMap<KontaktOsobaCreateDto, KontaktOsoba>();
         }
     }
 }

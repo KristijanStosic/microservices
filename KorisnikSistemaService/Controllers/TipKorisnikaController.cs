@@ -103,7 +103,7 @@ namespace KorisnikSistemaService.Controllers
         /// }
         /// </remarks>
         /// <returns>Potvrda o kreiranju tipa korisnika sistema</returns>
-        /// <response code="200">Vraća kreiran tip korisnika sistema</response>
+        /// <response code="201">Vraća kreiran tip korisnika sistema</response>
         /// <response code="500">Desila se greška prilikom unosa novog tipa korisnika sistema</response>
         [HttpPost]
         [Consumes("application/json")]

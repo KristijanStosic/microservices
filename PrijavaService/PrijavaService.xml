@@ -35,7 +35,7 @@
             }
              </remarks>
              <returns>Potvrda o kreiranju fokumenta fizickog lica</returns>
-             <response code="200">Vraća kreiran dokument fizickog lica</response>
+             <response code="201">Vraća kreiran dokument fizickog lica</response>
              <response code="500">Desila se greška prilikom unosa novog dokumenta fizickog lica</response>
         </member>
         <member name="M:PrijavaService.Controllers.DokFizickaLicaController.UpdateDokFizickoLice(PrijavaService.Models.DokFizickoLice.DokFizickaLicaUpdateDto)">
@@ -95,14 +95,14 @@
             }
              </remarks>
              <returns>Potvrda o kreiranju fokumenta pravnog lica</returns>
-             <response code="200">Vraća kreiran dokument pravnog lica</response>
+             <response code="201">Vraća kreiran dokument pravnog lica</response>
              <response code="500">Desila se greška prilikom unosa novog dokumenta pravnih lica</response>
         </member>
         <member name="M:PrijavaService.Controllers.DokPravnaLicaController.UpdateDokPravnoLice(PrijavaService.Models.DokPravnoLice.DokPravnaLicaUpdateDto)">
             <summary>
             Izmena dokumenta pravnih lica
             </summary>
-            <param name="dokFizickoLice">Model dokumenta pravnih lica</param>
+            <param name="dokPravnoLice">Model dokumenta pravnih lica</param>
             <returns>Potvrda o izmeni dokumenta pravnih lica</returns>
             <response code="200">Izmenjen dokument pravnih lica</response>
             <response code="404">Nije pronađen dokument pravnih lica za uneti ID</response>
@@ -168,7 +168,7 @@
                }
             </remarks>
             <returns>Potvrda o kreiranju prijave</returns>
-            <response code="200">Vraća kreiranu prijavu</response>
+            <response code="201">Vraća kreiranu prijavu</response>
             <response code="500">Desila se greška prilikom unosa nove prijave</response>
         </member>
         <member name="M:PrijavaService.Controllers.PrijavaController.UpdatePrijava(PrijavaService.Models.Prijava.PrijavaUpdateDto)">
@@ -202,6 +202,121 @@
             Unos inicijalnih podataka u bazu i definisanje kljuceva
             </summary>
             <param name="modelBuilder">Omogucava podesavanja/unos podataka pri kreiranju modela</param>
+        </member>
+        <member name="T:PrijavaService.Models.DokFizickoLice.DokFizickaLicaConfirmationDto">
+            <summary>
+            Model za potvrdu kreiranja dokumenta fizickog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokFizickoLice.DokFizickaLicaConfirmationDto.NazivDokumenta">
+            <summary>
+            Naziv dokumenta fizickog lica
+            </summary>
+        </member>
+        <member name="T:PrijavaService.Models.DokFizickoLice.DokFizickaLicaCreateDto">
+            <summary>
+            Model za kreiranje dokumenta fizickog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokFizickoLice.DokFizickaLicaCreateDto.NazivDokumenta">
+            <summary>
+            Naziv dokumenta fizickog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokFizickoLice.DokFizickaLicaCreateDto.PrijavaId">
+            <summary>
+            Id prijave za koju se predaje dokument
+            </summary>
+        </member>
+        <member name="T:PrijavaService.Models.DokFizickoLice.DokFizickaLicaDto">
+            <summary>
+            Model za dokument fizickog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokFizickoLice.DokFizickaLicaDto.DokFizickaLicaId">
+            <summary>
+            ID dokumenta fizickog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokFizickoLice.DokFizickaLicaDto.NazivDokumenta">
+            <summary>
+            Naziv dokumenta fizickog lica
+            </summary>
+        </member>
+        <member name="T:PrijavaService.Models.DokFizickoLice.DokFizickaLicaUpdateDto">
+            <summary>
+            Model za izmenu dokumenta fifickog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokFizickoLice.DokFizickaLicaUpdateDto.DokFizickaLicaId">
+            <summary>
+            ID dokumenta fizickog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokFizickoLice.DokFizickaLicaUpdateDto.NazivDokumenta">
+            <summary>
+            Naziv dokumenta fizickog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokFizickoLice.DokFizickaLicaUpdateDto.PrijavaId">
+            <summary>
+            Id prijave za koju se predaje dokument
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokPravnoLice.DokPravnaLicaConfirmationDto.NazivDokumenta">
+            <summary>
+            Model za potvrdu kreiranja dokumenta pravnog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokPravnoLice.DokPravnaLicaCreateDto.NazivDokumenta">
+            <summary>
+            Naziv dokumenta pravnog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokPravnoLice.DokPravnaLicaCreateDto.PrijavaId">
+            <summary>
+            Id prijave za koju se predaje dokument
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokPravnoLice.DokPravnaLicaDto.DokPravnaLicaId">
+            <summary>
+            ID dokumenta fizickog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokPravnoLice.DokPravnaLicaDto.NazivDokumenta">
+            <summary>
+            Naziv dokumenta fizickog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokPravnoLice.DokPravnaLicaUpdateDto.DokPravnaLicaId">
+            <summary>
+            ID dokumenta fizickog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokPravnoLice.DokPravnaLicaUpdateDto.NazivDokumenta">
+            <summary>
+            Naziv dokumenta fizickog lica
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.DokPravnoLice.DokPravnaLicaUpdateDto.PrijavaId">
+            <summary>
+            Id prijave za koju se predaje dokument
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaConfirmationDto.BrojPrijave">
+            <summary>
+            Registarski broj prijave
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaConfirmationDto.DatumPrijave">
+            <summary>
+            Datum kada je prijava podnijeta
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Prijava.PrijavaConfirmationDto.MestoPrijave">
+            <summary>
+            Mjesto u kojem je podnijeta prijava
+            </summary>
         </member>
         <member name="T:PrijavaService.Models.Prijava.PrijavaCreationDto">
             <summary>

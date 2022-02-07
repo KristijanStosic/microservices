@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -57,6 +59,8 @@ namespace UplataService.Controllers
         /// <returns>Lista uplata</returns>
         /// <response code="200">Vraća listu uplata</response>
         /// <response code="204">Nije pronađen ni jedan tip zalbe</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [HttpGet]
@@ -71,6 +75,7 @@ namespace UplataService.Controllers
                 return NoContent();
             }
 
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             var uplateDto = new List<UplataDto>();
             string url = _configuration["Services:JavnoNadmetanjeService"];
             foreach (var uplata in uplate)
@@ -78,7 +83,7 @@ namespace UplataService.Controllers
                 var uplataDto = _mapper.Map<UplataDto>(uplata);
                 if (uplata.JavnoNadmetanjeId is not null)
                 {
-                    var javnoNadDto = await _javnoNadmetanjeService.SendGetRequestAsync(url + uplata.JavnoNadmetanjeId);
+                    var javnoNadDto = await _javnoNadmetanjeService.SendGetRequestAsync(url + uplata.JavnoNadmetanjeId, token);
                     if (javnoNadDto is not null)
                     {
                         uplataDto.JavnoNadmetanje = javnoNadDto.IzlicitiranaCena + ", " 
@@ -106,6 +111,7 @@ namespace UplataService.Controllers
         /// <returns>Žalba</returns>
         /// <response code="200">Vraća traženu uplatu</response>
         /// <response code="404">Nije pronađena uplata za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [HttpGet("{uplataId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -119,12 +125,13 @@ namespace UplataService.Controllers
                 return NotFound();
             }
 
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             string url = _configuration["Services:JavnoNadmetanjeService"];
 
             var uplataDto = _mapper.Map<UplataDto>(uplata);
             if (uplata.JavnoNadmetanjeId is not null)
             {
-                var javnoNadDto = await _javnoNadmetanjeService.SendGetRequestAsync(url + uplata.JavnoNadmetanjeId);
+                var javnoNadDto = await _javnoNadmetanjeService.SendGetRequestAsync(url + uplata.JavnoNadmetanjeId, token);
                 if (javnoNadDto is not null)
                 {
                     uplataDto.JavnoNadmetanje = javnoNadDto.IzlicitiranaCena + ", "
@@ -163,6 +170,8 @@ namespace UplataService.Controllers
         /// <returns>Potvrda o kreiranju uplate</returns>
         /// <response code="201">Vraća kreiranu uplatu</response>
         /// <response code="500">Desila se greška prilikom unosa nove uplate</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -206,6 +215,8 @@ namespace UplataService.Controllers
         /// <response code="400">Desila se greška prilikom unosa istih podataka za uplatu</response>
         /// <response code="404">Nije pronađena uplata za uneti ID</response>
         /// <response code="500">Serverska greška tokom modifikacije uplate</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -245,6 +256,8 @@ namespace UplataService.Controllers
         /// <response code="204">Uplata je uspešno obrisana</response>
         /// <response code="404">Nije pronađena uplata za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja uplate</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -276,6 +289,7 @@ namespace UplataService.Controllers
         /// Vraća opcije za rad sa uplata
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, Menadzer, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetUplataOptions()
         {

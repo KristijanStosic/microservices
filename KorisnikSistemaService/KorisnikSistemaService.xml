@@ -1,0 +1,316 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>KorisnikSistemaService</name>
+    </assembly>
+    <members>
+        <member name="M:KorisnikSistemaService.Controllers.AuthController.Authenticate(KorisnikSistemaService.Models.Auth.AuthCreds)">
+            <summary>
+            Autentifikacija
+            </summary>
+            <param name="authCreds"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KorisnikSistemaService.Controllers.KorisnikSistemaController">
+            <summary>
+            Kontroler za korisnika sistema
+            </summary>[Authorize(Roles ="Administrator")]
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.KorisnikSistemaController.GetAllKorisnikSistema">
+            <summary>
+            Vraća sve Korisnike sistema
+            </summary>
+            <returns>Lista korisnika sistema</returns>
+            <response code="200">Vraća listu korisnika sistema</response>
+            <response code="404">Nije pronađen ni jedan korisnik sistema</response>
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.KorisnikSistemaController.GetKorisnikSistema(System.Guid)">
+            <summary>
+            Vraća jednog korisnika sistema na osnovu ID-a
+            </summary>
+            <param name="korisnikSistemaId">ID korisnikaSistema</param>
+            <returns>Korisnik sistema</returns>
+            <response code="200">Vraća traženog korisnika sistema</response>
+            <response code="404">Nije pronađen korisnik sistema za uneti ID</response>
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.KorisnikSistemaController.CreateKorisnikSistema(KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaCreationDto)">
+             <summary>
+             Kreira novog korisnika
+             </summary>
+             <param name="korisnikSistema">KorisnikSistema</param>
+             <returns>Potvrdu o kreiranom korisniku sistema</returns>
+             <remarks>
+             Primer kreiranja novog korisnika sistema \
+             POST /api/korisnikSistema \ 
+             { \
+            	"ime": "Mladen", \
+            	"prezime": "Bajic", \
+            	"email": "mladen_ba@gmail.com",\
+            	"korisnickoIme": "Mladen33", \
+            	"lozinka": "Mladen, \
+            	"tipKorisnikaId": "F76FFDB2-32D6-4E36-84A1-431C5158C028" \
+            }
+             </remarks>
+             <response code="201">Uspešno kreiran korisnik sistema</response>
+             <response code="500">Desila se greška prilikom kreiranja korisnika sistema</response>
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.KorisnikSistemaController.UpdateKorisnikSistema(KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaUpdateDto)">
+            <summary>
+            Vrši izmjenu korisnika sistema
+            </summary>
+            <param name="korisnikSistema">Korisnik sistema</param>
+            <returns>KorisnikSistema</returns>
+            <remarks>
+            </remarks>
+            <response code="200">Uspešna izmjena adrese</response>
+            <response code="404">Nije pronađen korisnik sistema na osnovu prosleđenog id-a</response>
+            <response code="500">Desila se greška prilikom brisanja korisnika sistema</response>
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.KorisnikSistemaController.DeleteKorisnikSistema(System.Guid)">
+            <summary>
+            Vrši brisanje korisnika sistema na osnovu unetog id-a
+            </summary>
+            <param name="korisnikSistemaId">Id korisnika sistema</param>
+            <returns></returns>
+            <response code="200">Uspešno obrisan korisnik sistema</response>
+            <response code="404">Nije pronađen korisnik sistema na osnovu unetog id-a</response>
+            <response code="500">Desila se greška prilikom brisanja korisnika sistema</response>
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.KorisnikSistemaController.GetKorisnikSistemaOptions">
+            <summary>
+            Vraća opcije za rad sa korisnicima sistema
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:KorisnikSistemaService.Controllers.TipKorisnikaController">
+            <summary>
+            Kontroler za tip korisnika
+            </summary>
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.TipKorisnikaController.GetAllTipKorisnika(System.String)">
+            <summary>
+            Vraća sve tipove korisnika sistema
+            </summary>
+            <param name="nazivTipaKorisnika">Naziv tipa korisnika sistema</param>
+            <returns>Lista tipova korisnika</returns>
+            <response code="200">Vraća listu tipova korisnika sistema</response>
+            <response code="404">Nije pronađen ni jedan tip korisnika sistema</response>
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.TipKorisnikaController.GetTipKorisnika(System.Guid)">
+            <summary>
+            Vraća jedan tip korisnika sistema na osnovu ID-a
+            </summary>
+            <param name="tipKorisnikaId">ID tipa korisnika sistema</param>
+            <returns>Tip korisnika sistema</returns>
+            <response code="200">Vraća traženi tip korisnika sistema</response>
+            <response code="404">Nije pronađen tip korisnika sistema za uneti ID</response>
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.TipKorisnikaController.CreateTipKorisnika(KorisnikSistemaService.Models.TipKorisnika.TipKorisnikaCreationDto)">
+            <summary>
+            Kreira novi tip korisnika sistema
+            </summary>
+            <param name="tipKorisnika">Model tipKorisnika</param>
+            <remarks>
+            Primer zahteva za kreiranje novog tipa korisnika sistema \
+            POST /api/tipKorisnika \
+            {
+                "NazivTipaKorisnika": "Tip Korisnika sistema" \
+            }
+            </remarks>
+            <returns>Potvrda o kreiranju tipa korisnika sistema</returns>
+            <response code="201">Vraća kreiran tip korisnika sistema</response>
+            <response code="500">Desila se greška prilikom unosa novog tipa korisnika sistema</response>
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.TipKorisnikaController.UpdateTipKorisnika(KorisnikSistemaService.Models.TipKorisnika.TipKorisnikaUpdateDto)">
+            <summary>
+            Izmena tipa korisnika sistema
+            </summary>
+            <param name="tipKorisnika">Model tipKorisnika</param>
+            <returns>Potvrda o izmeni tipa korisnika sistema</returns>
+            <response code="200">Izmenjen tip</response>
+            <response code="404">Nije pronađen tip za uneti ID</response>
+            <response code="500">Serverska greška tokom izmene tipa</response>
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.TipKorisnikaController.DeleteTipKorisnika(System.Guid)">
+            <summary>
+            Brisanje tipa korisnika sistema na osnovu ID-a
+            </summary>
+            <param name="tipKorisnikaId">ID tipa korisnika sistema</param>
+            <returns>Status 204 (NoContent)</returns>
+            <response code="204">Tip korisnika sistema je uspešno obrisan</response>
+            <response code="404">Nije pronađen tip korisnika za uneti ID</response>
+            <response code="500">Serverska greška tokom brisanja tipa korisnika sistema</response>
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.TipKorisnikaController.GetTipKorisnikaOptions">
+            <summary>
+            Vraća opcije za rad sa tipovima korinika sistema
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaConformationDto.Ime">
+            <summary>
+            Ime korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaConformationDto.Prezime">
+            <summary>
+            Prezime korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaConformationDto.Email">
+            <summary>
+            Email korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaConformationDto.KorisnickoIme">
+            <summary>
+            Korisnicko ime korisnika sistema
+            </summary>
+        </member>
+        <member name="T:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaCreationDto">
+            <summary>
+            Model za potvrdu kreiranja korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaCreationDto.Ime">
+            <summary>
+            Ime korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaCreationDto.Prezime">
+            <summary>
+            Prezime korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaCreationDto.Email">
+            <summary>
+            Email korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaCreationDto.KorisnickoIme">
+            <summary>
+            Korisnicko ime korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaCreationDto.Lozinka">
+            <summary>
+            Lozinka korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaCreationDto.TipKorisnikaId">
+            <summary>
+            Tip korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaDto.KorisnikSistemaId">
+            <summary>
+            ID korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaDto.Ime">
+            <summary>
+            Ime korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaDto.Prezime">
+            <summary>
+            Prezime korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaDto.Email">
+            <summary>
+            Email korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaDto.KorisnickoIme">
+            <summary>
+            Korisnicko ime korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaDto.TipKorisnika">
+            <summary>
+            Tip korisnika sistema // drugi entitet
+            </summary>
+        </member>
+        <member name="T:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaUpdateDto">
+            <summary>
+            Model za izmjenu korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaUpdateDto.KorisnikSistemaId">
+            <summary>
+            ID korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaUpdateDto.Ime">
+            <summary>
+            Ime korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaUpdateDto.Prezime">
+            <summary>
+            Prezime korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaUpdateDto.Email">
+            <summary>
+            Email korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaUpdateDto.KorisnickoIme">
+            <summary>
+            Korisnicko ime korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaUpdateDto.Lozinka">
+            <summary>
+            Lozinka korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.KorisnikSistema.KorisnikSistemaUpdateDto.TipKorisnikaId">
+            <summary>
+            Tip korisnika sistema
+            </summary>
+        </member>
+        <member name="T:KorisnikSistemaService.Models.TipKorisnika.TipKorisnikaCreationDto">
+            <summary>
+            Model za kreiranje tipa korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.TipKorisnika.TipKorisnikaCreationDto.NazivTipaKorisnika">
+            <summary>
+            Naziv tipa korisnika sistema
+            </summary>
+        </member>
+        <member name="T:KorisnikSistemaService.Models.TipKorisnika.TipKorisnikaDto">
+            <summary>
+            Model za tip korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.TipKorisnika.TipKorisnikaDto.TipKorisnikaId">
+            <summary>
+            Id tipa korisnika
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.TipKorisnika.TipKorisnikaDto.NazivTipaKorisnika">
+            <summary>
+            Naziv tipa korisnika
+            </summary>
+        </member>
+        <member name="T:KorisnikSistemaService.Models.TipKorisnika.TipKorisnikaUpdateDto">
+            <summary>
+            Model za izmenu tipa korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.TipKorisnika.TipKorisnikaUpdateDto.TipKorisnikaId">
+            <summary>
+            Id tipa korisnika sistema
+            </summary>
+        </member>
+        <member name="P:KorisnikSistemaService.Models.TipKorisnika.TipKorisnikaUpdateDto.NazivTipaKorisnika">
+            <summary>
+            Naziv tipa korisnika sistema
+            </summary>
+        </member>
+    </members>
+</doc>

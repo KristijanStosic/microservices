@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace ParcelaService.ServiceCalls
@@ -17,7 +18,7 @@ namespace ParcelaService.ServiceCalls
             _loggerService = loggerService;
         }
 
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             try
             {
@@ -25,6 +26,7 @@ namespace ParcelaService.ServiceCalls
 
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Add("Accept", "application/json");
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
 
                 var response = await httpClient.SendAsync(request);
 

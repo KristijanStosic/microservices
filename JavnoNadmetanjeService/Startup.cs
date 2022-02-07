@@ -5,6 +5,7 @@ using JavnoNadmetanjeService.Helpers;
 using JavnoNadmetanjeService.Models.Other;
 using JavnoNadmetanjeService.ServiceCalls;
 using JavnoNadmetanjeService.ServiceCalls.Mocks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,10 +15,12 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
+using System.Text;
 
 namespace JavnoNadmetanjeService
 {
@@ -80,16 +83,60 @@ namespace JavnoNadmetanjeService
             services.AddScoped<IEtapaRepository, EtapaRepository>();
             services.AddScoped<IJavnoNadmetanjeRepository, JavnoNadmetanjeRepository>();
 
-            services.AddScoped<IServiceCall<AdresaDto>, ServiceCallAdresaMock<AdresaDto>>();
-            services.AddScoped<IServiceCall<KupacDto>, ServiceCallKupacMock<KupacDto>>();
-            services.AddScoped<IServiceCall<OvlascenoLiceDto>, ServiceCallOvlascenoLiceMock<OvlascenoLiceDto>>();
-            services.AddScoped<IServiceCall<DeoParceleDto>, ServiceCallDeoParceleMock<DeoParceleDto>>();
+            services.AddScoped<IServiceCall<AdresaDto>, ServiceCall<AdresaDto>>();
+            services.AddScoped<IServiceCall<KupacDto>, ServiceCall<KupacDto>>();
+            services.AddScoped<IServiceCall<OvlascenoLiceDto>, ServiceCall<OvlascenoLiceDto>>();
+            services.AddScoped<IServiceCall<DeoParceleDto>, ServiceCall<DeoParceleDto>>();
 
             services.AddScoped<IJavnoNadmetanjeCalls, JavnoNadmetanjeCalls>();
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
+            services.AddScoped<IRabbitMQProducer, RabbitMQProducer>();
+            services.AddScoped<ILoggerService, LoggerService>();
+
+            var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();
+            var key = Encoding.ASCII.GetBytes(secret);
+
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
 
             services.AddSwaggerGen(setup =>
             {
+                var securitySchema = new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+
+                setup.AddSecurityDefinition("Bearer", securitySchema);
+
+                var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    { securitySchema, new[] { "Bearer" } }
+                };
+
+                setup.AddSecurityRequirement(securityRequirement);
+
                 setup.SwaggerDoc("v1",
                     new OpenApiInfo()
                     {
@@ -143,6 +190,7 @@ namespace JavnoNadmetanjeService
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
