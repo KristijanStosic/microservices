@@ -98,7 +98,7 @@ namespace JavnoNadmetanjeService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju statusa</returns>
-        /// <response code="200">Vraća kreiran status</response>
+        /// <response code="201">Vraća kreiran status</response>
         /// <response code="500">Desila se greška prilikom unosa novog statusa</response>
         [HttpPost]
         [Consumes("application/json")]

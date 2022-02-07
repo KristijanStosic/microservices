@@ -116,7 +116,7 @@ namespace JavnoNadmetanjeService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju etape</returns>
-        /// <response code="200">Vraća kreiranu etapu</response>
+        /// <response code="201">Vraća kreiranu etapu</response>
         /// <response code="500">Desila se greška prilikom unosa nove etape</response>
         [HttpPost]
         [Consumes("application/json")]

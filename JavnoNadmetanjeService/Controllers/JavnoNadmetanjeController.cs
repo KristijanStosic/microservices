@@ -118,7 +118,7 @@ namespace JavnoNadmetanjeService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju javnog nadmetanja</returns>
-        /// <response code="200">Vraća kreirano javno nadmetanje</response>
+        /// <response code="201">Vraća kreirano javno nadmetanje</response>
         /// <response code="500">Desila se greška prilikom unosa novog javnog nadmetanja</response>
         [HttpPost]
         [Consumes("application/json")]
