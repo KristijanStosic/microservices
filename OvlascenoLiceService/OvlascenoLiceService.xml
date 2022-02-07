@@ -839,7 +839,7 @@
             </summary>
             <typeparam name="T">Generic</typeparam>
         </member>
-        <member name="M:OvlascenoLiceService.ServiceCalls.IServiceCall`1.SendGetRequestAsync(System.String)">
+        <member name="M:OvlascenoLiceService.ServiceCalls.IServiceCall`1.SendGetRequestAsync(System.String,System.String)">
             <summary>
             Metoda za slanje get zahteva
             </summary>
@@ -888,7 +888,7 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="M:OvlascenoLiceService.ServiceCalls.Mocks.ServiceCallAdresaMock`1.SendGetRequestAsync(System.String)">
+        <member name="M:OvlascenoLiceService.ServiceCalls.Mocks.ServiceCallAdresaMock`1.SendGetRequestAsync(System.String,System.String)">
             <summary>
             Metoda za slanje get zahteva - mock
             </summary>
@@ -901,7 +901,7 @@
             </summary>
             <typeparam name="T"></typeparam>
         </member>
-        <member name="M:OvlascenoLiceService.ServiceCalls.Mocks.ServiceCallDrzavaMock`1.SendGetRequestAsync(System.String)">
+        <member name="M:OvlascenoLiceService.ServiceCalls.Mocks.ServiceCallDrzavaMock`1.SendGetRequestAsync(System.String,System.String)">
             <summary>
             Metoda za slanje get zahteva za drzavu - mock
             </summary>
@@ -920,7 +920,7 @@
             </summary>
             <param name="loggerService"></param>
         </member>
-        <member name="M:OvlascenoLiceService.ServiceCalls.ServiceCall`1.SendGetRequestAsync(System.String)">
+        <member name="M:OvlascenoLiceService.ServiceCalls.ServiceCall`1.SendGetRequestAsync(System.String,System.String)">
             <summary>
             Metoda za slanje get zahteva
             </summary>
