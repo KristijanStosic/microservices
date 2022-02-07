@@ -111,7 +111,7 @@ namespace KupacService.Controllers
         [HttpGet("ovlascenoLice/{ovlascenoLiceId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        public async Task<ActionResult<List<KupacManyToManyDto>>> GetKupceByOvlascenoLiceId(Guid ovlascenoLiceId)
+        public async Task<ActionResult<List<KupacDto>>> GetKupceByOvlascenoLiceId(Guid ovlascenoLiceId)
         {
             var kupci = await _kupacRepository.GetKupceByOvlascenoLiceId(ovlascenoLiceId);
 
@@ -120,8 +120,20 @@ namespace KupacService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetKupceByOvlascenoLiceId", $"Nisu pronađeni kupci koji pripadaju ovlasšćenom licu {ovlascenoLiceId}.");
                 return NoContent();
             }
+            List<KupacDto> kupacDtos = new List<KupacDto>();
+            foreach(var kupac in kupci)
+            {
+                Kupac tempKupac = await _kupacRepository.GetKupacById(kupac.KupacId);
+                var tempKupacDto = _mapper.Map<KupacDto>(tempKupac);
+                var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(tempKupac);
+                _mapper.Map(otherServicesDto, tempKupacDto);
+                kupacDtos.Add(tempKupacDto);
 
-            return Ok(_mapper.Map<List<KupacManyToManyDto>>(kupci));
+            }
+
+            await _loggerService.Log(LogLevel.Warning, "GetKupceByOvlascenoLiceId", $"Uspešno pronađeni kupci koji pripadaju ovlasšćenom licu {ovlascenoLiceId}.");
+           
+            return Ok(kupacDtos);
         }
 
 

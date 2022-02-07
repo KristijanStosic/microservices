@@ -4,14 +4,1184 @@
         <name>KupacService</name>
     </assembly>
     <members>
+        <member name="T:KupacService.Controllers.FizickoLiceController">
+            <summary>
+            Kontroler za fizička lica
+            </summary>
+        </member>
+        <member name="M:KupacService.Controllers.FizickoLiceController.#ctor(KupacService.Data.Interfaces.IFizickoLiceRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,KupacService.Helpers.IKupacCalls,KupacService.ServiceCalls.ILoggerService)">
+            <summary>
+             Konstruktor za kontroler
+            </summary>
+            <param name="fizickoLiceRepository"></param>
+            <param name="linkGenerator"></param>
+            <param name="mapper"></param>
+            <param name="kupacCalls"></param>
+            <param name="loggerService"></param>
+        </member>
+        <member name="M:KupacService.Controllers.FizickoLiceController.GetFizickaLica(System.String,System.String,System.String)">
+            <summary>
+            Vraća listu fizičkih lica
+            </summary>
+            <param name="ime">ime fizičkog lica</param>
+            <param name="prezime">prezime fizičkog lica</param>
+            <param name="brojRacuna">broj računa fizičkog lica</param>
+            <returns>Listu fizičkih lica koji zadovoljavaju zadate filtere</returns>
+            <response code="200">Uspešno vraćena lista fizičkih lica</response>
+            <response code="204">Nije pronađeno nijedno fizičko lice</response>
+        </member>
+        <member name="M:KupacService.Controllers.FizickoLiceController.GetFizickoLiceById(System.Guid)">
+            <summary>
+            Vraća fizičko lice na osnovu unetog id-a
+            </summary>
+            <param name="kupacId">Id fizičkog lica</param>
+            <returns>Fizičko lice</returns>
+            <response code="200">Uspešno vraćeno fizičko lice</response>
+            <response code="404">Nije pronađeno fizičko lice sa zadatim id-em</response>
+        </member>
+        <member name="M:KupacService.Controllers.FizickoLiceController.CreateFizickoLice(KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto)">
+            <summary>
+            Kreira novo fizičko lice
+            </summary>
+            <param name="fizickoLice">Fizičko lice</param>
+            <returns>Potvrdu o kreiranom fizičkom licu</returns>
+            <remarks>
+            Primer kreiranja fizičkog lica \
+            POST api/fizickolice \ 
+            { \ 
+             "ime": "Petar", \ 
+             "prezime": "Petrović", \
+             "jmbg": "3485938493123", \ 
+             "ostvarenaPovrsina": 500, \
+             "imaZabranu": true, \ 
+             "datumPocetkaZabrane": "2022-01-30", \
+             "duzinaTrajanjaZabraneGod": 2, \
+             "brojTelefona": "0665678974", \ 
+             "brojTelefona2": "0665678934", \
+             "email": "petar@gmail.com", \
+             "brojRacuna": "3525235234234535", \ 
+            "prioriteti":["f2b8faa4-732c-4480-8b0a-34d65e483930"], \
+            "AdresaId":"37375EF6-4F25-48B3-9BF2-FE72A81F88D2", \ 
+            "OvlascenaLica":["5E1BFFFC-1AEE-4662-BC04-341C35B9EBDC",\
+            								 "5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5"] \
+               }
+            </remarks>
+            <response code="201">Uspešno kreirano fizičko lice</response>
+            <response code="500">Desila se greška prilikom kreiranja novog fizičkog lica</response>
+        </member>
+        <member name="M:KupacService.Controllers.FizickoLiceController.UpdateFizickoLice(KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto)">
+            <summary>
+            Vrši ažuriranje fizičkog lica 
+            </summary>
+            <param name="fizickoLiceUpdate">Fizičko lice</param>
+            <returns>Fizičko lice</returns>
+            <remarks>
+            Primer ažuriranja kontakt osobe
+            PUT api/kontaktOsoba
+             { \ 
+             "kupacId":"febd1c29-90e7-40c2-97f3-1e88495fe98d",
+             "ime": "Petar", \ 
+             "prezime": "Petrović", \
+             "jmbg": "3485938493123", \ 
+             "ostvarenaPovrsina": 500, \
+             "imaZabranu": true, \ 
+             "datumPocetkaZabrane": "2022-01-30", \
+             "duzinaTrajanjaZabraneGod": 2, \
+             "brojTelefona": "0665678974", \ 
+             "brojTelefona2": "0665678934", \
+             "email": "petar@gmail.com", \
+             "brojRacuna": "3525235234234535", \ 
+            "prioriteti":["f2b8faa4-732c-4480-8b0a-34d65e483930"], \
+            "AdresaId":"37375EF6-4F25-48B3-9BF2-FE72A81F88D2", \ 
+            "OvlascenaLica":["5E1BFFFC-1AEE-4662-BC04-341C35B9EBDC",\
+            								 "5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5"] \
+               }
+            
+            </remarks>
+            <response code="200">Uspešno ažurirano fizičko lice</response>
+            <response code="404">Nije pronađeno fizičko lice na osnovu prosleđenog id-a</response>
+            <response code="500">Desila se greška prilikom ažuriranja fizičkog lica</response>
+        </member>
+        <member name="M:KupacService.Controllers.FizickoLiceController.DeleteFizickoLice(System.Guid)">
+            <summary>
+            Vrši brisanje fizičkog lica na osnovu unetog id-a
+            </summary>
+            <param name="kupacId">Id fizičkog lica</param>
+            <returns></returns>
+            <response code="200">Uspešno obrisano fizičko lice</response>
+            <response code="404">Nije pronađeno fizičko lice na osnovu unetog id-a</response>
+            <response code="500">Desila se greška prilikom brisanja fizičkog lica</response>
+        </member>
+        <member name="M:KupacService.Controllers.FizickoLiceController.GetKontaktOsobaOptions">
+            <summary>
+            Vraća opcije za rad sa fizičkim licima
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:KupacService.Controllers.KontaktOsobaController">
+            <summary>
+            Kontroler za kontakt osobe
+            </summary>
+        </member>
+        <member name="M:KupacService.Controllers.KontaktOsobaController.GetKontaktOsobe(System.String,System.String)">
+            <summary>
+            Vraća listu kontakt osoba na osnovu zadatih filtera
+            </summary>
+            <param name="ime">Ime kontakt osobe</param>
+            <param name="prezime">Prezime kontakt osobe</param>
+            <returns>Lista kontakt osoba</returns>
+            <response code="200">Uspešno vraćena lista kontakt osoba</response>
+            <response code="204">Nije pronađena nijedna kontakt osoba</response>
+        </member>
+        <member name="M:KupacService.Controllers.KontaktOsobaController.GetKontaktOsobaById(System.Guid)">
+            <summary>
+            Vraća kontakt osobu na osnovu unetog id-a
+            </summary>
+            <param name="kontaktOsobaId">Id kontakt osobe</param>
+            <returns>Konatk osoba</returns>
+            <response code="200">Uspešno vraćena kontakt osoba</response>
+            <response code="404">Nije pronađena kontakt osoba sa zadatim id-em</response>
+        </member>
+        <member name="M:KupacService.Controllers.KontaktOsobaController.CreateKontaktOsoba(KupacService.Model.KontaktOsoba.KontaktOsobaCreateDto)">
+             <summary>
+             Kreira novu kontakt osobu
+             </summary>
+             <param name="kontaktOsoba">Kontakt osoba</param>
+             <returns>Potvrdu o kreiranoj kontakt osobi</returns>
+             <remarks>
+             Primer kreiranja kontakt osobe \
+             POST api/kontakt osoba \
+             { \
+              "ime": "Marko", \
+              "prezime": "Marković",\
+              "telefon": "06632452345",\
+              "funkcija": "Funkcija"\
+            }
+             </remarks>
+             <response code="201">Uspešno kreirana kontakt osoba</response>
+             <response code="500">Desila se greška prilikom kreiranja nove kontakt osobe</response>
+        </member>
+        <member name="M:KupacService.Controllers.KontaktOsobaController.UpdateKontaktOsoba(KupacService.Model.KontaktOsoba.KontaktOsobaUpdateDto)">
+             <summary>
+             Vrši ažuriranje kontakt osobe
+             </summary>
+             <param name="kontaktOsobaUpdate">Kontak osoba</param>
+             <returns>Kontakt osobu</returns>
+             <remarks>
+             Primer ažuriranja kontakt osobe \
+             PUT api/kontakt osoba \
+             { \
+              "kontaktOsobaId":"da2197a4-891f-4a40-a1f2-313962701627", \
+              "ime": "Marko", \
+              "prezime": "Marković",\
+              "telefon": "06632452345",\
+              "funkcija": "Funkcija"\
+            }
+             </remarks>
+        </member>
+        <member name="M:KupacService.Controllers.KontaktOsobaController.DeleteKontaktOsoba(System.Guid)">
+            <summary>
+            Vrši brisanje kontakt osobe na osnovu unetog id-a
+            </summary>
+            <param name="kontaktOsobaId">Id kontakt osobe</param>
+            <returns></returns>
+            <response code="200">Uspešno obrisana kontakt osoba</response>
+            <response code="404">Nije pronađena kontakt osoba na osnovu unetog id-a</response>
+            <response code="500" >Desila se greška prilikom brisanja kontakt osobe</response>
+        </member>
+        <member name="M:KupacService.Controllers.KontaktOsobaController.GetKontaktOsobaOptions">
+            <summary>
+            Opcije za rad sa kontakt osobama
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:KupacService.Controllers.KupcaController">
+            <summary>
+            Kontroler za kupce
+            </summary>
+        </member>
+        <member name="M:KupacService.Controllers.KupcaController.GetKupci">
+            <summary>
+            Vraća listu kupaca
+            </summary>
+            <returns>Lista kupaca</returns>
+            <response code="200">Uspešno vraćena lista kupaca</response>
+            <response code="204">Nije pronađen nijedan kupac</response>
+        </member>
+        <member name="M:KupacService.Controllers.KupcaController.GetKupacById(System.Guid)">
+            <summary>
+            Vraća kupca na osnovu unetog id-a
+            </summary>
+            <param name="kupacId">Id kupca</param>
+            <returns>Kupca</returns>
+             <response code="200">Uspešno vraćen kupac</response>
+            <response code="404">Nije pronađen kupac sa zadatim id-em</response>
+        </member>
+        <member name="M:KupacService.Controllers.KupcaController.GetKupceByOvlascenoLiceId(System.Guid)">
+            <summary>
+            Vraća listu kupaca za koje ovlašćeno lice vrši licitacije
+            </summary>
+            <param name="ovlascenoLiceId">Id ovlašćenog lica</param>
+            <returns>Lista kupaca</returns>
+            <response code="200">Uspešno vraćena lista kupaca za koje prosleđeno ovlašćeno lice vrši licitacije</response>
+            <response code="204">Nije pronađen nijedan kupac za dato ovlašćeno lice</response>
+        </member>
+        <member name="M:KupacService.Controllers.KupcaController.GetKontaktOsobaOptions">
+            <summary>
+            Vraća opcije za rad sa kupcima
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:KupacService.Controllers.PravnoLiceController">
+            <summary>
+            Kontroler za pravna lica
+            </summary>
+        </member>
+        <member name="M:KupacService.Controllers.PravnoLiceController.#ctor(KupacService.Data.Interfaces.IPravnoLiceRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,KupacService.Helpers.IKupacCalls,KupacService.ServiceCalls.ILoggerService)">
+            <summary>
+            Konstruktor za kontroler
+            </summary>
+            <param name="pravnoLiceRepository"></param>
+            <param name="linkGenerator"></param>
+            <param name="mapper"></param>
+            <param name="kupacCalls"></param>
+            <param name="loggerService"></param>
+        </member>
+        <member name="M:KupacService.Controllers.PravnoLiceController.GetPravnoLica(System.String,System.String)">
+            <summary>
+            Vraća list pravnih lica na osnovu unetih filtera
+            </summary>
+            <param name="naziv">Naziv pravnog lica</param>
+            <param name="maticniBroj">Matični broj pravnog lica</param>
+            <returns>Lista pravnih lica</returns>
+            <response code="200">Uspešno vraćena lista pravnih lica</response>
+            <response code="204">Nije pronađena nijedno pravno lice</response>
+        </member>
+        <member name="M:KupacService.Controllers.PravnoLiceController.GetPravnoLiceById(System.Guid)">
+            <summary>
+            Vraća pravno lice na osnovu unetog id-a
+            </summary>
+            <param name="kupacId">Id pravnog lica</param>
+            <returns>Pravno lice</returns>
+            <response code="200">Uspešno vraćeno pravno lice</response>
+            <response code="404">Nije pronađeno pravno lice sa zadatim id-em</response>
+        </member>
+        <member name="M:KupacService.Controllers.PravnoLiceController.CreatePravnoLice(KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto)">
+             <summary>
+             Kreira novo pravno lice
+             </summary>
+             <param name="pravnoLice">Pravno lice</param>
+             <returns>Potvrda o kreiranom pravnom licu</returns>
+             <remarks>
+             Primer kreiranja pravnog lica\
+             Post api/pravnoLice\
+             {\
+            "naziv": "Firma",\
+            "maticniBroj": "124123412",\
+            "faks":"+232345242423",\
+            "ostvarenaPovrsina": 0,\
+            "imaZabranu": true,\
+            "datumPocetkaZabrane": "2022-01-30",\
+            "duzinaTrajanjaZabraneGod": 0,\
+            "brojTelefona": "06624325",\
+            "brojTelefona2": "0692354235",\
+            "email": "firma@gmail.com",\
+            "brojRacuna": "32523525",\
+            "kontaktOsobaId":"244FB7C4-AAB8-4EC4-8960-E48E017BAD37",\
+            "prioriteti":["f2b8faa4-732c-4480-8b0a-34d65e483930","2578E81B-3F01-479A-B790-F52106F639F7"]\
+             }
+             </remarks>
+             <response code="201">Uspešno kreirano pravno lice</response>
+             <response code="500">Desila se greška prilikom kreiranja novog pravnog lica</response>
+        </member>
+        <member name="M:KupacService.Controllers.PravnoLiceController.UpdatePravnoLice(KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto)">
+             <summary>
+             Vrši ažuriranje pravnog lica
+             </summary>
+             <param name="pravnoLiceUpdate">Pravno lice</param>
+             <returns>Pravno lice</returns>
+             <remarks>
+             Primer ažuriranja pravnog lica\
+             PUT api/pravnoLice\
+             {\
+             "kupacId":"4ba95c01-aa89-4d36-a467-c72b0fcc5b80",\
+            "naziv": "Firma",\
+            "maticniBroj": "124123412",\
+            "faks":"+232345242423",\
+            "ostvarenaPovrsina": 0,\
+            "imaZabranu": true,\
+            "datumPocetkaZabrane": "2022-01-30",\
+            "duzinaTrajanjaZabraneGod": 0,\
+            "brojTelefona": "06624325",\
+            "brojTelefona2": "0692354235",\
+            "email": "firma@gmail.com",\
+            "brojRacuna": "32523525",\
+            "kontaktOsobaId":"244FB7C4-AAB8-4EC4-8960-E48E017BAD37",\
+            "prioriteti":["f2b8faa4-732c-4480-8b0a-34d65e483930","2578E81B-3F01-479A-B790-F52106F639F7"]\
+             }
+             </remarks>
+             <response code="200">Uspešno ažurirano pravno lice</response>
+             <response code="404">Nije pronađeno pravno lice na osnovu prosleđenog id-a</response>
+             <response code="500">Desila se greška prilikom pravnog fizičkog lica</response>
+        </member>
+        <member name="M:KupacService.Controllers.PravnoLiceController.DeletePravnoLice(System.Guid)">
+            <summary>
+            Vrši brisanje pravnog lica na osnovu unetog id-a
+            </summary>
+            <param name="kupacId">Id pravnog lica</param>
+            <returns></returns>
+        </member>
+        <member name="M:KupacService.Controllers.PravnoLiceController.GetKontaktOsobaOptions">
+            <summary>
+            Vraća opcije za rad sa pravnim licima
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:KupacService.Controllers.PrioritetController">
+            <summary>
+            Kontroler za priorite
+            </summary>
+        </member>
+        <member name="M:KupacService.Controllers.PrioritetController.#ctor(KupacService.Data.Interfaces.IPrioritetRepository,Microsoft.AspNetCore.Routing.LinkGenerator,AutoMapper.IMapper,KupacService.ServiceCalls.ILoggerService)">
+            <summary>
+            Konstruktor za kontroler
+            </summary>
+            <param name="prioritetRepository"></param>
+            <param name="linkGenerator"></param>
+            <param name="mapper"></param>
+            <param name="loggerService"></param>
+        </member>
+        <member name="M:KupacService.Controllers.PrioritetController.GetPrioritete(System.String)">
+            <summary>
+            Vraća listu priorteta na osnovu unetih filtera
+            </summary>
+            <param name="opis">Opis prioriteta</param>
+            <returns>Lista prioriteta koja odgovara zadatom filteru</returns>
+            <response code="200">Uspešno vraćena lista prioriteta</response>
+            <response code="204">Nije pronađeno nijedan prioritet</response>
+        </member>
+        <member name="M:KupacService.Controllers.PrioritetController.GetPrioritetById(System.Guid)">
+            <summary>
+            Vraća prioritet na osnovu unetog id-a
+            </summary>
+            <param name="prioritetId">Id prioriteta</param>
+            <returns>Prioritet</returns>
+            <response code="200">Uspešno vraćen prioritet</response>
+            <response code="404">Nije pronađen prioritet sa zadatim id-em</response>
+        </member>
+        <member name="M:KupacService.Controllers.PrioritetController.CreatePrioritet(KupacService.Model.Prioritet.PrioritetCreateDto)">
+             <summary>
+             Kreira novi prioritet
+             </summary>
+             <param name="prioritet">Prioritet</param>
+             <returns>Potvrdu o kreiranom prioritetu</returns>
+             <remarks>
+             Primer kreiranja prioritet\
+             POST api/prioritet\
+             {\
+             "opis": "opis prioriteta"\
+            }\
+             </remarks>
+             <response code="201">Uspešno kreiran prioritet</response>
+             <response code="500">Desila se greška prilikom kreiranja novog prioriteta</response>
+        </member>
+        <member name="M:KupacService.Controllers.PrioritetController.UpdatePrioritet(KupacService.Model.Prioritet.PrioritetUpdateDto)">
+             <summary>
+             Vrši ažuriranje prioriteta
+             </summary>
+             <param name="prioritetUpdate">Prioritet</param>
+             <returns>Prioritet</returns>
+             <remarks>
+             Primer kreiranja prioritet\
+             POST api/prioritet\
+             {\
+             "prioritetId":"2578e81b-3f01-479a-b790-f52106f639f7",
+             "opis": "opis prioriteta"\
+            }\
+             </remarks>
+             <response code="200">Uspešno ažuriran prioritet</response>
+             <response code="404">Nije pronađen prioritet na osnovu prosleđenog id-a</response>
+             <response code="500">Desila se greška prilikom ažuriranja prioritet</response>
+        </member>
+        <member name="M:KupacService.Controllers.PrioritetController.DeletePrioritet(System.Guid)">
+            <summary>
+            Vrši brisanje prioriteta 
+            </summary>
+            <param name="prioritetId"></param>
+            <returns></returns>
+            <response code="200">Uspešno obrisano fizičko lice</response>
+            <response code="404">Nije pronađeno fizičko lice na osnovu unetog id-a</response>
+            <response code="500">Desila se greška prilikom brisanja fizičkog lica</response>
+        </member>
+        <member name="M:KupacService.Controllers.PrioritetController.GetPrioritetOptions">
+            <summary>
+            Vraća opcije za rad sa prioritetima
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:KupacService.Entities.DataContext.KupacContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <summary>
             Popunjava bazu sa nekim inicijalnim podacima
             </summary>
         </member>
+        <member name="T:KupacService.Model.KontaktOsoba.KontaktOsobaCreateDto">
+            <summary>
+            Dto za kreiranje kontakt osobe
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaCreateDto.Prezime">
+            <summary>
+            Prezime kontak osobe
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaCreateDto.Telefon">
+            <summary>
+            Broj telefona kontakt osobe
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaCreateDto.Funkcija">
+            <summary>
+            Fukncija kontakt osobe
+            </summary>
+        </member>
         <member name="T:KupacService.Model.KontaktOsoba.KontaktOsobaDto">
             <summary>
             Dto za kontakt osobu
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaDto.KontaktOsobaId">
+            <summary>
+            id kontakt osobe
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaDto.Ime">
+            <summary>
+            ime kontakt osobe
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaDto.Prezime">
+            <summary>
+            Prezime kontak osobe
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaDto.Telefon">
+            <summary>
+            Broj telefona kontakt osobe
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaDto.Funkcija">
+            <summary>
+            Fukncija kontakt osobe
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaUpdateDto.KontaktOsobaId">
+            <summary>
+            Id kontakt osobe
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaUpdateDto.Ime">
+            <summary>
+            Ime kontakt osobe
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaUpdateDto.Prezime">
+            <summary>
+            Prezime kontakt osobe
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaUpdateDto.Telefon">
+            <summary>
+            Broj telefona kontakt osobe
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.KontaktOsoba.KontaktOsobaUpdateDto.Funkcija">
+            <summary>
+            Funkcija kontakt osobe
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Kupac.FizickoLice.FizickoLiceConfirmDto">
+            <summary>
+            Dto za potvrdu kreiranja fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceConfirmDto.Ime">
+            <summary>
+            Ime fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceConfirmDto.Prezime">
+            <summary>
+            Prezime fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceConfirmDto.JMBG">
+            <summary>
+            JMBG fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceConfirmDto.BrojTelefona">
+            <summary>
+            Broj telefona fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceConfirmDto.Email">
+            <summary>
+            Email fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceConfirmDto.BrojRacuna">
+            <summary>
+            Broja računa fizičkog lica
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto">
+            <summary>
+            Dto za kreiranje fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.Ime">
+            <summary>
+            Ime fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.Prezime">
+            <summary>
+            Prezime fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.JMBG">
+            <summary>
+            JMBG fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.OstvarenaPovrsina">
+            <summary>
+            Ostvarena površina pri licitaciji od fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.ImaZabranu">
+            <summary>
+            Oznaka da li fizičko lice ima zabranu učestvovanja licitaciji
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.DatumPocetkaZabrane">
+            <summary>
+            Datum početka zabrane
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.DuzinaTrajanjaZabraneGod">
+            <summary>
+            Dužina trajanja zabrane
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.BrojTelefona">
+            <summary>
+            Broj telefona fizičog lica 
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.BrojTelefona2">
+            <summary>
+            Drugi broj telefona fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.Email">
+            <summary>
+            Email fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.BrojRacuna">
+            <summary>
+            Broj računa fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.Prioriteti">
+            <summary>
+            Pririteti fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.AdresaId">
+            <summary>
+            Adresa fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.OvlascenaLica">
+            <summary>
+            Ovlašćena lica koja sarađuju sa fizičkim licem
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceCreationDto.Uplate">
+            <summary>
+            Uplate fizičkog lica
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto">
+            <summary>
+            Fizičko lice dto
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.KupacId">
+            <summary>
+            Id fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.Ime">
+            <summary>
+            Ime fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.Prezime">
+            <summary>
+            Prezime fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.JMBG">
+            <summary>
+            JMBG fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.OstvarenaPovrsina">
+            <summary>
+            Ostvarena površina pri licitaciji od fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.ImaZabranu">
+            <summary>
+            Oznaka da li fizičko lice ima zabranu učestvovanja licitaciji
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.DatumPocetkaZabrane">
+            <summary>
+            Datum početka zabrane
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.DuzinaTrajanjaZabraneGod">
+            <summary>
+            Dužina trajanja zabrane
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.BrojTelefona">
+            <summary>
+            Broj telefona fizičog lica 
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.BrojTelefona2">
+            <summary>
+            Drugi broj telefona fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.Email">
+            <summary>
+            Email fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.BrojRacuna">
+            <summary>
+            Broj računa fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.Prioriteti">
+            <summary>
+            Pririteti fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.Adresa">
+            <summary>
+            Adresa fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.OvlascenaLica">
+            <summary>
+            Ovlašćena lica koja sarađuju sa fizičkim licem
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceDto.Uplate">
+            <summary>
+            Uplate fizičkog lica
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto">
+            <summary>
+            Dto za ažuriranje fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.KupacId">
+            <summary>
+            Id fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.Ime">
+            <summary>
+            Ime fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.Prezime">
+            <summary>
+            Prezime fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.JMBG">
+            <summary>
+            JMBG fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.OstvarenaPovrsina">
+            <summary>
+            Ostvarena površina pri licitaciji od fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.ImaZabranu">
+            <summary>
+            Oznaka da li fizičko lice ima zabranu učestvovanja licitaciji
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.DatumPocetkaZabrane">
+            <summary>
+            Datum početka zabrane
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.DuzinaTrajanjaZabraneGod">
+            <summary>
+            Dužina trajanja zabrane
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.BrojTelefona">
+            <summary>
+            Broj telefona fizičog lica 
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.BrojTelefona2">
+            <summary>
+            Drugi broj telefona fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.Email">
+            <summary>
+            Email fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.BrojRacuna">
+            <summary>
+            Broj računa fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.Prioriteti">
+            <summary>
+            Pririteti fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.AdresaId">
+            <summary>
+            Adresa fizičkog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.OvlascenaLica">
+            <summary>
+            Ovlašćena lica koja sarađuju sa fizičkim licem
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.FizickoLice.FizickoLiceUpdateDto.Uplate">
+            <summary>
+            Uplate fizičkog lica
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Kupac.KupacDto">
+            <summary>
+            Dto za kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.KupacId">
+            <summary>
+            Id kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.Naziv">
+            <summary>
+            Naziv kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.Faks">
+            <summary>
+            Broj faksa kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.OstvarenaPovrsina">
+            <summary>
+            Ostvarena površina kupca u licitacijama
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.ImaZabranu">
+            <summary>
+            Oznaka da li kupac ima zabranu za učestvovanje u licitacijama
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.DatumPocetkaZabrane">
+            <summary>
+            Datum početka zabrane
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.DuzinaTrajanjaZabraneGod">
+            <summary>
+            Dužina trajanja zabrane u godinama
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.BrojTelefona">
+            <summary>
+            Broj telefona kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.BrojTelefona2">
+            <summary>
+            Drugi broj telefona kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.Email">
+            <summary>
+            Emali kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.BrojRacuna">
+            <summary>
+            Broj računa kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.KontaktOsoba">
+            <summary>
+            Kontakt osoba kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.Prioriteti">
+            <summary>
+            Prioriteti kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.Adresa">
+            <summary>
+            Adresa kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.OvlascenaLica">
+            <summary>
+            Ovlašćena lica koja sarađuju sa kupcem
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacDto.Uplate">
+            <summary>
+             Uplate koje je izvršio kupac
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Kupac.KupacOtherServicesDto">
+            <summary>
+            Pomoćni Dto za program
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Kupac.PravnoLice.PravnoLiceConfirmDto">
+            <summary>
+            Dto za potvrdu kreiranja pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceConfirmDto.Naziv">
+            <summary>
+            Naziv pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceConfirmDto.MaticniBroj">
+            <summary>
+            Matični broj pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceConfirmDto.BrojTelefona">
+            <summary>
+            Broj telefona pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceConfirmDto.Email">
+            <summary>
+            Email pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceConfirmDto.BrojRacuna">
+            <summary>
+            Broj računa pravnog lica
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto">
+            <summary>
+            Dto za kreiranje pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.Naziv">
+            <summary>
+            Naziv pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.MaticniBroj">
+            <summary>
+            Matični broj pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.Faks">
+            <summary>
+            Broj faksa pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.OstvarenaPovrsina">
+            <summary>
+            Ostvarena površina u lcitacijama u kojim je učestvovalo pravno lice
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.ImaZabranu">
+            <summary>
+            Oznaka da li pravno lice ima zabranu za učestvovanje u licitacijama
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.DatumPocetkaZabrane">
+            <summary>
+            Datum početka zabrane
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.DuzinaTrajanjaZabraneGod">
+            <summary>
+            Trajanje zabrane u godinama
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.BrojTelefona">
+            <summary>
+            Broj telefona pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.BrojTelefona2">
+            <summary>
+            Drugi broj telefona pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.Email">
+            <summary>
+            Email pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.BrojRacuna">
+            <summary>
+            Broj računa pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.KontaktOsobaId">
+            <summary>
+            Kontakt osoba pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.Prioriteti">
+            <summary>
+            Prioriteti pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.AdresaId">
+            <summary>
+            Adresa pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.OvlascenaLica">
+            <summary>
+            Ovlašćena lica koja sarađuju sa pravnim licem
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceCreateDto.Uplate">
+            <summary>
+            Izvršene uplate pravnog lica
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto">
+            <summary>
+            Dto pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.KupacId">
+            <summary>
+            Id pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.Naziv">
+            <summary>
+            Naziv pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.MaticniBroj">
+            <summary>
+            Matični broj pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.Faks">
+            <summary>
+            Broj faksa pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.OstvarenaPovrsina">
+            <summary>
+            Ostvarena površina u lcitacijama u kojim je učestvovalo pravno lice
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.ImaZabranu">
+            <summary>
+            Oznaka da li pravno lice ima zabranu za učestvovanje u licitacijama
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.DatumPocetkaZabrane">
+            <summary>
+            Datum početka zabrane
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.DuzinaTrajanjaZabraneGod">
+            <summary>
+            Trajanje zabrane u godinama
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.BrojTelefona">
+            <summary>
+            Broj telefona pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.BrojTelefona2">
+            <summary>
+            Drugi broj telefona pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.Email">
+            <summary>
+            Email pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.BrojRacuna">
+            <summary>
+            Broj računa pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.KontaktOsobaId">
+            <summary>
+            Kontakt osoba pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.Prioriteti">
+            <summary>
+            Prioriteti pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.Adresa">
+            <summary>
+            Adresa pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.OvlascenaLica">
+            <summary>
+            Ovlašćena lica koja sarađuju sa pravnim licem
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceDto.Uplate">
+            <summary>
+            Izvršene uplate pravnog lica
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto">
+            <summary>
+            Dto za ažuriranje pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.KupacId">
+            <summary>
+            Id pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.Naziv">
+            <summary>
+            naziv pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.MaticniBroj">
+            <summary>
+            Matični broj pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.Faks">
+            <summary>
+            Broj faksa pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.OstvarenaPovrsina">
+            <summary>
+            Ostvarena površina u lcitacijama u kojim je učestvovalo pravno lice
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.ImaZabranu">
+            <summary>
+            Oznaka da li pravno lice ima zabranu za učestvovanje u licitacijama
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.DatumPocetkaZabrane">
+            <summary>
+            Datum početka zabrane
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.DuzinaTrajanjaZabraneGod">
+            <summary>
+            Trajanje zabrane u godinama
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.BrojTelefona">
+            <summary>
+            Broj telefona pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.BrojTelefona2">
+            <summary>
+            Drugi broj telefona pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.Email">
+            <summary>
+            Email pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.BrojRacuna">
+            <summary>
+            Broj računa pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.KontaktOsobaId">
+            <summary>
+            Kontakt osoba pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.Prioriteti">
+            <summary>
+            Prioriteti pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.AdresaId">
+            <summary>
+            Adresa pravnog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.OvlascenaLica">
+            <summary>
+            Ovlašćena lica koja sarađuju sa pravnim licem
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.PravnoLice.PravnoLiceUpdateDto.Uplate">
+            <summary>
+            Izvršene uplate pravnog lica
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.ManyToMany.KupacManyToManyDto">
+            <summary>
+            Dto za vraćanje kupaca u vezama više prema više (Ovlašćeno lice i uplata)
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.ManyToMany.KupacManyToManyDto.KupacId">
+            <summary>
+            Id kupca
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.OtherServices.AdresaDto">
+            <summary>
+            Dto za adresu
             </summary>
         </member>
         <member name="P:KupacService.Model.OtherServices.AdresaDto.Ulica">
@@ -39,6 +1209,11 @@
             Naziv Drzave adrese
             </summary>
         </member>
+        <member name="T:KupacService.Model.OtherServices.LogModel">
+            <summary>
+            Dto za logModel
+            </summary>
+        </member>
         <member name="P:KupacService.Model.OtherServices.LogModel.Level">
             <summary>
             Log level - info, warn, error, debug
@@ -62,6 +1237,96 @@
         <member name="P:KupacService.Model.OtherServices.LogModel.Greska">
             <summary>
             Greska
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.OtherServices.OvlascenoLiceDto">
+            <summary>
+            Dto za ovlašćeno lice
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.OvlascenoLiceDto.OvlascenoLice">
+            <summary>
+            Naziv ovlašćenog lica
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.OvlascenoLiceDto.BrojDokumenta">
+            <summary>
+            Broj dokumenta
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.OvlascenoLiceDto.Stanovanje">
+            <summary>
+            Adresa ovlašćenog lica
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.OtherServices.UplataDto">
+            <summary>
+            Dto za uplatu
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.UplataDto.BrojRacuna">
+            <summary>
+            Broj računa na koji se vrši uplata
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.UplataDto.PozivNaBroj">
+            <summary>
+            Poziv na broj
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.UplataDto.SvrhaUplate">
+            <summary>
+            Svrha uplate
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.UplataDto.Iznos">
+            <summary>
+            Iznos uplate
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.OtherServices.UplataDto.Datum">
+            <summary>
+            Datum uplate
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Prioritet.PrioritetCreateDto">
+            <summary>
+            Dto za kreiranje prioriteta
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Prioritet.PrioritetCreateDto.Opis">
+            <summary>
+            Opis prioriteta
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Prioritet.PrioritetDto">
+            <summary>
+            Dto za prioritet
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Prioritet.PrioritetDto.PrioritetId">
+            <summary>
+            Id prioriteta
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Prioritet.PrioritetDto.Opis">
+            <summary>
+            Opis prioriteta
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Prioritet.PrioritetUpdateDto">
+            <summary>
+            Dto za ažuriranje prioriteta
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Prioritet.PrioritetUpdateDto.PrioritetId">
+            <summary>
+            Id prioriteta
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Prioritet.PrioritetUpdateDto.Opis">
+            <summary>
+            Opis prioriteta
             </summary>
         </member>
         <member name="T:KupacService.ServiceCalls.IServiceCall`1">

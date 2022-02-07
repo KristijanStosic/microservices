@@ -73,7 +73,6 @@ namespace KupacService.Controllers
                 return NoContent();
             }
 
-
             List<FizickoLiceDto> fizickaLicaDto = new List<FizickoLiceDto>();
        
             foreach (var fizickoLice in fizickaLica)
@@ -161,12 +160,12 @@ namespace KupacService.Controllers
                 string link = _linkGenerator.GetPathByAction("GetFizickoLiceById", "FizickoLice", new { kupacId = newFizickoLice.KupacId });
 
 
-                await _loggerService.Log(LogLevel.Information, "CreateFizickoLice", $"Fizičko lice sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<FizickoLiceDto>(fizickoLice))} je uspešno kreirano.");
+                await _loggerService.Log(LogLevel.Information, "CreateFizickoLice", $"Fizičko lice sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<FizickoLiceDto>(newFizickoLice))} je uspešno kreirano.");
                 return Created(link,_mapper.Map<FizickoLiceConfirmDto>(newFizickoLice));
             }
             catch (Exception e)
             {
-                await _loggerService.Log(LogLevel.Error, "GetFizickoLiceById", $"Greška prilikom unosa fizičkog lica sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<FizickoLiceDto>(fizickoLice))}.", e);
+                await _loggerService.Log(LogLevel.Error, "GetFizickoLiceById", $"Greška prilikom unosa fizičkog lica sa vrednostima: {JsonConvert.SerializeObject(fizickoLice)}.", e);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
             }
         }

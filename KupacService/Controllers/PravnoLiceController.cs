@@ -145,8 +145,7 @@ namespace KupacService.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<PravnoLiceConfirmDto>> CreatePravnoLice([FromBody]PravnoLiceCreateDto pravnoLice)
         {
-            try
-            {
+           
                 PravnoLice newPravnoLice = _mapper.Map<PravnoLice>(pravnoLice);
                 
                 await _pravnoLiceRepository.CreatePravnoLice(newPravnoLice);
@@ -154,14 +153,9 @@ namespace KupacService.Controllers
 
                 string link = _linkGenerator.GetPathByAction("GetPravnoLiceById", "PravnoLice", new { kupacId = newPravnoLice.KupacId });
 
-                await _loggerService.Log(LogLevel.Information, "CreatePravnoLice", $"Pravno lice  sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<PravnoLiceDto>(pravnoLice))} je uspešno kreirano.");
+                await _loggerService.Log(LogLevel.Information, "CreatePravnoLice", $"Pravno lice  sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<PravnoLiceDto>(newPravnoLice))} je uspešno kreirano.");
                 return Created(link, _mapper.Map<PravnoLiceDto>(newPravnoLice));
-            }
-            catch (Exception e)
-            {
-                await _loggerService.Log(LogLevel.Error, "CreatePravnoLice", $"Greška prilikom unosa pravnog lica sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<PravnoLiceDto>(pravnoLice))}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Create Error ");
-            }
+            
         }
         /// <summary>
         /// Vrši ažuriranje pravnog lica
@@ -240,7 +234,7 @@ namespace KupacService.Controllers
         {
             try
             {
-                var pravnoLice = _pravnoLiceRepository.GetPravnoLiceById(kupacId);
+                var pravnoLice = await _pravnoLiceRepository.GetPravnoLiceById(kupacId);
 
                 if (pravnoLice == null)
                 {
@@ -250,6 +244,7 @@ namespace KupacService.Controllers
 
                 await _pravnoLiceRepository.DeletePravnoLice(kupacId);
                 await _pravnoLiceRepository.SaveChangesAsync();
+
                 await _loggerService.Log(LogLevel.Information, "DeletePravnoLice", $"Pravno lice  sa id-em {kupacId} je uspešno obrisano. Obrisane vrednosti: {JsonConvert.SerializeObject(_mapper.Map<PravnoLiceDto>(pravnoLice))}");
                 return Ok();
 
@@ -258,7 +253,7 @@ namespace KupacService.Controllers
             }catch(Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "DeletePravnoLice", $"Greška prilikom brisanja pravnog lica sa id-em {kupacId}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Delete Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Delete Error "+e.Message+"\n iinner "+e.InnerException );
             }
         }
         /// <summary>

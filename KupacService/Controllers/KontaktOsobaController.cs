@@ -111,13 +111,13 @@ namespace KupacService.Controllers
                 await _kontaktOsobaRepository.CreateKontaktOsoba(newKontaktOsoba);
                 await _kontaktOsobaRepository.SaveChangesAsync();
 
-                await _loggerService.Log(LogLevel.Information, "CreateJavnoNadmetanje", $"Kontakt osoba sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<KontaktOsobaDto>(kontaktOsoba))} je uspešno kreirana.");
+                await _loggerService.Log(LogLevel.Information, "CreateJavnoNadmetanje", $"Kontakt osoba sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<KontaktOsobaDto>(newKontaktOsoba))} je uspešno kreirana.");
                 string link = _linkGenerator.GetPathByAction("GetKontaktOsobaById", "KontaktOsoba", new { kontaktOsobaId = newKontaktOsoba.KontaktOsobaId });
                 return Created(link, kontaktOsoba);
             }
             catch(Exception e)
             {
-                await _loggerService.Log(LogLevel.Error, "CreateKontaktOsoba", $"Greška prilikom unosa kontakt osobe sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<KontaktOsobaDto>(kontaktOsoba))}.", e);
+                await _loggerService.Log(LogLevel.Error, "CreateKontaktOsoba", $"Greška prilikom unosa kontakt osobe sa vrednostima: {JsonConvert.SerializeObject(kontaktOsoba)}.", e);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
             }
         }

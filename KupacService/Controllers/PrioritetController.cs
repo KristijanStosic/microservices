@@ -119,12 +119,12 @@ namespace KupacService.Controllers
 
                 string lokacija = _linkGenerator.GetPathByAction("GetPrioritetById", "Prioritet", new { prioritetId = newPrioritet.PrioritetId });
 
-                await _loggerService.Log(LogLevel.Information, "CreatePrioritet", $"Prioritet sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<PrioritetDto>(prioritet))} je uspešno kreiran.");
+                await _loggerService.Log(LogLevel.Information, "CreatePrioritet", $"Prioritet sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<PrioritetDto>(newPrioritet))} je uspešno kreiran.");
                 return Created(lokacija, prioritet);
             }
             catch (Exception e)
             {
-                await _loggerService.Log(LogLevel.Error, "CreatePrioritet", $"Greška prilikom unosa prioriteta  sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<PrioritetDto>(prioritet))}.", e);
+                await _loggerService.Log(LogLevel.Error, "CreatePrioritet", $"Greška prilikom unosa prioriteta  sa vrednostima: {JsonConvert.SerializeObject(prioritet)}.", e);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
             }
         }

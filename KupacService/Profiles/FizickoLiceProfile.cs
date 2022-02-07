@@ -21,6 +21,9 @@ namespace KupacService.Profiles
                 opt => opt.Ignore())
                 .ForMember(
                 dest => dest.Uplate,
+                opt => opt.Ignore())
+                .ForMember(
+                dest => dest.Adresa,
                 opt => opt.Ignore());
           
 
@@ -43,6 +46,8 @@ namespace KupacService.Profiles
                 dest => dest.Prioriteti,
                 opt => opt.MapFrom(src => src.Prioriteti));
 
+            CreateMap<KupacOtherServicesDto, FizickoLiceDto>();
+         
         }
     }
 }

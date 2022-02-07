@@ -70,7 +70,7 @@ namespace KupacService.Model.Kupac.FizickoLice
         /// <summary>
         /// Adresa fizičkog lica
         /// </summary>
-        public AdresaDto AdresaId { get; set; }
+        public AdresaDto Adresa { get; set; }
         /// <summary>
         /// Ovlašćena lica koja sarađuju sa fizičkim licem
         /// </summary>

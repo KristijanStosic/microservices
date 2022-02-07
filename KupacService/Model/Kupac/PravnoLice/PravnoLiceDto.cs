@@ -75,7 +75,7 @@ namespace KupacService.Model.Kupac.PravnoLice
         /// <summary>
         /// Adresa pravnog lica
         /// </summary>
-        public AdresaDto AdresaId { get; set; }
+        public AdresaDto Adresa { get; set; }
         /// <summary>
         /// Ovlašćena lica koja sarađuju sa pravnim licem
         /// </summary>
