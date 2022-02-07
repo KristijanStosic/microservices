@@ -24,14 +24,6 @@ namespace DokumentService.DbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Dokument>()
-                .HasIndex(td => td.ZavodniBroj)
-                .IsUnique();
-
-            modelBuilder.Entity<TipDokumenta>()
-                .HasIndex(td => td.NazivTipa)
-                .IsUnique();
-
             modelBuilder.Entity<TipDokumenta>()
                 .HasData(
                     new TipDokumenta
