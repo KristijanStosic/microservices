@@ -42,7 +42,7 @@ namespace KupacService.ServiceCalls
                 string url = _configuration["Services:LoggerService"];
                 var log = new LogModel
                 {
-                    Servis = "Ovlasceno lice API",
+                    Servis = "Kupac Api",
                     Level = level,
                     Metoda = metoda,
                     Poruka = poruka,
