@@ -96,7 +96,7 @@ namespace UgovorOZakupu.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<UgovorOZakupuDto>> GetUgovorOZakupuById(Guid id, string token)
+        public async Task<ActionResult<UgovorOZakupuDto>> GetUgovorOZakupuById(Guid id)
         {
             try
             {
@@ -109,6 +109,7 @@ namespace UgovorOZakupu.Controllers
                     return NotFound();
                 }
 
+                var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
                 var ugovorDto = await _serviceCalls.GetUgovorOZakupuInfo(ugovor, token);
 
                 await _serviceCalls.Log(LogLevel.Information, "GetUgovorOZakupuById",

@@ -156,7 +156,7 @@ namespace UgovorOZakupu
         {
             if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
 
-            app.UseSwagger(c => { c.SerializeAsV2 = true; });
+            app.UseSwagger();
 
             app.UseSwaggerUI(options =>
             {
