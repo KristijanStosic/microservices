@@ -57,7 +57,7 @@ namespace KupacService.Entities.DataContext
                 .IsRequired();
 
             modelBuilder.Entity<KupacUplata>()
-                .HasKey(ko => new { ko.KupacId, ko.UplataId });
+                .HasKey(ko => new { ko.UplataId });
 
             List<Prioritet> prioriteti = new List<Prioritet>
             {
@@ -175,11 +175,6 @@ namespace KupacService.Entities.DataContext
               new
               {
                   KupacId = Guid.Parse("febd1c29-90e7-40c2-97f3-1e88495fe98d"),
-                  UplataId = Guid.Parse("5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5")
-              },
-              new
-              {
-                  KupacId = Guid.Parse("4ba95c01-aa89-4d36-a467-c72b0fcc5b80"),
                   UplataId = Guid.Parse("5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5")
               },
               new

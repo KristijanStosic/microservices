@@ -4,15 +4,12 @@ using System.Linq;
 using System.Threading.Tasks;
 
 namespace KupacService.Model.Prioritet
-{   /// <summary>
-/// Dto za prioritet
-/// </summary>
-    public class PrioritetDto
+{
+    /// <summary>
+    /// Dto za kreiranje prioriteta
+    /// </summary>
+    public class PrioritetCreateDto
     {
-        /// <summary>
-        /// Id prioriteta
-        /// </summary>
-        public Guid PrioritetId { get; set; }
         /// <summary>
         /// Opis prioriteta
         /// </summary>

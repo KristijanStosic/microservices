@@ -19,6 +19,7 @@ namespace KupacService.Profiles
             CreateMap<PrioritetUpdateDto, Prioritet>();
             CreateMap<Prioritet, Prioritet>();
             CreateMap<Guid, Prioritet>().ConvertUsing<PrioritetConverter>();
+            CreateMap<PrioritetCreateDto, Prioritet>();
 
         }
     }

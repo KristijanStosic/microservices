@@ -20,8 +20,12 @@ using System.Threading.Tasks;
 
 namespace KupacService.Controllers
 {
+    /// <summary>
+    /// Kontroler za fizička lica
+    /// </summary>
     [ApiController]
     [Route("api/fizickoLice")]
+    [Produces("application/json", "application/xml")]
     public class FizickoLiceController : ControllerBase
     {
         private readonly IFizickoLiceRepository _fizickoLiceRepository;
@@ -30,6 +34,14 @@ namespace KupacService.Controllers
         private readonly IKupacCalls _kupacCalls;
         private readonly ILoggerService _loggerService;
 
+        /// <summary>
+        ///  Konstruktor za kontroler
+        /// </summary>
+        /// <param name="fizickoLiceRepository"></param>
+        /// <param name="linkGenerator"></param>
+        /// <param name="mapper"></param>
+        /// <param name="kupacCalls"></param>
+        /// <param name="loggerService"></param>
         public FizickoLiceController(IFizickoLiceRepository fizickoLiceRepository,LinkGenerator linkGenerator,IMapper mapper
             ,IKupacCalls kupacCalls,ILoggerService loggerService)
         {
@@ -40,8 +52,20 @@ namespace KupacService.Controllers
             this._loggerService = loggerService;
         }
 
+        /// <summary>
+        /// Vraća listu fizičkih lica
+        /// </summary>
+        /// <param name="ime">ime fizičkog lica</param>
+        /// <param name="prezime">prezime fizičkog lica</param>
+        /// <param name="brojRacuna">broj računa fizičkog lica</param>
+        /// <returns>Listu fizičkih lica koji zadovoljavaju zadate filtere</returns>
+        /// <response code="200">Uspešno vraćena lista fizičkih lica</response>
+        /// <response code="204">Nije pronađeno nijedno fizičko lice</response>
         [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet]
+        [HttpHead]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult<List<FizickoLiceDto>>> GetFizickaLica(string ime, string prezime, string brojRacuna )
         {
             var fizickaLica = await _fizickoLiceRepository.GetFizickoLice(ime, prezime, brojRacuna);
@@ -64,10 +88,19 @@ namespace KupacService.Controllers
             }
             await _loggerService.Log(LogLevel.Information, "GetFizickaLica", "Lista fizičkih lica je uspešno vraćena.");
             return Ok(fizickaLicaDto);
-
         }
+
+        /// <summary>
+        /// Vraća fizičko lice na osnovu unetog id-a
+        /// </summary>
+        /// <param name="kupacId">Id fizičkog lica</param>
+        /// <returns>Fizičko lice</returns>
+        /// <response code="200">Uspešno vraćeno fizičko lice</response>
+        /// <response code="404">Nije pronađeno fizičko lice sa zadatim id-em</response>
         [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet("{kupacId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<FizickoLiceDto>> GetFizickoLiceById(Guid kupacId)
         {
             var fizickoLice = await _fizickoLiceRepository.GetFizickoLiceById(kupacId);
@@ -88,8 +121,39 @@ namespace KupacService.Controllers
 
         }
 
+        /// <summary>
+        /// Kreira novo fizičko lice
+        /// </summary>
+        /// <param name="fizickoLice">Fizičko lice</param>
+        /// <returns>Potvrdu o kreiranom fizičkom licu</returns>
+        /// <remarks>
+        /// Primer kreiranja fizičkog lica \
+        /// POST api/fizickolice \ 
+        /// { \ 
+        ///  "ime": "Petar", \ 
+        ///  "prezime": "Petrović", \
+        ///  "jmbg": "3485938493123", \ 
+        ///  "ostvarenaPovrsina": 500, \
+        ///  "imaZabranu": true, \ 
+        ///  "datumPocetkaZabrane": "2022-01-30", \
+        ///  "duzinaTrajanjaZabraneGod": 2, \
+        ///  "brojTelefona": "0665678974", \ 
+        ///  "brojTelefona2": "0665678934", \
+        ///  "email": "petar@gmail.com", \
+        ///  "brojRacuna": "3525235234234535", \ 
+        ///	"prioriteti":["f2b8faa4-732c-4480-8b0a-34d65e483930"], \
+        ///	"AdresaId":"37375EF6-4F25-48B3-9BF2-FE72A81F88D2", \ 
+        ///	"OvlascenaLica":["5E1BFFFC-1AEE-4662-BC04-341C35B9EBDC",\
+        ///									 "5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5"] \
+        ///    }
+        /// </remarks>
+        /// <response code="201">Uspešno kreirano fizičko lice</response>
+        /// <response code="500">Desila se greška prilikom kreiranja novog fizičkog lica</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPost]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<FizickoLiceConfirmDto>> CreateFizickoLice([FromBody]FizickoLiceCreationDto fizickoLice)
         {
             try
@@ -102,17 +166,53 @@ namespace KupacService.Controllers
                 string link = _linkGenerator.GetPathByAction("GetFizickoLiceById", "FizickoLice", new { kupacId = newFizickoLice.KupacId });
 
 
-                await _loggerService.Log(LogLevel.Information, "CreateFizickoLice", $"Fizičko lice sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<FizickoLiceDto>(fizickoLice))} je uspešno kreirano.");
+                await _loggerService.Log(LogLevel.Information, "CreateFizickoLice", $"Fizičko lice sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<FizickoLiceDto>(newFizickoLice))} je uspešno kreirano.");
                 return Created(link,_mapper.Map<FizickoLiceConfirmDto>(newFizickoLice));
             }
             catch (Exception e)
             {
-                await _loggerService.Log(LogLevel.Error, "GetFizickoLiceById", $"Greška prilikom unosa fizičkog lica sa vrednostima: {JsonConvert.SerializeObject(_mapper.Map<FizickoLiceDto>(fizickoLice))}.", e);
+                await _loggerService.Log(LogLevel.Error, "GetFizickoLiceById", $"Greška prilikom unosa fizičkog lica sa vrednostima: {JsonConvert.SerializeObject(fizickoLice)}.", e);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
             }
         }
+
+        /// <summary>
+        /// Vrši ažuriranje fizičkog lica 
+        /// </summary>
+        /// <param name="fizickoLiceUpdate">Fizičko lice</param>
+        /// <returns>Fizičko lice</returns>
+        /// <remarks>
+        /// Primer ažuriranja kontakt osobe
+        /// PUT api/kontaktOsoba
+        ///  { \ 
+        ///  "kupacId":"febd1c29-90e7-40c2-97f3-1e88495fe98d",
+        ///  "ime": "Petar", \ 
+        ///  "prezime": "Petrović", \
+        ///  "jmbg": "3485938493123", \ 
+        ///  "ostvarenaPovrsina": 500, \
+        ///  "imaZabranu": true, \ 
+        ///  "datumPocetkaZabrane": "2022-01-30", \
+        ///  "duzinaTrajanjaZabraneGod": 2, \
+        ///  "brojTelefona": "0665678974", \ 
+        ///  "brojTelefona2": "0665678934", \
+        ///  "email": "petar@gmail.com", \
+        ///  "brojRacuna": "3525235234234535", \ 
+        ///	"prioriteti":["f2b8faa4-732c-4480-8b0a-34d65e483930"], \
+        ///	"AdresaId":"37375EF6-4F25-48B3-9BF2-FE72A81F88D2", \ 
+        ///	"OvlascenaLica":["5E1BFFFC-1AEE-4662-BC04-341C35B9EBDC",\
+        ///									 "5ED44CAB-255D-4BB7-9CC9-828EC90BFAF5"] \
+        ///    }
+        /// 
+        /// </remarks>
+        /// <response code="200">Uspešno ažurirano fizičko lice</response>
+        /// <response code="404">Nije pronađeno fizičko lice na osnovu prosleđenog id-a</response>
+        /// <response code="500">Desila se greška prilikom ažuriranja fizičkog lica</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPut]
+        [Consumes("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<FizickoLiceDto>> UpdateFizickoLice([FromBody]FizickoLiceUpdateDto fizickoLiceUpdate)
         {
             try
@@ -140,8 +240,20 @@ namespace KupacService.Controllers
 
 
         }
+
+        /// <summary>
+        /// Vrši brisanje fizičkog lica na osnovu unetog id-a
+        /// </summary>
+        /// <param name="kupacId">Id fizičkog lica</param>
+        /// <returns></returns>
+        /// <response code="200">Uspešno obrisano fizičko lice</response>
+        /// <response code="404">Nije pronađeno fizičko lice na osnovu unetog id-a</response>
+        /// <response code="500">Desila se greška prilikom brisanja fizičkog lica</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpDelete("{kupacId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteFizickoLice(Guid kupacId)
         {
             try
@@ -167,9 +279,14 @@ namespace KupacService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Delete Error");
             }
         }
+
+        /// <summary>
+        /// Vraća opcije za rad sa fizičkim licima
+        /// </summary>
+        /// <returns></returns>
         [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [HttpOptions]
-        public IActionResult GetKontaktOsobaOptions()
+        public IActionResult GetFizickoLiceoptions()
         {
             Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");
             return Ok();

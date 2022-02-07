@@ -99,7 +99,8 @@ namespace KupacService.Data
         public async Task DeletePravnoLice(Guid kupacId)
         {
             var pravnoLice = await GetPravnoLiceById(kupacId);
-            _context.Remove(pravnoLice);
+            
+            _context.PravnaLica.Remove(pravnoLice);
         }
 
         public async Task<List<PravnoLice>> GetPravnoLice(string naziv = null, string maticniBroj = null)
@@ -120,7 +121,8 @@ namespace KupacService.Data
         public async Task<PravnoLice> GetPravnoLiceById(Guid kupacId)
         {
             var pravnoLice = await _context.PravnaLica.Include(p => p.Prioriteti).Include(ko => ko.KontaktOsoba).FirstOrDefaultAsync<PravnoLice>(p => p.KupacId == kupacId);
-
+            if(pravnoLice == null)
+                return pravnoLice;
             pravnoLice.OvlascenaLica = await _context.kupacOvlascenoLice.Where(ko => ko.KupacId == pravnoLice.KupacId).Select(o => o.OvlascenoLiceId).ToListAsync();
             pravnoLice.Uplate = await _context.kupacUplata.Where(ku => ku.KupacId == pravnoLice.KupacId).Select(u => u.UplataId).ToListAsync();
             return pravnoLice;

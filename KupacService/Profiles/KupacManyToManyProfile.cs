@@ -13,7 +13,6 @@ namespace KupacService.Profiles
         public KupacManyToManyProfile()
         {
             CreateMap<KupacOvlascenoLice, KupacManyToManyDto>();
-            CreateMap<KupacUplata, KupacManyToManyDto>();
         }
     }
 }

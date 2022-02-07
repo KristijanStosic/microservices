@@ -1,24 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace KupacService.Model.KontaktOsoba
 {
     /// <summary>
-    /// Dto za kontakt osobu
+    /// Dto za kreiranje kontakt osobe
     /// </summary>
-    public class KontaktOsobaDto
+    public class KontaktOsobaCreateDto
     {
-        /// <summary>
-        /// id kontakt osobe
-        /// </summary>
-        [Required]
-        public Guid KontaktOsobaId { get; set; }
-        /// <summary>
-        /// ime kontakt osobe
-        /// </summary>
         public string Ime { get; set; }
         /// <summary>
         /// Prezime kontak osobe

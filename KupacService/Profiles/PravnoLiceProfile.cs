@@ -19,8 +19,12 @@ namespace KupacService.Profiles
                 opt => opt.Ignore())
                   .ForMember(
                 dest => dest.Uplate,
+                opt => opt.Ignore())
+                   .ForMember(
+                dest => dest.Adresa,
                 opt => opt.Ignore());
-                
+            
+
 
             CreateMap<PravnoLiceCreateDto, PravnoLice>()
                 .ForMember(
