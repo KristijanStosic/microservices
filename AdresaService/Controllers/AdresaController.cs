@@ -177,7 +177,7 @@ namespace AdresaService.Controllers
         /// </remarks>
         /// <response code="200">Uspešno ažurirana adresa</response>
         /// <response code="404">Nije pronađena adresa na osnovu prosleđenog id-a</response>
-        /// <response code="500">Desila se greška prilikom brisanja adrese</response>
+        /// <response code="500">Desila se greška prilikom ažuriranja adrese</response>
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status200OK)]
