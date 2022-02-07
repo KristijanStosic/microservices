@@ -13,7 +13,7 @@ namespace RabbitMQ.Consumer.Data
             var SmtpServer = new SmtpClient("smtp.gmail.com");
 
             mail.From = new MailAddress(ConfigurationManager.AppSettings.Get("Email"));
-            mail.To.Add("majkickac99@gmail.com"); //Test email data - za prave mejlove promeniti na mailInfo.Email
+            mail.To.Add("*"); //Test email data - za prave mejlove promeniti na mailInfo.Email
             mail.Subject = "Informacije o datumu održavanja javnog nadmetanja";
             mail.IsBodyHtml = true;
 
