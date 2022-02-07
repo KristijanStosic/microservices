@@ -4,6 +4,7 @@ using JavnoNadmetanjeService.Entities;
 using JavnoNadmetanjeService.Entities.Confirmations;
 using JavnoNadmetanjeService.Models.Etapa;
 using JavnoNadmetanjeService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -42,6 +43,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Lista etapa</returns>
         /// <response code="200">Vraća listu etapa</response>
         /// <response code="404">Nije pronađena ni jedna etapa</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanje")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -68,6 +70,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Etapa</returns>
         /// <response code="200">Vraća traženu etapu</response>
         /// <response code="404">Nije pronađena etapa za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanje")]
         [HttpGet("{etapaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -105,6 +108,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Potvrda o kreiranju etape</returns>
         /// <response code="200">Vraća kreiranu etapu</response>
         /// <response code="500">Desila se greška prilikom unosa nove etape</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -145,6 +149,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <response code="200">Izmenjena etapa</response>
         /// <response code="404">Nije pronađena etapa za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene etape</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -187,6 +192,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <response code="204">Etapa je uspešno obrisana</response>
         /// <response code="404">Nije pronađena etapa za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja etape</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpDelete("{etapaId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -222,6 +228,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// Vraća opcije za rad sa etapama
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanje")]
         [HttpOptions]
         public IActionResult GetEtapaOptions()
         {
