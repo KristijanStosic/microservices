@@ -14,7 +14,7 @@ namespace LicitacijaService.Data
 {
     public class LicitacijaRepository : ILicitacijaRepository
     {
-        private LicitacijaContext _context;
+        private readonly LicitacijaContext _context;
         private readonly IMapper _mapper;
 
         public LicitacijaRepository(LicitacijaContext context, IMapper mapper)
@@ -94,6 +94,6 @@ namespace LicitacijaService.Data
             }
             return licitacija;
         }
-        //TODO update
+        
     }
 }
