@@ -9,6 +9,6 @@ namespace KupacService.Helpers
 {
     public interface IKupacCalls
     {
-        Task<KupacOtherServicesDto> GetKupacDtoWithOtherServicesInfo(Kupac kupac);
+        Task<KupacOtherServicesDto> GetKupacDtoWithOtherServicesInfo(Kupac kupac, string token);
     }
 }

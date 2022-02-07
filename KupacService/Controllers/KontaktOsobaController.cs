@@ -3,6 +3,7 @@ using KupacService.Data.Interfaces;
 using KupacService.Entities;
 using KupacService.Model.KontaktOsoba;
 using KupacService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -31,7 +32,7 @@ namespace KupacService.Controllers
             this._mapper = mapper;
             this._loggerService = loggerService;
         }
-
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet]
         public async Task<ActionResult<List<KontaktOsobaDto>>> GetKontaktOsobe(string ime, string prezime)
         {
@@ -45,6 +46,7 @@ namespace KupacService.Controllers
             await _loggerService.Log(LogLevel.Information, "GetKontaktOsobe", "Lista kontakt osobi je uspešno vraćena.");
             return Ok(_mapper.Map<List<KontaktOsobaDto>>(kontaktOsobe));
         }
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet("{kontaktOsobaId}")]
         public async Task<ActionResult<KontaktOsobaDto>> GetKontaktOsobaById(Guid kontaktOsobaId)
         {
@@ -58,6 +60,7 @@ namespace KupacService.Controllers
             await _loggerService.Log(LogLevel.Information, "GetKontaktOsobaById", $"Kontakt osoba sa id-em {kontaktOsobaId} je uspešno vraćena.");
             return Ok(_mapper.Map<KontaktOsobaDto>(kontaktOsoba));
         }
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPost]
         public async Task<ActionResult<KontaktOsobaDto>> CreateKontaktOsoba(KontaktOsobaDto kontaktOsoba)
         {
@@ -78,7 +81,7 @@ namespace KupacService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
             }
         }
-
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPut]
         public async Task<ActionResult<KontaktOsobaDto>> UpdateKontaktOsoba(KontaktOsobaUpdateDto kontaktOsobaUpdate)
         {
@@ -109,6 +112,7 @@ namespace KupacService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Update Error");
             }
         }
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpDelete("{kontaktOsobaId}")]
         public async Task<IActionResult> DeleteKontaktOsoba(Guid kontaktOsobaId)
         {
@@ -133,7 +137,7 @@ namespace KupacService.Controllers
             }
         }
 
-
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetKontaktOsobaOptions()
         {

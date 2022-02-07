@@ -5,11 +5,13 @@ using KupacService.Helpers;
 using KupacService.Model.Kupac.FizickoLice;
 using KupacService.Model.OtherServices;
 using KupacService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -38,6 +40,7 @@ namespace KupacService.Controllers
             this._loggerService = loggerService;
         }
 
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet]
         public async Task<ActionResult<List<FizickoLiceDto>>> GetFizickaLica(string ime, string prezime, string brojRacuna )
         {
@@ -49,13 +52,13 @@ namespace KupacService.Controllers
                 return NoContent();
             }
 
-
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             List<FizickoLiceDto> fizickaLicaDto = new List<FizickoLiceDto>();
        
             foreach (var fizickoLice in fizickaLica)
             {
                 FizickoLiceDto fizickoLiceDto = _mapper.Map<FizickoLiceDto>(fizickoLice);
-                var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(fizickoLice);
+                var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(fizickoLice, token);
                 _mapper.Map(otherServicesDto, fizickoLiceDto);
                 fizickaLicaDto.Add(fizickoLiceDto);
             }
@@ -63,6 +66,7 @@ namespace KupacService.Controllers
             return Ok(fizickaLicaDto);
 
         }
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet("{kupacId}")]
         public async Task<ActionResult<FizickoLiceDto>> GetFizickoLiceById(Guid kupacId)
         {
@@ -73,17 +77,18 @@ namespace KupacService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetFizickoLiceById", $"Fizičko lice sa id-em {kupacId} nije pronađen.");
                 return NotFound();
             }
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
             FizickoLiceDto fizickoLiceDto = _mapper.Map<FizickoLiceDto>(fizickoLice);
 
-            var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(fizickoLice);
+            var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(fizickoLice, token);
             _mapper.Map(otherServicesDto, fizickoLiceDto);
             await _loggerService.Log(LogLevel.Information, "GetFizickoLiceById", $"Fizičko lice sa id-em {kupacId} je uspešno vraćen.");
             return Ok(fizickoLiceDto);
 
         }
 
-
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPost]
         public async Task<ActionResult<FizickoLiceConfirmDto>> CreateFizickoLice([FromBody]FizickoLiceCreationDto fizickoLice)
         {
@@ -106,7 +111,7 @@ namespace KupacService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
             }
         }
-        
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPut]
         public async Task<ActionResult<FizickoLiceDto>> UpdateFizickoLice([FromBody]FizickoLiceUpdateDto fizickoLiceUpdate)
         {
@@ -135,7 +140,7 @@ namespace KupacService.Controllers
 
 
         }
-
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpDelete("{kupacId}")]
         public async Task<IActionResult> DeleteFizickoLice(Guid kupacId)
         {
@@ -162,7 +167,7 @@ namespace KupacService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Delete Error");
             }
         }
-
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetKontaktOsobaOptions()
         {
