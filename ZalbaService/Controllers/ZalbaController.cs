@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -58,6 +60,8 @@ namespace ZalbaService.Controllers
         /// <returns>Lista žalbi</returns>
         /// <response code="200">Vraća listu žalbi</response>
         /// <response code="404">Nije pronađena ni jedna žalba</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -71,7 +75,7 @@ namespace ZalbaService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetAllZalba", "Lista žalbi je prazna ili null.");
                 return NoContent();
             }
-
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             var zalbeDto = new List<ZalbaDto>();
             string url = _configuration["Services:KupacService"];
             foreach (var zalba in zalbe)
@@ -79,7 +83,7 @@ namespace ZalbaService.Controllers
                 var zalbaDto = _mapper.Map<ZalbaDto>(zalba);
                 if (zalba.KupacId is not null)
                 {
-                    var kupacDto = await _kupacService.SendGetRequestAsync(url + zalba.KupacId);
+                    var kupacDto = await _kupacService.SendGetRequestAsync(url + zalba.KupacId, token);
                     if(kupacDto is not null)
                     {
                         zalbaDto.Kupac = kupacDto.Kupac + ", " + kupacDto.Email + ", " + kupacDto.BrojRacuna + ", " + kupacDto.BrojTelefona1;
@@ -99,6 +103,8 @@ namespace ZalbaService.Controllers
         /// <returns>Žalba</returns>
         /// <response code="200">Vraća traženu žalbu</response>
         /// <response code="404">Nije pronađena žalba za uneti ID</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser,Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [HttpGet("{zalbaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -112,12 +118,13 @@ namespace ZalbaService.Controllers
                 return NotFound();
             }
 
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             string url = _configuration["Services:KupacService"];
 
             var zalbaDto = _mapper.Map<ZalbaDto>(zalba);
             if(zalba.KupacId is not null)
             {
-                var kupacDto = await _kupacService.SendGetRequestAsync(url + zalba.KupacId);
+                var kupacDto = await _kupacService.SendGetRequestAsync(url + zalba.KupacId, token);
                 if(kupacDto is not null)
                 {
                     zalbaDto.Kupac = kupacDto.Kupac + ", " + kupacDto.Email + ", " + kupacDto.BrojRacuna + ", " + kupacDto.BrojTelefona1;
@@ -149,6 +156,8 @@ namespace ZalbaService.Controllers
         /// <returns>Potvrda o kreiranju žalbe</returns>
         /// <response code="201">Vraća kreiranu žalbu</response>
         /// <response code="500">Desila se greška prilikom unosa nove žalbe</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -193,6 +202,8 @@ namespace ZalbaService.Controllers
         /// <response code="400">Desila se greška prilikom unosa istih podataka za žalbu</response>
         /// <response code="404">Nije pronađena zalba za uneti ID</response>
         /// <response code="500">Serverska greška tokom modifikacije zalbe</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -245,6 +256,8 @@ namespace ZalbaService.Controllers
         /// <response code="204">Žalba je uspešno obrisana</response>
         /// <response code="404">Nije pronađena žalba za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja žalbe</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -276,6 +289,7 @@ namespace ZalbaService.Controllers
         /// Vraća opcije za rad sa zalbama
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetZalbaOptions()
         {

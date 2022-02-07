@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace ZalbaService.ServicesCalls
@@ -28,7 +29,7 @@ namespace ZalbaService.ServicesCalls
         /// </summary>
         /// <param name="url">Url putanja ka drugom servisu</param>
         /// <returns></returns>
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             try
             {
@@ -38,6 +39,8 @@ namespace ZalbaService.ServicesCalls
                 request.Headers.Add("Accept", "application/json");
 
                 var response = await httpClient.SendAsync(request);
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
                 if (response.IsSuccessStatusCode)
                 {
