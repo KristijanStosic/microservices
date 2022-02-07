@@ -127,7 +127,7 @@ namespace AdresaService.Controllers
             catch(Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "CreateDrzava", $"Greška prilikom unosa države sa vrednostima: {JsonConvert.SerializeObject(drzava)}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom unosa države");
             }
         }
         /// <summary>
@@ -166,7 +166,7 @@ namespace AdresaService.Controllers
             catch (Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "DeleteDrzava", $"Greška prilikom brisanja države sa id-em {drzavaId}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Delete error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom brisanja države");
             }
          }
 
@@ -216,7 +216,7 @@ namespace AdresaService.Controllers
             catch (Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "UpdateDrzava", $"Greška prilikom izmene države sa id-em {updateDrzava.DrzavaId}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Update error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom ažuriranja države");
             }
         }
 
