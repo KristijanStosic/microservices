@@ -130,21 +130,24 @@ namespace KupacService.Controllers
         /// <remarks>
         /// Primer kreiranja pravnog lica\
         /// Post api/pravnoLice\
-        /// {\
-        ///"naziv": "Firma",\
-        ///"maticniBroj": "124123412",\
-        ///"faks":"+232345242423",\
-        ///"ostvarenaPovrsina": 0,\
-        ///"imaZabranu": true,\
-        ///"datumPocetkaZabrane": "2022-01-30",\
-        ///"duzinaTrajanjaZabraneGod": 0,\
-        ///"brojTelefona": "06624325",\
-        ///"brojTelefona2": "0692354235",\
-        ///"email": "firma@gmail.com",\
-        ///"brojRacuna": "32523525",\
-        ///"kontaktOsobaId":"244FB7C4-AAB8-4EC4-8960-E48E017BAD37",\
-        ///"prioriteti":["f2b8faa4-732c-4480-8b0a-34d65e483930","2578E81B-3F01-479A-B790-F52106F639F7"]\
-        /// }
+        ///       {
+        /// "naziv": "Firma2",\
+        /// "maticniBroj": "124123412",\
+        ///	"faks":"+232345242423",\
+        ///   "ostvarenaPovrsina": -500,\
+        ///  "imaZabranu": true,\
+        ///  "datumPocetkaZabrane": "2022-01-30",\
+        ///  "duzinaTrajanjaZabraneGod": 2,\
+        ///  "brojTelefona": "0665678974",\
+        ///  "brojTelefona2": "0665678934",\
+        ///  "email": "Firma2@gmail.com",\
+        ///  "brojRacuna": "3525235234234535",\
+        ///  	"kontaktOsobaId":"244FB7C4-AAB8-4EC4-8960-E48E017BAD37",\
+        ///	"prioriteti":["f2b8faa4-732c-4480-8b0a-34d65e483930"],\
+        ///	"AdresaId":"37375EF6-4F25-48B3-9BF2-FE72A81F88D2",\
+        ///	"OvlascenaLica":["5E1BFFFC-1AEE-4662-BC04-341C35B9EBDC"]\
+        ///\
+        /// }\
         /// </remarks>
         /// <response code="201">Uspešno kreirano pravno lice</response>
         /// <response code="500">Desila se greška prilikom kreiranja novog pravnog lica</response>
@@ -172,7 +175,7 @@ namespace KupacService.Controllers
                 await _loggerService.Log(LogLevel.Error, "CreatePravnoLice", $"Greška prilikom unosa pravnog lica sa vrednostima: {JsonConvert.SerializeObject(pravnoLice)}.", e);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom unosa pravnog lica");
             }
-            
+
         }
 
         /// <summary>
@@ -183,22 +186,25 @@ namespace KupacService.Controllers
         /// <remarks>
         /// Primer ažuriranja pravnog lica\
         /// PUT api/pravnoLice\
-        /// {\
-        /// "kupacId":"4ba95c01-aa89-4d36-a467-c72b0fcc5b80",\
-        ///"naziv": "Firma",\
-        ///"maticniBroj": "124123412",\
-        ///"faks":"+232345242423",\
-        ///"ostvarenaPovrsina": 0,\
-        ///"imaZabranu": true,\
-        ///"datumPocetkaZabrane": "2022-01-30",\
-        ///"duzinaTrajanjaZabraneGod": 0,\
-        ///"brojTelefona": "06624325",\
-        ///"brojTelefona2": "0692354235",\
-        ///"email": "firma@gmail.com",\
-        ///"brojRacuna": "32523525",\
-        ///"kontaktOsobaId":"244FB7C4-AAB8-4EC4-8960-E48E017BAD37",\
-        ///"prioriteti":["f2b8faa4-732c-4480-8b0a-34d65e483930","2578E81B-3F01-479A-B790-F52106F639F7"]\
-        /// }
+        ///     {\
+        ///   "KupacId":"5f08f30d-d81a-4eaf-a705-cc4fc47b3401",\
+        ///     "naziv": "Update",\
+        ///  "maticniBroj": "124123412",\
+        ///	"faks":"+232345242423",\
+        ///   "ostvarenaPovrsina": 500,\
+        ///  "imaZabranu": true,\
+        ///  "datumPocetkaZabrane": "2022-01-30",\
+        ///  "duzinaTrajanjaZabraneGod": 2,\
+        ///  "brojTelefona": "0665678974",\
+        ///  "brojTelefona2": "0665678934",\
+        ///  "email": "Firma2@gmail.com",\
+        ///  "brojRacuna": "3525235234234535",\
+        ///  	"kontaktOsobaId":"244FB7C4-AAB8-4EC4-8960-E48E017BAD37",\
+        ///	"prioriteti":["f2b8faa4-732c-4480-8b0a-34d65e483930"],\
+        ///	"AdresaId":"37375EF6-4F25-48B3-9BF2-FE72A81F88D2",\
+        ///	"OvlascenaLica":["5E1BFFFC-1AEE-4662-BC04-341C35B9EBDC"],\
+        ///    "Uplate":["ac8319a5-7927-4ea3-a52c-fe2b218123cb"]\
+        ///   }\
         /// </remarks>
         /// <response code="200">Uspešno ažurirano pravno lice</response>
         /// <response code="404">Nije pronađeno pravno lice na osnovu prosleđenog id-a</response>
