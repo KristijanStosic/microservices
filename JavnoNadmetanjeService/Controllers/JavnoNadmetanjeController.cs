@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -61,9 +62,10 @@ namespace JavnoNadmetanjeService.Controllers
             }
 
             var javnaNadmetanjaDto = new List<JavnoNadmetanjeDto>();
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             foreach (var javnoNad in javnaNadmetanja)
             {
-                javnaNadmetanjaDto.Add(await _javnoNadmetanjeCalls.GetJavnoNadmetanjeDtoWithOtherServicesInfo(javnoNad));
+                javnaNadmetanjaDto.Add(await _javnoNadmetanjeCalls.GetJavnoNadmetanjeDtoWithOtherServicesInfo(javnoNad, token));
             }
 
             await _loggerService.Log(LogLevel.Information, "GetAllJavnoNadmetanje", "Lista javnih nadmetanja je uspešno vraćena.");
@@ -90,10 +92,11 @@ namespace JavnoNadmetanjeService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} nije pronađeno.");
                 return NotFound();
             }
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
             await _loggerService.Log(LogLevel.Information, "GetJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} je uspešno vraćeno.");
 
-            return Ok(await _javnoNadmetanjeCalls.GetJavnoNadmetanjeDtoWithOtherServicesInfo(javnoNadmetanje));
+            return Ok(await _javnoNadmetanjeCalls.GetJavnoNadmetanjeDtoWithOtherServicesInfo(javnoNadmetanje,token));
         }
 
         /// <summary>
