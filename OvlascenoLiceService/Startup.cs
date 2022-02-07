@@ -93,9 +93,9 @@ namespace OvlascenoLiceService
 
             services.AddScoped<IOvlascenoLiceRepository, OvlascenoLiceRepository>();
             services.AddScoped<IBrojTableRepository, BrojTableRepository>();
-            services.AddScoped<IServiceCall<AdresaDto>, ServiceCallAdresaMock<AdresaDto>>();
-            services.AddScoped<IServiceCall<DrzavaDto>, ServiceCallDrzavaMock<DrzavaDto>>();
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
+            services.AddScoped<IServiceCall<AdresaDto>, ServiceCall<AdresaDto>>();
+            services.AddScoped<IServiceCall<DrzavaDto>, ServiceCall<DrzavaDto>>();
+            services.AddScoped<ILoggerService, LoggerService>();
 
             var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();
             var key = Encoding.ASCII.GetBytes(secret);
@@ -188,6 +188,7 @@ namespace OvlascenoLiceService
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

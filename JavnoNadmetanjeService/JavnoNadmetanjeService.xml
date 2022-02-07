@@ -44,7 +44,7 @@
             }
              </remarks>
              <returns>Potvrda o kreiranju etape</returns>
-             <response code="200">Vraća kreiranu etapu</response>
+             <response code="201">Vraća kreiranu etapu</response>
              <response code="500">Desila se greška prilikom unosa nove etape</response>
         </member>
         <member name="M:JavnoNadmetanjeService.Controllers.EtapaController.UpdateEtapa(JavnoNadmetanjeService.Models.Etapa.EtapaUpdateDto)">
@@ -118,7 +118,7 @@
             }
              </remarks>
              <returns>Potvrda o kreiranju javnog nadmetanja</returns>
-             <response code="200">Vraća kreirano javno nadmetanje</response>
+             <response code="201">Vraća kreirano javno nadmetanje</response>
              <response code="500">Desila se greška prilikom unosa novog javnog nadmetanja</response>
         </member>
         <member name="M:JavnoNadmetanjeService.Controllers.JavnoNadmetanjeController.UpdateJavnoNadmetanje(JavnoNadmetanjeService.Models.JavnoNadmetanje.JavnoNadmetanjeUpdateDto)">
@@ -183,7 +183,7 @@
             }
              </remarks>
              <returns>Potvrda o kreiranju statusa</returns>
-             <response code="200">Vraća kreiran status</response>
+             <response code="201">Vraća kreiran status</response>
              <response code="500">Desila se greška prilikom unosa novog statusa</response>
         </member>
         <member name="M:JavnoNadmetanjeService.Controllers.StatusController.UpdateStatus(JavnoNadmetanjeService.Models.Status.StatusUpdateDto)">
@@ -248,7 +248,7 @@
             }
             </remarks>
             <returns>Potvrda o kreiranju tipa</returns>
-            <response code="200">Vraća kreiran tip</response>
+            <response code="201">Vraća kreiran tip</response>
             <response code="500">Desila se greška prilikom unosa novog tipa</response>
         </member>
         <member name="M:JavnoNadmetanjeService.Controllers.TipController.UpdateTip(JavnoNadmetanjeService.Models.Tip.TipUpdateDto)">

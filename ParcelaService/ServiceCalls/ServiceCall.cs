@@ -27,7 +27,6 @@ namespace ParcelaService.ServiceCalls
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Add("Accept", "application/json");
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
                 var response = await httpClient.SendAsync(request);
 

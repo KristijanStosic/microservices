@@ -14,7 +14,7 @@ namespace KorisnikSistemaService.ServiceCalls
         {
             var log = new LogModel
             {
-                Servis = "Javno Nadmetanje API",
+                Servis = "Korisnik sistema API",
                 Level = level,
                 Metoda = metoda,
                 Poruka = poruka,

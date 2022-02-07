@@ -98,7 +98,7 @@ namespace PrijavaService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju fokumenta fizickog lica</returns>
-        /// <response code="200">Vraća kreiran dokument fizickog lica</response>
+        /// <response code="201">Vraća kreiran dokument fizickog lica</response>
         /// <response code="500">Desila se greška prilikom unosa novog dokumenta fizickog lica</response>
         [Authorize(Roles = "Administrator, Superuser, Operater")]
         [HttpPost]

@@ -1336,6 +1336,7 @@
             Metoda za slanje get zahteva
             </summary>
             <param name="url"></param>
+            <param name="token"></param>
             <returns></returns>
         </member>
         <member name="T:ZalbaService.ServicesCalls.LoggerService">
@@ -1385,6 +1386,7 @@
             Metoda za slanje get zahteva - mock
             </summary>
             <param name="url"></param>
+            <param name="token"></param>
             <returns></returns>
         </member>
         <member name="T:ZalbaService.ServicesCalls.ServiceCall`1">
@@ -1404,6 +1406,7 @@
             Metoda za slanje get zahteva
             </summary>
             <param name="url">Url putanja ka drugom servisu</param>
+            <param name="token"></param>
             <returns></returns>
         </member>
         <member name="T:ZalbaService.Startup">

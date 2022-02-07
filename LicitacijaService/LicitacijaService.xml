@@ -41,7 +41,7 @@
               "korakCeneLicitacije": 2
             </remarks>
             <returns>Potvrda o kreiranju licitacije</returns>
-            <response code="200">Vraća kreiranu licitaciju</response>
+            <response code="201">Vraća kreiranu licitaciju</response>
             <response code="500">Desila se greška prilikom unosa nove licitacije</response>
         </member>
         <member name="M:LicitacijaService.Controllers.LicitacijaController.UpdateLicitacija(LicitacijaService.Models.LicitacijaUpdateDto)">

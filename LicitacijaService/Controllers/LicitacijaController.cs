@@ -67,7 +67,7 @@ namespace LicitacijaService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetAllLicitacija", "Lista licitacija je prazna ili null.");
                 return NoContent();
             }
-            string urlJavnoNadmetanje = _configuration["Service:JavnoNadmetanje"]; 
+            string urlJavnoNadmetanje = _configuration["Services:JavnoNadmetanje"]; 
             var licitacijeDto = new List<LicitacijaDto>();
             var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             foreach (var lic in licitacije)
@@ -113,7 +113,7 @@ namespace LicitacijaService.Controllers
 
             var licitacijaDto = _mapper.Map<LicitacijaDto>(licitacija);
             licitacijaDto.JavnaNadmetanja = new List<JavnoNadmetanjeDto>();
-            string urlJavnoNadmetanje = _configuration["Service:JavnoNadmetanje"];
+            string urlJavnoNadmetanje = _configuration["Services:JavnoNadmetanje"];
 
             foreach (var jn in licitacija.JavnaNadmetanja)
             {
@@ -145,7 +145,7 @@ namespace LicitacijaService.Controllers
         ///   "korakCeneLicitacije": 2
         /// </remarks>
         /// <returns>Potvrda o kreiranju licitacije</returns>
-        /// <response code="200">Vraća kreiranu licitaciju</response>
+        /// <response code="201">Vraća kreiranu licitaciju</response>
         /// <response code="500">Desila se greška prilikom unosa nove licitacije</response>
         [Authorize(Roles = "Administrator, Superuser, PrvaKomisija, OperaterNadmetanja")]
         [HttpPost]

@@ -80,8 +80,8 @@ namespace UplataService
 
             services.AddScoped<IUplataRepository, UplataRepository>();
 
-            services.AddScoped<IServiceCall<JavnoNadmetanjeDto>, ServiceCallJavnoNadmetanjeMock<JavnoNadmetanjeDto>>();
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
+            services.AddScoped<IServiceCall<JavnoNadmetanjeDto>, ServiceCall<JavnoNadmetanjeDto>>();
+            services.AddScoped<ILoggerService, LoggerService>();
 
             var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();
             var key = Encoding.ASCII.GetBytes(secret);

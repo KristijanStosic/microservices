@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -29,25 +30,19 @@ namespace JavnoNadmetanjeService.Controllers
     {
         private readonly IEtapaRepository _etapaRepository;
         private readonly IJavnoNadmetanjeRepository _javnoNadmetanjeRepository;
-        private readonly IServiceCall<KupacDto> _kupacService;
-        private readonly IServiceCall<AdresaDto> _adresaService;
-        private readonly IRabbitMQProducer _rabbitMQProducer;
+        private readonly IJavnoNadmetanjeCalls _javnoNadmetanjeCalls;
         private readonly LinkGenerator _linkGenerator;
         private readonly IMapper _mapper;
         private readonly ILoggerService _loggerService;
-        private readonly IConfiguration _configuration;
 
-        public EtapaController(IEtapaRepository etapaRepository, IJavnoNadmetanjeRepository javnoNadmetanjeRepository, IServiceCall<KupacDto> kupacService, IServiceCall<AdresaDto> adresaService, IRabbitMQProducer rabbitMQProducer, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService, IConfiguration configuration)
+        public EtapaController(IEtapaRepository etapaRepository, IJavnoNadmetanjeRepository javnoNadmetanjeRepository, IJavnoNadmetanjeCalls javnoNadmetanjeCalls, LinkGenerator linkGenerator, IMapper mapper, ILoggerService loggerService)
         {
             _etapaRepository = etapaRepository;
             _javnoNadmetanjeRepository = javnoNadmetanjeRepository;
-            _kupacService = kupacService;
-            _adresaService = adresaService;
-            _rabbitMQProducer = rabbitMQProducer;
+            _javnoNadmetanjeCalls = javnoNadmetanjeCalls;
             _linkGenerator = linkGenerator;
             _mapper = mapper;
             _loggerService = loggerService;
-            _configuration = configuration;
         }
 
         /// <summary>
@@ -146,33 +141,9 @@ namespace JavnoNadmetanjeService.Controllers
                 await _loggerService.Log(LogLevel.Information, "CreateEtapa", $"Etapa sa vrednostima: {JsonConvert.SerializeObject(etapa)} je uspešno kreirana.");
 
                 //RabbitMQ - slanje mejlova kupcima o vremenu kada se etapa odrzava
+                var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
                 var javnoNadmetanje = await _javnoNadmetanjeRepository.GetJavnoNadmetanjeById(etapa.JavnoNadmetanjeId);
-                string adresa = "";
-                if (javnoNadmetanje.AdresaId is not null)
-                {
-                    var adresaDto = await _adresaService.SendGetRequestAsync(_configuration["Services:AdresaService"] + javnoNadmetanje.AdresaId);
-                    if (adresaDto is not null)
-                        adresa = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
-                }
-
-                foreach (var kupac in javnoNadmetanje.Kupci)
-                {
-                    var kupacDto = await _kupacService.SendGetRequestAsync(_configuration["Services:KupacService"] + kupac);
-                    if (kupacDto is not null)
-                    {
-                        var email = new MailInfo
-                        {
-                            Email = kupacDto.Email,
-                            Kupac = kupacDto.Kupac,
-                            Adresa = adresa,
-                            DatumOdrzavanja = etapa.Datum,
-                            VremePocetka = etapa.VremePocetka,
-                            VremeKraja = etapa.VremeKraja
-                        };
-                        await _rabbitMQProducer.SendEmailToQueue(email);
-                    }
-                }
-
+                await _javnoNadmetanjeCalls.EtapaToOcelotQueue(javnoNadmetanje, etapa, token);
 
                 return Created(lokacija, _mapper.Map<EtapaConfirmationDto>(novaEtapa));
             }

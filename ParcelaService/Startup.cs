@@ -93,8 +93,8 @@ namespace ParcelaService
             services.AddScoped<IParcelaRepository, ParcelaRepository>();
             services.AddScoped<IDeoParceleRepository, DeoParceleRepository>();
 
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
-            services.AddScoped<IServiceCall<KupacDto>, ServiceCallKupacMock<KupacDto>>();
+            services.AddScoped<ILoggerService, LoggerService>();
+            services.AddScoped<IServiceCall<KupacDto>, ServiceCall<KupacDto>>();
 
 
             var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();

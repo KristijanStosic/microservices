@@ -28,6 +28,7 @@ namespace ZalbaService.ServicesCalls
         /// Metoda za slanje get zahteva
         /// </summary>
         /// <param name="url">Url putanja ka drugom servisu</param>
+        /// <param name="token"></param>
         /// <returns></returns>
         public async Task<T> SendGetRequestAsync(string url, string token)
         {
@@ -40,7 +41,6 @@ namespace ZalbaService.ServicesCalls
 
                 var response = await httpClient.SendAsync(request);
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
                 if (response.IsSuccessStatusCode)
                 {

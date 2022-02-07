@@ -98,8 +98,8 @@ namespace ZalbaService
             services.AddScoped<IZalbaRepository, ZalbaRepository>();
 
 
-            services.AddScoped<IServiceCall<KupacDto>, ServiceCallKupacMock<KupacDto>>();
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
+            services.AddScoped<IServiceCall<KupacDto>, ServiceCall<KupacDto>>();
+            services.AddScoped<ILoggerService, LoggerService>();
 
             var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();
             var key = Encoding.ASCII.GetBytes(secret);

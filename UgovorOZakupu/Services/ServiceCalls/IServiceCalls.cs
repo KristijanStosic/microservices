@@ -8,6 +8,6 @@ namespace UgovorOZakupu.Services.ServiceCalls
     public interface IServiceCalls
     {
         Task Log(LogLevel level, string method, string message, Exception exception = null);
-        Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(Entities.UgovorOZakupu ugovor, string token);
+        Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(string token, Entities.UgovorOZakupu ugovor);
     }
 }

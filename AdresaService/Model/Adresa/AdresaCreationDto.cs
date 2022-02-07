@@ -27,10 +27,10 @@ namespace AdresaService.Model.Adresa
         /// Poštanski broj
         /// </summary>
         public string PostanskiBroj { get; set; }
-        [Required(ErrorMessage ="Obavezno uneti id drzave")]
         ///<summary>
-        ///Id države - strani ključ
+        /// Id države - strani ključ
         /// </summary>
+        [Required(ErrorMessage ="Obavezno uneti id drzave")]
         public Guid DrzavaId { get; set; }
        
     }

@@ -4,6 +4,18 @@
         <name>KorisnikSistemaService</name>
     </assembly>
     <members>
+        <member name="M:KorisnikSistemaService.Controllers.AuthController.Authenticate(KorisnikSistemaService.Models.Auth.AuthCreds)">
+            <summary>
+            Autentifikacija
+            </summary>
+            <param name="authCreds"></param>
+            <returns></returns>
+        </member>
+        <member name="T:KorisnikSistemaService.Controllers.KorisnikSistemaController">
+            <summary>
+            Kontroler za korisnika sistema
+            </summary>[Authorize(Roles ="Administrator")]
+        </member>
         <member name="M:KorisnikSistemaService.Controllers.KorisnikSistemaController.GetAllKorisnikSistema">
             <summary>
             Vraća sve Korisnike sistema
@@ -17,7 +29,7 @@
             Vraća jednog korisnika sistema na osnovu ID-a
             </summary>
             <param name="korisnikSistemaId">ID korisnikaSistema</param>
-            <returns>Javno nadmetanje</returns>
+            <returns>Korisnik sistema</returns>
             <response code="200">Vraća traženog korisnika sistema</response>
             <response code="404">Nije pronađen korisnik sistema za uneti ID</response>
         </member>
@@ -54,8 +66,17 @@
             <response code="404">Nije pronađen korisnik sistema na osnovu prosleđenog id-a</response>
             <response code="500">Desila se greška prilikom brisanja korisnika sistema</response>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:KorisnikSistemaService.Controllers.KorisnikSistemaController.DeleteKorisnikSistema(System.Guid)" -->
-        <member name="M:KorisnikSistemaService.Controllers.KorisnikSistemaController.GetJavnoNadmetanjeOptions">
+        <member name="M:KorisnikSistemaService.Controllers.KorisnikSistemaController.DeleteKorisnikSistema(System.Guid)">
+            <summary>
+            Vrši brisanje korisnika sistema na osnovu unetog id-a
+            </summary>
+            <param name="korisnikSistemaId">Id korisnika sistema</param>
+            <returns></returns>
+            <response code="200">Uspešno obrisan korisnik sistema</response>
+            <response code="404">Nije pronađen korisnik sistema na osnovu unetog id-a</response>
+            <response code="500">Desila se greška prilikom brisanja korisnika sistema</response>
+        </member>
+        <member name="M:KorisnikSistemaService.Controllers.KorisnikSistemaController.GetKorisnikSistemaOptions">
             <summary>
             Vraća opcije za rad sa korisnicima sistema
             </summary>
@@ -97,7 +118,7 @@
             }
             </remarks>
             <returns>Potvrda o kreiranju tipa korisnika sistema</returns>
-            <response code="200">Vraća kreiran tip korisnika sistema</response>
+            <response code="201">Vraća kreiran tip korisnika sistema</response>
             <response code="500">Desila se greška prilikom unosa novog tipa korisnika sistema</response>
         </member>
         <member name="M:KorisnikSistemaService.Controllers.TipKorisnikaController.UpdateTipKorisnika(KorisnikSistemaService.Models.TipKorisnika.TipKorisnikaUpdateDto)">

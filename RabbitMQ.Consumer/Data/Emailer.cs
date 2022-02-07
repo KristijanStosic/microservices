@@ -18,7 +18,7 @@ namespace RabbitMQ.Consumer.Data
             mail.IsBodyHtml = true;
 
             string body = System.IO.File.ReadAllText(ConfigurationManager.AppSettings.Get("Template"));
-            body = body.Replace("#Kupac#", mailInfo.Kupac);
+            body = body.Replace("#Kupac#", mailInfo.Kupac); 
             body = body.Replace("#DatumOdrzavanja#", mailInfo.DatumOdrzavanja.ToShortDateString());
             body = body.Replace("#Adresa#", mailInfo.Adresa);
             body = body.Replace("#VremePocetka#", mailInfo.VremePocetka);

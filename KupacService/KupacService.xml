@@ -112,7 +112,7 @@
             <response code="404">Nije pronađeno fizičko lice na osnovu unetog id-a</response>
             <response code="500">Desila se greška prilikom brisanja fizičkog lica</response>
         </member>
-        <member name="M:KupacService.Controllers.FizickoLiceController.GetKontaktOsobaOptions">
+        <member name="M:KupacService.Controllers.FizickoLiceController.GetFizickoLiceoptions">
             <summary>
             Vraća opcije za rad sa fizičkim licima
             </summary>
@@ -217,6 +217,15 @@
              <response code="200">Uspešno vraćen kupac</response>
             <response code="404">Nije pronađen kupac sa zadatim id-em</response>
         </member>
+        <member name="M:KupacService.Controllers.KupcaController.GetKupceByUplataId(System.Guid)">
+            <summary>
+            Vraća uplatu
+            </summary>
+            <param name="uplataId">Id uplate</param>
+            <returns>Lista kupaca</returns>
+            <response code="200">Uspešno vraćena lista kupaca za uplatu</response>
+            <response code="204">Nije pronađen nijedan kupac za datu uplatu</response>
+        </member>
         <member name="M:KupacService.Controllers.KupcaController.GetKupceByOvlascenoLiceId(System.Guid)">
             <summary>
             Vraća listu kupaca za koje ovlašćeno lice vrši licitacije
@@ -226,7 +235,7 @@
             <response code="200">Uspešno vraćena lista kupaca za koje prosleđeno ovlašćeno lice vrši licitacije</response>
             <response code="204">Nije pronađen nijedan kupac za dato ovlašćeno lice</response>
         </member>
-        <member name="M:KupacService.Controllers.KupcaController.GetKontaktOsobaOptions">
+        <member name="M:KupacService.Controllers.KupcaController.GetKupcaOptions">
             <summary>
             Vraća opcije za rad sa kupcima
             </summary>
@@ -331,7 +340,7 @@
             <param name="kupacId">Id pravnog lica</param>
             <returns></returns>
         </member>
-        <member name="M:KupacService.Controllers.PravnoLiceController.GetKontaktOsobaOptions">
+        <member name="M:KupacService.Controllers.PravnoLiceController.GetPravnoLiceOptions">
             <summary>
             Vraća opcije za rad sa pravnim licima
             </summary>
@@ -1335,11 +1344,12 @@
             </summary>
             <typeparam name="T">Generic</typeparam>
         </member>
-        <member name="M:KupacService.ServiceCalls.IServiceCall`1.SendGetRequestAsync(System.String)">
+        <member name="M:KupacService.ServiceCalls.IServiceCall`1.SendGetRequestAsync(System.String,System.String)">
             <summary>
             Metoda za slanje get zahteva
             </summary>
             <param name="url"></param>
+            <param name="token"></param>
             <returns></returns>
         </member>
         <member name="T:KupacService.ServiceCalls.LoggerService">
@@ -1369,11 +1379,12 @@
             </summary>
             <param name="loggerService"></param>
         </member>
-        <member name="M:KupacService.ServiceCalls.ServiceCall`1.SendGetRequestAsync(System.String)">
+        <member name="M:KupacService.ServiceCalls.ServiceCall`1.SendGetRequestAsync(System.String,System.String)">
             <summary>
             Metoda za slanje get zahteva
             </summary>
             <param name="url">Url putanja ka drugom servisu</param>
+            <param name="token"></param>
             <returns></returns>
         </member>
     </members>

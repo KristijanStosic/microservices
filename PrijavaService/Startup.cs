@@ -147,11 +147,11 @@ namespace PrijavaService
             services.AddScoped<IDokFizickaLicaRepository, DokFizickaLicaRepository>();
             services.AddScoped<IPrijavaRepository, PrijavaRepository>();
 
-            services.AddScoped<IServiceCall<JavnoNadmetanjeDto>, ServiceCallJavnoNadmetanjeMock<JavnoNadmetanjeDto>>();
-            services.AddScoped<IServiceCall<KupacDto>, ServiceCallKupacMock<KupacDto>>();
+            services.AddScoped<IServiceCall<JavnoNadmetanjeDto>, ServiceCall<JavnoNadmetanjeDto>>();
+            services.AddScoped<IServiceCall<KupacDto>, ServiceCall<KupacDto>>();
 
             services.AddScoped<IPrijavaCalls, PrijavaCalls>();
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
+            services.AddScoped<ILoggerService, LoggerService>();
 
             services.AddDbContext<PrijavaContext>();
         }
@@ -182,8 +182,8 @@ namespace PrijavaService
             app.UseSwaggerUI(setupAction =>
             {
                 setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Prijava API");
+                setupAction.RoutePrefix = "";
             });
-
 
             app.UseRouting();
 

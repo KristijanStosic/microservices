@@ -14,7 +14,7 @@ namespace AdresaService.ServiceCalls.Mocks
         {
             var log = new LogModel
             {
-                Servis = "Ovlasceno lice API",
+                Servis = "Adresa API",
                 Level = level,
                 Metoda = metoda,
                 Poruka = poruka,

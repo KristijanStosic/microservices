@@ -49,7 +49,7 @@
             }
              </remarks>
              <returns>Potvrda o kreiranju dela parcele</returns>
-             <response code="200">Vraća kreirani deo parcele</response>
+             <response code="201">Vraća kreirani deo parcele</response>
              <response code="500">Desila se greška prilikom unosa novog dela parcele</response>
         </member>
         <member name="M:ParcelaService.Controllers.DeoParceleController.UpdateDeoParcele(ParcelaService.Models.DeoParcele.DeoParceleUpdateDto)">
@@ -1080,11 +1080,6 @@
         <member name="P:ParcelaService.Models.Parcela.ParcelaDto.Odvodnjavanje">
             <summary>
             Odvodnjavanje
-            </summary>
-        </member>
-        <member name="P:ParcelaService.Models.Parcela.ParcelaDto.DeloviParcele">
-            <summary>
-            Lista delova parcela
             </summary>
         </member>
         <member name="P:ParcelaService.Models.Parcela.ParcelaUpdateDto.ParcelaId">

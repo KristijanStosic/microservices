@@ -135,7 +135,7 @@ namespace OvlascenoLiceService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju broja table</returns>
-        /// <response code="200">Vraća kreiran broj table</response>
+        /// <response code="201">Vraća kreiran broj table</response>
         /// <response code="500">Desila se greška prilikom unosa novog broja table</response>
         [Authorize(Roles = "Administrator, Superuser, PrvaKomisija, OperaterNadmetanja")]
         [HttpPost]

@@ -122,7 +122,7 @@ namespace PrijavaService.Controllers
         ///    }
         /// </remarks>
         /// <returns>Potvrda o kreiranju prijave</returns>
-        /// <response code="200">Vraća kreiranu prijavu</response>
+        /// <response code="201">Vraća kreiranu prijavu</response>
         /// <response code="500">Desila se greška prilikom unosa nove prijave</response>
         [Authorize(Roles = "Administrator, Superuser, Operater")]
         [HttpPost]

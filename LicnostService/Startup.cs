@@ -83,8 +83,8 @@ namespace LicnostService
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<ILicnostRepository, LicnostRepository>();
             services.AddScoped<IKomisijaRepository, KomisijaRepository>();
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
-            services.AddScoped<IServiceCall<DokumentDto>, ServiceCallDokumentMock<DokumentDto>>();
+            services.AddScoped<ILoggerService, LoggerService>();
+            services.AddScoped<IServiceCall<DokumentDto>, ServiceCall<DokumentDto>>();
 
             var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();
             var key = Encoding.ASCII.GetBytes(secret);

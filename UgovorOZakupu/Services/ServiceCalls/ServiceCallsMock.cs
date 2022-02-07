@@ -39,7 +39,7 @@ namespace UgovorOZakupu.Services.ServiceCalls
             return Task.CompletedTask;
         }
 
-        public Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(Entities.UgovorOZakupu ugovor, string token)
+        public Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(string token, Entities.UgovorOZakupu ugovor)
         {
             var ugovorDto = _mapper.Map<UgovorOZakupuDto>(ugovor);
 

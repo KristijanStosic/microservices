@@ -153,11 +153,12 @@ namespace KupacService.Controllers
                 return NoContent();
             }
             List<KupacDto> kupacDtos = new List<KupacDto>();
-            foreach(var kupac in kupci)
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+            foreach (var kupac in kupci)
             {
                 Kupac tempKupac = await _kupacRepository.GetKupacById(kupac.KupacId);
                 var tempKupacDto = _mapper.Map<KupacDto>(tempKupac);
-                var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(tempKupac);
+                var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(tempKupac, token);
                 _mapper.Map(otherServicesDto, tempKupacDto);
                 kupacDtos.Add(tempKupacDto);
 

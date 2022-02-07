@@ -83,9 +83,9 @@ namespace LicitacijaService
 
             services.AddScoped<ILicitacijaRepository, LicitacijaRepository>();
 
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
+            services.AddScoped<ILoggerService, LoggerService>();
 
-            services.AddScoped < IServiceCall<JavnoNadmetanjeDto>, ServiceCallJavnoNadmetanjeMock<JavnoNadmetanjeDto>>();
+            services.AddScoped < IServiceCall<JavnoNadmetanjeDto>, ServiceCall<JavnoNadmetanjeDto>>();
 
             services.AddControllers();
 
@@ -185,6 +185,7 @@ namespace LicitacijaService
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

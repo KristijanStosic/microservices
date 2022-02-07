@@ -100,7 +100,7 @@ namespace PrijavaService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju fokumenta pravnog lica</returns>
-        /// <response code="200">Vraća kreiran dokument pravnog lica</response>
+        /// <response code="201">Vraća kreiran dokument pravnog lica</response>
         /// <response code="500">Desila se greška prilikom unosa novog dokumenta pravnih lica</response>
         [Authorize(Roles = "Administrator, Superuser, Operater")]
         [HttpPost]

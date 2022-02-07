@@ -126,6 +126,7 @@ namespace AdresaService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
             }
         }
+
         /// <summary>
         /// Vrši brisanje adrese na osnovu unetog id-a
         /// </summary>
@@ -133,7 +134,7 @@ namespace AdresaService.Controllers
         /// <returns></returns>
         /// <response code="200">Uspešno obrisana adresa</response>
         /// <response code="404">Nije pronađena adresa na osnovu unetog id-a</response>
-        /// <response code="" 500>Desila se greška prilikom brisanja adrese</response>
+        /// <response code="500">Desila se greška prilikom brisanja adrese</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpDelete("{adresaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]

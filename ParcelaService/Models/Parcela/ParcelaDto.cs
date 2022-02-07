@@ -40,10 +40,5 @@ namespace ParcelaService.Models.Parcela
         /// </summary>
         public string Odvodnjavanje { get; set; }
 
-        /// <summary>
-        /// Lista delova parcela
-        /// </summary>
-        public List<DeoParceleDto> DeloviParcele { get; set; }
-
     }
 }

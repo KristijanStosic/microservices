@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using JavnoNadmetanjeService.Entities;
+using JavnoNadmetanjeService.Models.Etapa;
 using JavnoNadmetanjeService.Models.JavnoNadmetanje;
 using JavnoNadmetanjeService.Models.Other;
 using JavnoNadmetanjeService.ServiceCalls;
@@ -18,8 +19,9 @@ namespace JavnoNadmetanjeService.Helpers
         private readonly IServiceCall<KupacDto> _kupacService;
         private readonly IServiceCall<OvlascenoLiceDto> _ovlascenoLiceService;
         private readonly IServiceCall<DeoParceleDto> _parcelaService;
+        private readonly IRabbitMQProducer _rabbitMQProducer;
 
-        public JavnoNadmetanjeCalls(IConfiguration configuration, IMapper mapper, IServiceCall<AdresaDto> adresaService, IServiceCall<KupacDto> kupacService, IServiceCall<OvlascenoLiceDto> ovlascenoLiceService, IServiceCall<DeoParceleDto> parcelaService)
+        public JavnoNadmetanjeCalls(IConfiguration configuration, IMapper mapper, IServiceCall<AdresaDto> adresaService, IServiceCall<KupacDto> kupacService, IServiceCall<OvlascenoLiceDto> ovlascenoLiceService, IServiceCall<DeoParceleDto> parcelaService, IRabbitMQProducer rabbitMQProducer)
         {
             _configuration = configuration;
             _mapper = mapper;
@@ -27,6 +29,36 @@ namespace JavnoNadmetanjeService.Helpers
             _kupacService = kupacService;
             _ovlascenoLiceService = ovlascenoLiceService;
             _parcelaService = parcelaService;
+            _rabbitMQProducer = rabbitMQProducer;
+        }
+
+        public async Task EtapaToOcelotQueue(JavnoNadmetanje javnoNadmetanje, EtapaCreationDto etapa, string token)
+        {
+            string adresa = "";
+            if (javnoNadmetanje.AdresaId is not null)
+            {
+                var adresaDto = await _adresaService.SendGetRequestAsync(_configuration["Services:AdresaService"] + javnoNadmetanje.AdresaId, token);
+                if (adresaDto is not null)
+                    adresa = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
+            }
+
+            foreach (var kupac in javnoNadmetanje.Kupci)
+            {
+                var kupacDto = await _kupacService.SendGetRequestAsync(_configuration["Services:KupacService"] + kupac, token);
+                if (kupacDto is not null)
+                {
+                    var email = new MailInfo
+                    {
+                        Email = kupacDto.Email,
+                        Kupac = kupacDto.Kupac,
+                        Adresa = adresa,
+                        DatumOdrzavanja = etapa.Datum,
+                        VremePocetka = etapa.VremePocetka,
+                        VremeKraja = etapa.VremeKraja
+                    };
+                    await _rabbitMQProducer.SendEmailToQueue(email);
+                }
+            }
         }
 
         public async Task<JavnoNadmetanjeDto> GetJavnoNadmetanjeDtoWithOtherServicesInfo(JavnoNadmetanje javnoNadmetanje, string token)

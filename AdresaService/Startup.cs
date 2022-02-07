@@ -85,7 +85,7 @@ namespace AdresaService
 
             services.AddScoped<IDrzavaRepository,DrzavaRepository>();
             services.AddScoped<IAdresaRepository, AdresaRepository>();
-            services.AddScoped<ILoggerService,LoggerServiceMock>();
+            services.AddScoped<ILoggerService,LoggerService>();
 
             var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();
             var key = Encoding.ASCII.GetBytes(secret);
@@ -163,11 +163,18 @@ namespace AdresaService
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "AdresaService v1"));
             }
 
             app.UseHttpsRedirection();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(setupAction =>
+            {
+                setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Adresa API");
+                setupAction.RoutePrefix = "";
+            });
+
 
             app.UseRouting();
 

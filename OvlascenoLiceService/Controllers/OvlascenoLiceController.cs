@@ -162,7 +162,7 @@ namespace OvlascenoLiceService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju ovlašćenog lica</returns>
-        /// <response code="200">Vraća kreirano ovlašćeno lice</response>
+        /// <response code="201">Vraća kreirano ovlašćeno lice</response>
         /// <response code="500">Desila se greška prilikom unosa novog ovlašćenog lica</response>
         [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija,Manager, OperaterNadmetanja")]
         [HttpPost]

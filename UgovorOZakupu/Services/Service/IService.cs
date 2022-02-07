@@ -4,7 +4,7 @@ namespace UgovorOZakupu.Services.Service
 {
     public interface IService<TResponse>
     {
-        Task<TResponse> SendGetRequest(string relativePath = "", string token = "");
-        Task<TResponse> SendPostRequest<TPayload>(TPayload payload, string relativePath = "", string token = "");
+        Task<TResponse> SendGetRequest(string token, string uri = "");
+        Task<TResponse> SendPostRequest<TPayload>(TPayload payload, string uri = "");
     }
 }

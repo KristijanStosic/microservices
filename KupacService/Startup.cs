@@ -93,10 +93,10 @@ namespace KupacService
             services.AddScoped<IFizickoLiceRepository, FizickoLiceRepository>();
             services.AddScoped<IPravnoLiceRepository, PravnoLiceRepository>();
             services.AddScoped<IKupacRepository, KupacRepository>();
-            services.AddScoped<ILoggerService,LoggerServiceMock>();
-            services.AddScoped<IServiceCall<AdresaDto>,ServiceCallAdresaMock<AdresaDto>>();
-            services.AddScoped<IServiceCall<OvlascenoLiceDto>, ServiceCallOvlascenoLiceMock<OvlascenoLiceDto>>();
-            services.AddScoped<IServiceCall<UplataDto>, ServiceCallUplataMock<UplataDto>>();
+            services.AddScoped<ILoggerService,LoggerService>();
+            services.AddScoped<IServiceCall<AdresaDto>,ServiceCall<AdresaDto>>();
+            services.AddScoped<IServiceCall<OvlascenoLiceDto>, ServiceCall<OvlascenoLiceDto>>();
+            services.AddScoped<IServiceCall<UplataDto>, ServiceCall<UplataDto>>();
             services.AddScoped<IKupacCalls, KupacCalls>();
 
             var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();
@@ -145,9 +145,9 @@ namespace KupacService
                 c.AddSecurityRequirement(securityRequirement);
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Adresa API",
+                    Title = "Kupac API",
                     Version = "v1",
-                    Description = "API Adresa omogućava unos i pregled adresa i država",
+                    Description = "API Kupac omogućava unos i pregled kupaca",
                     Contact = new Microsoft.OpenApi.Models.OpenApiContact
                     {
                         Name = "Gavrilo Stanić",

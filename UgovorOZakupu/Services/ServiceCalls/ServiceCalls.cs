@@ -32,15 +32,15 @@ namespace UgovorOZakupu.Services.ServiceCalls
             await _services.Logger.SendPostRequest(log);
         }
 
-        public async Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(Entities.UgovorOZakupu ugovor, string token)
+        public async Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(string token, Entities.UgovorOZakupu ugovor)
         {
             var ugovorDto = _mapper.Map<UgovorOZakupuDto>(ugovor);
 
-            ugovorDto.Odluka = await _services.Dokument.SendGetRequest(ugovor.DokumentId.ToString(), token);
+            ugovorDto.Odluka = await _services.Dokument.SendGetRequest(token, ugovor.DokumentId.ToString());
             ugovorDto.JavnoNadmetanje =
-                await _services.JavnoNadmetanje.SendGetRequest(ugovor.JavnoNadmetanjeId.ToString(), token);
-            ugovorDto.Lice = await _services.Kupac.SendGetRequest(ugovor.KupacId.ToString(), token);
-            ugovorDto.Ministar = await _services.Licnost.SendGetRequest(ugovor.LicnostId.ToString(), token);
+                await _services.JavnoNadmetanje.SendGetRequest(token, ugovor.JavnoNadmetanjeId.ToString());
+            ugovorDto.Lice = await _services.Kupac.SendGetRequest(token, ugovor.KupacId.ToString());
+            ugovorDto.Ministar = await _services.Licnost.SendGetRequest(token, ugovor.LicnostId.ToString());
 
             return ugovorDto;
         }

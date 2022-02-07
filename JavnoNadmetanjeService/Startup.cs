@@ -83,14 +83,14 @@ namespace JavnoNadmetanjeService
             services.AddScoped<IEtapaRepository, EtapaRepository>();
             services.AddScoped<IJavnoNadmetanjeRepository, JavnoNadmetanjeRepository>();
 
-            services.AddScoped<IServiceCall<AdresaDto>, ServiceCallAdresaMock<AdresaDto>>();
-            services.AddScoped<IServiceCall<KupacDto>, ServiceCallKupacMock<KupacDto>>();
-            services.AddScoped<IServiceCall<OvlascenoLiceDto>, ServiceCallOvlascenoLiceMock<OvlascenoLiceDto>>();
-            services.AddScoped<IServiceCall<DeoParceleDto>, ServiceCallDeoParceleMock<DeoParceleDto>>();
+            services.AddScoped<IServiceCall<AdresaDto>, ServiceCall<AdresaDto>>();
+            services.AddScoped<IServiceCall<KupacDto>, ServiceCall<KupacDto>>();
+            services.AddScoped<IServiceCall<OvlascenoLiceDto>, ServiceCall<OvlascenoLiceDto>>();
+            services.AddScoped<IServiceCall<DeoParceleDto>, ServiceCall<DeoParceleDto>>();
 
             services.AddScoped<IJavnoNadmetanjeCalls, JavnoNadmetanjeCalls>();
             services.AddScoped<IRabbitMQProducer, RabbitMQProducer>();
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
+            services.AddScoped<ILoggerService, LoggerService>();
 
             var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();
             var key = Encoding.ASCII.GetBytes(secret);

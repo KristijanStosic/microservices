@@ -27,7 +27,11 @@ namespace KorisnikSistemaService.Controllers
             _jwtAuthManager = jwtAuthManager;
         }
 
-
+        /// <summary>
+        /// Autentifikacija
+        /// </summary>
+        /// <param name="authCreds"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> Authenticate([FromBody] AuthCreds authCreds)

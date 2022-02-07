@@ -99,7 +99,7 @@ namespace AdresaService.Controllers
         /// }
         /// </remarks>
         /// <returns>Potvrda o kreiranju države</returns>
-        /// <response code="200">Vraća kreiranu državu</response>
+        /// <response code="201">Vraća kreiranu državu</response>
         /// <response code="500">Desila se greška prilikom unosa nove države</response>
         [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPost]

@@ -33,14 +33,6 @@ namespace DokumentService
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<DokumentDbContext>();
-
-            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            services.AddScoped<ILoggerService, LoggerService>();
-
             services.AddControllers(options => { options.ReturnHttpNotAcceptable = true; })
                 .ConfigureApiBehaviorOptions(setupAction =>
                 {
@@ -67,7 +59,7 @@ namespace DokumentService
                             //Sve se vraca kao UnprocessibleEntity objekat
                             return new UnprocessableEntityObjectResult(problemDetails)
                             {
-                                ContentTypes = {"application/problem+json"}
+                                ContentTypes = { "application/problem+json" }
                             };
                         }
 
@@ -76,12 +68,18 @@ namespace DokumentService
                         problemDetails.Title = "Desila se greška prilikom parsiranja.";
                         return new BadRequestObjectResult(problemDetails)
                         {
-                            ContentTypes = {"application/problem+json"}
+                            ContentTypes = { "application/problem+json" }
                         };
                     };
                 });
 
-            var secret = _configuration.GetValue<string>("ApplicationSettings:JWT_Secret");
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ILoggerService, LoggerService>();
+
+            services.AddDbContext<DokumentDbContext>();
+
+            var secret = _configuration["ApplicationSettings:JWT_Secret"].ToString();
             var key = Encoding.ASCII.GetBytes(secret);
 
             services.AddAuthentication(option =>

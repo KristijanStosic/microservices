@@ -84,7 +84,7 @@ namespace ParcelaService.Controllers
                 var deoParceleDto = _mapper.Map<DeoParceleDto>(deoParcele);
                 if (deoParcele.KupacId is not null)
                 {
-                    var kupacDto = await _kupacServiceCall.SendGetRequestAsync(url + "kupac/" + deoParcele.KupacId, token);
+                    var kupacDto = await _kupacServiceCall.SendGetRequestAsync(url + deoParcele.KupacId, token);
                     if (kupacDto is not null)
                         deoParceleDto.Kupac = kupacDto;
                 }
@@ -123,7 +123,7 @@ namespace ParcelaService.Controllers
             var deoParceleDto = _mapper.Map<DeoParceleDto>(deoParcele);
             if (deoParcele.KupacId is not null)
             {
-                var kupacDto = _kupacServiceCall.SendGetRequestAsync(url + "kupac/" + deoParcele.KupacId, token).Result;
+                var kupacDto = _kupacServiceCall.SendGetRequestAsync(url + deoParcele.KupacId, token).Result;
                 if (kupacDto is not null)
                     deoParceleDto.Kupac = kupacDto;
             }
@@ -143,7 +143,7 @@ namespace ParcelaService.Controllers
         ///}
         /// </remarks>
         /// <returns>Potvrda o kreiranju dela parcele</returns>
-        /// <response code="200">Vraća kreirani deo parcele</response>
+        /// <response code="201">Vraća kreirani deo parcele</response>
         /// <response code="500">Desila se greška prilikom unosa novog dela parcele</response>
         [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPost]

@@ -49,7 +49,16 @@
              <response code="201">Uspešno kreirana adresa</response>
              <response code="500">Desila se greška prilikom kreiranja nove adrese</response>
         </member>
-        <!-- Badly formed XML comment ignored for member "M:AdresaService.Controllers.AdresaController.DeleteAdresa(System.Guid)" -->
+        <member name="M:AdresaService.Controllers.AdresaController.DeleteAdresa(System.Guid)">
+            <summary>
+            Vrši brisanje adrese na osnovu unetog id-a
+            </summary>
+            <param name="adresaId">Id adrese</param>
+            <returns></returns>
+            <response code="200">Uspešno obrisana adresa</response>
+            <response code="404">Nije pronađena adresa na osnovu unetog id-a</response>
+            <response code="500">Desila se greška prilikom brisanja adrese</response>
+        </member>
         <member name="M:AdresaService.Controllers.AdresaController.UpdateAdresa(AdresaService.Model.Adresa.AdresaUpdateDto)">
              <summary>
              Vrši ažuriranje adrese
@@ -115,7 +124,7 @@
              }
              </remarks>
              <returns>Potvrda o kreiranju države</returns>
-             <response code="200">Vraća kreiranu državu</response>
+             <response code="201">Vraća kreiranu državu</response>
              <response code="500">Desila se greška prilikom unosa nove države</response>
         </member>
         <member name="M:AdresaService.Controllers.DrzavaController.DeleteDrzava(System.Guid)">
@@ -261,6 +270,11 @@
             <summary>
             Poštanski broj
             </summary>
+        </member>
+        <member name="P:AdresaService.Model.Adresa.AdresaCreationDto.DrzavaId">
+            <summary>
+             Id države - strani ključ
+             </summary>
         </member>
         <member name="T:AdresaService.Model.Adresa.AdresaDto">
             <summary>

@@ -18,24 +18,31 @@ namespace KorisnikSistemaService.ServiceCalls
 
         public async Task<bool> Log(LogLevel level, string metoda, string poruka, Exception greska = null)
         {
-            using (HttpClient httpClient = new HttpClient())
+            try
             {
-                string url = _configuration["Services:LoggerServices"];
-                var log = new LogModel
+                using (HttpClient httpClient = new HttpClient())
                 {
-                    Servis = "Korisnik Sistema API",
-                    Level = level,
-                    Metoda = metoda,
-                    Poruka = poruka,
-                    Greska = greska
-                };
+                    string url = _configuration["Services:LoggerService"];
+                    var log = new LogModel
+                    {
+                        Servis = "Korisnik Sistema API",
+                        Level = level,
+                        Metoda = metoda,
+                        Poruka = poruka,
+                        Greska = greska
+                    };
 
-                HttpContent content = new StringContent(JsonConvert.SerializeObject(log));
-                content.Headers.ContentType.MediaType = "application/json";
+                    HttpContent content = new StringContent(JsonConvert.SerializeObject(log));
+                    content.Headers.ContentType.MediaType = "application/json";
 
-                HttpResponseMessage response = httpClient.PostAsync(url, content).Result;
+                    HttpResponseMessage response = httpClient.PostAsync(url, content).Result;
 
-                return await Task.FromResult(response.IsSuccessStatusCode);
+                    return await Task.FromResult(response.IsSuccessStatusCode);
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

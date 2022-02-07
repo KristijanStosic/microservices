@@ -35,7 +35,7 @@
             }
              </remarks>
              <returns>Potvrda o kreiranju fokumenta fizickog lica</returns>
-             <response code="200">Vraća kreiran dokument fizickog lica</response>
+             <response code="201">Vraća kreiran dokument fizickog lica</response>
              <response code="500">Desila se greška prilikom unosa novog dokumenta fizickog lica</response>
         </member>
         <member name="M:PrijavaService.Controllers.DokFizickaLicaController.UpdateDokFizickoLice(PrijavaService.Models.DokFizickoLice.DokFizickaLicaUpdateDto)">
@@ -95,7 +95,7 @@
             }
              </remarks>
              <returns>Potvrda o kreiranju fokumenta pravnog lica</returns>
-             <response code="200">Vraća kreiran dokument pravnog lica</response>
+             <response code="201">Vraća kreiran dokument pravnog lica</response>
              <response code="500">Desila se greška prilikom unosa novog dokumenta pravnih lica</response>
         </member>
         <member name="M:PrijavaService.Controllers.DokPravnaLicaController.UpdateDokPravnoLice(PrijavaService.Models.DokPravnoLice.DokPravnaLicaUpdateDto)">
@@ -168,7 +168,7 @@
                }
             </remarks>
             <returns>Potvrda o kreiranju prijave</returns>
-            <response code="200">Vraća kreiranu prijavu</response>
+            <response code="201">Vraća kreiranu prijavu</response>
             <response code="500">Desila se greška prilikom unosa nove prijave</response>
         </member>
         <member name="M:PrijavaService.Controllers.PrijavaController.UpdatePrijava(PrijavaService.Models.Prijava.PrijavaUpdateDto)">

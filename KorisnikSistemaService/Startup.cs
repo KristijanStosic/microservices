@@ -119,7 +119,7 @@ namespace KorisnikSistemaService
             services.AddScoped<ITipKorisnikaRepository, TipKorisnikaRepository>();
             services.AddScoped<IKorisnikSistemaRepository, KorisnikSistemaRepository>();
 
-            services.AddScoped<ILoggerService, LoggerServiceMock>();
+            services.AddScoped<ILoggerService, LoggerService>();
 
             services.AddDbContext<KorisnikSistemaContext>();
 
@@ -144,10 +144,12 @@ namespace KorisnikSistemaService
                 });
             }
 
-
-
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Korisnik Sistema APi"));
+            app.UseSwaggerUI(setupAction =>
+            {
+                setupAction.SwaggerEndpoint("/swagger/v1/swagger.json", "Korisnik Sistema API");
+                setupAction.RoutePrefix = "";
+            });
 
             app.UseHttpsRedirection();
 

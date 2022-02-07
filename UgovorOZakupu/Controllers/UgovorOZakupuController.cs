@@ -65,7 +65,7 @@ namespace UgovorOZakupu.Controllers
 
                 var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
                 var ugovoriDto = Task.WhenAll(
-                        ugovori.Select(u => _serviceCalls.GetUgovorOZakupuInfo(u, token))
+                        ugovori.Select(u => _serviceCalls.GetUgovorOZakupuInfo(token, u))
                     )
                     .Result
                     .ToList();
@@ -88,7 +88,6 @@ namespace UgovorOZakupu.Controllers
         ///     Vraća jedan ugovor o zakupu na osnovu ID-a
         /// </summary>
         /// <param name="id">ID ugovora o zakupu</param>
-        /// <param name="token"></param>
         /// <returns>Ugovor o zakupu</returns>
         /// <response code="200">Vraća traženi ugovor o zakupu</response>
         /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
@@ -114,7 +113,7 @@ namespace UgovorOZakupu.Controllers
                 }
 
                 var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
-                var ugovorDto = await _serviceCalls.GetUgovorOZakupuInfo(ugovor, token);
+                var ugovorDto = await _serviceCalls.GetUgovorOZakupuInfo(token, ugovor);
 
                 await _serviceCalls.Log(LogLevel.Information, "GetUgovorOZakupuById",
                     $"Ugovor o zakupu sa id-jem {id} je uspešno vraćen.");
