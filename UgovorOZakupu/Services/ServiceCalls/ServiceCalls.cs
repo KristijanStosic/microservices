@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
@@ -20,16 +21,23 @@ namespace UgovorOZakupu.Services.ServiceCalls
 
         public async Task Log(LogLevel level, string method, string message, Exception exception = null)
         {
-            var log = new LogModel
+            try
             {
-                Servis = "Ugovor o zakupu API",
-                Level = level,
-                Metoda = method,
-                Poruka = message,
-                Greska = exception
-            };
+                var log = new LogModel
+                {
+                    Servis = "Ugovor o zakupu API",
+                    Level = level,
+                    Metoda = method,
+                    Poruka = message,
+                    Greska = exception
+                };
 
-            await _services.Logger.SendPostRequest(log);
+                await _services.Logger.SendPostRequest(log);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         public async Task<UgovorOZakupuDto> GetUgovorOZakupuInfo(Entities.UgovorOZakupu ugovor, string token)
