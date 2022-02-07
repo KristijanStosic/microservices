@@ -22,14 +22,15 @@ namespace DokumentService
 {
     public class Startup
     {
+        private readonly IConfiguration _configuration;
 
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            _configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
         // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DokumentDbContext>();
@@ -38,8 +39,7 @@ namespace DokumentService
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped<ILoggerService, LoggerMockService>();
-            // services.AddScoped<ILoggerService, LoggerService>();
+            services.AddScoped<ILoggerService, LoggerService>();
 
             services.AddControllers(options => { options.ReturnHttpNotAcceptable = true; })
                 .ConfigureApiBehaviorOptions(setupAction =>
@@ -80,31 +80,34 @@ namespace DokumentService
                         };
                     };
                 });
-            var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();
+
+            var secret = _configuration.GetValue<string>("ApplicationSettings:JWT_Secret");
             var key = Encoding.ASCII.GetBytes(secret);
 
             services.AddAuthentication(option =>
-            {
-                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.RequireHttpsMetadata = false;
-                options.SaveToken = true;
-                options.TokenValidationParameters = new TokenValidationParameters
                 {
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
-                    ValidateIssuerSigningKey = true,
-                    ValidateIssuer = false,
-                    ValidateAudience = false
-                };
-            });
+                    option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        IssuerSigningKey = new SymmetricSecurityKey(key),
+                        ValidateIssuerSigningKey = true,
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
 
             services.AddSwaggerGen(c =>
             {
                 var securitySchema = new OpenApiSecurityScheme
                 {
-                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Description =
+                        "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
                     Name = "Authorization",
                     In = ParameterLocation.Header,
                     Type = SecuritySchemeType.Http,
@@ -120,7 +123,7 @@ namespace DokumentService
 
                 var securityRequirement = new OpenApiSecurityRequirement
                 {
-                    { securitySchema, new[] { "Bearer" } }
+                    {securitySchema, new[] {"Bearer"}}
                 };
 
                 c.AddSecurityRequirement(securityRequirement);
@@ -137,13 +140,12 @@ namespace DokumentService
                         {
                             Name = "Vuk Pekez",
                             Email = "vukpekez@uns.ac.rs",
-                            Url = new Uri("https://github.com/vukpekez")
+                            Url = new Uri(_configuration.GetValue<string>("Swagger:Github"))
                         }
                     });
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                Console.WriteLine(xmlPath);
                 c.IncludeXmlComments(xmlPath);
             });
         }
