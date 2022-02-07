@@ -180,6 +180,9 @@ namespace KupacService.Controllers
         /// <response code="404">Nije pronađena kontakt osoba na osnovu unetog id-a</response>
         /// <response code="500" >Desila se greška prilikom brisanja kontakt osobe</response>
         [HttpDelete("{kontaktOsobaId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteKontaktOsoba(Guid kontaktOsobaId)
         {
             try
