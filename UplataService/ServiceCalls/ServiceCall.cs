@@ -28,6 +28,7 @@ namespace UplataService.ServiceCalls
         /// Metoda za slanje get zahteva
         /// </summary>
         /// <param name="url">Url putanja ka drugom servisu</param>
+        /// <param name="token">Token za autorizaciju</param>
         /// <returns></returns>
         public async Task<T> SendGetRequestAsync(string url, string token)
         {
