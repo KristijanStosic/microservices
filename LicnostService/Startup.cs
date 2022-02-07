@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using LicnostService.Data;
 using LicnostService.Entities.DataContext;
 using LicnostService.Models.OtherModels;
 using LicnostService.Services;
 using LicnostService.Services.Mocks;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -20,6 +22,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace LicnostService
@@ -83,8 +86,51 @@ namespace LicnostService
             services.AddScoped<ILoggerService, LoggerServiceMock>();
             services.AddScoped<IServiceCall<DokumentDto>, ServiceCallDokumentMock<DokumentDto>>();
 
+            var secret = Configuration["ApplicationSettings:JWT_Secret"].ToString();
+            var key = Encoding.ASCII.GetBytes(secret);
+
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuerSigningKey = true,
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
             services.AddSwaggerGen(setup =>
             {
+                var securitySchema = new OpenApiSecurityScheme
+                {
+                    Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    }
+                };
+
+                setup.AddSecurityDefinition("Bearer", securitySchema);
+
+                var securityRequirement = new OpenApiSecurityRequirement
+                {
+                    { securitySchema, new[] { "Bearer" } }
+                };
+
+                setup.AddSecurityRequirement(securityRequirement);
+
                 setup.SwaggerDoc("v1",
                     new OpenApiInfo()
                     {
@@ -128,6 +174,7 @@ namespace LicnostService
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

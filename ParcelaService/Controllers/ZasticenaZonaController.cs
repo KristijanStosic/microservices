@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -43,6 +44,8 @@ namespace ParcelaService.Controllers
         /// <returns>Lista zaštićenih zona</returns>
         /// <response code="200">Vraća listu zaštićenih zona</response>
         /// <response code="404">Nije pronađena ni jedna zaštićena zona</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -69,6 +72,7 @@ namespace ParcelaService.Controllers
         /// <returns>Zaštićena zona</returns>
         /// <response code="200">Vraća traženu zaštićenu zonu</response>
         /// <response code="404">Nije pronađena zaštićena zona za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser,Menadzer, OperaterNadmetanja")]
         [HttpGet("zasticenaZonaId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -101,6 +105,7 @@ namespace ParcelaService.Controllers
         /// <returns>Potvrda o kreiranju zaštićene zone</returns>
         /// <response code="201">Vraća kreiranu zaštićenu zonu</response>
         /// <response code="500">Desila se greška prilikom unosa nove zaštićene zone</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -133,6 +138,8 @@ namespace ParcelaService.Controllers
         /// <response code="200">Izmenjena zaštićena zona</response>
         /// <response code="404">Nije pronađena zaštićena zona za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene zaštićene zone</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -175,6 +182,8 @@ namespace ParcelaService.Controllers
         /// <response code="204">Zaštićena zona je uspešno obrisana</response>
         /// <response code="404">Nije pronađena zaštićena zona za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja zaštićene zone</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpDelete("{zasticenaZonaId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -209,6 +218,8 @@ namespace ParcelaService.Controllers
         /// Vraća opcije za rad sa zaštićenim zonama
         /// </summary>
         /// <returns></returns>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetKulturaOptions()
         {

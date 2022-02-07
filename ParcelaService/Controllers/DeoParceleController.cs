@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using ParcelaService.Data.Interfaces;
 using ParcelaService.Entities;
@@ -58,6 +60,7 @@ namespace ParcelaService.Controllers
         /// <returns>Lista delova parcela</returns>
         /// <response code="200">Vraća listu delova parcela</response>
         /// <response code="404">Nije pronađeno ni jedan deo parcele</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -72,6 +75,7 @@ namespace ParcelaService.Controllers
                 return NoContent();
             }
 
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             //Komunikacija sa servisom kupac
             var deloviParcelaDto = new List<DeoParceleDto>();
             string url = _configuration["Services:KupacServices"];
@@ -80,7 +84,7 @@ namespace ParcelaService.Controllers
                 var deoParceleDto = _mapper.Map<DeoParceleDto>(deoParcele);
                 if (deoParcele.KupacId is not null)
                 {
-                    var kupacDto = await _kupacServiceCall.SendGetRequestAsync(url + "kupac/" + deoParcele.KupacId);
+                    var kupacDto = await _kupacServiceCall.SendGetRequestAsync(url + "kupac/" + deoParcele.KupacId, token);
                     if (kupacDto is not null)
                         deoParceleDto.Kupac = kupacDto;
                 }
@@ -100,6 +104,7 @@ namespace ParcelaService.Controllers
         /// <returns>Deo parcele</returns>
         /// <response code="200">Vraća traženi deo parcele</response>
         /// <response code="404">Nije pronađen deo parcele za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet("{deoParceleId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -112,11 +117,13 @@ namespace ParcelaService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetDeoParcele", $"Deo parcele sa id-em {deoParceleId} je null.");
                 return NotFound();
             }
+
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             string url = _configuration["Services:KupacService"];
             var deoParceleDto = _mapper.Map<DeoParceleDto>(deoParcele);
             if (deoParcele.KupacId is not null)
             {
-                var kupacDto = _kupacServiceCall.SendGetRequestAsync(url + "kupac/" + deoParcele.KupacId).Result;
+                var kupacDto = _kupacServiceCall.SendGetRequestAsync(url + "kupac/" + deoParcele.KupacId, token).Result;
                 if (kupacDto is not null)
                     deoParceleDto.Kupac = kupacDto;
             }
@@ -138,6 +145,7 @@ namespace ParcelaService.Controllers
         /// <returns>Potvrda o kreiranju dela parcele</returns>
         /// <response code="200">Vraća kreirani deo parcele</response>
         /// <response code="500">Desila se greška prilikom unosa novog dela parcele</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -171,6 +179,7 @@ namespace ParcelaService.Controllers
         /// <response code="200">Izmenjeni deo parcele</response>
         /// <response code="404">Nije pronađen deo parcele za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene dela parcele</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -212,6 +221,7 @@ namespace ParcelaService.Controllers
         /// <response code="204">Deo parcele je uspešno obrisan</response>
         /// <response code="404">Nije pronađeno deo parcele za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja dela parcele</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpDelete("{deoParceleId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -245,6 +255,7 @@ namespace ParcelaService.Controllers
         /// Vraća opcije za rad sa delom parcele
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetDeoParceleOptions()
         {

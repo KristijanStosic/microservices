@@ -17,7 +17,7 @@ namespace ZalbaService.ServicesCalls
         /// </summary>
         /// <param name="url"></param>
         /// <returns></returns>
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             var kupac = new KupacDto
             {

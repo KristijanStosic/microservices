@@ -5,11 +5,13 @@ using KupacService.Helpers;
 using KupacService.Model.Kupac.PravnoLice;
 using KupacService.Model.OtherServices;
 using KupacService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -37,7 +39,7 @@ namespace KupacService.Controllers
             this._kupacCalls = kupacCalls;
             this._loggerService = loggerService;
         }
-
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet]
         public async Task<ActionResult<List<PravnoLiceDto>>> GetPravnoLica([FromQuery]string naziv,[FromQuery]string maticniBroj)
         {
@@ -49,12 +51,14 @@ namespace KupacService.Controllers
                 return NoContent();
             }
 
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+
             List<PravnoLiceDto> pravnaLicaDto = new List<PravnoLiceDto>();
        
             foreach (var pravnoLice in pravnaLica)
             {
                 PravnoLiceDto pravnoLiceDto = _mapper.Map<PravnoLiceDto>(pravnoLice);
-                var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(pravnoLice);
+                var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(pravnoLice, token);
                 _mapper.Map(otherServicesDto, pravnoLiceDto);
                 pravnaLicaDto.Add(pravnoLiceDto);
             }
@@ -62,7 +66,7 @@ namespace KupacService.Controllers
             return Ok(pravnaLicaDto);
 
         }
-
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet("{kupacId}")]
         public async Task<ActionResult<PravnoLiceDto>> GetPravnoLiceById(Guid kupacId)
         {
@@ -73,16 +77,17 @@ namespace KupacService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetPravnoLiceById", $"Pravno lice sa id-em {kupacId} nije pronađeno.");
                 return NotFound();
             }
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
             PravnoLiceDto pravnoLiceDto = _mapper.Map<PravnoLiceDto>(pravnoLice);
 
-            var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(pravnoLice);
+            var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(pravnoLice, token);
             _mapper.Map(otherServicesDto, pravnoLiceDto);
 
             await _loggerService.Log(LogLevel.Information, "GetPravnoLiceById", $"Pravno lice  sa id-em {kupacId} je uspešno vraćeno.");
             return Ok(pravnoLiceDto);
         }
-
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPost]
         public async Task<ActionResult<PravnoLiceConfirmDto>> CreatePravnoLice([FromBody]PravnoLiceCreateDto pravnoLice)
         {
@@ -104,6 +109,7 @@ namespace KupacService.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create Error ");
             }
         }
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPut]
         public async Task<ActionResult<PravnoLiceDto>> UpdatePravnoLice([FromBody]PravnoLiceUpdateDto pravnoLiceUpdate)
         {
@@ -136,6 +142,7 @@ namespace KupacService.Controllers
             }
 
         }
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpDelete("{kupacId}")]
         public async Task<IActionResult> DeletePravnoLice(Guid kupacId)
         {
@@ -163,7 +170,8 @@ namespace KupacService.Controllers
             }
         }
 
-          [HttpOptions]
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
+        [HttpOptions]
         public IActionResult GetKontaktOsobaOptions()
         {
             Response.Headers.Add("Allow", "GET, POST, PUT, DELETE");

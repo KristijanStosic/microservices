@@ -6,6 +6,6 @@ namespace PrijavaService.Helpers
 {
     public interface IPrijavaCalls
     {
-        Task<PrijavaDto> GetPrijvaDtoWithOtherServicesInfo(Prijava prijava);
+        Task<PrijavaDto> GetPrijvaDtoWithOtherServicesInfo(Prijava prijava, string token);
     }
 }

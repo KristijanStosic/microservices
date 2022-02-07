@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -43,6 +44,7 @@ namespace ParcelaService.Controllers
         /// <returns>Lista obradivosti</returns>
         /// <response code="200">Vraća listu obradivosti</response>
         /// <response code="404">Nije pronađena ni jedna obradivost</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -69,6 +71,7 @@ namespace ParcelaService.Controllers
         /// <returns>Obradivost</returns>
         /// <response code="200">Vraća traženu obradivost</response>
         /// <response code="404">Nije pronađena obradivost za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpGet("obradivostId")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -101,6 +104,7 @@ namespace ParcelaService.Controllers
         /// <returns>Potvrda o kreiranju obradivosti</returns>
         /// <response code="201">Vraća kreiranu obradivost</response>
         /// <response code="500">Desila se greška prilikom unosa nove obradivosti</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -135,6 +139,7 @@ namespace ParcelaService.Controllers
         /// <response code="200">Izmenjena obradivost</response>
         /// <response code="404">Nije pronađena obradivost za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene obradivosti</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -176,6 +181,7 @@ namespace ParcelaService.Controllers
         /// <response code="204">Obradivost je uspešno obrisana</response>
         /// <response code="404">Nije pronađena obradivost za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja obradivosti</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanja")]
         [HttpDelete("{obradivostId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -211,6 +217,7 @@ namespace ParcelaService.Controllers
         /// Vraća opcije za rad sa obradivostima
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetObradivostOptions()
         {

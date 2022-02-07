@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -50,6 +51,7 @@ namespace ZalbaService.Controllers
         /// <returns>Lista statusa zalbi</returns>
         /// <response code="200">Vraća listu statusa zalbi</response>
         /// <response code="204">Nije pronađen ni jedan status zalbe</response>
+        [Authorize(Roles = "Administrator, Superuser,Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -74,6 +76,7 @@ namespace ZalbaService.Controllers
         /// <returns>Status zalbe</returns>
         /// <response code="200">Vraća traženi status zalbe</response>
         /// <response code="404">Nije pronađen status zalbe za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser,Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [HttpGet("{statusZalbeId}")]
@@ -105,6 +108,8 @@ namespace ZalbaService.Controllers
         /// <response code="201">Vraća kreiran status zalbe</response>
         /// <response code="400">Desila se greška prilikom unosa istih podataka za status žalbe</response>
         /// <response code="500">Desila se greška prilikom unosa novog statusa zalbe</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -149,6 +154,8 @@ namespace ZalbaService.Controllers
         /// <response code="400">Desila se greška prilikom unosa istih podataka za status žalbe</response>
         /// <response code="404">Nije pronađen status zalbe za uneti ID</response>
         /// <response code="500">Serverska greška tokom modifikacije statusa zalbe</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -200,6 +207,8 @@ namespace ZalbaService.Controllers
         /// <response code="204">Status žalbe je uspešno obrisan</response>
         /// <response code="404">Nije pronađen status žalbe za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja statusa žalbe</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -232,6 +241,8 @@ namespace ZalbaService.Controllers
         /// Vraća opcije za rad sa zalbama
         /// </summary>
         /// <returns></returns>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser,Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetZalbaOptions()
         {

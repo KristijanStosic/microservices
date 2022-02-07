@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -86,6 +87,8 @@ namespace UgovorOZakupu.Controllers
         /// <response code="200">Vraća traženi ugovor o zakupu</response>
         /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
         /// <response code="500">Greška prilikom vraćanja ugovora o zakupu</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, Menadzer")]
         [HttpGet("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -126,6 +129,8 @@ namespace UgovorOZakupu.Controllers
         /// <returns>Ugovor o zakupu</returns>
         /// <response code="201">Vraća kreirani ugovor o zakupu</response>
         /// <response code="500">Greška prilikom kreiranja ugovora o zakupu</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -168,6 +173,8 @@ namespace UgovorOZakupu.Controllers
         /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
         /// <response code="400">ID nije isti kao onaj proledjen u modelu ugovora o zakupu</response>
         /// <response code="500">Greška prilikom izmene ugovora o zakupu</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpPut("{id:guid}")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -224,6 +231,8 @@ namespace UgovorOZakupu.Controllers
         /// <response code="204">Ugovor o zakupu je uspešno obrisan</response>
         /// <response code="404">Nije pronadjen ugovor o zakupu za uneti ID</response>
         /// <response code="500">Greška prilikom brisanja ugovora o zakupu</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar")]
         [HttpDelete("{id:guid}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -262,6 +271,8 @@ namespace UgovorOZakupu.Controllers
         ///     Vraća opcije za rad sa ugovorima o zakupu
         /// </summary>
         /// <response code="200">Vraća listu opcija u header-u</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, Menadzer")]
         [HttpOptions]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetUgovorOZakupuOptions()

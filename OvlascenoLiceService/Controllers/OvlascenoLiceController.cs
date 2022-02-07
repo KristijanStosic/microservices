@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using OvlascenoLiceService.Data.Interfaces;
 using OvlascenoLiceService.Entities;
@@ -61,6 +63,7 @@ namespace OvlascenoLiceService.Controllers
         /// <returns>Lista ovlašćenih lica</returns>
         /// <response code="200">Vraća listu ovlašćenih lica</response>
         /// <response code="404">Nije pronađeno ni jedno ovlašćeno lice</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija,Manager, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead] 
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -76,6 +79,7 @@ namespace OvlascenoLiceService.Controllers
             }
 
             //Komunikacija sa servisom adresa i preuzimanje Adrese ili Drzave
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             var ovlascenaLicaDto = new List<OvlascenoLiceDto>();
             string url = _configuration["Services:AdresaService"];
             foreach(var ovlascenoLice in ovlascenaLica)
@@ -83,13 +87,13 @@ namespace OvlascenoLiceService.Controllers
                 var ovlascenoLiceDto = _mapper.Map<OvlascenoLiceDto>(ovlascenoLice);
                 if(ovlascenoLice.AdresaId is not null)
                 {
-                    var adresaDto = await _adresaServiceCall.SendGetRequestAsync(url + "adresa/" + ovlascenoLice.AdresaId);
+                    var adresaDto = await _adresaServiceCall.SendGetRequestAsync(url + "adresa/" + ovlascenoLice.AdresaId, token);
                     if(adresaDto is not null) 
                         ovlascenoLiceDto.Stanovanje = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
                 }
                 else if (ovlascenoLice.DrzavaId is not null)
                 {
-                    var drzavaDto = await _drzavaServiceCall.SendGetRequestAsync(url + "drzava/" + ovlascenoLice.DrzavaId);
+                    var drzavaDto = await _drzavaServiceCall.SendGetRequestAsync(url + "drzava/" + ovlascenoLice.DrzavaId, token);
                     if(drzavaDto is not null) 
                         ovlascenoLiceDto.Stanovanje = drzavaDto.NazivDrzave;
                 }
@@ -108,6 +112,7 @@ namespace OvlascenoLiceService.Controllers
         /// <returns>Ovlašćeno lice</returns>
         /// <response code="200">Vraća traženo ovlašćeno lice</response>
         /// <response code="404">Nije pronađeno ovlašćeno lice za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija, Menadzer, OperaterNadmetanja")]
         [HttpGet("{ovlascenoLiceId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -121,17 +126,19 @@ namespace OvlascenoLiceService.Controllers
                 return NotFound();
             }
 
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+
             string url = _configuration["Services:AdresaService"];
             var ovlascenoLiceDto = _mapper.Map<OvlascenoLiceDto>(ovlascenoLice);
             if (ovlascenoLice.AdresaId is not null)
             {
-                var adresaDto = _adresaServiceCall.SendGetRequestAsync(url + "adresa/" + ovlascenoLice.AdresaId).Result;
+                var adresaDto = _adresaServiceCall.SendGetRequestAsync(url + "adresa/" + ovlascenoLice.AdresaId, token).Result;
                 if (adresaDto is not null)
                     ovlascenoLiceDto.Stanovanje = adresaDto.Ulica + " " + adresaDto.Broj + " " + adresaDto.Mesto + ", " + adresaDto.Drzava;
             }
             else if (ovlascenoLice.DrzavaId is not null)
             {
-                var drzavaDto = _drzavaServiceCall.SendGetRequestAsync(url + "drzava/" + ovlascenoLice.DrzavaId).Result;
+                var drzavaDto = _drzavaServiceCall.SendGetRequestAsync(url + "drzava/" + ovlascenoLice.DrzavaId, token).Result;
                 if (drzavaDto is not null)
                     ovlascenoLiceDto.Stanovanje = drzavaDto.NazivDrzave;
             }
@@ -157,6 +164,7 @@ namespace OvlascenoLiceService.Controllers
         /// <returns>Potvrda o kreiranju ovlašćenog lica</returns>
         /// <response code="200">Vraća kreirano ovlašćeno lice</response>
         /// <response code="500">Desila se greška prilikom unosa novog ovlašćenog lica</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija,Manager, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -191,6 +199,7 @@ namespace OvlascenoLiceService.Controllers
         /// <response code="200">Izmenjeno ovlašćeno lice</response>
         /// <response code="404">Nije pronađeno ovlašćeno lice za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene ovlašćenog lica</response>
+        [Authorize(Roles = "Administrator, Superuser,  PrvaKomisija,Manager, OperaterNadmetanja")]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -232,6 +241,7 @@ namespace OvlascenoLiceService.Controllers
         /// <response code="204">Ovlašćeno lice je uspešno obrisano</response>
         /// <response code="404">Nije pronađeno ovlašćeno lice za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja ovlašćenog lica</response>
+        [Authorize(Roles = "Administrator, Superuser, PrvaKomisija, OperaterNadmetanja")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -265,6 +275,7 @@ namespace OvlascenoLiceService.Controllers
         /// Vraća opcije za rad sa ovlašćenim licima
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, PrvaKomisija,Manager, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetOvlascenoLiceOptions()
         {

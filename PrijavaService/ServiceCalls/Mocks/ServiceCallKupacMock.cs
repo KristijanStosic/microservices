@@ -8,7 +8,7 @@ namespace PrijavaService.ServiceCalls.Mocks
 {
     public class ServiceCallKupacMock<T> : IServiceCall<T>
     {
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             var kupac = new KupacDto
             {

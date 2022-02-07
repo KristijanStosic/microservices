@@ -27,6 +27,7 @@
             <returns>Lista uplata</returns>
             <response code="200">Vraća listu uplata</response>
             <response code="204">Nije pronađen ni jedan tip zalbe</response>
+            
         </member>
         <member name="M:UplataService.Controllers.UplataController.GetUplata(System.Guid)">
             <summary>
@@ -59,6 +60,7 @@
              <returns>Potvrda o kreiranju uplate</returns>
              <response code="201">Vraća kreiranu uplatu</response>
              <response code="500">Desila se greška prilikom unosa nove uplate</response>
+             
         </member>
         <member name="M:UplataService.Controllers.UplataController.UpdateUplata(System.Guid,UplataService.Model.UplataUpdateDto)">
             <summary>
@@ -71,6 +73,7 @@
             <response code="400">Desila se greška prilikom unosa istih podataka za uplatu</response>
             <response code="404">Nije pronađena uplata za uneti ID</response>
             <response code="500">Serverska greška tokom modifikacije uplate</response>
+            
         </member>
         <member name="M:UplataService.Controllers.UplataController.DeleteUplata(System.Guid)">
             <summary>
@@ -81,6 +84,7 @@
             <response code="204">Uplata je uspešno obrisana</response>
             <response code="404">Nije pronađena uplata za uneti ID</response>
             <response code="500">Serverska greška tokom brisanja uplate</response>
+            
         </member>
         <member name="M:UplataService.Controllers.UplataController.GetUplataOptions">
             <summary>
@@ -190,7 +194,7 @@
         </member>
         <member name="P:UplataService.Model.UplataCreateDto.Kurs">
             <summary>
-            Vrednost kursa
+            Kurs
             </summary>
         </member>
         <member name="T:UplataService.Model.UplataDto">
@@ -235,7 +239,7 @@
         </member>
         <member name="P:UplataService.Model.UplataDto.Kurs">
             <summary>
-            Kurs DTO
+            Kurs
             </summary>
         </member>
         <member name="T:UplataService.Model.UplataUpdateDto">
@@ -275,7 +279,7 @@
         </member>
         <member name="P:UplataService.Model.UplataUpdateDto.Kurs">
             <summary>
-            Vrednost kursa
+            Kurs
             </summary>
         </member>
         <member name="T:UplataService.ServiceCalls.IServiceCall`1">
@@ -284,7 +288,7 @@
             </summary>
             <typeparam name="T">Generic</typeparam>
         </member>
-        <member name="M:UplataService.ServiceCalls.IServiceCall`1.SendGetRequestAsync(System.String)">
+        <member name="M:UplataService.ServiceCalls.IServiceCall`1.SendGetRequestAsync(System.String,System.String)">
             <summary>
             Metoda za slanje get zahteva
             </summary>
@@ -334,7 +338,7 @@
             </summary>
             <param name="loggerService"></param>
         </member>
-        <member name="M:UplataService.ServiceCalls.ServiceCall`1.SendGetRequestAsync(System.String)">
+        <member name="M:UplataService.ServiceCalls.ServiceCall`1.SendGetRequestAsync(System.String,System.String)">
             <summary>
             Metoda za slanje get zahteva
             </summary>

@@ -6,10 +6,12 @@ using KupacService.Model.Kupac;
 using KupacService.Model.ManyToMany;
 using KupacService.Model.OtherServices;
 using KupacService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +37,7 @@ namespace KupacService.Controllers
             this._kupacCalls = kupacCalls;
             this._loggerService = loggerService;
         }
-
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet]
         public async Task<ActionResult<List<KupacDto>>> GetKupci()
         {
@@ -48,18 +50,19 @@ namespace KupacService.Controllers
 
 
             List<KupacDto> kupciDto = new List<KupacDto>();
-        
+
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             foreach (var kupac in kupci)
             {
                 KupacDto kupacDto = _mapper.Map<KupacDto>(kupac);
-                var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(kupac);
+                var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(kupac, token);
                 _mapper.Map(otherServicesDto, kupacDto);
                 kupciDto.Add(kupacDto);
             }
             await _loggerService.Log(LogLevel.Information, "GetKupci", "Lista kupaca je uspešno vraćena.");
             return Ok(kupciDto);
         }
-
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet("{kupacId}")]
         public async Task<ActionResult<KupacDto>> GetKupacById(Guid kupacId)
         {
@@ -73,12 +76,15 @@ namespace KupacService.Controllers
 
             KupacDto kupacDto = _mapper.Map<KupacDto>(kupac);
 
-            var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(kupac);
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
+
+            var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(kupac, token);
             _mapper.Map(otherServicesDto, kupacDto);
 
             await _loggerService.Log(LogLevel.Information, "GetKupacById", $"Kupac sa id-em {kupacId} je uspešno vraćen.");
             return Ok(kupacDto);
         }
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet("uplata/{uplataId}")]
         public async Task<ActionResult<List<KupacManyToManyDto>>> GetKupceByUplataId(Guid uplataId)
         {
@@ -92,7 +98,7 @@ namespace KupacService.Controllers
 
             return Ok(_mapper.Map<List<KupacManyToManyDto>>(kupci));
         }
-
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpGet("ovlascenoLice/{ovlascenoLiceId}")]
         public async Task<ActionResult<List<KupacManyToManyDto>>> GetKupceByOvlascenoLiceId(Guid ovlascenoLiceId)
         {
@@ -108,7 +114,7 @@ namespace KupacService.Controllers
         }
 
 
-
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
         [HttpOptions]
         public IActionResult GetKontaktOsobaOptions()
         {

@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace KupacService.ServiceCalls
@@ -26,7 +27,7 @@ namespace KupacService.ServiceCalls
         /// </summary>
         /// <param name="url">Url putanja ka drugom servisu</param>
         /// <returns></returns>
-        public async Task<T> SendGetRequestAsync(string url)
+        public async Task<T> SendGetRequestAsync(string url, string token)
         {
             try
             {
@@ -34,6 +35,8 @@ namespace KupacService.ServiceCalls
 
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Add("Accept", "application/json");
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+                //client.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
 
                 var response = await httpClient.SendAsync(request);
 

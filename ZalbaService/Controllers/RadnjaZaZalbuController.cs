@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
@@ -50,6 +51,8 @@ namespace ZalbaService.Controllers
         /// <returns>Lista radnji za zalbu</returns>
         /// <response code="200">Vraća listu radnji za zalbu</response>
         /// <response code="404">Nije pronađena nijedna radnja za zalbu</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser,Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -75,6 +78,8 @@ namespace ZalbaService.Controllers
         /// <returns>Radnja za zalbu</returns>
         /// <response code="200">Vraća traženu radnju za zalbu</response>
         /// <response code="404">Nije pronađena radnja za zalbu za uneti ID</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser,Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [HttpGet("{radnjaZaZalbuId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
@@ -107,6 +112,8 @@ namespace ZalbaService.Controllers
         /// <response code="201">Vraća kreiranu radnju za zalbu</response>
         /// <response code="400">Vraća grešku zvog unosa istih podataka za naziv radnje</response>
         /// <response code="500">Desila se greška prilikom unosa nove radnje za zalbu</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -152,6 +159,8 @@ namespace ZalbaService.Controllers
         /// <response code="400">Desila se greška prilikom unosa istih podataka za radnju za zalbu</response>
         /// <response code="404">Nije pronađena radnja za zalbu za uneti ID</response>
         /// <response code="500">Serverska greška tokom modifikacije radnje za zalbu</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -202,6 +211,8 @@ namespace ZalbaService.Controllers
         /// <response code="204">Radnja za zalbu je uspešno obrisana</response>
         /// <response code="404">Nije pronađena radnja za zalbu za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja radnje za zalbu</response>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, TehnickiSekretar, OperaterNadmetanja")]
         [HttpDelete("{radnjaZaZalbuId}")]
         public async Task<ActionResult> DeleteRadnjaZaZalbu(Guid radnjaZaZalbuId)
         {
@@ -230,6 +241,8 @@ namespace ZalbaService.Controllers
         /// Vraća opcije za rad sa radnjama zalbi
         /// </summary>
         /// <returns></returns>
+        /// 
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja")]
         [HttpOptions]
         public IActionResult GetRadnjaZaZalbuOptions()
         {

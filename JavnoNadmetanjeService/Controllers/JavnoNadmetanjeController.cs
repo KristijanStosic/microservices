@@ -5,11 +5,13 @@ using JavnoNadmetanjeService.Entities.Confirmations;
 using JavnoNadmetanjeService.Helpers;
 using JavnoNadmetanjeService.Models.JavnoNadmetanje;
 using JavnoNadmetanjeService.ServiceCalls;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -46,6 +48,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Lista javnih nadmetanja</returns>
         /// <response code="200">Vraća listu javnih nadmetanja</response>
         /// <response code="404">Nije pronađeno ni jedno javno nadmetanje</response>
+        [Authorize(Roles = "Administrator, Superuser, Manager, OperaterNadmetanje")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -61,9 +64,10 @@ namespace JavnoNadmetanjeService.Controllers
             }
 
             var javnaNadmetanjaDto = new List<JavnoNadmetanjeDto>();
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             foreach (var javnoNad in javnaNadmetanja)
             {
-                javnaNadmetanjaDto.Add(await _javnoNadmetanjeCalls.GetJavnoNadmetanjeDtoWithOtherServicesInfo(javnoNad));
+                javnaNadmetanjaDto.Add(await _javnoNadmetanjeCalls.GetJavnoNadmetanjeDtoWithOtherServicesInfo(javnoNad, token));
             }
 
             await _loggerService.Log(LogLevel.Information, "GetAllJavnoNadmetanje", "Lista javnih nadmetanja je uspešno vraćena.");
@@ -78,6 +82,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Javno nadmetanje</returns>
         /// <response code="200">Vraća traženo javno nadmetanje</response>
         /// <response code="404">Nije pronađeno javno nadmetanje za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Manager, OperaterNadmetanje")]
         [HttpGet("{javnoNadmetanjeId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -90,10 +95,11 @@ namespace JavnoNadmetanjeService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} nije pronađeno.");
                 return NotFound();
             }
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
             await _loggerService.Log(LogLevel.Information, "GetJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} je uspešno vraćeno.");
 
-            return Ok(await _javnoNadmetanjeCalls.GetJavnoNadmetanjeDtoWithOtherServicesInfo(javnoNadmetanje));
+            return Ok(await _javnoNadmetanjeCalls.GetJavnoNadmetanjeDtoWithOtherServicesInfo(javnoNadmetanje,token));
         }
 
         /// <summary>
@@ -120,6 +126,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <returns>Potvrda o kreiranju javnog nadmetanja</returns>
         /// <response code="201">Vraća kreirano javno nadmetanje</response>
         /// <response code="500">Desila se greška prilikom unosa novog javnog nadmetanja</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -152,6 +159,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <response code="200">Izmenjeno javno nadmetanje</response>
         /// <response code="404">Nije pronađeno javno nadmetanje za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene javnog nadmetanja</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -195,6 +203,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// <response code="204">Javno nadmetanje je uspešno obrisano</response>
         /// <response code="404">Nije pronađeno javno nadmetanje za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja javnog nadmetanja</response>
+        [Authorize(Roles = "Administrator, Superuser, OperaterNadmetanje")]
         [HttpDelete("{javnoNadmetanjeId}")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -230,6 +239,7 @@ namespace JavnoNadmetanjeService.Controllers
         /// Vraća opcije za rad sa javnim nadmetanjima
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser, Manager, OperaterNadmetanje")]
         [HttpOptions]
         public IActionResult GetJavnoNadmetanjeOptions()
         {

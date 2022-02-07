@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Logging;
+using Microsoft.Net.Http.Headers;
 using Newtonsoft.Json;
 using PrijavaService.Data.Interfaces;
 using PrijavaService.Entities;
@@ -47,6 +49,7 @@ namespace PrijavaService.Controllers
         /// <returns>Lista prijava</returns>
         /// <response code="200">Vraća listu prijava</response>
         /// <response code="404">Nije pronađena ni jedna prijava</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer")]
         [HttpGet]
         [HttpHead]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -60,11 +63,11 @@ namespace PrijavaService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetAllPrijava", "Lista prijava je prazna ili null.");
                 return NoContent();
             }
-
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             var prijaveDto = new List<PrijavaDto>();
             foreach (var prijava in prijave)
             {
-                prijaveDto.Add(await _prijavaCalls.GetPrijvaDtoWithOtherServicesInfo(prijava));
+                prijaveDto.Add(await _prijavaCalls.GetPrijvaDtoWithOtherServicesInfo(prijava, token));
             }
 
             await _loggerService.Log(LogLevel.Information, "GetAllPrijava", "Lista prijava je uspešno vraćena.");
@@ -79,6 +82,7 @@ namespace PrijavaService.Controllers
         /// <returns>Prijava</returns>
         /// <response code="200">Vraća traženu prijavu</response>
         /// <response code="404">Nije pronađena prijava za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer")]
         [HttpGet("{prijavaId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -91,9 +95,10 @@ namespace PrijavaService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetPrijava", $"prijava sa id-em {prijavaId} nije pronađena.");
                 return NotFound();
             }
+            var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
             await _loggerService.Log(LogLevel.Information, "GetPrijava", $"prijava sa id-em {prijavaId} je uspešno vraćena.");
-            return Ok(await _prijavaCalls.GetPrijvaDtoWithOtherServicesInfo(prijava));
+            return Ok(await _prijavaCalls.GetPrijvaDtoWithOtherServicesInfo(prijava, token));
         }
 
         /// <summary>
@@ -119,6 +124,7 @@ namespace PrijavaService.Controllers
         /// <returns>Potvrda o kreiranju prijave</returns>
         /// <response code="200">Vraća kreiranu prijavu</response>
         /// <response code="500">Desila se greška prilikom unosa nove prijave</response>
+        [Authorize(Roles = "Administrator, Superuser, Operater")]
         [HttpPost]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status201Created)]
@@ -150,6 +156,7 @@ namespace PrijavaService.Controllers
         /// <response code="200">Izmenjena prijava</response>
         /// <response code="404">Nije pronađena prijava za uneti ID</response>
         /// <response code="500">Serverska greška tokom izmene prijave</response>
+        [Authorize(Roles = "Administrator, Superuser")]
         [HttpPut]
         [Consumes("application/json")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -194,6 +201,7 @@ namespace PrijavaService.Controllers
         /// <response code="204">Prijava je uspešno obrisana</response>
         /// <response code="404">Nije pronađena prijava za uneti ID</response>
         /// <response code="500">Serverska greška tokom brisanja prijave</response>
+        [Authorize(Roles = "Administrator, Superuser")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -228,6 +236,7 @@ namespace PrijavaService.Controllers
         /// Vraća opcije za rad sa prijavama
         /// </summary>
         /// <returns></returns>
+        [Authorize(Roles = "Administrator, Superuser")]
         [HttpOptions]
         public IActionResult GetPrijavaOptions()
         {
