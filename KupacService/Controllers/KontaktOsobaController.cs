@@ -125,7 +125,7 @@ namespace KupacService.Controllers
             catch(Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "CreateKontaktOsoba", $"Greška prilikom unosa kontakt osobe sa vrednostima: {JsonConvert.SerializeObject(kontaktOsoba)}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom unosa konakt osobe");
             }
         }
 
@@ -177,7 +177,7 @@ namespace KupacService.Controllers
             catch (Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "UpdateKontaktOsoba", $"Greška prilikom izmene kontakt osobe sa id-em {kontaktOsobaUpdate.KontaktOsobaId}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Update Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom ažuriranja kontakt osobe");
             }
         }
 
@@ -213,7 +213,7 @@ namespace KupacService.Controllers
             }
             catch (Exception)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Delete Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom brisanja kontakt osobe");
             }
         }
 

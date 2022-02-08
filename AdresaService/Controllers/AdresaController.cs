@@ -123,7 +123,7 @@ namespace AdresaService.Controllers
             catch (Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "CreateAdresa", $"Greška prilikom unosa adrese sa vrednostima: {JsonConvert.SerializeObject(adresa)}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Create Error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom unosa adrese");
             }
         }
 
@@ -161,7 +161,7 @@ namespace AdresaService.Controllers
             catch (Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "DeleteAdresa", $"Greška prilikom brisanja adrese sa id-em {adresaId}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Delete error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom brisanja adrese");
             }
         }
         /// <summary>
@@ -220,7 +220,7 @@ namespace AdresaService.Controllers
             catch (Exception e)
             {
                 await _loggerService.Log(LogLevel.Error, "UpdateAdresa", $"Greška prilikom izmene adrese sa id-em {adresaUpdate}.", e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Update error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Greška prilikom ažuriranja adrese");
             }
         }
 
