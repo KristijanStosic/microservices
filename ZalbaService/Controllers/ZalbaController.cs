@@ -86,7 +86,7 @@ namespace ZalbaService.Controllers
                     var kupacDto = await _kupacService.SendGetRequestAsync(url + zalba.KupacId, token);
                     if(kupacDto is not null)
                     {
-                        zalbaDto.Kupac = kupacDto.Naziv + ", " + kupacDto.Email + ", " + kupacDto.BrojRacuna + ", " + kupacDto.BrojTelefona;
+                        zalbaDto.Kupac = kupacDto;
                     }
                 }
                 zalbeDto.Add(zalbaDto);
@@ -127,7 +127,7 @@ namespace ZalbaService.Controllers
                 var kupacDto = await _kupacService.SendGetRequestAsync(url + zalba.KupacId, token);
                 if(kupacDto is not null)
                 {
-                    zalbaDto.Kupac = kupacDto.Naziv + ", " + kupacDto.Email + ", " + kupacDto.BrojRacuna + ", " + kupacDto.BrojTelefona;
+                    zalbaDto.Kupac = kupacDto;
                 }
             }
             await _loggerService.Log(LogLevel.Information, "GetZalba", $"Žalba sa id-em {zalbaId} je uspešno vraćena.");

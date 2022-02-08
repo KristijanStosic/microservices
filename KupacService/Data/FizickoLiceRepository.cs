@@ -56,6 +56,13 @@ namespace KupacService.Data
             return fizickoLice;
         }
 
+        public async Task<FizickoLice> GetFizickoLiceInfoById(Guid kupacId)
+        {
+            var fizickoLice = await _kupacContext.FizickaLica.FirstOrDefaultAsync(f => f.KupacId == kupacId);
+
+            return fizickoLice;
+        }
+
         public async Task UpdateManyToManyTables(FizickoLice fizickoLice)
         {
 

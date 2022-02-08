@@ -992,6 +992,31 @@
             Opis odvodnjavanja parcele
             </summary>
         </member>
+        <member name="P:ParcelaService.Models.OtherServices.KupacDto.KupacId">
+            <summary>
+            Id kupca
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.OtherServices.KupacDto.Naziv">
+            <summary>
+            Naziv kupca
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.OtherServices.KupacDto.BrojTelefona">
+            <summary>
+            Broj telefona kupca
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.OtherServices.KupacDto.Email">
+            <summary>
+            Emali kupca
+            </summary>
+        </member>
+        <member name="P:ParcelaService.Models.OtherServices.KupacDto.BrojRacuna">
+            <summary>
+            Broj računa kupca
+            </summary>
+        </member>
         <member name="P:ParcelaService.Models.Parcela.ParcelaConfirmationDto.BrojParcele">
             <summary>
             Broj parcele

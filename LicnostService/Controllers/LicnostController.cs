@@ -151,7 +151,7 @@ namespace LicnostService.Controllers
                 _mapper.Map(licnost, licnostEntity);
 
                 await _licnostRepository.UpdateLicnost(_mapper.Map<Licnost>(licnost));
-                await _loggerService.Log(LogLevel.Information, "UpdateLicnost", $"Licnost sa id-em {licnost.LicnostId} je uspešno izmenjena.");
+                //await _loggerService.Log(LogLevel.Information, "UpdateLicnost", $"Licnost sa id-em {licnost.LicnostId} je uspešno izmenjena."); //log
                 return Ok(licnost);
             }
             catch (Exception ex)

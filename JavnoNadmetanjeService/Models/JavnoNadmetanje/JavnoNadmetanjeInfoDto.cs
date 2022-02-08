@@ -1,9 +1,13 @@
-﻿using System;
+﻿using JavnoNadmetanjeService.Models.Etapa;
+using System;
 using System.Collections.Generic;
 
-namespace LicitacijaService.Models.OtherServices
+namespace JavnoNadmetanjeService.Models.JavnoNadmetanje
 {
-    public class JavnoNadmetanjeDto
+    /// <summary>
+    /// Javno nadmetanje info za pristup od strane drugih servisa
+    /// </summary>
+    public class JavnoNadmetanjeInfoDto
     {
         /// <summary>
         /// ID javnog nadmetanja

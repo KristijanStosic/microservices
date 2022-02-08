@@ -82,7 +82,7 @@ namespace AdresaService.Controllers
                 return NotFound();
             }
 
-            await _loggerService.Log(LogLevel.Information, "GetDrzavaById", $"Država sa id-em {drzavaId} je uspešno pronađena.");
+            //await _loggerService.Log(LogLevel.Information, "GetDrzavaById", $"Država sa id-em {drzavaId} je uspešno pronađena."); //log
             return Ok(_mapper.Map<DrzavaDto>(drzava));
         }
 

@@ -235,6 +235,15 @@
             <response code="200">Uspešno vraćena lista kupaca za koje prosleđeno ovlašćeno lice vrši licitacije</response>
             <response code="204">Nije pronađen nijedan kupac za dato ovlašćeno lice</response>
         </member>
+        <member name="M:KupacService.Controllers.KupcaController.GetKupacInfoById(System.Guid)">
+            <summary>
+            Vraća kupca na osnovu unetog id-a za druge service
+            </summary>
+            <param name="kupacId">Id kupca</param>
+            <returns>Kupca</returns>
+             <response code="200">Uspešno vraćen kupac</response>
+            <response code="404">Nije pronađen kupac sa zadatim id-em</response>
+        </member>
         <member name="M:KupacService.Controllers.KupcaController.GetKupcaOptions">
             <summary>
             Vraća opcije za rad sa kupcima
@@ -882,6 +891,36 @@
         <member name="P:KupacService.Model.Kupac.KupacDto.Uplate">
             <summary>
              Uplate koje je izvršio kupac
+            </summary>
+        </member>
+        <member name="T:KupacService.Model.Kupac.KupacInfoDto">
+            <summary>
+            Kupac info za pristup od strane drugih servisa
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacInfoDto.KupacId">
+            <summary>
+            Id kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacInfoDto.Naziv">
+            <summary>
+            Naziv kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacInfoDto.BrojTelefona">
+            <summary>
+            Broj telefona kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacInfoDto.Email">
+            <summary>
+            Emali kupca
+            </summary>
+        </member>
+        <member name="P:KupacService.Model.Kupac.KupacInfoDto.BrojRacuna">
+            <summary>
+            Broj računa kupca
             </summary>
         </member>
         <member name="T:KupacService.Model.Kupac.KupacOtherServicesDto">

@@ -62,6 +62,17 @@ namespace JavnoNadmetanjeService.Data
             return javnoNadmetanje;
         }
 
+        public async Task<JavnoNadmetanje> GetJavnoNadmetanjeInfoById(Guid javnoNadmetanjeId)
+        {
+            var javnoNadmetanje = await _context.JavnoNadmetanje
+                .Include(s => s.Status)
+                .Include(t => t.Tip)
+                .Include(e => e.Etape)
+                .FirstOrDefaultAsync(jn => jn.JavnoNadmetanjeId == javnoNadmetanjeId);
+
+            return javnoNadmetanje;
+        }
+
         public async Task<JavnoNadmetanjeConfirmation> CreateJavnoNadmetanje(JavnoNadmetanje javnoNadmetanje)
         {
             if (javnoNadmetanje.IzlicitiranaCena > (javnoNadmetanje.PocetnaCenaHektar * 2))

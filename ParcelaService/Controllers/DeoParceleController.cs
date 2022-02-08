@@ -78,7 +78,7 @@ namespace ParcelaService.Controllers
             var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
             //Komunikacija sa servisom kupac
             var deloviParcelaDto = new List<DeoParceleDto>();
-            string url = _configuration["Services:KupacServices"];
+            string url = _configuration["Services:KupacService"];
             foreach (var deoParcele in deloviParcela)
             {
                 var deoParceleDto = _mapper.Map<DeoParceleDto>(deoParcele);
@@ -127,7 +127,7 @@ namespace ParcelaService.Controllers
                 if (kupacDto is not null)
                     deoParceleDto.Kupac = kupacDto;
             }
-            await _loggerService.Log(LogLevel.Information, "GetDeoParcele", $"Deo parcele sa id-em {deoParceleId} je uspešno vraćen.");
+            //await _loggerService.Log(LogLevel.Information, "GetDeoParcele", $"Deo parcele sa id-em {deoParceleId} je uspešno vraćen."); //log
 
             return Ok(deoParceleDto);
         }

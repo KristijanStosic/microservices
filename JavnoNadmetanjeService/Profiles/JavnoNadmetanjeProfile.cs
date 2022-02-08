@@ -27,6 +27,13 @@ namespace JavnoNadmetanjeService.Profiles
                 .ForMember(
                     dest => dest.DeloviParcele,
                     opt => opt.Ignore());
+            CreateMap<JavnoNadmetanje, JavnoNadmetanjeInfoDto>()
+                .ForMember(
+                    dest => dest.Status,
+                    opt => opt.MapFrom(src => $"{ src.Status.NazivStatusa }"))
+                .ForMember(
+                    dest => dest.Tip,
+                    opt => opt.MapFrom(src => $"{ src.Tip.NazivTipa }"));
             CreateMap<JavnoNadmetanjeUpdateDto, JavnoNadmetanje>();
             CreateMap<JavnoNadmetanjeCreationDto, JavnoNadmetanje>();
             CreateMap<JavnoNadmetanje, JavnoNadmetanje>();

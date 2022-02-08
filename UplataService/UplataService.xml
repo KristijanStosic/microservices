@@ -127,6 +127,56 @@
             Svrha uplate
             </summary>
         </member>
+        <member name="P:UplataService.Model.Services.JavnoNadmetanjeDto.JavnoNadmetanjeId">
+            <summary>
+            ID javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.Services.JavnoNadmetanjeDto.PocetnaCenaHektar">
+            <summary>
+            Pocetna cena po hektaru
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.Services.JavnoNadmetanjeDto.VisinaDopuneDepozita">
+            <summary>
+            Visina dopune depozita
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.Services.JavnoNadmetanjeDto.PeriodZakupa">
+            <summary>
+            Period zakupa u godinama
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.Services.JavnoNadmetanjeDto.IzlicitiranaCena">
+            <summary>
+            Izlicitirana cena
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.Services.JavnoNadmetanjeDto.BrojUcesnika">
+            <summary>
+            Broj ucesnika na javnom nadmetanju
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.Services.JavnoNadmetanjeDto.Krug">
+            <summary>
+            Krug po redu
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.Services.JavnoNadmetanjeDto.Izuzeto">
+            <summary>
+            Da li je javno nadmetanje izuzeto
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.Services.JavnoNadmetanjeDto.Status">
+            <summary>
+            ID statusa javnog nadmetanja
+            </summary>
+        </member>
+        <member name="P:UplataService.Model.Services.JavnoNadmetanjeDto.Tip">
+            <summary>
+            ID tipa javnog nadmetanja
+            </summary>
+        </member>
         <member name="T:UplataService.Model.UplataConfirmationDto">
             <summary>
             Vraca potvrdu o uplati

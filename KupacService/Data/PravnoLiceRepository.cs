@@ -53,6 +53,12 @@ namespace KupacService.Data
 
             return pravnoLice;        
         }
+        public async Task<PravnoLice> GetPravnoLiceInfoById(Guid kupacId)
+        {
+            var pravnoLice = await _context.PravnaLica.FirstOrDefaultAsync<PravnoLice>(p => p.KupacId == kupacId);
+
+            return pravnoLice;
+        }
 
         public async Task UpdateManyToManyTables(PravnoLice pravnoLice)
         {

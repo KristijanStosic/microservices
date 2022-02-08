@@ -97,7 +97,7 @@ namespace PrijavaService.Controllers
             }
             var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
-            await _loggerService.Log(LogLevel.Information, "GetPrijava", $"prijava sa id-em {prijavaId} je uspešno vraćena.");
+            //await _loggerService.Log(LogLevel.Information, "GetPrijava", $"prijava sa id-em {prijavaId} je uspešno vraćena."); //log
             return Ok(await _prijavaCalls.GetPrijvaDtoWithOtherServicesInfo(prijava, token));
         }
 

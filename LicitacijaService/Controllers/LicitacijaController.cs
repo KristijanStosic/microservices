@@ -108,7 +108,7 @@ namespace LicitacijaService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetLicitacija", $"Licitacija sa id-em {licitacijaId} nije pronađena.");
                 return NotFound();
             }
-            await _loggerService.Log(LogLevel.Information, "GetLicitacija", $"Licitacija sa id-em {licitacijaId} je uspešno vraćena.");
+            //await _loggerService.Log(LogLevel.Information, "GetLicitacija", $"Licitacija sa id-em {licitacijaId} je uspešno vraćena."); //log
             var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
             var licitacijaDto = _mapper.Map<LicitacijaDto>(licitacija);
