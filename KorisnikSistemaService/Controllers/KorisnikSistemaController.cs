@@ -17,7 +17,8 @@ namespace KorisnikSistemaService.Controllers
 {
     /// <summary>
     /// Kontroler za korisnika sistema
-    /// </summary>[Authorize(Roles ="Administrator")]
+    /// </summary>
+	[Authorize(Roles ="Administrator")]
     [Route("api/KorisnikSistema")]
     [ApiController]
     [Produces("application/json", "application/xml")]
