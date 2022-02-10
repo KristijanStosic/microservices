@@ -11,6 +11,7 @@ namespace KupacService.Data.Interfaces
 
         Task<List<FizickoLice>> GetFizickoLice(string ime = null,string prezime = null,string brojRacuna = null);
         Task<FizickoLice> GetFizickoLiceById(Guid kupacId);
+        Task<FizickoLice> GetFizickoLiceInfoById(Guid kupacId);
         Task<FizickoLice> CreateFizickoLice(FizickoLice fizickoLice);
         Task DeleteFizickoLice(Guid kupacId);
         Task SaveChangesAsync();

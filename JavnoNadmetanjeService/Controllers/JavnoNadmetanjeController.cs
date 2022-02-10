@@ -97,9 +97,35 @@ namespace JavnoNadmetanjeService.Controllers
             }
             var token = Request.Headers[HeaderNames.Authorization].ToString().Replace("Bearer ", "");
 
-            await _loggerService.Log(LogLevel.Information, "GetJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} je uspešno vraćeno.");
+            //await _loggerService.Log(LogLevel.Information, "GetJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} je uspešno vraćeno."); //log
 
             return Ok(await _javnoNadmetanjeCalls.GetJavnoNadmetanjeDtoWithOtherServicesInfo(javnoNadmetanje,token));
+        }
+
+        /// <summary>
+        /// Vraća javno nadmetanje sa osnovnim informacijama na osnovu ID-a
+        /// </summary>
+        /// <param name="javnoNadmetanjeId">ID javnog nadmetanja</param>
+        /// <returns>Javno nadmetanje</returns>
+        /// <response code="200">Vraća traženo javno nadmetanje</response>
+        /// <response code="404">Nije pronađeno javno nadmetanje za uneti ID</response>
+        [Authorize(Roles = "Administrator, Superuser, Manager, OperaterNadmetanje")]
+        [HttpGet("info/{javnoNadmetanjeId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<JavnoNadmetanjeDto>> GetJavnoNadmetanjeInfo(Guid javnoNadmetanjeId)
+        {
+            var javnoNadmetanje = await _javnoNadmetanjeRepository.GetJavnoNadmetanjeInfoById(javnoNadmetanjeId);
+
+            if (javnoNadmetanje == null)
+            {
+                await _loggerService.Log(LogLevel.Warning, "GetJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} nije pronađeno.");
+                return NotFound();
+            }
+
+            //await _loggerService.Log(LogLevel.Information, "GetJavnoNadmetanje", $"Javno nadmetanje sa id-em {javnoNadmetanjeId} je uspešno vraćeno."); //log
+
+            return Ok(_mapper.Map<JavnoNadmetanjeInfoDto>(javnoNadmetanje));
         }
 
         /// <summary>

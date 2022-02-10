@@ -57,6 +57,6 @@ namespace ZalbaService.Models.Zalba
         /// <summary>
         /// Informacije o kupcu - Mikroservis Kupac
         /// </summary>
-        public string Kupac { get; set; }
+        public KupacDto Kupac { get; set; }
     }
 }

@@ -145,7 +145,7 @@ namespace UplataService.Controllers
                                                   + javnoNadDto.BrojUcesnika;
                 }
             }
-            await _loggerService.Log(LogLevel.Information, "GetUplata", $"Uplata sa id-em {uplataId} je uspešno vraćena.");
+            //await _loggerService.Log(LogLevel.Information, "GetUplata", $"Uplata sa id-em {uplataId} je uspešno vraćena."); //log
             return Ok(uplataDto);
         }
 

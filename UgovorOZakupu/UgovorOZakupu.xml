@@ -363,82 +363,52 @@
         </member>
         <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.JavnoNadmetanjeId">
             <summary>
-                ID javnog nadmetanja
+            ID javnog nadmetanja
             </summary>
         </member>
         <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.PocetnaCenaHektar">
             <summary>
-                Pocetna cena po hektaru
+            Pocetna cena po hektaru
             </summary>
         </member>
         <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.VisinaDopuneDepozita">
             <summary>
-                Visina dopune depozita
+            Visina dopune depozita
             </summary>
         </member>
         <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.PeriodZakupa">
             <summary>
-                Period zakupa u godinama
+            Period zakupa u godinama
             </summary>
         </member>
         <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.IzlicitiranaCena">
             <summary>
-                Izlicitirana cena
+            Izlicitirana cena
             </summary>
         </member>
         <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.BrojUcesnika">
             <summary>
-                Broj ucesnika na javnom nadmetanju
+            Broj ucesnika na javnom nadmetanju
             </summary>
         </member>
         <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Krug">
             <summary>
-                Krug po redu
+            Krug po redu
             </summary>
         </member>
         <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Izuzeto">
             <summary>
-                Da li je javno nadmetanje izuzeto
+            Da li je javno nadmetanje izuzeto
             </summary>
         </member>
         <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Status">
             <summary>
-                Status javnog nadmetanja
+            ID statusa javnog nadmetanja
             </summary>
         </member>
         <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Tip">
             <summary>
-                Tip javnog nadmetanja
-            </summary>
-        </member>
-        <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Etape">
-            <summary>
-                Lista etapa javnog nadmetanja
-            </summary>
-        </member>
-        <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Adresa">
-            <summary>
-                Adresa javnog nadmetanja
-            </summary>
-        </member>
-        <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Kupac">
-            <summary>
-                Najbolji kupac u javnom nadmetanju
-            </summary>
-        </member>
-        <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.OvlascenaLica">
-            <summary>
-                Lista ovlascenih lica
-            </summary>
-        </member>
-        <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.Kupci">
-            <summary>
-                Lista kupaca
-            </summary>
-        </member>
-        <member name="P:UgovorOZakupu.Models.JavnoNadmetanje.JavnoNadmetanjeDto.DeloviParcele">
-            <summary>
-                Lista delova parcele
+            ID tipa javnog nadmetanja
             </summary>
         </member>
         <member name="T:UgovorOZakupu.Models.JavnoNadmetanje.OvlascenoLiceDto">
@@ -504,6 +474,31 @@
         <member name="P:UgovorOZakupu.Models.Kupac.AdresaDto.Drzava">
             <summary>
                 Naziv države
+            </summary>
+        </member>
+        <member name="P:UgovorOZakupu.Models.Kupac.KupacDto.KupacId">
+            <summary>
+            Id kupca
+            </summary>
+        </member>
+        <member name="P:UgovorOZakupu.Models.Kupac.KupacDto.Naziv">
+            <summary>
+            Naziv kupca
+            </summary>
+        </member>
+        <member name="P:UgovorOZakupu.Models.Kupac.KupacDto.BrojTelefona">
+            <summary>
+            Broj telefona kupca
+            </summary>
+        </member>
+        <member name="P:UgovorOZakupu.Models.Kupac.KupacDto.Email">
+            <summary>
+            Emali kupca
+            </summary>
+        </member>
+        <member name="P:UgovorOZakupu.Models.Kupac.KupacDto.BrojRacuna">
+            <summary>
+            Broj računa kupca
             </summary>
         </member>
         <member name="T:UgovorOZakupu.Models.Licnost.LicnostDto">

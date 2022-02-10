@@ -10,6 +10,7 @@ namespace KupacService.Data.Interfaces
     {
         Task<List<PravnoLice>> GetPravnoLice(string naziv = null, string maticniBroj = null);
         Task<PravnoLice> GetPravnoLiceById(Guid kupacId);
+        Task<PravnoLice> GetPravnoLiceInfoById(Guid kupacId);
         Task<PravnoLice> CreatePravnoLice(PravnoLice pravnoLice);
         Task DeletePravnoLice(Guid kupacId);
         Task SaveChangesAsync();

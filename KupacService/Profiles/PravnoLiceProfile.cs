@@ -23,8 +23,8 @@ namespace KupacService.Profiles
                    .ForMember(
                 dest => dest.Adresa,
                 opt => opt.Ignore());
-            
 
+            CreateMap<PravnoLice, KupacInfoDto>();
 
             CreateMap<PravnoLiceCreateDto, PravnoLice>()
                 .ForMember(

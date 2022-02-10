@@ -106,7 +106,7 @@ namespace KupacService.Controllers
             var otherServicesDto = await _kupacCalls.GetKupacDtoWithOtherServicesInfo(kupac, token);
             _mapper.Map(otherServicesDto, kupacDto);
 
-            await _loggerService.Log(LogLevel.Information, "GetKupacById", $"Kupac sa id-em {kupacId} je uspešno vraćen.");
+            //await _loggerService.Log(LogLevel.Information, "GetKupacById", $"Kupac sa id-em {kupacId} je uspešno vraćen."); //log
             return Ok(kupacDto);
         }
 
@@ -167,6 +167,32 @@ namespace KupacService.Controllers
             await _loggerService.Log(LogLevel.Warning, "GetKupceByOvlascenoLiceId", $"Uspešno pronađeni kupci koji pripadaju ovlasšćenom licu {ovlascenoLiceId}.");
            
             return Ok(kupacDtos);
+        }
+
+        /// <summary>
+        /// Vraća kupca na osnovu unetog id-a za druge service
+        /// </summary>
+        /// <param name="kupacId">Id kupca</param>
+        /// <returns>Kupca</returns>
+        ///  <response code="200">Uspešno vraćen kupac</response>
+        /// <response code="404">Nije pronađen kupac sa zadatim id-em</response>
+        [Authorize(Roles = "Administrator, Superuser, Menadzer, TehnickiSekretar, OperaterNadmetanja, Licitant")]
+        [HttpGet("info/{kupacId}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<KupacInfoDto>> GetKupacInfoById(Guid kupacId)
+        {
+            var kupac = await _kupacRepository.GetKupacInfoById(kupacId);
+
+            if (kupac == null)
+            {
+                await _loggerService.Log(LogLevel.Warning, "GetKupacInfoById", $"Kupac sa id-em {kupacId} nije pronađen.");
+                return NotFound();
+            }
+
+            await _loggerService.Log(LogLevel.Information, "GetKupacInfoById", $"Kupac sa id-em {kupacId} je uspešno vraćen.");
+            return Ok(_mapper.Map<KupacInfoDto>(kupac));
+
         }
 
         /// <summary>

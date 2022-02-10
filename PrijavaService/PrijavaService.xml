@@ -303,6 +303,31 @@
             Id prijave za koju se predaje dokument
             </summary>
         </member>
+        <member name="P:PrijavaService.Models.Other.KupacDto.KupacId">
+            <summary>
+            Id kupca
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Other.KupacDto.Naziv">
+            <summary>
+            Naziv kupca
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Other.KupacDto.BrojTelefona">
+            <summary>
+            Broj telefona kupca
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Other.KupacDto.Email">
+            <summary>
+            Emali kupca
+            </summary>
+        </member>
+        <member name="P:PrijavaService.Models.Other.KupacDto.BrojRacuna">
+            <summary>
+            Broj računa kupca
+            </summary>
+        </member>
         <member name="P:PrijavaService.Models.Prijava.PrijavaConfirmationDto.BrojPrijave">
             <summary>
             Registarski broj prijave

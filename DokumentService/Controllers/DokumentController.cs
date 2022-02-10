@@ -103,8 +103,7 @@ namespace DokumentService.Controllers
                     return NotFound();
                 }
 
-                await _loggerService.Log(LogLevel.Information, "GetDokumentById",
-                    $"Dokument sa id-jem {id} je uspešno vraćen.");
+                //await _loggerService.Log(LogLevel.Information, "GetDokumentById", $"Dokument sa id-jem {id} je uspešno vraćen.");  //log
 
                 return Ok(_mapper.Map<DokumentDto>(document));
             }

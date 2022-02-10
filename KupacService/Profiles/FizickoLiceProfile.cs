@@ -25,7 +25,11 @@ namespace KupacService.Profiles
                 .ForMember(
                 dest => dest.Adresa,
                 opt => opt.Ignore());
-          
+
+            CreateMap<FizickoLice, KupacInfoDto>()
+                            .ForMember(
+                            dest => dest.Naziv,
+                            opt => opt.MapFrom(src => src.Ime + " " + src.Prezime));
 
 
             CreateMap<KupacOtherServicesDto, FizickoLiceDto>();

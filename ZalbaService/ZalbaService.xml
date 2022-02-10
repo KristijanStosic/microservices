@@ -936,24 +936,29 @@
             Dto Kupac - Entitet iz drugog agregata
             </summary>
         </member>
+        <member name="P:ZalbaService.Models.Services.KupacDto.KupacId">
+            <summary>
+            Id kupca
+            </summary>
+        </member>
         <member name="P:ZalbaService.Models.Services.KupacDto.Naziv">
             <summary>
             Naziv kupca
             </summary>
         </member>
+        <member name="P:ZalbaService.Models.Services.KupacDto.BrojTelefona">
+            <summary>
+            Broj telefona kupca
+            </summary>
+        </member>
         <member name="P:ZalbaService.Models.Services.KupacDto.Email">
             <summary>
-            Email
+            Emali kupca
             </summary>
         </member>
         <member name="P:ZalbaService.Models.Services.KupacDto.BrojRacuna">
             <summary>
-            Broj racuna
-            </summary>
-        </member>
-        <member name="P:ZalbaService.Models.Services.KupacDto.BrojTelefona">
-            <summary>
-            Broj telefona 1
+            Broj računa kupca
             </summary>
         </member>
         <member name="T:ZalbaService.Models.Services.LogModel">

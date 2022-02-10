@@ -300,30 +300,5 @@
             Lista etapa javnog nadmetanja
             </summary>
         </member>
-        <member name="P:LicitacijaService.Models.OtherServices.JavnoNadmetanjeDto.Adresa">
-            <summary>
-            Adresa javnog nadmetanja
-            </summary>
-        </member>
-        <member name="P:LicitacijaService.Models.OtherServices.JavnoNadmetanjeDto.Kupac">
-            <summary>
-            Najbolji kupac u javnom nadmetanju
-            </summary>
-        </member>
-        <member name="P:LicitacijaService.Models.OtherServices.JavnoNadmetanjeDto.OvlascenaLica">
-            <summary>
-            Lista ovlascenih lica
-            </summary>
-        </member>
-        <member name="P:LicitacijaService.Models.OtherServices.JavnoNadmetanjeDto.Kupci">
-            <summary>
-            Lista kupaca
-            </summary>
-        </member>
-        <member name="P:LicitacijaService.Models.OtherServices.JavnoNadmetanjeDto.DeloviParcele">
-            <summary>
-            Lista delova parcele
-            </summary>
-        </member>
     </members>
 </doc>

@@ -16,30 +16,38 @@ namespace KupacService.Data
         private readonly IFizickoLiceRepository _fizickoLiceRepository;
         private readonly KupacContext _context;
 
-        public KupacRepository(IPravnoLiceRepository pravnoLiceRepository,IFizickoLiceRepository fizickoLiceRepository,KupacContext context)
+        public KupacRepository(IPravnoLiceRepository pravnoLiceRepository, IFizickoLiceRepository fizickoLiceRepository, KupacContext context)
         {
             this._pravnoLiceRepository = pravnoLiceRepository;
             this._fizickoLiceRepository = fizickoLiceRepository;
             this._context = context;
         }
 
-       
+
         public async Task<List<Kupac>> GetKupci()
         {
             List<Kupac> kupci = new List<Kupac>();
 
 
             var pravnaLica = await _pravnoLiceRepository.GetPravnoLice();
-            if (pravnaLica != null && pravnaLica.Count>0)
+            if (pravnaLica != null && pravnaLica.Count > 0)
                 kupci.AddRange(pravnaLica);
 
             var fizickaLica = await _fizickoLiceRepository.GetFizickoLice();
-            if(fizickaLica != null && fizickaLica.Count>0)
+            if (fizickaLica != null && fizickaLica.Count > 0)
                 kupci.AddRange(fizickaLica);
 
             return kupci;
         }
 
+        public async Task<Kupac> GetKupacInfoById(Guid kupacId)
+        {
+            Kupac kupac = await _fizickoLiceRepository.GetFizickoLiceInfoById(kupacId);
+            if (kupac == null)
+                kupac = await _pravnoLiceRepository.GetPravnoLiceInfoById(kupacId);
+
+            return kupac;
+        }
 
         public async Task<List<KupacOvlascenoLice>> GetKupceByOvlascenoLiceId(Guid ovlascenoLiceId)
         {

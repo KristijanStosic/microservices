@@ -12,7 +12,7 @@ namespace PrijavaService.ServiceCalls.Mocks
         {
             var kupac = new KupacDto
             {
-                Kupac = "Mladen Mladic",
+                Naziv = "Mladen Mladic",
                 Email = "mladen@gmail.com",
                 BrojRacuna = "123123123",
                 BrojTelefona = "064222222"

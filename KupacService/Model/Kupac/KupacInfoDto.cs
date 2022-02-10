@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using UgovorOZakupu.Models.JavnoNadmetanje;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace UgovorOZakupu.Models.Kupac
+namespace KupacService.Model.Kupac
 {
-    public class KupacDto
+    /// <summary>
+    /// Kupac info za pristup od strane drugih servisa
+    /// </summary>
+    public class KupacInfoDto
     {
         /// <summary>
         /// Id kupca

@@ -142,7 +142,7 @@ namespace OvlascenoLiceService.Controllers
                 if (drzavaDto is not null)
                     ovlascenoLiceDto.Stanovanje = drzavaDto.NazivDrzave;
             }
-            await _loggerService.Log(LogLevel.Information, "GetOvlascenoLice", $"Ovlašćeno lice sa id-em {ovlascenoLiceId} je uspešno vraćeno.");
+            //await _loggerService.Log(LogLevel.Information, "GetOvlascenoLice", $"Ovlašćeno lice sa id-em {ovlascenoLiceId} je uspešno vraćeno."); //log
 
             return Ok(ovlascenoLiceDto);
         }

@@ -82,7 +82,7 @@ namespace AdresaService.Controllers
                 await _loggerService.Log(LogLevel.Warning, "GetAdresaById", $"Adresa sa id-em {adresaId} nije pronađena.");
                 return NotFound();
             }
-            await _loggerService.Log(LogLevel.Information, "GetAdresaById", $"Adresa sa id-em {adresaId} je uspešno pronađena.");
+            //await _loggerService.Log(LogLevel.Information, "GetAdresaById", $"Adresa sa id-em {adresaId} je uspešno pronađena.");  //log
             return Ok(_mapper.Map<AdresaDto>(adresa));
         }
         /// <summary>
